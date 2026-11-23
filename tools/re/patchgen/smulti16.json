@@ -1,0 +1,2320 @@
+{
+ "layout": {
+  "oldSize": "0x28f0",
+  "slot": "0x28f0",
+  "slotOld": "0x2190",
+  "slotSize": "0x70",
+  "conn": "0x2ff0",
+  "connOld": "0x216c",
+  "mapl": "0x3030",
+  "maplOld": "0x2510",
+  "frames": "0x3070",
+  "frameSize": "0x3e4",
+  "newSize": "0x6eb0"
+ },
+ "edits": [
+  {
+   "va": "0x4777c2",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x4777ce",
+   "kind": "disp",
+   "old": "0x2170",
+   "new": "0x2ff4",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x4777d8",
+   "kind": "disp",
+   "old": "0x2174",
+   "new": "0x2ff8",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x4777e2",
+   "kind": "disp",
+   "old": "0x2178",
+   "new": "0x2ffc",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x4777ec",
+   "kind": "disp",
+   "old": "0x217c",
+   "new": "0x3000",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x4777f6",
+   "kind": "disp",
+   "old": "0x2180",
+   "new": "0x3004",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x477800",
+   "kind": "disp",
+   "old": "0x2184",
+   "new": "0x3008",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x47780a",
+   "kind": "disp",
+   "old": "0x2188",
+   "new": "0x300c",
+   "why": "??0SMulti: conn"
+  },
+  {
+   "va": "0x00477a75",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "??_GSMulti@@UAEPAXI@Z+0xa5: sizeof(SMulti)"
+  },
+  {
+   "va": "0x477ab7",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477ac6",
+   "kind": "disp",
+   "old": "0x2193",
+   "new": "0x28f3",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477adb",
+   "kind": "disp",
+   "old": "0x21c8",
+   "new": "0x2928",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477ae6",
+   "kind": "disp",
+   "old": "0x21d8",
+   "new": "0x2938",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477af0",
+   "kind": "disp",
+   "old": "0x21e8",
+   "new": "0x2948",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477af9",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477b01",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x477b0e",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?AddPlayerInfo@SMulti: slot"
+  },
+  {
+   "va": "0x478020",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?CalculateConfirmedLastFrame@SMulti: slot"
+  },
+  {
+   "va": "0x47810e",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?ChangePlayerSlotStatus@SMulti: slot"
+  },
+  {
+   "va": "0x47814f",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?ChangePlayerSlotStatus@SMulti: slot"
+  },
+  {
+   "va": "0x4785a0",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4785c8",
+   "kind": "disp",
+   "old": "0x2204",
+   "new": "0x2964",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4785d4",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4785e3",
+   "kind": "disp",
+   "old": "0x2274",
+   "new": "0x29d4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4785ef",
+   "kind": "disp",
+   "old": "0x2268",
+   "new": "0x29c8",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4785fe",
+   "kind": "disp",
+   "old": "0x22e4",
+   "new": "0x2a44",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47860a",
+   "kind": "disp",
+   "old": "0x22d8",
+   "new": "0x2a38",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478619",
+   "kind": "disp",
+   "old": "0x2354",
+   "new": "0x2ab4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478625",
+   "kind": "disp",
+   "old": "0x2348",
+   "new": "0x2aa8",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478634",
+   "kind": "disp",
+   "old": "0x23c4",
+   "new": "0x2b24",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478640",
+   "kind": "disp",
+   "old": "0x23b8",
+   "new": "0x2b18",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478650",
+   "kind": "disp",
+   "old": "0x2434",
+   "new": "0x2b94",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478659",
+   "kind": "disp",
+   "old": "0x2428",
+   "new": "0x2b88",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47866d",
+   "kind": "disp",
+   "old": "0x24a4",
+   "new": "0x2c04",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478679",
+   "kind": "disp",
+   "old": "0x2498",
+   "new": "0x2bf8",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47868f",
+   "kind": "disp",
+   "old": "0x2508",
+   "new": "0x2c68",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47869e",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786a8",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786b2",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786bc",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786c6",
+   "kind": "disp",
+   "old": "0x2260",
+   "new": "0x29c0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786d0",
+   "kind": "disp",
+   "old": "0x2264",
+   "new": "0x29c4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786da",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786e4",
+   "kind": "disp",
+   "old": "0x22d0",
+   "new": "0x2a30",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786ee",
+   "kind": "disp",
+   "old": "0x22d4",
+   "new": "0x2a34",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x4786f8",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478702",
+   "kind": "disp",
+   "old": "0x2340",
+   "new": "0x2aa0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47870c",
+   "kind": "disp",
+   "old": "0x2344",
+   "new": "0x2aa4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478716",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478720",
+   "kind": "disp",
+   "old": "0x23b0",
+   "new": "0x2b10",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47872a",
+   "kind": "disp",
+   "old": "0x23b4",
+   "new": "0x2b14",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478734",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47873e",
+   "kind": "disp",
+   "old": "0x2420",
+   "new": "0x2b80",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478748",
+   "kind": "disp",
+   "old": "0x2424",
+   "new": "0x2b84",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478752",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47875c",
+   "kind": "disp",
+   "old": "0x2490",
+   "new": "0x2bf0",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478766",
+   "kind": "disp",
+   "old": "0x2494",
+   "new": "0x2bf4",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478770",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47877a",
+   "kind": "disp",
+   "old": "0x2500",
+   "new": "0x2c60",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x478784",
+   "kind": "disp",
+   "old": "0x2504",
+   "new": "0x2c64",
+   "why": "?ChatRoom_Start@SMulti: slot"
+  },
+  {
+   "va": "0x47896e",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x478978",
+   "kind": "disp",
+   "old": "0x2514",
+   "new": "0x3034",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x478982",
+   "kind": "disp",
+   "old": "0x2518",
+   "new": "0x3038",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x47898c",
+   "kind": "disp",
+   "old": "0x251c",
+   "new": "0x303c",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x478996",
+   "kind": "disp",
+   "old": "0x2520",
+   "new": "0x3040",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x4789a0",
+   "kind": "disp",
+   "old": "0x2524",
+   "new": "0x3044",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x4789aa",
+   "kind": "disp",
+   "old": "0x2528",
+   "new": "0x3048",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x4789b4",
+   "kind": "disp",
+   "old": "0x252c",
+   "new": "0x304c",
+   "why": "?ClearMapLoading@SMulti: mapload"
+  },
+  {
+   "va": "0x4789d3",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789da",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789e0",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789e7",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789ee",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789f5",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x4789fc",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x478a03",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x478a0a",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?ClearReadyForAllPlayers@SMulti: slot"
+  },
+  {
+   "va": "0x478a97",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478aa5",
+   "kind": "disp",
+   "old": "0x2204",
+   "new": "0x2964",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478ab1",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478ac0",
+   "kind": "disp",
+   "old": "0x2274",
+   "new": "0x29d4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478acc",
+   "kind": "disp",
+   "old": "0x2268",
+   "new": "0x29c8",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478adb",
+   "kind": "disp",
+   "old": "0x22e4",
+   "new": "0x2a44",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478ae7",
+   "kind": "disp",
+   "old": "0x22d8",
+   "new": "0x2a38",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478af6",
+   "kind": "disp",
+   "old": "0x2354",
+   "new": "0x2ab4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b02",
+   "kind": "disp",
+   "old": "0x2348",
+   "new": "0x2aa8",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b11",
+   "kind": "disp",
+   "old": "0x23c4",
+   "new": "0x2b24",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b1d",
+   "kind": "disp",
+   "old": "0x23b8",
+   "new": "0x2b18",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b2d",
+   "kind": "disp",
+   "old": "0x2434",
+   "new": "0x2b94",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b36",
+   "kind": "disp",
+   "old": "0x2428",
+   "new": "0x2b88",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b4a",
+   "kind": "disp",
+   "old": "0x24a4",
+   "new": "0x2c04",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b56",
+   "kind": "disp",
+   "old": "0x2498",
+   "new": "0x2bf8",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b69",
+   "kind": "disp",
+   "old": "0x2508",
+   "new": "0x2c68",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b71",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b7b",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b85",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b8f",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478b99",
+   "kind": "disp",
+   "old": "0x2260",
+   "new": "0x29c0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478ba3",
+   "kind": "disp",
+   "old": "0x2264",
+   "new": "0x29c4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bad",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bb7",
+   "kind": "disp",
+   "old": "0x22d0",
+   "new": "0x2a30",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bc1",
+   "kind": "disp",
+   "old": "0x22d4",
+   "new": "0x2a34",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bcb",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bd5",
+   "kind": "disp",
+   "old": "0x2340",
+   "new": "0x2aa0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bdf",
+   "kind": "disp",
+   "old": "0x2344",
+   "new": "0x2aa4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478be9",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bf3",
+   "kind": "disp",
+   "old": "0x23b0",
+   "new": "0x2b10",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478bfd",
+   "kind": "disp",
+   "old": "0x23b4",
+   "new": "0x2b14",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c07",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c11",
+   "kind": "disp",
+   "old": "0x2420",
+   "new": "0x2b80",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c1b",
+   "kind": "disp",
+   "old": "0x2424",
+   "new": "0x2b84",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c25",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c2f",
+   "kind": "disp",
+   "old": "0x2490",
+   "new": "0x2bf0",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c39",
+   "kind": "disp",
+   "old": "0x2494",
+   "new": "0x2bf4",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c43",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c4d",
+   "kind": "disp",
+   "old": "0x2500",
+   "new": "0x2c60",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x478c57",
+   "kind": "disp",
+   "old": "0x2504",
+   "new": "0x2c64",
+   "why": "?ClearSlotArray@SMulti: slot"
+  },
+  {
+   "va": "0x00478fad",
+   "kind": "imm",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?Disconnect@SMulti: conn (imm)"
+  },
+  {
+   "va": "0x4790d0",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?DisplaySlotData@SMulti: mapload"
+  },
+  {
+   "va": "0x479171",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x4791d6",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x47928b",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x4792c0",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x479391",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x4793a2",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?DisplaySlotData@SMulti: mapload"
+  },
+  {
+   "va": "0x4793cd",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x47942d",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x00479493",
+   "kind": "imm",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?DisplaySlotData@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x479541",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?DisplaySlotData@SMulti: slot"
+  },
+  {
+   "va": "0x00479dc2",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?GetFreePlayerSlot@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x479de0",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479df7",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e08",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e19",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e2a",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e3b",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e4c",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e5d",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?GetFullAndOpenSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e75",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e80",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e8e",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479e9f",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479eb0",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479ec1",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479ed2",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479ee9",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?GetFullSlots@SMulti: slot"
+  },
+  {
+   "va": "0x479f16",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?GetMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x479f5c",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?GetNextColorIndex@SMulti: slot"
+  },
+  {
+   "va": "0x479f62",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?GetNextColorIndex@SMulti: slot"
+  },
+  {
+   "va": "0x479fb6",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?GetPing@SMulti: conn"
+  },
+  {
+   "va": "0x479ff0",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?GetPlayerColor@SMulti: slot"
+  },
+  {
+   "va": "0x0047a065",
+   "kind": "imm",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?GetPlayerName@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47a0d0",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?GetPlayerRace@SMulti: slot"
+  },
+  {
+   "va": "0x47a0fc",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?GetPrevColorIndex@SMulti: slot"
+  },
+  {
+   "va": "0x47a102",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?GetPrevColorIndex@SMulti: slot"
+  },
+  {
+   "va": "0x47a187",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?GetSlotFromRaknetGuid@SMulti: slot"
+  },
+  {
+   "va": "0x47a1c7",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?GetSlots@SMulti: slot"
+  },
+  {
+   "va": "0x47a1ce",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?GetSlots@SMulti: slot"
+  },
+  {
+   "va": "0x47a200",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?GetTeam@SMulti: slot"
+  },
+  {
+   "va": "0x47a892",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a898",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a8b6",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a905",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a90f",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a919",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?IsDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47a953",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?IsHostPlayerConnection@SMulti: slot"
+  },
+  {
+   "va": "0x47a95e",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?IsHostPlayerConnection@SMulti: slot"
+  },
+  {
+   "va": "0x47ab9d",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?JoinGame@SMulti: conn"
+  },
+  {
+   "va": "0x47acb0",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?JoinGame@SMulti: conn"
+  },
+  {
+   "va": "0x47ad37",
+   "kind": "disp",
+   "old": "0x21ec",
+   "new": "0x294c",
+   "why": "?OnConnectionSuccessful@SMulti: slot"
+  },
+  {
+   "va": "0x47ad5e",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnConnectionSuccessful@SMulti: conn"
+  },
+  {
+   "va": "0x47ade3",
+   "kind": "disp",
+   "old": "0x21ec",
+   "new": "0x294c",
+   "why": "?OnDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47ae10",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnDisconnected@SMulti: conn"
+  },
+  {
+   "va": "0x47ae6c",
+   "kind": "disp",
+   "old": "0x21ec",
+   "new": "0x294c",
+   "why": "?OnDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47ae74",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?OnDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47aea5",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnDisconnected@SMulti: conn"
+  },
+  {
+   "va": "0x47b032",
+   "kind": "disp",
+   "old": "0x250c",
+   "new": "0x302c",
+   "why": "?OnFileDownloaded@SMulti: mapload"
+  },
+  {
+   "va": "0x47b0a0",
+   "kind": "disp",
+   "old": "0x250c",
+   "new": "0x302c",
+   "why": "?OnFileDownloaded@SMulti: mapload"
+  },
+  {
+   "va": "0x47b0f7",
+   "kind": "disp",
+   "old": "0x250c",
+   "new": "0x302c",
+   "why": "?OnFileProgress@SMulti: mapload"
+  },
+  {
+   "va": "0x47b107",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?OnFileProgress@SMulti: mapload"
+  },
+  {
+   "va": "0x47b1a6",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?OnIntroductionMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47b1d0",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnIntroductionMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47b26f",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnIntroductionMessage@SMulti: conn"
+  },
+  {
+   "va": "0x0047b2d2",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnIntroductionMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x0047b588",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47b5b3",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47b6a6",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47b6c1",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47b8ca",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47b8d6",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x0047ba3d",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47bbe1",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47bcdf",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47bd20",
+   "kind": "disp",
+   "old": "0x250c",
+   "new": "0x302c",
+   "why": "?OnMessage@SMulti: mapload"
+  },
+  {
+   "va": "0x47bd53",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bd6b",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bd74",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bde8",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47be00",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47be09",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47be7a",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x0047be86",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47beed",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bef5",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47beff",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bf16",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bf67",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47bf77",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47c297",
+   "kind": "disp",
+   "old": "0x21ec",
+   "new": "0x294c",
+   "why": "?OnPeerConnected@SMulti: slot"
+  },
+  {
+   "va": "0x47c2c2",
+   "kind": "disp",
+   "old": "0x2168",
+   "new": "0x2fec",
+   "why": "?OnPeerConnected@SMulti: conn"
+  },
+  {
+   "va": "0x47c2eb",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnPlayerChangeBuying@SMulti: slot"
+  },
+  {
+   "va": "0x47c394",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c3ad",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c3c8",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c3d3",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c41d",
+   "kind": "disp",
+   "old": "0x21f9",
+   "new": "0x2959",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c42b",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnPlayerChangeColor@SMulti: slot"
+  },
+  {
+   "va": "0x47c4b2",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?OnPlayerChangeRace@SMulti: slot"
+  },
+  {
+   "va": "0x0047c4b8",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnPlayerChangeRace@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47c51b",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnPlayerChangeReady@SMulti: slot"
+  },
+  {
+   "va": "0x47c5ad",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnPlayerChangeTeam@SMulti: slot"
+  },
+  {
+   "va": "0x47c5b5",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnPlayerChangeTeam@SMulti: slot"
+  },
+  {
+   "va": "0x47c5bf",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?OnPlayerChangeTeam@SMulti: slot"
+  },
+  {
+   "va": "0x0047c5d0",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnPlayerChangeTeam@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47c671",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnRequestMapDownloading@SMulti: conn"
+  },
+  {
+   "va": "0x0047c6b4",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?OnSlotDataMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47c6db",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnSlotDataMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47c7ad",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnSlotDataMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47c7c8",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?OnSlotDataMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47c935",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47c980",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?RemovePlayerFromStage@SMulti: mapload"
+  },
+  {
+   "va": "0x47c9de",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47c9ea",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47c9f3",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca0d",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca13",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca23",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca2d",
+   "kind": "disp",
+   "old": "0x21f8",
+   "new": "0x2958",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca38",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47ca50",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x0047ca6e",
+   "kind": "imm",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?RemovePlayerFromStage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47cb0d",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb13",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb2e",
+   "kind": "disp",
+   "old": "0x2260",
+   "new": "0x29c0",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb34",
+   "kind": "disp",
+   "old": "0x2264",
+   "new": "0x29c4",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb50",
+   "kind": "disp",
+   "old": "0x22d0",
+   "new": "0x2a30",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb56",
+   "kind": "disp",
+   "old": "0x22d4",
+   "new": "0x2a34",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb72",
+   "kind": "disp",
+   "old": "0x2340",
+   "new": "0x2aa0",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb78",
+   "kind": "disp",
+   "old": "0x2344",
+   "new": "0x2aa4",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb94",
+   "kind": "disp",
+   "old": "0x23b0",
+   "new": "0x2b10",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cb9a",
+   "kind": "disp",
+   "old": "0x23b4",
+   "new": "0x2b14",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cbb6",
+   "kind": "disp",
+   "old": "0x2420",
+   "new": "0x2b80",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cbbc",
+   "kind": "disp",
+   "old": "0x2424",
+   "new": "0x2b84",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cbd8",
+   "kind": "disp",
+   "old": "0x2490",
+   "new": "0x2bf0",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cbde",
+   "kind": "disp",
+   "old": "0x2494",
+   "new": "0x2bf4",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cbfa",
+   "kind": "disp",
+   "old": "0x2500",
+   "new": "0x2c60",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cc00",
+   "kind": "disp",
+   "old": "0x2504",
+   "new": "0x2c64",
+   "why": "?SendBroadcastMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47cd1b",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?SendBroadcastMessage@SMulti: conn"
+  },
+  {
+   "va": "0x47d008",
+   "kind": "disp",
+   "old": "0x2194",
+   "new": "0x28f4",
+   "why": "?SendChatMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47d0b0",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?SendChatMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47d0bc",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?SendChatMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47d0d7",
+   "kind": "disp",
+   "old": "0x21fa",
+   "new": "0x295a",
+   "why": "?SendChatMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47d443",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?SendMapLoadingDataToPlayers@SMulti: mapload"
+  },
+  {
+   "va": "0x47d63f",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?SendMessageInternal@SMulti: conn"
+  },
+  {
+   "va": "0x47d74d",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?SendPlayerChangeReady@SMulti: slot"
+  },
+  {
+   "va": "0x47d825",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?SendRequestMapDownloading@SMulti: conn"
+  },
+  {
+   "va": "0x47d8b4",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?SendSlotDataMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47da1c",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?SetPingToolTips@SMulti: slot"
+  },
+  {
+   "va": "0x47da25",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?SetPingToolTips@SMulti: slot"
+  },
+  {
+   "va": "0x47dbe5",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dbed",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc0b",
+   "kind": "disp",
+   "old": "0x2260",
+   "new": "0x29c0",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc11",
+   "kind": "disp",
+   "old": "0x2264",
+   "new": "0x29c4",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc2d",
+   "kind": "disp",
+   "old": "0x22d0",
+   "new": "0x2a30",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc33",
+   "kind": "disp",
+   "old": "0x22d4",
+   "new": "0x2a34",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc4f",
+   "kind": "disp",
+   "old": "0x2340",
+   "new": "0x2aa0",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc55",
+   "kind": "disp",
+   "old": "0x2344",
+   "new": "0x2aa4",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc71",
+   "kind": "disp",
+   "old": "0x23b0",
+   "new": "0x2b10",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc77",
+   "kind": "disp",
+   "old": "0x23b4",
+   "new": "0x2b14",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc93",
+   "kind": "disp",
+   "old": "0x2420",
+   "new": "0x2b80",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dc99",
+   "kind": "disp",
+   "old": "0x2424",
+   "new": "0x2b84",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dcb5",
+   "kind": "disp",
+   "old": "0x2490",
+   "new": "0x2bf0",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dcbb",
+   "kind": "disp",
+   "old": "0x2494",
+   "new": "0x2bf4",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dcd7",
+   "kind": "disp",
+   "old": "0x2500",
+   "new": "0x2c60",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dcdd",
+   "kind": "disp",
+   "old": "0x2504",
+   "new": "0x2c64",
+   "why": "?StartGame@SMulti: slot"
+  },
+  {
+   "va": "0x47dde2",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47dde8",
+   "kind": "disp",
+   "old": "0x21f4",
+   "new": "0x2954",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47ddff",
+   "kind": "disp",
+   "old": "0x2260",
+   "new": "0x29c0",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de05",
+   "kind": "disp",
+   "old": "0x2264",
+   "new": "0x29c4",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de17",
+   "kind": "disp",
+   "old": "0x22d0",
+   "new": "0x2a30",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de1d",
+   "kind": "disp",
+   "old": "0x22d4",
+   "new": "0x2a34",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de2f",
+   "kind": "disp",
+   "old": "0x2340",
+   "new": "0x2aa0",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de35",
+   "kind": "disp",
+   "old": "0x2344",
+   "new": "0x2aa4",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de47",
+   "kind": "disp",
+   "old": "0x23b0",
+   "new": "0x2b10",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de4d",
+   "kind": "disp",
+   "old": "0x23b4",
+   "new": "0x2b14",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de5f",
+   "kind": "disp",
+   "old": "0x2420",
+   "new": "0x2b80",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de65",
+   "kind": "disp",
+   "old": "0x2424",
+   "new": "0x2b84",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de77",
+   "kind": "disp",
+   "old": "0x2490",
+   "new": "0x2bf0",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de7d",
+   "kind": "disp",
+   "old": "0x2494",
+   "new": "0x2bf4",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de8f",
+   "kind": "disp",
+   "old": "0x2500",
+   "new": "0x2c60",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47de95",
+   "kind": "disp",
+   "old": "0x2504",
+   "new": "0x2c64",
+   "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47e048",
+   "kind": "disp",
+   "old": "0x21f0",
+   "new": "0x2950",
+   "why": "?UpdateConnectivity@SMulti: slot"
+  },
+  {
+   "va": "0x47e105",
+   "kind": "disp",
+   "old": "0x216c",
+   "new": "0x2ff0",
+   "why": "?UpdateConnectivity@SMulti: conn"
+  },
+  {
+   "va": "0x47e30d",
+   "kind": "disp",
+   "old": "0x2190",
+   "new": "0x28f0",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e31a",
+   "kind": "disp",
+   "old": "0x2200",
+   "new": "0x2960",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e329",
+   "kind": "disp",
+   "old": "0x2270",
+   "new": "0x29d0",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e33a",
+   "kind": "disp",
+   "old": "0x22e0",
+   "new": "0x2a40",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e34b",
+   "kind": "disp",
+   "old": "0x2350",
+   "new": "0x2ab0",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e35c",
+   "kind": "disp",
+   "old": "0x23c0",
+   "new": "0x2b20",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e36d",
+   "kind": "disp",
+   "old": "0x2430",
+   "new": "0x2b90",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e37e",
+   "kind": "disp",
+   "old": "0x24a0",
+   "new": "0x2c00",
+   "why": "?UpdateMatchOnMatchMakingServer@SMulti: slot"
+  },
+  {
+   "va": "0x47e3c0",
+   "kind": "disp",
+   "old": "0x2510",
+   "new": "0x3030",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3ca",
+   "kind": "disp",
+   "old": "0x2514",
+   "new": "0x3034",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3d4",
+   "kind": "disp",
+   "old": "0x2518",
+   "new": "0x3038",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3de",
+   "kind": "disp",
+   "old": "0x251c",
+   "new": "0x303c",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3e8",
+   "kind": "disp",
+   "old": "0x2520",
+   "new": "0x3040",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3f2",
+   "kind": "disp",
+   "old": "0x2524",
+   "new": "0x3044",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e3fc",
+   "kind": "disp",
+   "old": "0x2528",
+   "new": "0x3048",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x47e406",
+   "kind": "disp",
+   "old": "0x252c",
+   "new": "0x304c",
+   "why": "?ZeroMapLoadingData@SMulti: mapload"
+  },
+  {
+   "va": "0x004fb52e",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "?ConnectToHostFromCommandLine@SSuperWindow@@AAEXPBD0@Z+0x5e: sizeof(SMulti)"
+  },
+  {
+   "va": "0x004fb7a7",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "?CreateHostFromCommandLine@SSuperWindow@@AAEXPBD@Z+0x57: sizeof(SMulti)"
+  },
+  {
+   "va": "0x004fc967",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "?LoadMultiPreMenu@SSuperWindow@@AAEXXZ+0x57: sizeof(SMulti)"
+  },
+  {
+   "va": "0x004ff737",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "?Play@SSuperWindow@@QAEXXZ+0x447: sizeof(SMulti)"
+  },
+  {
+   "va": "0x004ff8a9",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "?Play@SSuperWindow@@QAEXXZ+0x5b9: sizeof(SMulti)"
+  },
+  {
+   "va": "0x00542b30",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "unwind: sizeof(SMulti)"
+  },
+  {
+   "va": "0x00542b90",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "unwind: sizeof(SMulti)"
+  },
+  {
+   "va": "0x00542ed0",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "unwind: sizeof(SMulti)"
+  },
+  {
+   "va": "0x005432c2",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "unwind: sizeof(SMulti)"
+  },
+  {
+   "va": "0x005432ec",
+   "kind": "imm",
+   "old": "0x28f0",
+   "new": "0x6eb0",
+   "why": "unwind: sizeof(SMulti)"
+  }
+ ]
+}

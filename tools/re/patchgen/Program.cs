@@ -155,6 +155,21 @@ Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центр�
 Imm(0x474404, 4, 20, "ConnectionManager::CreatePeer: спроб порту 4 → 20");
 Imm(0x473f53, 4, 20, "ConnectionManager::ConnectionManager (вбудований CreatePeer): спроб порту 4 → 20");
 
+// SMulti: масиви «на 8 гравців» (слоти 70h, з'єднання, завантаження карти) → хвіст об'єкта на 16.
+// Список правок генерує tools/re/gen-smulti16.js (smulti16.json поруч із цим файлом).
+{
+    var sm = Path.Combine(AppContext.BaseDirectory, "smulti16.json");
+    if (!File.Exists(sm)) sm = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "..", "patchgen", "smulti16.json");
+    using var sj = JsonDocument.Parse(File.ReadAllText(sm));
+    foreach (var e in sj.RootElement.GetProperty("edits").EnumerateArray())
+    {
+        uint P(string k) => Convert.ToUInt32(e.GetProperty(k).GetString()!, 16);
+        var why = "SMulti16 " + e.GetProperty("why").GetString();
+        if (e.GetProperty("kind").GetString() == "disp") Disp(P("va"), P("old"), P("new"), why);
+        else Imm(P("va"), P("old"), P("new"), why);
+    }
+}
+
 var outExe = (byte[])exe.Clone();
 var edits = new List<object>();
 foreach (var (va, why, pick) in patches)

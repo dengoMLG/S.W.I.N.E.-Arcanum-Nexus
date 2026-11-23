@@ -69,6 +69,61 @@ switch (args[2])
         }
         break;
     }
+    case "fields":
+    {
+        // fields <lo> <hi> [regex-of-function] — пам'ять [base+disp], disp у [lo, hi]; для кожної — звідки взявся base.
+        // THIS = регістр/слот стеку, що несе ecx зі входу функції (лінійне простеження, без гілок).
+        uint lo = Convert.ToUInt32(args[3], 16), hi = Convert.ToUInt32(args[4], 16);
+        var rx = args.Length > 5 ? new System.Text.RegularExpressions.Regex(args[5]) : null;
+        var o = new StringOutput();
+        foreach (var f in fnsyms)
+        {
+            if (rx != null && !rx.IsMatch(f.name)) continue;
+            int size = FnSize(f.va); int off = Off(f.va); if (off < 0) continue;
+            var dec = Decoder.Create(32, new ByteArrayCodeReader(exe, off, size)); dec.IP = f.va;
+            var list = new List<Instruction>();
+            while (dec.IP < f.va + (uint)size) list.Add(dec.Decode());
+            var thisRegs = new HashSet<Register> { Register.ECX }; var thisStack = new HashSet<long>();
+            var thisAt = new List<bool>();
+            foreach (var ins in list)
+            {
+                // перевіряємо до застосування інструкції
+                thisAt.Add(ins.OpCount > 0 && Enumerable.Range(0, ins.OpCount).Any(k => ins.GetOpKind(k) == OpKind.Memory) && thisRegs.Contains(ins.MemoryBase));
+                if (ins.Mnemonic == Mnemonic.Mov && ins.Op0Kind == OpKind.Register && ins.Op1Kind == OpKind.Register)
+                { if (thisRegs.Contains(ins.Op1Register)) thisRegs.Add(ins.Op0Register); else thisRegs.Remove(ins.Op0Register); continue; }
+                if (ins.Mnemonic == Mnemonic.Mov && ins.Op0Kind == OpKind.Memory && ins.MemoryBase == Register.EBP && ins.Op1Kind == OpKind.Register)
+                { if (thisRegs.Contains(ins.Op1Register)) thisStack.Add((int)ins.MemoryDisplacement32); else thisStack.Remove((int)ins.MemoryDisplacement32); continue; }
+                if (ins.Mnemonic == Mnemonic.Mov && ins.Op0Kind == OpKind.Register && ins.Op1Kind == OpKind.Memory && ins.MemoryBase == Register.EBP && ins.MemoryIndex == Register.None)
+                { if (thisStack.Contains((int)ins.MemoryDisplacement32)) thisRegs.Add(ins.Op0Register); else thisRegs.Remove(ins.Op0Register); continue; }
+                if (ins.Mnemonic == Mnemonic.Call) { thisRegs.Remove(Register.EAX); thisRegs.Remove(Register.ECX); thisRegs.Remove(Register.EDX); continue; }
+                if (ins.OpCount > 0 && ins.Op0Kind == OpKind.Register && ins.Mnemonic != Mnemonic.Cmp && ins.Mnemonic != Mnemonic.Test && ins.Mnemonic != Mnemonic.Push)
+                    thisRegs.Remove(ins.Op0Register);
+            }
+            for (int i = 0; i < list.Count; i++)
+            {
+                var ins = list[i];
+                bool mem = Enumerable.Range(0, ins.OpCount).Any(k => ins.GetOpKind(k) == OpKind.Memory);
+                if (!mem || ins.MemoryBase == Register.EBP || ins.MemoryBase == Register.ESP) continue;
+                if (ins.MemoryDisplacement32 < lo || ins.MemoryDisplacement32 > hi) continue;
+                string prov;
+                if (thisAt[i]) prov = "THIS";
+                else
+                {
+                    var b = ins.MemoryBase; prov = b == Register.None ? "abs" : "?";
+                    for (int j = i - 1; j >= 0 && j >= i - 40; j--)
+                    {
+                        var p = list[j];
+                        if (p.OpCount > 0 && p.Op0Kind == OpKind.Register && (p.Op0Register == b || p.Op0Register.GetFullRegister32() == b.GetFullRegister32())
+                            && p.Mnemonic != Mnemonic.Cmp && p.Mnemonic != Mnemonic.Test && p.Mnemonic != Mnemonic.Push)
+                        { fmt.Format(p, o); prov = $"{p.IP:x}: {o.ToStringAndReset()}"; break; }
+                    }
+                }
+                fmt.Format(ins, o);
+                Console.WriteLine($"{ins.IP:x8}\t{f.name}\t{o.ToStringAndReset()}\t{prov}");
+            }
+        }
+        break;
+    }
 }
 
 class Res(Func<ulong, string> sym) : ISymbolResolver
