@@ -248,7 +248,7 @@ static class Caves
         }
 
         // ── 5. SUnit::TakeDamage: уповільнення від влучання ──
-        // Влучання юніта з "slow" в імені по чужій стороні: швидкість і поворот ×SlowFactor на SlowTicks.
+        // Влучання юніта з "slow" в імені по будь-кому, крім себе: швидкість і поворот ×SlowFactor на SlowTicks.
         var takeDmg = a.CreateLabel("takedamage");
         {
             var done = a.CreateLabel();
@@ -260,8 +260,7 @@ static class Caves
             a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(0); a.call(GetUnit);
             a.test(eax, eax); a.je(done); a.mov(edi, eax);
             Strstr(edi, "slow"); a.test(eax, eax); a.je(done);
-            a.mov(eax, __dword_ptr[edi + 0x258]); a.mov(edx, __dword_ptr[esi + 0x258]); a.mov(ecx, __dword_ptr[esi]);
-            a.call(sameSide); a.test(eax, eax); a.jne(done);
+            a.cmp(edi, esi); a.je(done);                                   // грязь сповільнює всіх, крім самого стрільця (#8)
             a.mov(ecx, SlowTicks); a.call(applySlow);
             Log("ARC: unit %d slowed by hit of %d", Mem(edi, 4), Mem(esi, 4));
             a.Label(ref done);
@@ -321,17 +320,24 @@ static class Caves
             a.mov(eax, __dword_ptr[esi + 0x68]); a.cmp(eax, __dword_ptr[edi + 16]); a.jne(zones);
             a.mov(eax, __dword_ptr[edi + 8]); a.mov(__dword_ptr[esi + 0x68], eax);
             a.mov(eax, __dword_ptr[edi + 12]); a.mov(__dword_ptr[esi + 0x6C], eax);
-            // калюжі: юніт чужої сторони всередині — уповільнений, поки там
+            // калюжі: будь-який юніт усередині — уповільнений, поки там
             a.Label(ref zones);
             a.cmp(__dword_ptr[esi + 0x68], 0); a.je(zdone);                                   // нерухоме (міни, будівлі)
             a.xor(ebx, ebx);
             a.Label(ref zl);
             a.mov(ebp, ebx); a.shl(ebp, 4); a.add(ebp, ZONES);
             a.mov(ecx, __dword_ptr[esi]); a.mov(eax, __dword_ptr[ecx + 0x16F4]); a.cmp(__dword_ptr[ebp + 8], eax); a.jle(zn);
-            a.mov(eax, __dword_ptr[ebp + 12]); a.mov(edx, __dword_ptr[esi + 0x258]); a.call(sameSide); a.test(eax, eax); a.jne(zn);
+            // калюжа сповільнює всіх — і чужих, і своїх (#8: «щоб усіх сповільнювала»)
             a.movss(xmm0, __dword_ptr[esi + 0x264]); a.subss(xmm0, __dword_ptr[ebp]); a.mulss(xmm0, xmm0);
             a.movss(xmm1, __dword_ptr[esi + 0x26C]); a.subss(xmm1, __dword_ptr[ebp + 4]); a.mulss(xmm1, xmm1);
             a.addss(xmm0, xmm1); a.comiss(xmm0, __dword_ptr[cst("zoner2")]); a.jae(zn);
+            {   // у журнал — лише коли юніт щойно заїхав у грязь (ще не сповільнений)
+                var noLog = a.CreateLabel(); var doLog = a.CreateLabel();
+                a.cmp(__dword_ptr[edi], esi); a.jne(doLog); a.cmp(__dword_ptr[edi + 4], 0); a.jg(noLog);
+                a.Label(ref doLog);
+                Log("ARC: unit %d slowed in mud puddle %d", Reg(ebx), Mem(esi, 4));
+                a.Label(ref noLog);
+            }
             a.mov(ecx, ZoneSlowTicks); a.call(applySlow); a.jmp(zdone);
             a.Label(ref zn); a.inc(ebx); a.cmp(ebx, Zones); a.jl(zl);
             a.Label(ref zdone);

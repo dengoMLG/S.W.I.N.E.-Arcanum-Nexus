@@ -71,6 +71,14 @@ const need = (what, files) => { checked++; const miss = files.filter(f => !exist
     need(`effects.ini [${sec}] Texture ${tex}`, files);
   }
 }
+// Наші .wav: SWave::LoadWAV (0x481e80) читає RIFF/WAVEfmt, PCM, і одразу після fmt чекає «data» —
+// інакше мовчки не вантажить (Хряк-Гриль без звуку, #9). Чанк LIST від ffmpeg перед data ламає звук.
+for (const f of modFiles) if (f.endsWith('.wav')) {
+  checked++; const b = fs.readFileSync(path.join(MOD, f));
+  const ok = b.toString('latin1', 0, 4) === 'RIFF' && b.toString('latin1', 8, 16) === 'WAVEfmt ' && b.readUInt16LE(20) === 1 &&
+    b.toString('latin1', 20 + b.readUInt32LE(16), 24 + b.readUInt32LE(16)) === 'data';
+  if (!ok) missing.push(`${f}: WAV must be PCM with "data" right after "fmt " (no LIST chunk)`);
+}
 console.log(`check-arc-refs: ${checked} new references checked in ${path.relative(ROOT, MOD) || MOD}`);
 if (missing.length) { console.error('MISSING:\n  ' + missing.join('\n  ')); process.exit(1); }
 console.log('all present');

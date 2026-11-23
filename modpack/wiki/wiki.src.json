@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.0.0",
+              "value": "4.0.1",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -116,14 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Nexus Mod 4.0.0 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
-              "uk": "Arcanum Nexus Mod 4.0.0 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
-              "en": "Arcanum Nexus Mod 4.0.0 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.0.1 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.0.1 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.0.1 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.0»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
-              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.0»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
-              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.0”), and in the launcher mod list. If your friends have a different one, update before playing."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.1»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.1»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.1”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -157,6 +157,35 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.0.1",
+          "text": {
+            "ru": "Мод 4.0.1 · исправления · 23.11.2026",
+            "uk": "Мод 4.0.1 · виправлення · 23.11.2026",
+            "en": "Mod 4.0.1 · fixes · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Хряк-Гриль: у выстрела снова есть звук огнемёта. Игра не читала наш .wav: после блока «fmt » она ждёт сразу «data», а там был служебный блок LIST. Теперь сборка проверяет это у всех наших звуков.",
+              "uk": "Хряк-Гриль: постріл знову має звук вогнемета. Гра не читала наш .wav: після блоку «fmt » вона чекає одразу «data», а там був службовий блок LIST. Тепер збірка перевіряє це в усіх наших звуків.",
+              "en": "Hog Grill: the shot has its flamethrower sound again. The game did not load our .wav: right after the \"fmt \" block it expects \"data\", and there was a LIST metadata block. The build now checks this for all our sounds."
+            },
+            {
+              "ru": "Гряземёт: лужа больше не рисуется квадратом «мозаикой». Текстура была с заголовком версии 3 (так у скинов юнитов), а наземным пятнам нужна версия 2. Сама лужа нарисована заново: неровная, мокрый тёмный центр, подсохший край, комья, блики и брызги; размером с зону замедления (радиус 2,5).",
+              "uk": "Гряземет: калюжа більше не малюється квадратом «мозаїкою». Текстура мала заголовок версії 3 (так у скінів юнітів), а наземним плямам потрібна версія 2. Саму калюжу намальовано наново: нерівна, мокрий темний центр, підсохлий край, грудки, відблиски й бризки; розміром із зону сповільнення (радіус 2,5).",
+              "en": "Mud Slinger: the puddle is no longer drawn as a square \"mosaic\". The texture had a version-3 header (used by unit skins), while ground decals need version 2. The puddle is redrawn: irregular, wet dark centre, drier rim, clods, highlights and splashes; the size of the slow zone (radius 2.5)."
+            },
+            {
+              "ru": "Гряземёт: грязь замедляет всех — и врагов, и своих (раньше только чужую сторону). Попадание замедляет всех, кроме самого стрелка. Заезд в лужу пишется в журнал игры («ARC: unit … slowed in mud puddle …») — для проверки.",
+              "uk": "Гряземет: грязь сповільнює всіх — і ворогів, і своїх (раніше лише чужу сторону). Влучання сповільнює всіх, крім самого стрільця. Заїзд у калюжу пишеться в журнал гри («ARC: unit … slowed in mud puddle …») — для перевірки.",
+              "en": "Mud Slinger: mud slows everyone, enemies and allies (before, only the other side). A hit slows anyone except the shooter. Driving into a puddle is written to the game log (\"ARC: unit … slowed in mud puddle …\") for checking."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.0.0",
