@@ -1,0 +1,2497 @@
+{
+  "schema": 1,
+  "version": "1",
+  "updated": "2026-11-23",
+  "title": {
+    "ru": "Вики мод-пака",
+    "uk": "Вікі мод-паку",
+    "en": "Mod pack wiki"
+  },
+  "groups": [
+    {
+      "id": "pack",
+      "title": {
+        "ru": "Мод-пак",
+        "uk": "Мод-пак",
+        "en": "Mod pack"
+      }
+    },
+    {
+      "id": "full-rebalance",
+      "title": {
+        "ru": "Full ReBalance",
+        "uk": "Full ReBalance",
+        "en": "Full ReBalance"
+      }
+    },
+    {
+      "id": "arc-units",
+      "title": {
+        "ru": "Arcanum Units",
+        "uk": "Arcanum Units",
+        "en": "Arcanum Units"
+      }
+    },
+    {
+      "id": "help",
+      "title": {
+        "ru": "Справка",
+        "uk": "Довідка",
+        "en": "Help"
+      }
+    }
+  ],
+  "pages": [
+    {
+      "id": "overview",
+      "group": "pack",
+      "title": {
+        "ru": "Обзор",
+        "uk": "Огляд",
+        "en": "Overview"
+      },
+      "summary": {
+        "ru": "Что такое мод-пак Arcanum для S.W.I.N.E. HD Remaster и зачем он нужен.",
+        "uk": "Що таке мод-пак Arcanum для S.W.I.N.E. HD Remaster і навіщо він.",
+        "en": "What the Arcanum mod pack for S.W.I.N.E. HD Remaster is and why it exists."
+      },
+      "blocks": [
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "v1",
+              "label": {
+                "ru": "версия пака",
+                "uk": "версія паку",
+                "en": "pack version"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "ru": "мод в паке",
+                "uk": "мод у паку",
+                "en": "mod in the pack"
+              }
+            },
+            {
+              "value": "≈17 MB",
+              "label": {
+                "ru": "скачивается",
+                "uk": "завантажується",
+                "en": "download"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Мод-пак — это набор модов, который лаунчер ставит целиком одной кнопкой «Установить все моды». У всех игроков он одинаковый: так можно спокойно играть по сети и не вылетать из матча.",
+            "uk": "Мод-пак — це набір модів, який лаунчер ставить цілком однією кнопкою «Встановити всі моди». У всіх гравців він однаковий: так можна спокійно грати по мережі й не вилітати з матчу.",
+            "en": "The mod pack is a set of mods the launcher installs as a whole with one “Install all mods” button. Everyone gets the same pack, so you can play online without getting kicked mid-match."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Что в паке",
+            "uk": "Що в паку",
+            "en": "What's inside"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Full ReBalance 1.0 (COMMANDER) — переработанный баланс: больше урона, здоровья и дальности, выбираемая авиация, вооружённые бункеры и герои.",
+              "uk": "Full ReBalance 1.0 (COMMANDER) — перероблений баланс: більше шкоди, здоров'я й дальності, авіація, яку можна обирати, озброєні бункери й герої.",
+              "en": "Full ReBalance 1.0 (COMMANDER) — reworked balance: more damage, health and range, selectable aircraft, armed bunkers and heroes."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": {
+            "ru": "Код сборки",
+            "uk": "Код збірки",
+            "en": "Build code"
+          },
+          "text": {
+            "ru": "На странице игры под списком модов показан код сборки, например 6143-4DD5. Он считается из всех установленных файлов. Перед лобби сверьте его с друзьями: совпадает — значит, у всех одно и то же.",
+            "uk": "На сторінці гри під списком модів показано код збірки, напр. 6143-4DD5. Він рахується з усіх встановлених файлів. Перед лобі звірте його з друзями: збігається — отже, у всіх те саме.",
+            "en": "The game page shows a build code under the mod list, e.g. 6143-4DD5. It is computed from all installed files. Compare it with friends before the lobby: if it matches, everyone has the same pack."
+          }
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "group": "pack",
+      "title": {
+        "ru": "Что нового",
+        "uk": "Що нового",
+        "en": "What's new"
+      },
+      "summary": {
+        "ru": "Все изменения мод-пака и лаунчера для S.W.I.N.E. — от новых к старым.",
+        "uk": "Усі зміни мод-паку й лаунчера для S.W.I.N.E. — від нових до старих.",
+        "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "key": "arc-units-test-3",
+          "text": {
+            "ru": "Мод-пак v2 · Arcanum Units · тестовая сборка 3 · 23.11.2026",
+            "uk": "Мод-пак v2 · Arcanum Units · тестова збірка 3 · 23.11.2026",
+            "en": "Mod pack v2 · Arcanum Units · test build 3 · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Мод-пак v2: вместо Full ReBalance — Arcanum Units. Лаунчер сам ставит патч swineHD.exe: бэкап оригинала, проверка версии игры до и после, возврат при «Удалить мод».",
+              "uk": "Мод-пак v2: замість Full ReBalance — Arcanum Units. Лаунчер сам ставить патч swineHD.exe: бекап оригіналу, перевірка версії гри до й після, повернення при «Видалити мод».",
+              "en": "Mod pack v2: Arcanum Units replaces Full ReBalance. The launcher applies the swineHD.exe patch itself: original backed up, game version checked before and after, restored by “Remove mods”."
+            },
+            {
+              "ru": "Исправлен вылет при взрыве Бомбохряка и любого «камикадзе»: в коде взрыва потерялась одна инструкция.",
+              "uk": "Виправлено виліт під час вибуху Бомбокабана й будь-якого «камікадзе»: у коді вибуху загубилася одна інструкція.",
+              "en": "Fixed the crash when Boom Hog or any kamikaze unit exploded: one instruction was missing in the blast code."
+            },
+            {
+              "ru": "Свои кнопки спецдействий: «Подрыв» (Бомбохряк), «Мины на ходу» (Кротобой), «Радар» (Ушастик, обзор ×3 на 15 с, перезарядка 45 с). Раньше кнопка Бомбохряка его закапывала.",
+              "uk": "Свої кнопки спецдій: «Підрив» (Бомбокабан), «Міни на ходу» (Кротобій), «Радар» (Вухань, огляд ×3 на 15 с, перезаряджання 45 с). Раніше кнопка Бомбокабана його закопувала.",
+              "en": "Own special buttons: Detonate (Boom Hog), Mines on the Move (Mole Smasher), Radar (Big Ears, 3× sight for 15 s, 45 s cooldown). Before, Boom Hog’s button dug it in."
+            },
+            {
+              "ru": "Гряземёт: грязевые лужи на 10 секунд, замедление ×0.4 по площади, на земле видно бурое пятно.",
+              "uk": "Гряземіт: грязьові калюжі на 10 секунд, сповільнення ×0.4 по площі, на землі видно буру пляму.",
+              "en": "Mud Slinger: mud puddles for 10 seconds, 0.4× slow in an area, a brown stain on the ground."
+            },
+            {
+              "ru": "Морковный Смерч: залп 40 ракет, боекомплект 40; больше не показывается как прицеп и тратит боеприпасы (раньше ключ Cargo делал из него «прицеп»).",
+              "uk": "Морквяний Смерч: залп 40 ракет, боєкомплект 40; більше не показується як причіп і витрачає боєприпаси (раніше ключ Cargo робив з нього «причіп»).",
+              "en": "Carrot Twister: 40-rocket salvo, 40 rounds; no longer shown as a trailer and it uses up ammo (the Cargo key used to turn it into a “trailer”)."
+            },
+            {
+              "ru": "Осадный Кабан: 20 снарядов. Хряк-Гриль: свой звук огнемёта. Временный юнит «Чародей» убран у обеих рас.",
+              "uk": "Облоговий Вепр: 20 снарядів. Кабан-Гриль: свій звук вогнемета. Тимчасовий юніт «Чародій» прибрано в обох рас.",
+              "en": "Siege Boar: 20 shells. Hog Grill: its own flamethrower sound. The temporary Warlock unit is gone for both sides."
+            },
+            {
+              "ru": "Новые юниты продаются везде: в магазине кампании (все миссии с магазином) и в «Штабе» — покупке прямо во время боя (там теперь сетка 9×2).",
+              "uk": "Нові юніти продаються всюди: у магазині кампанії (усі місії з магазином) і в «Штабі» — купівлі просто під час бою (там тепер сітка 9×2).",
+              "en": "New units are sold everywhere: in the campaign shop (every mission that has one) and in Headquarters — buying mid-battle (now a 9×2 grid)."
+            },
+            {
+              "ru": "19 новых сетевых карт на 8 игроков из карт обеих кампаний: «Arc …» в списке карт. Старты разведены по сторонам (команды стартуют своими сторонами), флаг CTF посередине и 4 точки захвата.",
+              "uk": "19 нових мережевих мап на 8 гравців з мап обох кампаній: «Arc …» у списку мап. Старти розведено по сторонах (команди стартують своїми сторонами), прапор CTF посередині й 4 точки захоплення.",
+              "en": "19 new 8-player multiplayer maps built from both campaigns: “Arc …” in the map list. Starts are split by side (teams start on their own side), with a CTF flag in the middle and 4 domination points."
+            },
+            {
+              "ru": "Ограничение: больше 8 игроков игра не держит — массивы игроков, туман войны, слоты лобби и сетевые пакеты рассчитаны ровно на 8.",
+              "uk": "Обмеження: понад 8 гравців гра не тримає — масиви гравців, туман війни, слоти лобі й мережеві пакети розраховані рівно на 8.",
+              "en": "Limit: the game cannot take more than 8 players — player arrays, fog of war, lobby slots and network packets are sized for exactly 8."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "key": "arc-units-test-2",
+          "text": {
+            "ru": "Arcanum Units · тестовая сборка 2 · 23.11.2026",
+            "uk": "Arcanum Units · тестова збірка 2 · 23.11.2026",
+            "en": "Arcanum Units · test build 2 · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Исправлен вылет при гибели любой техники: вставка в exe работала с абсолютными адресами, а Windows загружал игру по случайному адресу (ASLR). Теперь патч выключает ASLR для swineHD.exe.",
+              "uk": "Виправлено виліт під час загибелі будь-якої техніки: вставка в exe працювала з абсолютними адресами, а Windows вантажив гру за випадковою адресою (ASLR). Тепер патч вимикає ASLR для swineHD.exe.",
+              "en": "Fixed the crash whenever a vehicle was destroyed: the exe insert used absolute addresses while Windows loaded the game at a random address (ASLR). The patch now turns ASLR off for swineHD.exe."
+            },
+            {
+              "ru": "Бомбохряк: кнопка спецдействия — подрыв (до 60 урона в радиусе 5). Гряземёт и Хряк-Гриль: попадание вдвое замедляет врага и его повороты на 5 секунд. Осадный Кабан наводится всем корпусом. Морковный Смерч: залп 20 ракет, боекомплект 40, перезарядка 25 с. Кротобой: кнопка включает минирование на ходу, пушка убрана. Пит-Стоп в 1.5 раза быстрее и заодно заправляет.",
+              "uk": "Бомбокабан: кнопка спецдії — підрив (до 60 шкоди в радіусі 5). Гряземіт і Кабан-Гриль: влучання вдвічі сповільнює ворога та його повороти на 5 секунд. Облоговий Вепр наводиться всім корпусом. Морквяний Смерч: залп 20 ракет, боєкомплект 40, перезаряджання 25 с. Кротобій: кнопка вмикає мінування на ходу, гармату прибрано. Піт-Стоп у 1.5 раза швидший і заразом заправляє.",
+              "en": "Boom Hog: the special button detonates it (up to 60 damage, radius 5). Mud Slinger and Hog Grill: hits halve enemy speed and turning for 5 seconds. Siege Boar aims with its whole hull. Carrot Twister: 20-rocket salvo, 40 rounds, 25 s reload. Mole Smasher: the button turns on mining on the move, gun removed. Pit Stop is 1.5× faster and refuels too."
+            },
+            {
+              "ru": "Все юниты переделаны по концепту: Свин-Царь — 45 % от 4000 SP, жрёт топливо вчетверо, башня еле поворачивается; Заяц-Призрак и Морковный Смерч — без брони; Ушастик всегда виден врагу.",
+              "uk": "Усі юніти перероблено за концептом: Свин-Цар — 45 % від 4000 SP, жере пальне вчетверо, башта ледве повертається; Заєць-Привид і Морквяний Смерч — без броні; Вухань завжди видимий ворогові.",
+              "en": "Every unit now follows the concept: Swine Tsar costs 45 % of 4000 SP, burns fuel four times as fast and barely turns its turret; Ghost Hare and Carrot Twister have no armour; Big Ears is always visible to the enemy."
+            },
+            {
+              "ru": "Цены: всё, что продаётся, дорожает примерно в 1.6 раза (танк 400 → 650), поэтому армии меньше. Соотношение цен боевых юнитов подобрано симуляцией боёв на формулах игры.",
+              "uk": "Ціни: усе, що продається, дорожчає приблизно в 1.6 раза (танк 400 → 650), тож армії менші. Співвідношення цін бойових юнітів підібрано симуляцією боїв на формулах гри.",
+              "en": "Prices: everything for sale costs about 1.6× more (tank 400 → 650), so armies are smaller. Combat unit price ratios come from a battle simulation built on the game formulas."
+            },
+            {
+              "ru": "Сетевая игра: союзники по команде могут выделять и водить технику друг друга (противники и игроки без команды — нет). Без случайной расстановки игроки одной команды стартуют рядом.",
+              "uk": "Мережева гра: союзники по команді можуть виділяти й водити техніку одне одного (супротивники та гравці без команди — ні). Без випадкової розстановки гравці однієї команди стартують поруч.",
+              "en": "Multiplayer: teammates can select and drive each other's vehicles (opponents and players without a team cannot). With random start positions off, players of one team start next to each other."
+            },
+            {
+              "ru": "Песочница для тестов: сценарный режим игры — магазин со всеми юнитами и 100 000 SP, затем карта кампании с врагами (опыт идёт за урон по ним).",
+              "uk": "Пісочниця для тестів: сценарний режим гри — магазин з усіма юнітами й 100 000 SP, потім мапа кампанії з ворогами (досвід іде за шкоду по них).",
+              "en": "Test sandbox: the game's scenario mode — a shop with every unit and 100,000 SP, then a campaign map with enemies (experience comes from damaging them)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "key": "arc-units-test-1",
+          "text": {
+            "ru": "Arcanum Units · тестовая сборка · 23.11.2026",
+            "uk": "Arcanum Units · тестова збірка · 23.11.2026",
+            "en": "Arcanum Units · test build · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Патч exe: 18 типов юнитов на расу вместо 13. Новые юниты продаются в магазине перед сетевым матчем.",
+              "uk": "Патч exe: 18 типів юнітів на расу замість 13. Нові юніти продаються в магазині перед мережевим матчем.",
+              "en": "Exe patch: 18 unit types per side instead of 13. New units are sold in the pre-match multiplayer shop."
+            },
+            {
+              "ru": "Свиньи: Чародей, Хряк-Гриль, Свин-Царь, Бомбохряк, Осадный Кабан, Гряземёт. Кролики: Чародей, Заяц-Призрак, Морковный Смерч, Кротобой, Пит-Стоп, Кролик-Ушастик.",
+              "uk": "Свині: Чародій, Кабан-Гриль, Свин-Цар, Бомбокабан, Облоговий Вепр, Гряземіт. Кролики: Чародій, Заєць-Привид, Морквяний Смерч, Кротобій, Піт-Стоп, Кролик-Вухань.",
+              "en": "Pigs: Warlock, Hog Grill, Swine Tsar, Boom Hog, Siege Boar, Mud Slinger. Rabbits: Warlock, Ghost Hare, Carrot Twister, Mole Smasher, Pit Stop, Big Ears."
+            },
+            {
+              "ru": "Юниты с «kamikaze» в названии секции при гибели взрываются с уроном по площади, как мины.",
+              "uk": "Юніти з «kamikaze» у назві секції під час загибелі вибухають зі шкодою по площі, як міни.",
+              "en": "Units with “kamikaze” in their section name explode with area damage when destroyed, like mines."
+            },
+            {
+              "ru": "Баланс: ослаблен кроличий истребитель танков, ускорен тяжёлый танк свиней, подешевели мортиры, подорожали артиллерия, броня и пиво/морковный напиток.",
+              "uk": "Баланс: послаблено кролячий винищувач танків, пришвидшено важкий танк свиней, подешевшали мортири, подорожчали артилерія, броня й пиво/морквяний напій.",
+              "en": "Balance: the rabbit tank killer is weaker, the pig heavy tank faster, mortars cheaper; artillery, armour and beer/carrot drink cost more."
+            },
+            {
+              "ru": "Свой ролик и иконка в магазине: танк смотрит влево на сером фоне, как у остальных юнитов.",
+              "uk": "Свій ролик та іконка в магазині: танк дивиться ліворуч на сірому тлі, як в інших юнітів.",
+              "en": "Own shop video and icon: the tank faces left on a grey background like the other units."
+            },
+            {
+              "ru": "Хряк-Гриль переделан в «стеклянную пушку»: огнемёт бьёт на 2.5 клетки, 12 урона каждые 1.6 с; живучесть 60, корма без брони. При гибели бак взрывается: до 30 урона в радиусе 2.5 по всем вокруг.",
+              "uk": "Кабан-Гриль перероблено на «скляну гармату»: вогнемет б’є на 2.5 клітинки, 12 шкоди кожні 1.6 с; живучість 60, корма без броні. Під час загибелі бак вибухає: до 30 шкоди в радіусі 2.5 по всіх довкола.",
+              "en": "The Hog Grill is now a glass cannon: the flamethrower reaches 2.5 cells, 12 damage every 1.6 s; 60 HP, no rear armour. When destroyed its tank explodes: up to 30 damage in a 2.5 radius to everyone around."
+            },
+            {
+              "ru": "Исправлены модели: часть граней была вывернута наизнанку, и в игре корпус Хряк-Гриля выглядел серым, а ствол Чародея — полутрубой.",
+              "uk": "Виправлено моделі: частина граней була вивернута навиворіт, і в грі корпус Кабана-Гриля виглядав сірим, а ствол Чародія — напівтрубою.",
+              "en": "Models fixed: some faces were inside out, so in game the Hog Grill hull looked grey and the Warlock barrel looked like a half-pipe."
+            },
+            {
+              "ru": "Все 10 новых юнитов получили свои 3D-модели с динамическим цветом команды, текстурами Veteran/Elite, иконками и 200-кадровыми роликами магазина: Хряк-Гриль, Свин-Царь, Бомбохряк, Осадный Кабан, Гряземёт, Заяц-Призрак, Морковный Смерч, Кротобой, Пит-Стоп и Кролик-Ушастик. Колёсные машины переведены на MoveType 2 с рабочими передними поворотными колёсами.",
+              "uk": "Усі 10 нових юнітів отримали свої 3D-моделі з динамічним кольором команди, текстурами Veteran/Elite, іконками та 200-кадровими роликами магазину: Кабан-Гриль, Свин-Цар, Бомбокабан, Облоговий Вепр, Гряземіт, Заєць-Привид, Морквяний Смерч, Кротобій, Піт-Стоп і Кролик-Вухань. Колісні машини переведено на MoveType 2 з робочими передніми поворотними колесами.",
+              "en": "All 10 new units received their own 3D models with dynamic team colour, Veteran/Elite textures, shop icons and 200-frame turntable videos: Hog Grill, Swine Tsar, Boom Hog, Siege Boar, Mud Slinger, Ghost Hare, Carrot Twister, Mole Smasher, Pit Stop and Big Ears. Wheeled vehicles now use MoveType 2 with steering front wheels."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Вики · лаунчер 0.7.23.8 · 22.11.2026",
+            "uk": "Вікі · лаунчер 0.7.23.8 · 22.11.2026",
+            "en": "Wiki · launcher 0.7.23.8 · 2026-11-22"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Новая вики: разделы слева, поиск, оглавление страницы, таблицы «было → стало» для всех юнитов.",
+              "uk": "Нова вікі: розділи ліворуч, пошук, зміст сторінки, таблиці «було → стало» для всіх юнітів.",
+              "en": "New wiki: sections on the left, search, page contents, “before → after” tables for every unit."
+            },
+            {
+              "ru": "Описание Full ReBalance сверено с файлами мода и исправлено: убраны корабли и пак миссий, которых в этой версии нет.",
+              "uk": "Опис Full ReBalance звірено з файлами мода й виправлено: прибрано кораблі та пак місій, яких у цій версії немає.",
+              "en": "The Full ReBalance description was checked against the mod files and corrected: ships and the mission pack, which this version doesn't contain, were removed."
+            },
+            {
+              "ru": "Вики обновляется с сервера вместе с паком, без новой версии лаунчера.",
+              "uk": "Вікі оновлюється з сервера разом з паком, без нової версії лаунчера.",
+              "en": "The wiki updates from the server together with the pack, no new launcher needed."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Пак v1 · лаунчер 0.7.23.7 · 22.11.2026",
+            "uk": "Пак v1 · лаунчер 0.7.23.7 · 22.11.2026",
+            "en": "Pack v1 · launcher 0.7.23.7 · 2026-11-22"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Вместо одного мода — мод-пак: «Установить все моды» и «Удалить моды».",
+              "uk": "Замість одного мода — мод-пак: «Встановити всі моди» і «Видалити моди».",
+              "en": "A mod pack instead of a single mod: “Install all mods” and “Remove mods”."
+            },
+            {
+              "ru": "Код сборки с кнопкой «Копировать» — сверять с друзьями перед игрой.",
+              "uk": "Код збірки з кнопкою «Копіювати» — звіряти з друзями перед грою.",
+              "en": "Build code with a Copy button — compare with friends before playing."
+            },
+            {
+              "ru": "«Играть» проверяет файлы и сам ставит новую версию пака, если она вышла.",
+              "uk": "«Грати» перевіряє файли й сам ставить нову версію паку, якщо вона вийшла.",
+              "en": "Play checks the files and installs a newer pack version if there is one."
+            },
+            {
+              "ru": "В паке: Full ReBalance 1.0.",
+              "uk": "У паку: Full ReBalance 1.0.",
+              "en": "In the pack: Full ReBalance 1.0."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Лаунчер 0.7.23.5–0.7.23.6 · 17.11.2026",
+            "uk": "Лаунчер 0.7.23.5–0.7.23.6 · 17.11.2026",
+            "en": "Launcher 0.7.23.5–0.7.23.6 · 2026-11-17"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Плитка S.W.I.N.E. HD Remaster: поиск игры в Steam и установка Full ReBalance.",
+              "uk": "Плитка S.W.I.N.E. HD Remaster: пошук гри у Steam і встановлення Full ReBalance.",
+              "en": "S.W.I.N.E. HD Remaster tile: finds the game in Steam and installs Full ReBalance."
+            },
+            {
+              "ru": "Кнопка удаления мода с возвратом оригинальных файлов.",
+              "uk": "Кнопка видалення мода з поверненням оригінальних файлів.",
+              "en": "A remove button that restores the original game files."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "online",
+      "group": "pack",
+      "title": {
+        "ru": "Игра по сети",
+        "uk": "Гра по мережі",
+        "en": "Playing online"
+      },
+      "summary": {
+        "ru": "Почему у всех должен быть один и тот же пак и как собраться с друзьями.",
+        "uk": "Чому в усіх має бути той самий пак і як зібратися з друзями.",
+        "en": "Why everyone needs the same pack and how to get together with friends."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Почему важен одинаковый пак",
+            "uk": "Чому важливий однаковий пак",
+            "en": "Why the same pack matters"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Сетевая игра S.W.I.N.E. работает так: каждый компьютер сам просчитывает весь бой и каждый кадр сверяет контрольную сумму с остальными. Если у кого-то другие характеристики юнитов, расчёт расходится, и игра выкидывает игрока с сообщением «data contradiction». Предупреждения в лобби не будет: это случится уже в матче.",
+            "uk": "Мережева гра S.W.I.N.E. працює так: кожен комп'ютер сам прораховує весь бій і щокадру звіряє контрольну суму з іншими. Якщо в когось інші характеристики юнітів, розрахунок розходиться, і гра викидає гравця з повідомленням «data contradiction». Попередження в лобі не буде: це станеться вже в матчі.",
+            "en": "S.W.I.N.E. multiplayer works like this: every PC simulates the whole battle itself and compares a checksum with the others every frame. If someone has different unit stats, the simulations diverge and the game kicks that player with “data contradiction”. There is no warning in the lobby: it happens mid-match."
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": {
+            "ru": "Выкинуло из матча?",
+            "uk": "Викинуло з матчу?",
+            "en": "Kicked from a match?"
+          },
+          "text": {
+            "ru": "Сверьте коды сборки. У кого код другой — пусть закроет игру и нажмёт «Играть» в лаунчере: он проверит файлы и поставит актуальный пак.",
+            "uk": "Звірте коди збірки. У кого код інший — хай закриє гру й натисне «Грати» в лаунчері: він перевірить файли й поставить актуальний пак.",
+            "en": "Compare build codes. Whoever has a different one should close the game and press Play in the launcher: it checks the files and installs the current pack."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Как собраться",
+            "uk": "Як зібратися",
+            "en": "Getting together"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "В меню «Сетевая игра» есть интернет, локальная сеть и подключение по IP.",
+              "uk": "У меню «Мережева гра» є інтернет, локальна мережа й підключення за IP.",
+              "en": "The Multiplayer menu offers internet, LAN and direct IP."
+            },
+            {
+              "ru": "Карту выбирает хост. Если у игрока её нет или она другая, игра сама скачает карту хоста, а старую сохранит рядом с расширением .old_scene.",
+              "uk": "Мапу обирає хост. Якщо в гравця її немає або вона інша, гра сама завантажить мапу хоста, а стару збереже поруч із розширенням .old_scene.",
+              "en": "The host picks the map. If a player lacks it or has a different one, the game downloads the host's map and keeps the old one with an .old_scene extension."
+            },
+            {
+              "ru": "Игра использует UDP-порт 60500 для матча и 60600 для поиска в локальной сети. Если по IP не подключается, хосту стоит открыть 60500 в роутере.",
+              "uk": "Гра використовує UDP-порт 60500 для матчу й 60600 для пошуку в локальній мережі. Якщо за IP не підключається, хосту варто відкрити 60500 у роутері.",
+              "en": "The game uses UDP port 60500 for the match and 60600 for LAN discovery. If direct IP fails, the host should forward 60500 on the router."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fr-overview",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "О моде",
+        "uk": "Про мод",
+        "en": "About the mod"
+      },
+      "summary": {
+        "ru": "Глобальный мод баланса от COMMANDER (2019), сохранён в архиве swine.fans.",
+        "uk": "Глобальний мод балансу від COMMANDER (2019), збережений в архіві swine.fans.",
+        "en": "A global balance mod by COMMANDER (2019), preserved in the swine.fans archive."
+      },
+      "blocks": [
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "×1.5–2.5",
+              "label": {
+                "ru": "урон основных юнитов",
+                "uk": "шкода основних юнітів",
+                "en": "main unit damage"
+              }
+            },
+            {
+              "value": "12 → 20",
+              "label": {
+                "ru": "дальность реакции",
+                "uk": "дальність реакції",
+                "en": "engage range"
+              }
+            },
+            {
+              "value": "≈×10",
+              "label": {
+                "ru": "дольше хватает топлива",
+                "uk": "довше вистачає пального",
+                "en": "longer fuel"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "ru": "выбираемые самолёты",
+                "uk": "літаки, які можна обирати",
+                "en": "selectable aircraft"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Full ReBalance делает S.W.I.N.E. жёстче и быстрее: юниты крепче и бьют сильнее, бои идут на большей дистанции, топливо почти не мешает, а авиацию можно водить самому.",
+            "uk": "Full ReBalance робить S.W.I.N.E. жорсткішим і швидшим: юніти міцніші й б'ють сильніше, бої йдуть на більшій дистанції, пальне майже не заважає, а авіацію можна водити самому.",
+            "en": "Full ReBalance makes S.W.I.N.E. harder and faster: units are tougher and hit harder, fights happen at longer range, fuel barely matters, and you can fly the aircraft yourself."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Что внутри архива",
+            "uk": "Що всередині архіву",
+            "en": "What's in the archive"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "units.ini — характеристики всех юнитов. Тут почти все изменения.",
+              "uk": "units.ini — характеристики всіх юнітів. Тут майже всі зміни.",
+              "en": "units.ini — stats of every unit. Almost all changes live here."
+            },
+            {
+              "ru": "Сцены миссий и фона меню — подробнее на странице «Карты и миссии».",
+              "uk": "Сцени місій і фону меню — докладніше на сторінці «Мапи й місії».",
+              "en": "Mission and menu background scenes — see “Maps and missions”."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": {
+            "ru": "Новых юнитов нет — есть переделанные",
+            "uk": "Нових юнітів немає — є перероблені",
+            "en": "No new units — reworked ones"
+          },
+          "text": {
+            "ru": "Мод не добавляет новых записей юнитов: он меняет существующие. Например, минный заградитель стал ремонтником, а дирижабль — летающим «НЛО» с оружием.",
+            "uk": "Мод не додає нових записів юнітів: він змінює наявні. Наприклад, мінний загороджувач став ремонтником, а дирижабль — літаючим «НЛО» зі зброєю.",
+            "en": "The mod adds no new unit entries: it reworks existing ones. For example, the minelayer became a repair vehicle and the airship became an armed flying “UFO”."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fr-balance",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "Общий баланс",
+        "uk": "Загальний баланс",
+        "en": "General balance"
+      },
+      "summary": {
+        "ru": "Что изменилось сразу у всех юнитов: урон, здоровье, броня, топливо, опыт, цены.",
+        "uk": "Що змінилося одразу в усіх юнітів: шкода, здоров'я, броня, пальне, досвід, ціни.",
+        "en": "What changed for every unit at once: damage, health, armour, fuel, experience, prices."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Бой",
+            "uk": "Бій",
+            "en": "Combat"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Урон основных юнитов вырос в 1,5–2,5 раза: танк 7 → 12, тяжёлый танк 9 → 20, пушка 7 → 15, ракетная установка 8 → 15.",
+              "uk": "Шкода основних юнітів зросла в 1,5–2,5 раза: танк 7 → 12, важкий танк 9 → 20, гармата 7 → 15, ракетна установка 8 → 15.",
+              "en": "Main unit damage is up 1.5–2.5×: tank 7 → 12, heavy tank 9 → 20, artillery 7 → 15, rocket launcher 8 → 15."
+            },
+            {
+              "ru": "Почти у всей техники 100 HP и больше (было 50–120). Moving Force — 300.",
+              "uk": "Майже вся техніка має 100 HP і більше (було 50–120). Moving Force — 300.",
+              "en": "Almost every vehicle has 100 HP or more (was 50–120). Moving Force has 300."
+            },
+            {
+              "ru": "Броня одинаковая со всех сторон: слабой кормы больше нет (у танка было 2/1/2, стало 3/3/3).",
+              "uk": "Броня однакова з усіх боків: слабкої корми більше немає (у танка було 2/1/2, стало 3/3/3).",
+              "en": "Armour is the same on all sides: no weak rear any more (tank was 2/1/2, now 3/3/3)."
+            },
+            {
+              "ru": "Юниты сами вступают в бой с 20 клеток вместо 12, у многих выросла дальность стрельбы (танк 7 → 10, тяжёлый танк 8 → 12).",
+              "uk": "Юніти самі вступають у бій з 20 клітинок замість 12, у багатьох зросла дальність стрільби (танк 7 → 10, важкий танк 8 → 12).",
+              "en": "Units engage on their own from 20 tiles instead of 12, and many shoot further (tank 7 → 10, heavy tank 8 → 12)."
+            },
+            {
+              "ru": "Ракеты, снаряды, жёлуди и морковки бьют по площади (радиус 2), мины миномёта — радиус 1,5 → 3.",
+              "uk": "Ракети, снаряди, жолуді й морква б'ють по площі (радіус 2), міни міномета — радіус 1,5 → 3.",
+              "en": "Rockets, shells, acorns and carrots now deal splash damage (radius 2); mortar shells go from 1.5 to 3."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Топливо и опыт",
+            "uk": "Пальне й досвід",
+            "en": "Fuel and experience"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Расход топлива у всей техники одинаковый и низкий: бака хватает примерно в 6–15 раз дольше, чем раньше.",
+              "uk": "Витрата пального в усієї техніки однакова й низька: бака вистачає приблизно в 6–15 разів довше, ніж раніше.",
+              "en": "All vehicles share the same low fuel use: a tank lasts roughly 6–15× longer than before."
+            },
+            {
+              "ru": "Боевые юниты получают 2-й уровень за 200 опыта и 3-й за 400. Вспомогательные (джип, тягач, снабжение) почти не растут.",
+              "uk": "Бойові юніти отримують 2-й рівень за 200 досвіду і 3-й за 400. Допоміжні (джип, тягач, постачання) майже не ростуть.",
+              "en": "Combat units reach level 2 at 200 XP and level 3 at 400. Support units (jeep, tractor, supply) barely level up."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Цены и улучшения",
+            "uk": "Ціни й покращення",
+            "en": "Prices and upgrades"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Дешевле: танки 400 → 300, бронемашины 300 → 200, ракетные установки 650 → 500.",
+              "uk": "Дешевше: танки 400 → 300, бронемашини 300 → 200, ракетні установки 650 → 500.",
+              "en": "Cheaper: tanks 400 → 300, armoured cars 300 → 200, rocket launchers 650 → 500."
+            },
+            {
+              "ru": "Дороже: командирский джип 250 → 500, Moving Force 1400 → 2000. Самолёты и герои стоят 1000.",
+              "uk": "Дорожче: командирський джип 250 → 500, Moving Force 1400 → 2000. Літаки й герої коштують 1000.",
+              "en": "More expensive: commander jeep 250 → 500, Moving Force 1400 → 2000. Aircraft and heroes cost 1000."
+            },
+            {
+              "ru": "Улучшения вдвое дороже, но сильнее: боезапас +25% → +100%, ремкомплект 0,25 → 1, броня +1 → +2.",
+              "uk": "Покращення вдвічі дорожчі, але сильніші: боєзапас +25% → +100%, ремкомплект 0,25 → 1, броня +1 → +2.",
+              "en": "Upgrades cost twice as much but do more: ammo +25% → +100%, repair kit 0.25 → 1, armour +1 → +2."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": {
+            "ru": "Флаги можно уничтожить",
+            "uk": "Прапори можна знищити",
+            "en": "Flags can be destroyed"
+          },
+          "text": {
+            "ru": "Флаги, точки доминации и наблюдательные «глаза» раньше были практически неуязвимы (10 000 000 HP). Теперь у них 100–200 HP.",
+            "uk": "Прапори, точки домінації й спостережні «очі» раніше були практично невразливі (10 000 000 HP). Тепер у них 100–200 HP.",
+            "en": "Flags, domination points and observer “eyes” used to be practically invulnerable (10,000,000 HP). Now they have 100–200 HP."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fr-pigs",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "Свиньи: юниты",
+        "uk": "Свині: юніти",
+        "en": "Pigs: units"
+      },
+      "summary": {
+        "ru": "Характеристики юнитов свиней: было в оригинале → стало в моде.",
+        "uk": "Характеристики юнітів свиней: було в оригіналі → стало в моді.",
+        "en": "Pig unit stats: original → with the mod."
+      },
+      "blocks": [
+        {
+          "type": "unitDiff",
+          "side": "pig",
+          "mod": "full-rebalance"
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Зелёным отмечено то, что стало лучше для владельца юнита, красным — хуже. Цена: дешевле — зелёная.",
+            "uk": "Зеленим позначено те, що стало кращим для власника юніта, червоним — гіршим. Ціна: дешевше — зелена.",
+            "en": "Green means better for the unit's owner, red means worse. Price: cheaper is green."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fr-rabbits",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "Кролики: юниты",
+        "uk": "Кролики: юніти",
+        "en": "Rabbits: units"
+      },
+      "summary": {
+        "ru": "Характеристики юнитов кроликов: было в оригинале → стало в моде.",
+        "uk": "Характеристики юнітів кроликів: було в оригіналі → стало в моді.",
+        "en": "Rabbit unit stats: original → with the mod."
+      },
+      "blocks": [
+        {
+          "type": "unitDiff",
+          "side": "rabbit",
+          "mod": "full-rebalance"
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": {
+            "ru": "Расы больше не зеркальные",
+            "uk": "Раси більше не дзеркальні",
+            "en": "Races are no longer mirrors"
+          },
+          "text": {
+            "ru": "Миномёт кроликов крепче и бьёт сильнее (200 HP, урон 30), но стреляет реже, чем у свиней (150 HP, урон 20). Тягач кроликов стал пушкой с уроном 20, тягач свиней остался без оружия. Moving Force кроликов бьёт на 60 раз в 10 с, свиней — на 120 раз в 20 с.",
+            "uk": "Міномет кроликів міцніший і б'є сильніше (200 HP, шкода 30), але стріляє рідше, ніж у свиней (150 HP, шкода 20). Тягач кроликів став гарматою зі шкодою 20, тягач свиней лишився без зброї. Moving Force кроликів б'є на 60 раз на 10 с, свиней — на 120 раз на 20 с.",
+            "en": "The rabbit mortar is tougher and hits harder (200 HP, 30 damage) but fires less often than the pig one (150 HP, 20 damage). The rabbit tractor became a gun with 20 damage; the pig tractor stays unarmed. Rabbit Moving Force hits for 60 every 10 s, the pig one for 120 every 20 s."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fr-special",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "Авиация и особые юниты",
+        "uk": "Авіація та особливі юніти",
+        "en": "Aircraft and special units"
+      },
+      "summary": {
+        "ru": "Самолёты, «НЛО», бункеры, герои и юниты, которые сменили роль.",
+        "uk": "Літаки, «НЛО», бункери, герої та юніти, що змінили роль.",
+        "en": "Aircraft, the “UFO”, bunkers, heroes and units that changed their role."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Авиация",
+            "uk": "Авіація",
+            "en": "Aircraft"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Штурмовой вертолёт и бомбардировщик теперь можно купить (1000) и водить самому. Раньше их нельзя было выбрать, и у них не было оружия.",
+              "uk": "Штурмовий гелікоптер і бомбардувальник тепер можна купити (1000) і водити самому. Раніше їх не можна було обрати, і в них не було зброї.",
+              "en": "The attack helicopter and the bomber can now be bought (1000) and flown yourself. Before, you couldn't select them and they had no weapons."
+            },
+            {
+              "ru": "Вертолёты стреляют ракетами: урон 20, дальность 15.",
+              "uk": "Гелікоптери стріляють ракетами: шкода 20, дальність 15.",
+              "en": "Helicopters fire rockets: 20 damage, range 15."
+            },
+            {
+              "ru": "Бомбардировщик свиней сбрасывает бомбы (урон 30, дальность 6), бомбардировщик кроликов стреляет ракетами (урон 20, дальность 20).",
+              "uk": "Бомбардувальник свиней скидає бомби (шкода 30, дальність 6), бомбардувальник кроликів стріляє ракетами (шкода 20, дальність 20).",
+              "en": "The pig bomber drops bombs (30 damage, range 6); the rabbit bomber fires rockets (20 damage, range 20)."
+            },
+            {
+              "ru": "Дирижабль превратился в «НЛО»: модель НЛО, 500 HP, его можно выбрать, стреляет раз в 0,5 с (урон 20).",
+              "uk": "Дирижабль перетворився на «НЛО»: модель НЛО, 500 HP, його можна обрати, стріляє раз на 0,5 с (шкода 20).",
+              "en": "The airship turned into a “UFO”: UFO model, 500 HP, selectable, fires every 0.5 s (20 damage)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Сменили роль",
+            "uk": "Змінили роль",
+            "en": "Changed roles"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Минный заградитель больше не ставит мины — теперь он ремонтирует и снабжает (у обеих рас).",
+              "uk": "Мінний загороджувач більше не ставить міни — тепер він ремонтує й постачає (в обох рас).",
+              "en": "The minelayer no longer lays mines — it now repairs and resupplies (both races)."
+            },
+            {
+              "ru": "Тягач кроликов — теперь пушка на базе тягача: урон 20, дальность 15, 80 снарядов.",
+              "uk": "Тягач кроликів — тепер гармата на базі тягача: шкода 20, дальність 15, 80 снарядів.",
+              "en": "The rabbit tractor is now a gun: 20 damage, range 15, 80 shells."
+            },
+            {
+              "ru": "Колёсный прицеп стал самосвалом (200 HP, броня 10), топливный прицеп — тягачом.",
+              "uk": "Колісний причіп став самоскидом (200 HP, броня 10), паливний причіп — тягачем.",
+              "en": "The wheeled trailer became a dump truck (200 HP, armour 10), the fuel trailer a tractor."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Герои",
+            "uk": "Герої",
+            "en": "Heroes"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Zsíros Köröm и Nyalás Száj — на базе тяжёлого танка: 200 HP, броня 6, урон 30.",
+              "uk": "Zsíros Köröm і Nyalás Száj — на базі важкого танка: 200 HP, броня 6, шкода 30.",
+              "en": "Zsíros Köröm and Nyalás Száj are now heavy tanks: 200 HP, armour 6, 30 damage."
+            },
+            {
+              "ru": "Fogas Wili — лёгкий танк, Point Roger — ракетный БТР, умеет плавать, Spy — бронемашина свиней.",
+              "uk": "Fogas Wili — легкий танк, Point Roger — ракетний БТР, вміє плавати, Spy — бронемашина свиней.",
+              "en": "Fogas Wili is a light tank, Point Roger a rocket APC that can swim, Spy a pig armoured car."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Бункеры",
+            "uk": "Бункери",
+            "en": "Bunkers"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Пушечный бункер: урон 8 → 20, дальность 25 → 30, 200 HP.",
+              "uk": "Гарматний бункер: шкода 8 → 20, дальність 25 → 30, 200 HP.",
+              "en": "Cannon bunker: damage 8 → 20, range 25 → 30, 200 HP."
+            },
+            {
+              "ru": "Миномётный бункер: урон 12 → 20 у свиней и 12 → 30 у кроликов, 300 HP.",
+              "uk": "Мінометний бункер: шкода 12 → 20 у свиней і 12 → 30 у кроликів, 300 HP.",
+              "en": "Mortar bunker: damage 12 → 20 for pigs and 12 → 30 for rabbits, 300 HP."
+            },
+            {
+              "ru": "Бункер ПВО бьёт сильнее (3 → 10 у свиней, 3 → 6 у кроликов), но ближе (22 → 10).",
+              "uk": "Бункер ППО б'є сильніше (3 → 10 у свиней, 3 → 6 у кроликів), але ближче (22 → 10).",
+              "en": "Anti-air bunker hits harder (3 → 10 pigs, 3 → 6 rabbits) but closer (22 → 10)."
+            },
+            {
+              "ru": "Наблюдательный «глаз» стал пулемётным бункером (урон 8).",
+              "uk": "Спостережне «око» стало кулеметним бункером (шкода 8).",
+              "en": "The observer “eye” became a machine-gun bunker (8 damage)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fr-maps",
+      "group": "full-rebalance",
+      "title": {
+        "ru": "Карты и миссии",
+        "uk": "Мапи й місії",
+        "en": "Maps and missions"
+      },
+      "summary": {
+        "ru": "Что мод меняет в сценах — проверено по файлам.",
+        "uk": "Що мод змінює в сценах — перевірено за файлами.",
+        "en": "What the mod changes in scenes — checked against the files."
+      },
+      "blocks": [
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Фон главного меню заменён на большую сцену.",
+              "uk": "Фон головного меню замінено на велику сцену.",
+              "en": "The main menu background is replaced with a large scene."
+            },
+            {
+              "ru": "Слегка изменены две миссии кампании: «Stahlstadt» (свиньи, 1-я) и «Repafalva» (кролики, 4-я).",
+              "uk": "Трохи змінено дві місії кампанії: «Stahlstadt» (свині, 1-ша) і «Repafalva» (кролики, 4-та).",
+              "en": "Two campaign missions are slightly changed: “Stahlstadt” (pigs, 1st) and “Repafalva” (rabbits, 4th)."
+            },
+            {
+              "ru": "Остальные 20 миссий в архиве совпадают с оригиналом байт в байт.",
+              "uk": "Решта 20 місій в архіві збігаються з оригіналом байт у байт.",
+              "en": "The other 20 missions in the archive are byte-identical to the originals."
+            },
+            {
+              "ru": "Сетевые карты мод не меняет.",
+              "uk": "Мережеві мапи мод не змінює.",
+              "en": "The mod doesn't change multiplayer maps."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": {
+            "ru": "Чего нет в этой версии",
+            "uk": "Чого немає в цій версії",
+            "en": "Not in this version"
+          },
+          "text": {
+            "ru": "В описаниях мода упоминаются корабли и пак миссий Bloodbath, но в файлах версии 1.0 их нет. Файлы ny_001, ny_002, test и menu_background2 лежат в архиве, но игра их не загружает.",
+            "uk": "В описах мода згадуються кораблі й пак місій Bloodbath, але у файлах версії 1.0 їх немає. Файли ny_001, ny_002, test і menu_background2 лежать в архіві, але гра їх не завантажує.",
+            "en": "Mod descriptions mention ships and the Bloodbath mission pack, but version 1.0's files don't contain them. ny_001, ny_002, test and menu_background2 are in the archive but the game never loads them."
+          }
+        }
+      ]
+    },
+    {
+      "id": "au-overview",
+      "group": "arc-units",
+      "title": {
+        "ru": "Обзор",
+        "uk": "Огляд",
+        "en": "Overview"
+      },
+      "summary": {
+        "ru": "Новые юниты для обеих рас и правки баланса. Тестовая сборка, в мод-пак пока не входит.",
+        "uk": "Нові юніти для обох рас і правки балансу. Тестова збірка, у мод-пак поки не входить.",
+        "en": "New units for both sides and balance fixes. Test build, not in the mod pack yet."
+      },
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": {
+            "ru": "Тестовая сборка",
+            "uk": "Тестова збірка",
+            "en": "Test build"
+          },
+          "text": {
+            "ru": "Нужен пропатченный swineHD.exe: в обычной игре только 13 типов юнитов на расу. Играть по сети можно, только если патч и файлы стоят у всех. «Проверить целостность файлов» в Steam вернёт оригинальный exe.",
+            "uk": "Потрібен пропатчений swineHD.exe: у звичайній грі лише 13 типів юнітів на расу. Грати по мережі можна, лише якщо патч і файли стоять у всіх. «Перевірити цілісність файлів» у Steam поверне оригінальний exe.",
+            "en": "Needs a patched swineHD.exe: the stock game has only 13 unit types per side. Online play only works if everyone has the patch and files. Steam's “Verify integrity” restores the original exe."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "5",
+              "label": {
+                "ru": "новых у свиней",
+                "uk": "нових у свиней",
+                "en": "new pig units"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "ru": "новых у кроликов",
+                "uk": "нових у кроликів",
+                "en": "new rabbit units"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "правок баланса",
+                "uk": "правок балансу",
+                "en": "balance changes"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Где их купить",
+            "uk": "Де їх купити",
+            "en": "Where to buy them"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Только в магазине перед сетевым матчем: в списке новых юнитов они идут последними, листайте стрелкой.",
+              "uk": "Лише в магазині перед мережевим матчем: у списку нових юнітів вони йдуть останніми, гортайте стрілкою.",
+              "en": "Only in the pre-match multiplayer shop: they are last in the new-units list, page with the arrow."
+            },
+            {
+              "ru": "В быстрый магазин во время матча и в кампанию они пока не попадают.",
+              "uk": "У швидкий магазин під час матчу й у кампанію вони поки не потрапляють.",
+              "en": "They are not in the in-match quick shop or in the campaign yet."
+            },
+            {
+              "ru": "Все 10 новых юнитов (по 5 у свиней и кроликов) получили свои 3D-модели, иконки и ролики магазина, включая колёсную ходовую (MoveType 2) с поворотными передними колёсами. Временный «Чародей» убран.",
+              "uk": "Усі 10 нових юнітів (по 5 у свиней і кроликів) отримали свої 3D-моделі, іконки й ролики магазину, включно з колісною ходовою (MoveType 2) з поворотними передніми колесами. Тимчасового «Чародія» прибрано.",
+              "en": "All 10 new units (5 pig and 5 rabbit) now have their own 3D models, shop icons and turntable videos, including wheeled MoveType 2 chassis with steering front wheels. The temporary Warlock has been removed."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Как работает бой",
+            "uk": "Як працює бій",
+            "en": "How combat works"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Урон попадания = урон оружия − броня той стороны, куда попали: лоб, борт (среднее лба и кормы) или корма. Навесные снаряды бьют в крышу.",
+              "uk": "Шкода влучання = шкода зброї − броня тієї сторони, куди влучили: лоб, борт (середнє лоба й корми) або корма. Навісні снаряди б'ють у дах.",
+              "en": "Hit damage = weapon damage − armour of the side that was hit: front, side (average of front and rear) or rear. Lobbed shells hit the roof."
+            },
+            {
+              "ru": "Если броня не меньше урона, попадание лишь царапает. Поэтому лишняя единица брони так сильна против скорострельного оружия.",
+              "uk": "Якщо броня не менша за шкоду, влучання лише дряпає. Тому зайва одиниця броні така сильна проти скорострільної зброї.",
+              "en": "If armour is at least the damage, the hit only scratches. That is why one extra armour point is so strong against rapid-fire weapons."
+            },
+            {
+              "ru": "Опыт даёт нанесённый урон. Ветеран: живучесть ×1.2, урон и броня +0.4. Элита: живучесть ×1.5, урон и броня +1.",
+              "uk": "Досвід дає завдана шкода. Ветеран: живучість ×1.2, шкода й броня +0.4. Еліта: живучість ×1.5, шкода й броня +1.",
+              "en": "Experience comes from damage dealt. Veteran: HP ×1.2, damage and armour +0.4. Elite: HP ×1.5, damage and armour +1."
+            },
+            {
+              "ru": "Порог опыта у каждого юнита свой. Сильным и скорострельным новым юнитам он поднят, чтобы плоский бонус элиты их не ломал.",
+              "uk": "Поріг досвіду в кожного юніта свій. Сильним і скорострільним новим юнітам його піднято, щоб пласкі бонуси еліти їх не ламали.",
+              "en": "Each unit has its own experience threshold. It is raised for strong and rapid-fire new units so the flat elite bonus does not break them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "au-pigs",
+      "group": "arc-units",
+      "title": {
+        "ru": "Новые юниты свиней",
+        "uk": "Нові юніти свиней",
+        "en": "New pig units"
+      },
+      "summary": {
+        "ru": "Дизель, перебор и грубая мощь.",
+        "uk": "Дизель, перебір і груба сила.",
+        "en": "Diesel, excess and brute force."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Хряк-Гриль — Огнемётный танк",
+            "uk": "Кабан-Гриль — Вогнеметний танк",
+            "en": "Hog Grill — Flame tank"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Стеклянная пушка ближнего боя: огнемёт бьёт всего на 2.5, зато на 12 урона каждые 1.6 секунды — обычный танк сгорает за десяток секунд. Сам хрупкий: 60 живучести, корма без брони, а бак напалма при гибели взрывается (до 30 урона в радиусе 2.5) и поджигает всех вокруг — и врагов, и своих.",
+            "uk": "Скляна гармата ближнього бою: вогнемет б'є лише на 2.5, зате на 12 шкоди кожні 1.6 секунди — звичайний танк згоряє за десяток секунд. Сам крихкий: 60 живучості, корма без броні, а бак напалму під час загибелі вибухає (до 30 шкоди в радіусі 2.5) і підпалює всіх довкола — і ворогів, і своїх.",
+            "en": "A close-range glass cannon: the flamethrower reaches only 2.5 but deals 12 damage every 1.6 seconds — a regular tank burns in about ten seconds. Fragile itself: 60 HP, no rear armour, and its napalm tank explodes when destroyed (up to 30 damage in a 2.5 radius), burning everyone nearby, friend or foe."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "775",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "1.6 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "0–2.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "48",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            },
+            {
+              "value": "12 / r 2.5",
+              "label": {
+                "ru": "взрыв при гибели",
+                "uk": "вибух під час загибелі",
+                "en": "death blast"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, armour, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Свин-Царь — Сверхтяжёлый танк",
+            "uk": "Свин-Цар — Надважкий танк",
+            "en": "Swine Tsar — Super-heavy tank"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Апофеоз свинского эго: 220 живучести, лоб в 6 брони и залп на 40 урона, который с одного выстрела сносит разведку кроликов. Медленный, башню крутит целую вечность, а топливо жрёт вчетверо быстрее тяжёлого танка — без заправщика встанет посреди карты. Броню не улучшить.",
+            "uk": "Апофеоз свинячого его: 220 живучості, лоб у 6 броні й постріл на 40 шкоди, що з одного разу зносить розвідку кроликів. Повільний, башту крутить цілу вічність, а пальне жере вчетверо швидше за важкий танк — без заправника стане посеред мапи. Броню не покращити.",
+            "en": "Pig ego incarnate: 220 HP, front armour 6 and a 40-damage shell that one-shots rabbit scouts. Slow, its turret takes forever to turn, and it burns fuel four times faster than the heavy tank — without a fuel trailer it stalls mid-map. Armour cannot be upgraded."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1800",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "220",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "6 / 2 / 3.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "10 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "1.5–8.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "23",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, ремкомплект, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, ремкомплект, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, repair kit, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Бомбохряк — Таран-камикадзе",
+            "uk": "Бомбокабан — Таран-камікадзе",
+            "en": "Boom Hog — Kamikaze ram"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Бронированный таран, набитый бочками с топливом и снарядами. Оружия нет. Своя кнопка «Подрыв»: до 60 урона в радиусе 5, своим тоже достаётся. Если его подобьют раньше — взрывается там, где стоит, даже у вашей базы.",
+            "uk": "Броньований таран, напханий бочками з пальним і снарядами. Зброї немає. Своя кнопка «Підрив»: до 60 шкоди в радіусі 5, своїм теж дістається. Якщо його підіб'ють раніше — вибухає там, де стоїть, навіть біля вашої бази.",
+            "en": "An armoured ram packed with fuel drums and shells. No gun. Its own Detonate button: up to 60 damage in a radius of 5, friend or foe. If it is shot first, it blows up where it stands — even next to your own base."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "650",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "4 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "урон взрыва",
+                "uk": "шкода вибуху",
+                "en": "blast damage"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "60 / r 5",
+              "label": {
+                "ru": "взрыв при гибели",
+                "uk": "вибух під час загибелі",
+                "en": "death blast"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, броня, турбо.",
+            "uk": "Покращення: бак, приціл, броня, турбо.",
+            "en": "Upgrades: fuel, sight, armour, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Осадный Кабан — Штурмовая мортира",
+            "uk": "Облоговий Вепр — Штурмова мортира",
+            "en": "Siege Boar — Assault mortar"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Гусеничный бункер: навесом бросает фугас на 40 урона в радиусе 3 — сносит укрытых, скопления техники и мины. Перезарядка 25 секунд, 20 снарядов, а орудие не поворачивается: на цель доворачивается весь корпус.",
+            "uk": "Гусеничний бункер: навісом кидає фугас на 40 шкоди в радіусі 3 — зносить укритих, скупчення техніки й міни. Перезаряджання 25 секунд, 20 снарядів, а гармата не повертається: на ціль доводиться весь корпус.",
+            "en": "A tracked bunker: lobs a 40-damage shell with a radius of 3 — wrecks units behind cover, vehicle clumps and minefields. 25-second reload, 20 rounds, and the gun does not traverse: the whole hull turns onto the target."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1075",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "150",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "4 / 1.5 / 2.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "25 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "3–9",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "25",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "20",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Гряземёт — Шламовоз-подавитель",
+            "uk": "Гряземіт — Шламовоз-подавлювач",
+            "en": "Mud Slinger — Sludge suppressor"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Швыряет грязь и мазут: каждое попадание на 5 секунд замедляет врага и его повороты больше чем вдвое, а на земле остаётся грязевая лужа на 10 секунд — кто в неё въедет, ползёт. Урон почти нулевой (3) — нужен танковый заслон.",
+            "uk": "Жбурляє багно й мазут: кожне влучання на 5 секунд сповільнює ворога та його повороти більш ніж удвічі, а на землі лишається грязьова калюжа на 10 секунд — хто в неї в'їде, повзе. Шкода майже нульова (3) — потрібне танкове прикриття.",
+            "en": "Lobs mud and fuel oil: every hit slows the enemy and its turning by more than half for 5 seconds, and leaves a mud puddle on the ground for 10 seconds — anyone driving into it crawls. Damage is next to nothing (3) — needs tanks to cover it."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "825",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "85",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "2.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2.5–9",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "43",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+          }
+        }
+      ]
+    },
+    {
+      "id": "au-rabbits",
+      "group": "arc-units",
+      "title": {
+        "ru": "Новые юниты кроликов",
+        "uk": "Нові юніти кроликів",
+        "en": "New rabbit units"
+      },
+      "summary": {
+        "ru": "Скорость, засады и хитрые гаджеты.",
+        "uk": "Швидкість, засідки й хитрі гаджети.",
+        "en": "Speed, ambushes and clever gadgets."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Заяц-Призрак — Снайперский багги",
+            "uk": "Заєць-Привид — Снайперський багі",
+            "en": "Ghost Hare — Sniper buggy"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Сверхбыстрый багги с абсурдно длинной пушкой: 13 урона на 12 клеток, прошивает тяжёлую броню свиней и успевает уехать до ответа. Брони нет вовсе, 30 живучести — умирает от первого же попадания.",
+            "uk": "Надшвидкий багі з абсурдно довгою гарматою: 13 шкоди на 12 клітинок, прошиває важку броню свиней і встигає поїхати до відповіді. Броні немає зовсім, 30 живучості — гине від першого ж влучання.",
+            "en": "A blazing-fast buggy with an absurdly long gun: 13 damage at 12 cells, pierces pig heavy armour and is gone before the reply lands. No armour at all, 30 HP — dies to the first hit."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1200",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "0 / 0 / 0",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "13",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "9 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "1–12",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "95",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, турбо, морковный напиток.",
+            "uk": "Покращення: бак, боєзапас, приціл, турбо, морквяний напій.",
+            "en": "Upgrades: fuel, ammo, sight, turbo, carrot drink."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Морковный Смерч — Лёгкая РСЗО",
+            "uk": "Морквяний Смерч — Легка РСЗВ",
+            "en": "Carrot Twister — Light rocket launcher"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "В залповом режиме за 4 секунды вываливает веером все 40 морковных ракет — один залп на весь боекомплект, потом к прицепу с боеприпасами. Одиночный огонь тоже есть, но перезарядка 25 секунд. Огромный разброс, брони нет, а при гибели боекомплект детонирует.",
+            "uk": "У залповому режимі за 4 секунди вивалює віялом усі 40 морквяних ракет — один залп на весь боєкомплект, потім до причепа з боєприпасами. Поодинокий вогонь теж є, але перезаряджання 25 секунд. Величезний розкид, броні немає, а під час загибелі боєкомплект детонує.",
+            "en": "In salvo mode it dumps all 40 carrot rockets in a fan within 4 seconds — one salvo empties it, then back to the ammo trailer. Single shots work too, but reload takes 25 seconds. Huge spread, no armour, and the ammo cooks off when it dies."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1275",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "45",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "0 / 0 / 0",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "25 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "3–9",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            },
+            {
+              "value": "7 / r 4",
+              "label": {
+                "ru": "взрыв при гибели",
+                "uk": "вибух під час загибелі",
+                "en": "death blast"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, турбо, морковный напиток.",
+            "uk": "Покращення: бак, приціл, турбо, морквяний напій.",
+            "en": "Upgrades: fuel, sight, turbo, carrot drink."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Кротобой — Скоростной сапёр",
+            "uk": "Кротобій — Швидкий сапер",
+            "en": "Mole Smasher — Fast sapper"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Вёрткий бронетрактор без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Видит чужие мины.",
+            "uk": "Верткий бронетрактор без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Бачить чужі міни.",
+            "en": "A nimble armoured tractor with no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Spots enemy mines."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "550",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2 / 1 / 1.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "0–14",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "68",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, миноискатель, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, міношукач, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, mine detector, armour, repair kit, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Пит-Стоп — Боевой ремонтник",
+            "uk": "Піт-Стоп — Бойовий ремонтник",
+            "en": "Pit Stop — Combat repair buggy"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Быстрый бронированный багги техпомощи: врывается в бой, за секунды латает подбитых кроликов и подливает им топливо. Запас ресурсов маленький — на 1–2 машины, потом обратно к прицепам.",
+            "uk": "Швидкий броньований багі техдопомоги: вривається в бій, за секунди латає підбитих кроликів і доливає їм пальне. Запас ресурсів малий — на 1–2 машини, потім назад до причепів.",
+            "en": "A fast armoured service buggy: rushes in, patches damaged rabbits in seconds and tops up their fuel. Its stock is small — enough for 1–2 vehicles, then back to the trailers."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "500",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "0–4.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "110",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, турбо.",
+            "uk": "Покращення: бак, приціл, турбо.",
+            "en": "Upgrades: fuel, sight, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Кролик-Ушастик — Машина разведки",
+            "uk": "Кролик-Вухань — Машина розвідки",
+            "en": "Big Ears — Recon vehicle"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше, потом 45 секунд перезарядки. Оружия нет, дорогой, и светится как ёлка: врагу виден всегда.",
+            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший, потім 45 секунд перезаряджання. Зброї немає, дорогий і світиться як ялинка: ворогові видно завжди.",
+            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight for 15 seconds, then a 45-second cooldown. No gun, expensive, and lit up like a Christmas tree: always visible to the enemy."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "900",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "45",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "0.5 / 0 / 0.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "22",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, ремкомплект, турбо.",
+            "uk": "Покращення: бак, приціл, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, sight, repair kit, turbo."
+          }
+        }
+      ]
+    },
+    {
+      "id": "au-balance",
+      "group": "arc-units",
+      "title": {
+        "ru": "Правки старых юнитов",
+        "uk": "Правки старих юнітів",
+        "en": "Changes to old units"
+      },
+      "summary": {
+        "ru": "Что поменялось у обычных юнитов и улучшений, и почему.",
+        "uk": "Що змінилося у звичайних юнітів і покращень, і чому.",
+        "en": "What changed for the stock units and upgrades, and why."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Истребитель танков (кролики)",
+            "uk": "Винищувач танків (кролики)",
+            "en": "Tank killer (rabbits)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Главная жалоба в сетевой игре: быстрее свиных танков и бьёт дальше, поэтому расстреливает их без ответа.",
+            "uk": "Головна скарга в мережевій грі: швидший за свинячі танки й б'є далі, тож розстрілює їх без відповіді.",
+            "en": "The top multiplayer complaint: faster than pig tanks and outranges them, so it kites them freely."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "600 → 650",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "10 → 9",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "5.5 → 6",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "60 → 50",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Тяжёлый танк (свиньи)",
+            "uk": "Важкий танк (свині)",
+            "en": "Heavy tank (pigs)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Не успевал за кроличьими ракетными машинами.",
+            "uk": "Не встигав за кролячими ракетними машинами.",
+            "en": "Could not keep up with the rabbit rocket cars."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "0.7 → 0.75",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "30 → 36",
+              "label": {
+                "ru": "поворот корпуса",
+                "uk": "поворот корпусу",
+                "en": "hull turn"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Мортира (свиньи)",
+            "uk": "Мортира (свині)",
+            "en": "Mortar (pigs)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Мортиры почти не покупают: дорого за дальность 5.5.",
+            "uk": "Мортири майже не купують: дорого за дальність 5.5.",
+            "en": "Mortars are rarely bought: too pricey for range 5.5."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "650 → 575",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "6.5 → 6",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Мортира (кролики)",
+            "uk": "Мортира (кролики)",
+            "en": "Mortar (rabbits)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "То же, что у свиней.",
+            "uk": "Те саме, що у свиней.",
+            "en": "Same as the pig mortar."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "650 → 575",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "6.5 → 6",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Артиллерия (свиньи)",
+            "uk": "Артилерія (свині)",
+            "en": "Artillery (pigs)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Артиллерия с дальностью 25 — самый сильный юнит игры.",
+            "uk": "Артилерія з дальністю 25 — найсильніший юніт гри.",
+            "en": "Range-25 artillery is the strongest unit in the game."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "500 → 550",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "80 → 64",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Артиллерия (кролики)",
+            "uk": "Артилерія (кролики)",
+            "en": "Artillery (rabbits)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "То же, что у свиней.",
+            "uk": "Те саме, що у свиней.",
+            "en": "Same as the pig artillery."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "500 → 550",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "80 → 64",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Улучшение «Броня»",
+            "uk": "Покращення «Броня»",
+            "en": "Armour upgrade"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Броня вычитается из каждого попадания: +1 брони вдвое режет урон броневика (4 − 3 = 1).",
+            "uk": "Броня віднімається від кожного влучання: +1 броні вдвічі ріже шкоду броньовика (4 − 3 = 1).",
+            "en": "Armour is subtracted from every hit: +1 armour halves an armoured car's damage (4 − 3 = 1)."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "50 → 75",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Улучшение «Пиво» (свиньи)",
+            "uk": "Покращення «Пиво» (свині)",
+            "en": "Beer upgrade (pigs)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "−10 % перезарядки за 25 очков было самым выгодным улучшением.",
+            "uk": "−10 % перезаряджання за 25 очок було найвигіднішим покращенням.",
+            "en": "−10 % reload for 25 points was the best deal in the game."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "25 → 35",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Улучшение «Морковный напиток» (кролики)",
+            "uk": "Покращення «Морквяний напій» (кролики)",
+            "en": "Carrot drink upgrade (rabbits)"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "То же, что пиво у свиней.",
+            "uk": "Те саме, що пиво у свиней.",
+            "en": "Same as the pig beer."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "25 → 35",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "au-mechanics",
+      "group": "arc-units",
+      "title": {
+        "ru": "Механики и песочница",
+        "uk": "Механіки та пісочниця",
+        "en": "Mechanics and sandbox"
+      },
+      "summary": {
+        "ru": "Что умеют новые юниты сверх обычных параметров и как всё проверить.",
+        "uk": "Що вміють нові юніти понад звичайні параметри і як усе перевірити.",
+        "en": "What the new units do beyond normal stats, and how to test it all."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Спецмеханики (патч exe)",
+            "uk": "Спецмеханіки (патч exe)",
+            "en": "Special mechanics (exe patch)"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Свои кнопки спецдействий (новые иконки в панели): «Подрыв» у Бомбохряка — до 60 урона в радиусе 5; «Мины на ходу» у Кротобоя — включил, и он кладёт мину каждые 2.5 клетки пути (не чаще раза в секунду); «Радар» у Ушастика — обзор ×3 на 15 секунд, потом 45 секунд перезарядки.",
+              "uk": "Свої кнопки спецдій (нові іконки в панелі): «Підрив» у Бомбокабана — до 60 шкоди в радіусі 5; «Міни на ходу» у Кротобоя — увімкнув, і він кладе міну кожні 2.5 клітинки шляху (не частіше разу на секунду); «Радар» у Вуханя — огляд ×3 на 15 секунд, потім 45 секунд перезаряджання.",
+              "en": "Own special buttons (new panel icons): Boom Hog’s Detonate — up to 60 damage in a radius of 5; Mole Smasher’s Mines on the Move — switch it on and it drops a mine every 2.5 cells (at most once a second); Big Ears’ Radar — triple sight for 15 seconds, then a 45-second cooldown."
+            },
+            {
+              "ru": "Взрыв при гибели (Бомбохряк, Хряк-Гриль, Морковный Смерч): урон по площади всем вокруг, линейно слабеет к краю.",
+              "uk": "Вибух під час загибелі (Бомбокабан, Кабан-Гриль, Морквяний Смерч): шкода по площі всім довкола, лінійно слабшає до краю.",
+              "en": "Death blasts (Boom Hog, Hog Grill, Carrot Twister): area damage to everyone around, fading linearly to the edge."
+            },
+            {
+              "ru": "Грязь (Гряземёт, Хряк-Гриль): попадание по врагу — скорость и поворот ×0.4 на 5 секунд. Снаряд Гряземёта оставляет на земле бурую лужу на 10 секунд: каждый чужой юнит в радиусе 2.5 от неё ползёт так же. Своих и союзников грязь не тормозит.",
+              "uk": "Багно (Гряземіт, Кабан-Гриль): влучання по ворогу — швидкість і поворот ×0.4 на 5 секунд. Снаряд Гряземета лишає на землі буру калюжу на 10 секунд: кожен чужий юніт у радіусі 2.5 від неї повзе так само. Своїх і союзників багно не гальмує.",
+              "en": "Mud (Mud Slinger, Hog Grill): a hit on an enemy cuts speed and turning to 0.4× for 5 seconds. A Mud Slinger shell leaves a brown puddle for 10 seconds: every enemy unit within 2.5 of it crawls the same way. Mud never slows you or your allies."
+            },
+            {
+              "ru": "Наведение корпусом (Осадный Кабан): орудие смотрит строго вперёд, на цель доворачивается машина.",
+              "uk": "Наведення корпусом (Облоговий Вепр): гармата дивиться строго вперед, на ціль доводиться машина.",
+              "en": "Hull aiming (Siege Boar): the gun points straight ahead; the vehicle turns onto the target."
+            },
+            {
+              "ru": "Залп (Морковный Смерч): в режиме залпа — все 40 ракет за 4 секунды.",
+              "uk": "Залп (Морквяний Смерч): у режимі залпу — усі 40 ракет за 4 секунди.",
+              "en": "Salvo (Carrot Twister): all 40 rockets in 4 seconds in salvo mode."
+            },
+            {
+              "ru": "Журнал: каждая механика пишет строку «ARC: …» в журнал игры (папка Kite Games\\Swine\\log в LOCALAPPDATA) — по нему видно, что подрыв, мины, лужи, радар и залп сработали.",
+              "uk": "Журнал: кожна механіка пише рядок «ARC: …» у журнал гри (тека Kite Games\\Swine\\log у LOCALAPPDATA) — з нього видно, що підрив, міни, калюжі, радар і залп спрацювали.",
+              "en": "Log: every mechanic writes an “ARC: …” line to the game journal (Kite Games\\Swine\\log under LOCALAPPDATA), so you can see that detonation, mines, puddles, radar and salvo fired."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Песочница",
+            "uk": "Пісочниця",
+            "en": "Sandbox"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Если запустить swineHD.exe с картой кампании в параметрах, игра открывает сценарный режим: магазин со всеми юнитами и 100 000 SP, потом карта с врагами кампании. Готовые ярлыки — modpack/sandbox/sandbox-rabbits.cmd (карта d_04, играешь кроликами) и sandbox-pigs.cmd (карта ny_08).",
+            "uk": "Якщо запустити swineHD.exe з мапою кампанії в параметрах, гра відкриває сценарний режим: магазин з усіма юнітами й 100 000 SP, потім мапа з ворогами кампанії. Готові ярлики — modpack/sandbox/sandbox-rabbits.cmd (мапа d_04, граєш кроликами) і sandbox-pigs.cmd (мапа ny_08).",
+            "en": "Launching swineHD.exe with a campaign map as a parameter opens scenario mode: a shop with every unit and 100,000 SP, then the map with campaign enemies. Ready shortcuts: modpack/sandbox/sandbox-rabbits.cmd (map d_04, you play rabbits) and sandbox-pigs.cmd (map ny_08)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "how",
+      "group": "help",
+      "title": {
+        "ru": "Как устроен пак",
+        "uk": "Як влаштований пак",
+        "en": "How the pack works"
+      },
+      "summary": {
+        "ru": "Куда ставятся файлы, как вернуть оригинал и как моды уживаются вместе.",
+        "uk": "Куди ставляться файли, як повернути оригінал і як моди уживаються разом.",
+        "en": "Where files go, how to restore the original and how mods coexist."
+      },
+      "blocks": [
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Установка и удаление",
+            "uk": "Встановлення й видалення",
+            "en": "Install and remove"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Файлы модов кладутся в gamedata\\base. Игра читает их раньше своего архива base.pak, поэтому сам base.pak не меняется.",
+              "uk": "Файли модів кладуться в gamedata\\base. Гра читає їх раніше за свій архів base.pak, тож сам base.pak не змінюється.",
+              "en": "Mod files go into gamedata\\base. The game reads them before its own base.pak archive, so base.pak itself is never changed."
+            },
+            {
+              "ru": "Перед заменой лаунчер сохраняет оригиналы. «Удалить моды» возвращает их и убирает всё лишнее.",
+              "uk": "Перед заміною лаунчер зберігає оригінали. «Видалити моди» повертає їх і прибирає все зайве.",
+              "en": "The launcher backs up originals before replacing anything. “Remove mods” restores them and cleans up."
+            },
+            {
+              "ru": "Если Steam проверит или обновит игру и перезапишет файлы, «Играть» заметит это и поставит пак заново.",
+              "uk": "Якщо Steam перевірить чи оновить гру й перезапише файли, «Грати» це помітить і поставить пак знову.",
+              "en": "If Steam verifies or updates the game and overwrites files, Play notices and reinstalls the pack."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Несколько модов сразу",
+            "uk": "Кілька модів одразу",
+            "en": "Several mods at once"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Моды ставятся по порядку. Если два мода кладут один и тот же файл, побеждает последний. Но мод может не заменять units.ini целиком, а положить патч units.ini.arcpatch — только с нужными строками. Тогда правки разных модов складываются.",
+            "uk": "Моди ставляться по черзі. Якщо два моди кладуть той самий файл, перемагає останній. Але мод може не замінювати units.ini цілком, а покласти патч units.ini.arcpatch — лише з потрібними рядками. Тоді правки різних модів складаються.",
+            "en": "Mods are applied in order. If two mods ship the same file, the last one wins. But a mod can ship a units.ini.arcpatch patch with only the lines it needs instead of a whole units.ini, so edits from different mods add up."
+          }
+        }
+      ]
+    }
+  ]
+}

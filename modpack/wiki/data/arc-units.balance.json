@@ -1,0 +1,936 @@
+{
+  "vanilla": [
+    {
+      "section": "Nyul raketas pancelkocsi",
+      "why": "Кролячий винищувач танків з самонавідними ракетами — головна скарга гравців у мультиплеєрі: швидший за свинячі танки й б'є далі за них, тож «кайтить» без відповіді. Дальність 10 → 9, перезарядка 5.5 → 6, боєзапас 60 → 50, ціна 600 → 650.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "600",
+          "to": 650
+        },
+        {
+          "key": "MaxRange",
+          "from": "10",
+          "to": 9
+        },
+        {
+          "key": "ReloadTime",
+          "from": "5.5",
+          "to": 6
+        },
+        {
+          "key": "Ammo",
+          "from": "60",
+          "to": 50
+        }
+      ]
+    },
+    {
+      "section": "Diszno hard tank",
+      "why": "Важкий танк свиней не наздоганяв кролячі ракетні машини. Швидкість 0.7 → 0.75, поворот корпусу 30 → 36.",
+      "changes": [
+        {
+          "key": "MoveSpeed",
+          "from": "0.7",
+          "to": 0.75
+        },
+        {
+          "key": "SpinSpeed",
+          "from": "30",
+          "to": 36
+        }
+      ]
+    },
+    {
+      "section": "Diszno mozsar",
+      "why": "Мортири майже не купують: дорого за дальність 5.5. Ціна 650 → 575, перезарядка 6.5 → 6.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "650",
+          "to": 575
+        },
+        {
+          "key": "ReloadTime",
+          "from": "6.5",
+          "to": 6
+        }
+      ]
+    },
+    {
+      "section": "Nyul mozsar",
+      "why": "Те саме для кролячої мортири.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "650",
+          "to": 575
+        },
+        {
+          "key": "ReloadTime",
+          "from": "6.5",
+          "to": 6
+        }
+      ]
+    },
+    {
+      "section": "Diszno loveg",
+      "why": "Артилерія з дальністю 25 — найсильніший юніт гри. Ціна 500 → 550, боєзапас 80 → 64.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "500",
+          "to": 550
+        },
+        {
+          "key": "Ammo",
+          "from": "80",
+          "to": 64
+        }
+      ]
+    },
+    {
+      "section": "Nyul loveg",
+      "why": "Те саме для кролячої артилерії.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "500",
+          "to": 550
+        },
+        {
+          "key": "Ammo",
+          "from": "80",
+          "to": 64
+        }
+      ]
+    },
+    {
+      "section": "Upgrade armor",
+      "why": "Броня віднімається від кожного влучання, тож +1 броні вдвічі ріже урон броньовика (4 − 3 = 1). Ціна 50 → 75.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "50",
+          "to": 75
+        }
+      ]
+    },
+    {
+      "section": "Upgrade diszno sor",
+      "why": "Пиво: −10 % перезарядки за 25 очок — найвигідніше покращення гри. Ціна 25 → 35.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "25",
+          "to": 35
+        }
+      ]
+    },
+    {
+      "section": "Upgrade nyul repa",
+      "why": "Морквяний напій — те саме, 25 → 35.",
+      "changes": [
+        {
+          "key": "Price",
+          "from": "25",
+          "to": 35
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "section": "Diszno grill kamikaze slow",
+      "model": "d_hryakgrill",
+      "race": "pig",
+      "ru": [
+        "Хряк-Гриль",
+        "Огнемётный танк",
+        "Стеклянная пушка ближнего боя: огнемёт бьёт всего на 2.5, зато на 12 урона каждые 1.6 секунды — обычный танк сгорает за десяток секунд. Сам хрупкий: 60 живучести, корма без брони, а бак напалма при гибели взрывается (до 30 урона в радиусе 2.5) и поджигает всех вокруг — и врагов, и своих."
+      ],
+      "uk": [
+        "Кабан-Гриль",
+        "Вогнеметний танк",
+        "Скляна гармата ближнього бою: вогнемет б'є лише на 2.5, зате на 12 шкоди кожні 1.6 секунди — звичайний танк згоряє за десяток секунд. Сам крихкий: 60 живучості, корма без броні, а бак напалму під час загибелі вибухає (до 30 шкоди в радіусі 2.5) і підпалює всіх довкола — і ворогів, і своїх."
+      ],
+      "en": [
+        "Hog Grill",
+        "Flame tank",
+        "A close-range glass cannon: the flamethrower reaches only 2.5 but deals 12 damage every 1.6 seconds — a regular tank burns in about ten seconds. Fragile itself: 60 HP, no rear armour, and its napalm tank explodes when destroyed (up to 30 damage in a 2.5 radius), burning everyone nearby, friend or foe."
+      ],
+      "chassis": "Diszno normal tank",
+      "role": "Diszno normal tank",
+      "stats": {
+        "model": "units\\skinned\\d_hryakgrill",
+        "price": "775",
+        "upgrademask": "211",
+        "character": "P07-normaltank",
+        "voice": "P04-normaltank",
+        "icon": "d_hryakgrill",
+        "maxspringangle": "4",
+        "chainspeed": "2.06",
+        "maxhp": "60",
+        "frontarmor": "1.5",
+        "backarmor": "0",
+        "toparmor": "1",
+        "sight": "7",
+        "unitsize": "1.0",
+        "movetype": "1",
+        "movespeed": "0.95",
+        "spinspeed": "60",
+        "maxfuel": "100",
+        "consume": "950",
+        "trail": "fx/diszno_lanctalp.tga",
+        "trailwidth": "0.0712",
+        "trailoffset": "0.311",
+        "enginesound": "engine/d_tank.wav",
+        "ghost_texture": "pig_ghosts\\normaltank1.tga",
+        "minrange": "0",
+        "maxrange": "2.5",
+        "actionrange": "9",
+        "shottype": "1",
+        "turretspeed": "90",
+        "ammo": "40",
+        "ammovalue": "1",
+        "damage": "12",
+        "reloadtime": "1.6",
+        "shotsound": "shoot/arc_lang.wav",
+        "shoteffect": "1",
+        "extraarmor": "30",
+        "kicksize": "0.1",
+        "kicktime": "0.5",
+        "level2xp": "500",
+        "level3xp": "1200",
+        "explodetype": "2",
+        "shotspread": "2.5"
+      }
+    },
+    {
+      "section": "Diszno cartank",
+      "model": "d_svinczar",
+      "race": "pig",
+      "ru": [
+        "Свин-Царь",
+        "Сверхтяжёлый танк",
+        "Апофеоз свинского эго: 220 живучести, лоб в 6 брони и залп на 40 урона, который с одного выстрела сносит разведку кроликов. Медленный, башню крутит целую вечность, а топливо жрёт вчетверо быстрее тяжёлого танка — без заправщика встанет посреди карты. Броню не улучшить."
+      ],
+      "uk": [
+        "Свин-Цар",
+        "Надважкий танк",
+        "Апофеоз свинячого его: 220 живучості, лоб у 6 броні й постріл на 40 шкоди, що з одного разу зносить розвідку кроликів. Повільний, башту крутить цілу вічність, а пальне жере вчетверо швидше за важкий танк — без заправника стане посеред мапи. Броню не покращити."
+      ],
+      "en": [
+        "Swine Tsar",
+        "Super-heavy tank",
+        "Pig ego incarnate: 220 HP, front armour 6 and a 40-damage shell that one-shots rabbit scouts. Slow, its turret takes forever to turn, and it burns fuel four times faster than the heavy tank — without a fuel trailer it stalls mid-map. Armour cannot be upgraded."
+      ],
+      "chassis": "Diszno hard tank",
+      "role": "Diszno hard tank",
+      "stats": {
+        "model": "units\\skinned\\d_svinczar",
+        "price": "1800",
+        "upgrademask": "167",
+        "character": "P06-hardtank",
+        "voice": "P05-hardtank",
+        "icon": "d_svinczar",
+        "maxspringangle": "3",
+        "chainspeed": "1.6",
+        "maxhp": "220",
+        "frontarmor": "6",
+        "backarmor": "2",
+        "toparmor": "3.5",
+        "sight": "9",
+        "unitsize": "1.5",
+        "movetype": "1",
+        "movespeed": "0.45",
+        "spinspeed": "15",
+        "maxfuel": "100",
+        "consume": "220",
+        "trail": "fx/diszno_lanctalp.tga",
+        "trailwidth": "0.087",
+        "trailoffset": "0.408",
+        "enginesound": "engine/d_htank.wav",
+        "ghost_texture": "pig_ghosts\\hardtank1.tga",
+        "minrange": "1.5",
+        "maxrange": "8.5",
+        "actionrange": "12",
+        "shottype": "1",
+        "turretspeed": "8",
+        "ammo": "30",
+        "ammovalue": "1",
+        "damage": "40",
+        "reloadtime": "10",
+        "shotsound": "shoot\\tank.wav",
+        "shoteffect": "1",
+        "specialtype": "3",
+        "kicksize": "0.3",
+        "kicktime": "1",
+        "level2xp": "1500",
+        "level3xp": "3500"
+      }
+    },
+    {
+      "section": "Diszno kamikaze",
+      "model": "d_bombohryak",
+      "race": "pig",
+      "ru": [
+        "Бомбохряк",
+        "Таран-камикадзе",
+        "Бронированный таран, набитый бочками с топливом и снарядами. Оружия нет. Своя кнопка «Подрыв»: до 60 урона в радиусе 5, своим тоже достаётся. Если его подобьют раньше — взрывается там, где стоит, даже у вашей базы."
+      ],
+      "uk": [
+        "Бомбокабан",
+        "Таран-камікадзе",
+        "Броньований таран, напханий бочками з пальним і снарядами. Зброї немає. Своя кнопка «Підрив»: до 60 шкоди в радіусі 5, своїм теж дістається. Якщо його підіб'ють раніше — вибухає там, де стоїть, навіть біля вашої бази."
+      ],
+      "en": [
+        "Boom Hog",
+        "Kamikaze ram",
+        "An armoured ram packed with fuel drums and shells. No gun. Its own Detonate button: up to 60 damage in a radius of 5, friend or foe. If it is shot first, it blows up where it stands — even next to your own base."
+      ],
+      "chassis": "Diszno normal tank",
+      "role": null,
+      "stats": {
+        "model": "units\\skinned\\d_bombohryak",
+        "price": "650",
+        "upgrademask": "85",
+        "character": "P07-normaltank",
+        "voice": "P04-normaltank",
+        "icon": "d_bombohryak",
+        "maxspringangle": "4",
+        "maxhp": "80",
+        "frontarmor": "4",
+        "backarmor": "0.5",
+        "toparmor": "1",
+        "sight": "9",
+        "unitsize": "1.0",
+        "movetype": "2",
+        "movespeed": "1.6",
+        "spinspeed": "90",
+        "maxfuel": "100",
+        "consume": "900",
+        "trail": "fx/diszno_lanctalp.tga",
+        "trailwidth": "0.0712",
+        "trailoffset": "0.311",
+        "enginesound": "engine/d_tank.wav",
+        "ghost_texture": "pig_ghosts\\normaltank1.tga",
+        "minrange": "0",
+        "maxrange": "0",
+        "damage": "60",
+        "extraarmor": "60",
+        "shotspread": "5",
+        "explodetype": "2",
+        "specialtype": "12"
+      }
+    },
+    {
+      "section": "Diszno ostromkoca hullaim",
+      "model": "d_osadnykaban",
+      "race": "pig",
+      "ru": [
+        "Осадный Кабан",
+        "Штурмовая мортира",
+        "Гусеничный бункер: навесом бросает фугас на 40 урона в радиусе 3 — сносит укрытых, скопления техники и мины. Перезарядка 25 секунд, 20 снарядов, а орудие не поворачивается: на цель доворачивается весь корпус."
+      ],
+      "uk": [
+        "Облоговий Вепр",
+        "Штурмова мортира",
+        "Гусеничний бункер: навісом кидає фугас на 40 шкоди в радіусі 3 — зносить укритих, скупчення техніки й міни. Перезаряджання 25 секунд, 20 снарядів, а гармата не повертається: на ціль доводиться весь корпус."
+      ],
+      "en": [
+        "Siege Boar",
+        "Assault mortar",
+        "A tracked bunker: lobs a 40-damage shell with a radius of 3 — wrecks units behind cover, vehicle clumps and minefields. 25-second reload, 20 rounds, and the gun does not traverse: the whole hull turns onto the target."
+      ],
+      "chassis": "Diszno hard tank",
+      "role": "Diszno mozsar",
+      "stats": {
+        "model": "units\\skinned\\d_osadnykaban",
+        "price": "1075",
+        "upgrademask": "151",
+        "character": "P06-hardtank",
+        "voice": "P05-hardtank",
+        "icon": "d_osadnykaban",
+        "maxspringangle": "3",
+        "chainspeed": "1.6",
+        "maxhp": "150",
+        "frontarmor": "4",
+        "backarmor": "1.5",
+        "toparmor": "2.5",
+        "sight": "7",
+        "unitsize": "1.3",
+        "movetype": "1",
+        "movespeed": "0.5",
+        "spinspeed": "25",
+        "maxfuel": "100",
+        "consume": "850",
+        "trail": "fx/diszno_lanctalp.tga",
+        "trailwidth": "0.087",
+        "trailoffset": "0.408",
+        "enginesound": "engine/d_htank.wav",
+        "ghost_texture": "pig_ghosts\\hardtank1.tga",
+        "minrange": "3",
+        "maxrange": "9",
+        "actionrange": "12",
+        "shottype": "2",
+        "turretspeed": "25",
+        "ammo": "20",
+        "ammovalue": "2",
+        "damage": "40",
+        "reloadtime": "25",
+        "shotsound": "shoot\\mozsar.wav",
+        "projectile": "Arc ostrom lovedek",
+        "projectile2": "Arc ostrom lovedek",
+        "shotangle": "35",
+        "shotheight": "0.45",
+        "shotspeed": "3.5",
+        "bodykick": "1.5",
+        "kicksize": "0.15",
+        "kicktime": "1",
+        "level2xp": "600",
+        "level3xp": "1500"
+      }
+    },
+    {
+      "section": "Diszno sarszoro slow",
+      "model": "d_gryazemet",
+      "race": "pig",
+      "ru": [
+        "Гряземёт",
+        "Шламовоз-подавитель",
+        "Швыряет грязь и мазут: каждое попадание на 5 секунд замедляет врага и его повороты больше чем вдвое, а на земле остаётся грязевая лужа на 10 секунд — кто в неё въедет, ползёт. Урон почти нулевой (3) — нужен танковый заслон."
+      ],
+      "uk": [
+        "Гряземіт",
+        "Шламовоз-подавлювач",
+        "Жбурляє багно й мазут: кожне влучання на 5 секунд сповільнює ворога та його повороти більш ніж удвічі, а на землі лишається грязьова калюжа на 10 секунд — хто в неї в'їде, повзе. Шкода майже нульова (3) — потрібне танкове прикриття."
+      ],
+      "en": [
+        "Mud Slinger",
+        "Sludge suppressor",
+        "Lobs mud and fuel oil: every hit slows the enemy and its turning by more than half for 5 seconds, and leaves a mud puddle on the ground for 10 seconds — anyone driving into it crawls. Damage is next to nothing (3) — needs tanks to cover it."
+      ],
+      "chassis": "Diszno normal tank",
+      "role": "Diszno mozsar",
+      "stats": {
+        "model": "units\\skinned\\d_gryazemet",
+        "price": "825",
+        "upgrademask": "215",
+        "character": "P07-normaltank",
+        "voice": "P04-normaltank",
+        "icon": "d_gryazemet",
+        "maxspringangle": "4",
+        "chainspeed": "2.06",
+        "maxhp": "85",
+        "frontarmor": "1.5",
+        "backarmor": "0.5",
+        "toparmor": "1",
+        "sight": "9",
+        "unitsize": "1.0",
+        "movetype": "1",
+        "movespeed": "0.85",
+        "spinspeed": "55",
+        "maxfuel": "100",
+        "consume": "950",
+        "trail": "fx/diszno_lanctalp.tga",
+        "trailwidth": "0.0712",
+        "trailoffset": "0.311",
+        "enginesound": "engine/d_tank.wav",
+        "ghost_texture": "pig_ghosts\\normaltank1.tga",
+        "minrange": "2.5",
+        "maxrange": "9",
+        "actionrange": "12",
+        "shottype": "2",
+        "turretspeed": "50",
+        "ammo": "80",
+        "ammovalue": "2",
+        "damage": "3",
+        "reloadtime": "2.5",
+        "shotsound": "shoot\\mozsar.wav",
+        "projectile": "Arc sar",
+        "projectile2": "Arc sar",
+        "shotangle": "35",
+        "shotheight": "0.45",
+        "shotspeed": "3.5",
+        "bodykick": "1.5",
+        "kicksize": "0.15",
+        "kicktime": "1",
+        "shotspread": "1.5",
+        "level2xp": "500",
+        "level3xp": "1300"
+      }
+    },
+    {
+      "section": "Nyul szellem",
+      "model": "ny_zayacprizrak",
+      "race": "rabbit",
+      "ru": [
+        "Заяц-Призрак",
+        "Снайперский багги",
+        "Сверхбыстрый багги с абсурдно длинной пушкой: 13 урона на 12 клеток, прошивает тяжёлую броню свиней и успевает уехать до ответа. Брони нет вовсе, 30 живучести — умирает от первого же попадания."
+      ],
+      "uk": [
+        "Заєць-Привид",
+        "Снайперський багі",
+        "Надшвидкий багі з абсурдно довгою гарматою: 13 шкоди на 12 клітинок, прошиває важку броню свиней і встигає поїхати до відповіді. Броні немає зовсім, 30 живучості — гине від першого ж влучання."
+      ],
+      "en": [
+        "Ghost Hare",
+        "Sniper buggy",
+        "A blazing-fast buggy with an absurdly long gun: 13 damage at 12 cells, pierces pig heavy armour and is gone before the reply lands. No armour at all, 30 HP — dies to the first hit."
+      ],
+      "chassis": "Nyul light tank",
+      "role": "Nyul light tank",
+      "stats": {
+        "model": "units\\skinned\\ny_zayacprizrak",
+        "price": "1200",
+        "upgrademask": "327",
+        "character": "R07-Tank",
+        "voice": "R05-Tank",
+        "icon": "ny_zayacprizrak",
+        "maxspringangle": "5",
+        "maxhp": "30",
+        "frontarmor": "0",
+        "backarmor": "0",
+        "toparmor": "0",
+        "sight": "12",
+        "unitsize": "1",
+        "movetype": "2",
+        "movespeed": "1.9",
+        "spinspeed": "140",
+        "maxfuel": "100",
+        "consume": "1050",
+        "trail": "fx/nyul_lanctalp.tga",
+        "trailwidth": "0.089",
+        "trailoffset": "0.26",
+        "enginesound": "engine/ny_lighttank.wav",
+        "ghost_texture": "Rabbit_ghosts\\lighttank1.tga",
+        "minrange": "1",
+        "maxrange": "12",
+        "actionrange": "12",
+        "shottype": "1",
+        "turretspeed": "60",
+        "ammo": "30",
+        "ammovalue": "1",
+        "damage": "13",
+        "reloadtime": "9",
+        "shotsound": "shoot\\tank.wav",
+        "shoteffect": "1",
+        "kicksize": "0.1",
+        "kicktime": "0.5",
+        "level2xp": "400",
+        "level3xp": "1000"
+      }
+    },
+    {
+      "section": "Nyul repavihar kamikaze salvo",
+      "model": "ny_morkovsmerch",
+      "race": "rabbit",
+      "ru": [
+        "Морковный Смерч",
+        "Лёгкая РСЗО",
+        "В залповом режиме за 4 секунды вываливает веером все 40 морковных ракет — один залп на весь боекомплект, потом к прицепу с боеприпасами. Одиночный огонь тоже есть, но перезарядка 25 секунд. Огромный разброс, брони нет, а при гибели боекомплект детонирует."
+      ],
+      "uk": [
+        "Морквяний Смерч",
+        "Легка РСЗВ",
+        "У залповому режимі за 4 секунди вивалює віялом усі 40 морквяних ракет — один залп на весь боєкомплект, потім до причепа з боєприпасами. Поодинокий вогонь теж є, але перезаряджання 25 секунд. Величезний розкид, броні немає, а під час загибелі боєкомплект детонує."
+      ],
+      "en": [
+        "Carrot Twister",
+        "Light rocket launcher",
+        "In salvo mode it dumps all 40 carrot rockets in a fan within 4 seconds — one salvo empties it, then back to the ammo trailer. Single shots work too, but reload takes 25 seconds. Huge spread, no armour, and the ammo cooks off when it dies."
+      ],
+      "chassis": "Nyul light tank",
+      "role": "Nyul raketas",
+      "stats": {
+        "model": "units\\skinned\\ny_morkovsmerch",
+        "price": "1275",
+        "upgrademask": "325",
+        "character": "R07-Tank",
+        "voice": "R05-Tank",
+        "icon": "ny_morkovsmerch",
+        "maxspringangle": "5",
+        "maxhp": "45",
+        "frontarmor": "0",
+        "backarmor": "0",
+        "toparmor": "0",
+        "sight": "9",
+        "unitsize": "1",
+        "movetype": "2",
+        "movespeed": "1.5",
+        "spinspeed": "110",
+        "maxfuel": "100",
+        "consume": "1050",
+        "trail": "fx/nyul_lanctalp.tga",
+        "trailwidth": "0.089",
+        "trailoffset": "0.26",
+        "enginesound": "engine/ny_lighttank.wav",
+        "ghost_texture": "Rabbit_ghosts\\lighttank1.tga",
+        "explodetype": "2",
+        "explodesound": "explode\\tuzi66.wav",
+        "minrange": "3",
+        "maxrange": "9",
+        "actionrange": "12",
+        "shottype": "2",
+        "turretspeed": "90",
+        "ammo": "40",
+        "ammovalue": "2",
+        "damage": "7",
+        "reloadtime": "25",
+        "reshottime": "0.1",
+        "shotsound": "shoot\\raketa.wav",
+        "shoteffect": "4",
+        "projectile": "Raketa",
+        "projectile2": "Repa",
+        "shotspread": "4",
+        "shotangle": "25",
+        "shotheight": "0.6",
+        "shotspeed": "5.0",
+        "specialtype": "6",
+        "bodykick": "0.65",
+        "kicksize": "0.2",
+        "kicktime": "1",
+        "level2xp": "500",
+        "level3xp": "1200",
+        "extraarmor": "20"
+      }
+    },
+    {
+      "section": "Nyul vakond minelay",
+      "model": "ny_krotoboy",
+      "race": "rabbit",
+      "ru": [
+        "Кротобой",
+        "Скоростной сапёр",
+        "Вёрткий бронетрактор без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Видит чужие мины."
+      ],
+      "uk": [
+        "Кротобій",
+        "Швидкий сапер",
+        "Верткий бронетрактор без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Бачить чужі міни."
+      ],
+      "en": [
+        "Mole Smasher",
+        "Fast sapper",
+        "A nimble armoured tractor with no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Spots enemy mines."
+      ],
+      "chassis": "Nyul light tank",
+      "role": "Nyul aknarako",
+      "stats": {
+        "model": "units\\skinned\\ny_krotoboy",
+        "price": "550",
+        "upgrademask": "127",
+        "character": "R07-Tank",
+        "voice": "R05-Tank",
+        "icon": "ny_krotoboy",
+        "maxspringangle": "5",
+        "chainspeed": "1.68",
+        "maxhp": "70",
+        "frontarmor": "2",
+        "backarmor": "1",
+        "toparmor": "1.5",
+        "sight": "10",
+        "unitsize": "1",
+        "movetype": "1",
+        "movespeed": "1.35",
+        "spinspeed": "90",
+        "maxfuel": "100",
+        "consume": "1050",
+        "trail": "fx/nyul_lanctalp.tga",
+        "trailwidth": "0.089",
+        "trailoffset": "0.26",
+        "enginesound": "engine/ny_lighttank.wav",
+        "ghost_texture": "Rabbit_ghosts\\lighttank1.tga",
+        "explodetype": "2",
+        "explodesound": "explode\\tuzi66.wav",
+        "minrange": "0",
+        "maxrange": "14",
+        "ammo": "30",
+        "ammovalue": "3",
+        "reloadtime": "1",
+        "projectile": "Akna",
+        "specialtype": "13",
+        "bodykick": "0.65",
+        "kicksize": "0.2",
+        "kicktime": "1",
+        "detector": "1"
+      }
+    },
+    {
+      "section": "Nyul boxkiallas",
+      "model": "ny_pitstop",
+      "race": "rabbit",
+      "ru": [
+        "Пит-Стоп",
+        "Боевой ремонтник",
+        "Быстрый бронированный багги техпомощи: врывается в бой, за секунды латает подбитых кроликов и подливает им топливо. Запас ресурсов маленький — на 1–2 машины, потом обратно к прицепам."
+      ],
+      "uk": [
+        "Піт-Стоп",
+        "Бойовий ремонтник",
+        "Швидкий броньований багі техдопомоги: вривається в бій, за секунди латає підбитих кроликів і доливає їм пальне. Запас ресурсів малий — на 1–2 машини, потім назад до причепів."
+      ],
+      "en": [
+        "Pit Stop",
+        "Combat repair buggy",
+        "A fast armoured service buggy: rushes in, patches damaged rabbits in seconds and tops up their fuel. Its stock is small — enough for 1–2 vehicles, then back to the trailers."
+      ],
+      "chassis": "Nyul light tank",
+      "role": "Service",
+      "stats": {
+        "model": "units\\skinned\\ny_pitstop",
+        "price": "500",
+        "upgrademask": "69",
+        "character": "R07-Tank",
+        "voice": "R05-Tank",
+        "icon": "ny_pitstop",
+        "maxspringangle": "5",
+        "maxhp": "75",
+        "frontarmor": "2",
+        "backarmor": "0.5",
+        "toparmor": "1",
+        "sight": "8",
+        "unitsize": "1",
+        "movetype": "2",
+        "movespeed": "2.2",
+        "spinspeed": "160",
+        "maxfuel": "100",
+        "consume": "1050",
+        "trail": "fx/nyul_lanctalp.tga",
+        "trailwidth": "0.089",
+        "trailoffset": "0.26",
+        "enginesound": "engine/ny_lighttank.wav",
+        "ghost_texture": "Rabbit_ghosts\\lighttank1.tga",
+        "maxrange": "4.5",
+        "specialtype": "8",
+        "specialtime": "0.1",
+        "projectile": "Arc pitstop",
+        "shotheight": ".5",
+        "shotspeed": "2.1",
+        "shotangle": "60",
+        "specialsound1": "special/szereles.wav",
+        "cargo": "200"
+      }
+    },
+    {
+      "section": "Nyul fulesek",
+      "model": "ny_ushastik",
+      "race": "rabbit",
+      "ru": [
+        "Кролик-Ушастик",
+        "Машина разведки",
+        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше, потом 45 секунд перезарядки. Оружия нет, дорогой, и светится как ёлка: врагу виден всегда."
+      ],
+      "uk": [
+        "Кролик-Вухань",
+        "Машина розвідки",
+        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший, потім 45 секунд перезаряджання. Зброї немає, дорогий і світиться як ялинка: ворогові видно завжди."
+      ],
+      "en": [
+        "Big Ears",
+        "Recon vehicle",
+        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight for 15 seconds, then a 45-second cooldown. No gun, expensive, and lit up like a Christmas tree: always visible to the enemy."
+      ],
+      "chassis": "Nyul light tank",
+      "role": null,
+      "stats": {
+        "model": "units\\skinned\\ny_ushastik",
+        "price": "900",
+        "upgrademask": "101",
+        "character": "R07-Tank",
+        "voice": "R05-Tank",
+        "icon": "ny_ushastik",
+        "maxspringangle": "5",
+        "maxhp": "45",
+        "frontarmor": "0.5",
+        "backarmor": "0",
+        "toparmor": "0.5",
+        "sight": "22",
+        "unitsize": "1",
+        "movetype": "2",
+        "movespeed": "1.2",
+        "spinspeed": "100",
+        "maxfuel": "100",
+        "consume": "1050",
+        "trail": "fx/nyul_lanctalp.tga",
+        "trailwidth": "0.089",
+        "trailoffset": "0.26",
+        "enginesound": "engine/ny_lighttank.wav",
+        "ghost_texture": "Rabbit_ghosts\\lighttank1.tga",
+        "minrange": "0",
+        "maxrange": "0",
+        "detector": "1",
+        "always visible": "1",
+        "specialtype": "14"
+      }
+    }
+  ],
+  "priceScale": {
+    "factor": 1.6,
+    "sections": [
+      {
+        "section": "Diszno dzsip",
+        "from": 250,
+        "to": 400
+      },
+      {
+        "section": "Diszno normal tank",
+        "from": 400,
+        "to": 650
+      },
+      {
+        "section": "Diszno hard tank",
+        "from": 600,
+        "to": 950
+      },
+      {
+        "section": "Diszno pancelauto",
+        "from": 300,
+        "to": 725
+      },
+      {
+        "section": "Diszno loveg",
+        "from": 550,
+        "to": 1325
+      },
+      {
+        "section": "Diszno raketas",
+        "from": 650,
+        "to": 1175
+      },
+      {
+        "section": "Diszno mozsar",
+        "from": 575,
+        "to": 900
+      },
+      {
+        "section": "Diszno aknarako",
+        "from": 400,
+        "to": 650
+      },
+      {
+        "section": "Diszno vontato",
+        "from": 200,
+        "to": 325
+      },
+      {
+        "section": "Diszno movingforce",
+        "from": 1400,
+        "to": 2250
+      },
+      {
+        "section": "Nyul dzsip",
+        "from": 250,
+        "to": 400
+      },
+      {
+        "section": "Nyul light tank",
+        "from": 400,
+        "to": 650
+      },
+      {
+        "section": "Nyul pancelauto",
+        "from": 300,
+        "to": 700
+      },
+      {
+        "section": "Nyul loveg",
+        "from": 550,
+        "to": 1325
+      },
+      {
+        "section": "Nyul raketas pancelkocsi",
+        "from": 650,
+        "to": 1575
+      },
+      {
+        "section": "Nyul raketas",
+        "from": 650,
+        "to": 1250
+      },
+      {
+        "section": "Nyul mozsar",
+        "from": 575,
+        "to": 900
+      },
+      {
+        "section": "Nyul aknarako",
+        "from": 400,
+        "to": 650
+      },
+      {
+        "section": "Nyul vontato",
+        "from": 200,
+        "to": 325
+      },
+      {
+        "section": "Nyul movingforce",
+        "from": 1400,
+        "to": 2250
+      },
+      {
+        "section": "Ammo",
+        "from": 150,
+        "to": 250
+      },
+      {
+        "section": "Fuel",
+        "from": 150,
+        "to": 250
+      },
+      {
+        "section": "Service",
+        "from": 150,
+        "to": 250
+      },
+      {
+        "section": "Upgrade fuel",
+        "from": 25,
+        "to": 40
+      },
+      {
+        "section": "Upgrade ammo",
+        "from": 25,
+        "to": 40
+      },
+      {
+        "section": "Upgrade sight",
+        "from": 25,
+        "to": 40
+      },
+      {
+        "section": "Upgrade mine seeker",
+        "from": 50,
+        "to": 80
+      },
+      {
+        "section": "Upgrade armor",
+        "from": 75,
+        "to": 120
+      },
+      {
+        "section": "Upgrade repair kit",
+        "from": 50,
+        "to": 80
+      },
+      {
+        "section": "Upgrade turbo",
+        "from": 50,
+        "to": 80
+      },
+      {
+        "section": "Upgrade diszno sor",
+        "from": 35,
+        "to": 55
+      },
+      {
+        "section": "Upgrade nyul repa",
+        "from": 35,
+        "to": 55
+      }
+    ]
+  }
+}

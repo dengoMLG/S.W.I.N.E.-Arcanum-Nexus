@@ -1,0 +1,15 @@
+{
+  "id": "arcanum-swine",
+  "name": "Arcanum S.W.I.N.E.",
+  "version": "2",
+  "baseUrl": "https://arcanum-nexus.com/launcher/games/swine/mods/",
+  "mods": [
+    {
+      "id": "arcanum-units",
+      "name": "Arcanum Units",
+      "version": "2",
+      "author": "Arcanum",
+      "source": "mods/arcanum-units"
+    }
+  ]
+}

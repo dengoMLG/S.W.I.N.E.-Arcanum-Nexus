@@ -1,0 +1,509 @@
+// Вставки коду для механік Arcanum Units (асемблер Iced, 32 біт). Усе пишеться в секцію .arcmod.
+// Кожен хук — jmp з оригінальної інструкції у вставку; витіснені інструкції повторюються у вставці.
+//
+// Гра — lockstep: команди гравців розсилаються всім, і кожен комп'ютер сам рахує SGameWorld::ServerRefresh.
+// Тому вставки мусять бути детерміновані (жодного rand, часу чи «свого» гравця) — тоді світ у всіх однаковий.
+//
+// Поля SUnit (з розбору SUnit::InitVariables, див. docs/EXE_PATCH_14_UNITS.md):
+//   +000 SGameWorld*     +004 id юніта        +254 ім'я секції units.ini   +258 гравець  +264/+26C x/z  +2A0 y
+//   +044 Sight (з покращеннями)  +068 швидкість/тік   +06C поворот корпусу/тік     +090 TurretSpeed/тік
+//   +0A0 Damage(+рівень) +0A4 ShotSpread              +0C8 SpecialType   +0D0 ExtraArmor  +0D8 Cargo
+//   +098 ReloadTime у тіках  +270 курс корпусу (рад)  +274 кут башти (рад, світовий)
+//   +290 поточний боєзапас   +394 ракет у залпі (спецрежим 6)
+//   +3A0 спецздібність є (SpecialType ≥ 0)  +3A4 стан спецздібності (0/1, з нього панель бере іконку)
+// SGameWorld: +16F4 номер тіку гри (20 тіків/с, зберігається в сейві), гравці — +F8 + i·5Ch (+100 тип, +104 команда).
+using Iced.Intel;
+using static Iced.Intel.AssemblerRegisters;
+
+static class Caves
+{
+    // Адреси гри (v1.7.1846, без ASLR — патч вимикає DYNAMIC_BASE).
+    const uint ImpStrstr = 0x544224, TakeDamage = 0x4ca9f0, RadiusDamage = 0x4a97a0, GetUnit = 0x4a3c90, CreateUnit = 0x49ffe0,
+               ShowEvent = 0x4afc10, LoadEffect = 0x4243e0, LogFn = 0x500490, LoggerVar = 0xED2A04, GepardVar = 0x59587C;
+    public const int TableEntries = 4096, EntrySize = 32;   // таблиця стану юнітів за id: див. Entry*
+    // Entry: +0 SUnit*  +4 тіків уповільнення  +8 швидкість до  +12 поворот до  +16 уповільнена швидкість
+    //        мінер (13): +20/+24 x/z останньої міни  +28 тіків до наступної міни
+    //        радар (14): +20 обзор до  +24 тіків посилення  +28 тіків відкату
+    public const int SlowTicks = 100, ZoneSlowTicks = 10;     // влучання — 5 с; у калюжі — поки стоїш + 0.5 с
+    public const float SlowFactor = 0.4f, MineDist = 2.5f;
+    public const int SalvoSize = 40;                           // ракет у залпі для "salvo"
+    public const int SpecDetonate = 12, SpecMines = 13, SpecRadar = 14;
+    public const float RadarMul = 3f; public const int RadarTicks = 300, RadarCooldown = 900;   // 15 с ×3, відкат 45 с
+    public const int Zones = 64, ZoneTicks = 200; public const float ZoneRadius = 2.5f;          // калюжа — 10 с
+    public const string MudEffect = "arc_sar_folt";
+
+    public record Hook(uint Va, byte[] Old, string Why, uint Target, int Len);
+
+    public const int SpawnScratch = TableEntries * EntrySize;   // після таблиці: дані розстановки стартів (0xA0 Б)
+    public const int ZoneTable = SpawnScratch + 0x200;          // калюжі: Zones × {x, z, тік кінця, гравець}
+    public const int ZoneIdx = ZoneTable + Zones * 16, FxId = ZoneIdx + 4;
+    public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
+        Func<string, uint> str, Func<string, uint> cst)
+    {
+        var a = new Assembler(32);
+        var hooks = new List<Hook>();
+        uint S(string s) => str(s);
+        uint ZONES = tableVa + ZoneTable, ZIDX = tableVa + ZoneIdx, FXID = tableVa + FxId;
+        void Strstr(AssemblerRegister32 unit, string needle)
+        {   // eax = strstr(unit->name, needle); ecx/edx портяться
+            a.push(S(needle)); a.push(__dword_ptr[unit + 0x254]); a.call(__dword_ptr[ImpStrstr]); a.add(esp, 8);
+        }
+        // Рядок у журнал гри (%LOCALAPPDATA%\Kite Games\Swine\log): SLogger::Log(Logger, 0, fmt, a, b). Регістри цілі.
+        void Log(string fmt, Action pushB, Action pushA)
+        {
+            a.pushad(); pushB(); pushA(); a.push(S(fmt)); a.push(0); a.push(__dword_ptr[LoggerVar]); a.call(LogFn); a.add(esp, 20); a.popad();
+        }
+        Action Mem(AssemblerRegister32 r, int off) => () => a.push(__dword_ptr[r + off]);
+        Action Reg(AssemblerRegister32 r) => () => a.push(r);
+        Action Imm(int v) => () => a.push(v);
+
+        // ── підпрограма: уповільнити юніт esi на ecx тіків (не менше вже наявного). Портить eax, edx, xmm0. ──
+        var applySlow = a.CreateLabel("applyslow");
+        {
+            var have = a.CreateLabel(); var refresh = a.CreateLabel(); var ret = a.CreateLabel();
+            a.Label(ref applySlow);
+            a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(ret);
+            a.shl(eax, 5); a.add(eax, tableVa);
+            a.cmp(__dword_ptr[eax], esi); a.je(have);
+            a.mov(__dword_ptr[eax], esi); a.mov(__dword_ptr[eax + 4], 0);
+            a.Label(ref have);
+            a.cmp(__dword_ptr[eax + 4], 0); a.jg(refresh);
+            a.mov(edx, __dword_ptr[esi + 0x68]); a.mov(__dword_ptr[eax + 8], edx);
+            a.mov(edx, __dword_ptr[esi + 0x6C]); a.mov(__dword_ptr[eax + 12], edx);
+            a.movss(xmm0, __dword_ptr[eax + 8]); a.mulss(xmm0, __dword_ptr[cst("slow")]);
+            a.movss(__dword_ptr[esi + 0x68], xmm0); a.movss(__dword_ptr[eax + 16], xmm0);
+            a.movss(xmm0, __dword_ptr[eax + 12]); a.mulss(xmm0, __dword_ptr[cst("slow")]); a.movss(__dword_ptr[esi + 0x6C], xmm0);
+            a.Label(ref refresh);
+            a.cmp(__dword_ptr[eax + 4], ecx); a.jge(ret); a.mov(__dword_ptr[eax + 4], ecx);
+            a.Label(ref ret); a.ret();
+        }
+        // ── підпрограма: eax = 1, якщо гравці eax і edx — одна сторона (той самий гравець або спільна команда ≠ 0).
+        //    ecx = SGameWorld*. Портить edx. ──
+        var sameSide = a.CreateLabel("sameside");
+        {
+            var yes = a.CreateLabel(); var no = a.CreateLabel();
+            a.Label(ref sameSide);
+            a.cmp(eax, edx); a.je(yes);
+            a.cmp(eax, 16); a.jae(no); a.cmp(edx, 16); a.jae(no);
+            a.imul(eax, eax, 0x5C); a.mov(eax, __dword_ptr[ecx + eax + 0x104]);
+            a.imul(edx, edx, 0x5C); a.mov(edx, __dword_ptr[ecx + edx + 0x104]);
+            a.test(eax, eax); a.je(no); a.cmp(eax, edx); a.jne(no);
+            a.Label(ref yes); a.mov(eax, 1); a.ret();
+            a.Label(ref no); a.xor(eax, eax); a.ret();
+        }
+
+        // ── 1. SUnit::Explode: вибух камікадзе ──
+        // Було (0x4bcffa): add esp,8 / test eax,eax / jne 4bd051 — після _stricmp(name, "Akna").
+        var explode = a.CreateLabel("explode");
+        {
+            var noBoom = a.CreateLabel(); var dmgOk = a.CreateLabel();
+            a.Label(ref explode);
+            a.add(esp, 8); a.test(eax, eax); a.je(0x4bd001UL);                    // міна — як було
+            Strstr(edi, "kamikaze"); a.test(eax, eax); a.je(noBoom);
+            Log("ARC: kamikaze %d explodes", Imm(0), Mem(edi, 4));
+            a.push(__dword_ptr[edi + 4]); a.movss(xmm0, __dword_ptr[esi]); a.push(2); a.sub(esp, 0x10);
+            a.movss(xmm1, __dword_ptr[edi + 0xA4]); a.movss(__dword_ptr[esp + 0xC], xmm1);   // радіус = ShotSpread
+            a.movss(__dword_ptr[esp + 8], xmm0);
+            a.movss(xmm0, __dword_ptr[edi + 0x2A0]); a.movss(__dword_ptr[esp + 4], xmm0);
+            a.movss(xmm0, __dword_ptr[ebx]); a.movss(__dword_ptr[esp], xmm0);
+            a.movss(xmm0, __dword_ptr[edi + 0xD0]); a.xorps(xmm2, xmm2); a.comiss(xmm0, xmm2); a.ja(dmgOk);
+            a.movss(xmm0, __dword_ptr[edi + 0xA0]);                                // урон = ExtraArmor, інакше Damage
+            a.Label(ref dmgOk);
+            // RadiusDamage(урон, нападник = сам камікадзе, -1, x, y, z, радіус, 2, id) — як у ванільної міни.
+            // ecx = світ (у першій версії цей mov загубився в коментарі — RadiusDamage отримував сміття й падав).
+            a.push(-1); a.push(__dword_ptr[edi + 4]); a.push(ecx);
+            a.mov(ecx, __dword_ptr[edi]);
+            a.movss(__dword_ptr[esp], xmm0);
+            a.call(RadiusDamage); a.jmp(0x4bd063UL);
+            a.Label(ref noBoom); a.jmp(0x4bd051UL);
+        }
+
+        // ── 2. SUnit::EC_SpecAction (сервер, у кожного гравця): кнопка спецздібності ──
+        // Було (0x4bc190): push esi / mov esi,ecx / cmp dword ptr [esi+3A0h],0. Ванільна таблиця знає типи 0–9;
+        // наші 12–14 мають свої іконки (menu/panel/panel_spec.png, гліфи 48–59) і обробляються тут.
+        var spec = a.CreateLabel("specaction");
+        {
+            var ret = a.CreateLabel(); var orig = a.CreateLabel(); var salvo = a.CreateLabel(); var det = a.CreateLabel();
+            var mines = a.CreateLabel(); var radar = a.CreateLabel(); var salvoOn = a.CreateLabel(); var salvoSet = a.CreateLabel();
+            var rOwn = a.CreateLabel();
+            a.Label(ref spec);
+            a.push(esi); a.mov(esi, ecx);
+            a.cmp(__dword_ptr[esi + 0x3A0], 0); a.je(ret);
+            a.mov(eax, __dword_ptr[esi + 0xC8]);
+            a.cmp(eax, 6); a.je(salvo);
+            a.cmp(eax, SpecDetonate); a.je(det);
+            a.cmp(eax, SpecMines); a.je(mines);
+            a.cmp(eax, SpecRadar); a.je(radar);
+            a.Label(ref orig); a.jmp(0x4bc1a0UL);
+            a.Label(ref ret); a.pop(esi); a.ret();
+
+            // залп: у "salvo" — SalvoSize ракет замість 5
+            a.Label(ref salvo);
+            Strstr(esi, "salvo"); a.test(eax, eax); a.je(orig);
+            a.mov(edx, __dword_ptr[esi + 0x394]); a.mov(eax, 1); a.cmp(edx, 1); a.jg(salvoSet);
+            a.Label(ref salvoOn); a.mov(eax, SalvoSize);
+            a.Label(ref salvoSet);
+            a.mov(__dword_ptr[esi + 0x394], eax);
+            a.xor(eax, eax); a.cmp(edx, 1); a.setg(al); a.add(eax, 0xE);              // подія 0Eh — увімкнено, 0Fh — вимкнено
+            a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(__dword_ptr[esi + 4]); a.call(ShowEvent);
+            a.mov(eax, __dword_ptr[esi + 0x98]); a.mov(__dword_ptr[esi + 0x398], -1); a.mov(__dword_ptr[esi + 0x388], eax);
+            Log("ARC: unit %d salvo = %d", Mem(esi, 0x394), Mem(esi, 4));
+            a.jmp(ret);
+
+            // підрив: TakeDamage(1e6, свій id, &позиція, 2, -1, false) → загибель → Explode → вибух
+            a.Label(ref det);
+            Log("ARC: unit %d detonated by button%s", Imm((int)S("")), Mem(esi, 4));
+            a.push(0); a.push(-1); a.push(2); a.lea(eax, __dword_ptr[esi + 0x264]); a.push(eax);
+            a.push(__dword_ptr[esi + 4]); a.push(0x49742400);                          // 1 000 000.0f
+            a.mov(ecx, esi); a.call(TakeDamage);
+            a.jmp(ret);
+
+            // мінування на ходу: перемикач
+            a.Label(ref mines);
+            a.xor(__dword_ptr[esi + 0x3A4], 1);
+            Log("ARC: unit %d mining = %d", Mem(esi, 0x3A4), Mem(esi, 4));
+            a.jmp(ret);
+
+            // радар: обзор ×RadarMul на RadarTicks, потім відкат RadarCooldown
+            a.Label(ref radar);
+            a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(ret);
+            a.shl(eax, 5); a.add(eax, tableVa);
+            a.cmp(__dword_ptr[eax], esi); a.je(rOwn);
+            a.mov(__dword_ptr[eax], esi); a.mov(__dword_ptr[eax + 4], 0); a.mov(__dword_ptr[eax + 24], 0); a.mov(__dword_ptr[eax + 28], 0);
+            a.Label(ref rOwn);
+            a.mov(edx, __dword_ptr[eax + 24]); a.or(edx, __dword_ptr[eax + 28]); a.jne(ret);   // ще діє або відкат
+            a.mov(edx, __dword_ptr[esi + 0x44]); a.mov(__dword_ptr[eax + 20], edx);
+            a.movss(xmm0, __dword_ptr[esi + 0x44]); a.mulss(xmm0, __dword_ptr[cst("radarmul")]); a.movss(__dword_ptr[esi + 0x44], xmm0);
+            a.mov(__dword_ptr[eax + 24], RadarTicks); a.mov(__dword_ptr[esi + 0x3A4], 1);
+            Log("ARC: unit %d radar on%s", Imm((int)S("")), Mem(esi, 4));
+            a.jmp(ret);
+        }
+
+        // ── 3. SUnit::SetSpecialState (стан з інтерфейсу) для спецрежиму 6: у "salvo" — SalvoSize ракет ──
+        // Було (0x4c9e96): mov dword ptr [ecx+394h],5
+        var salvoUi = a.CreateLabel("salvoui");
+        {
+            var five = a.CreateLabel(); var set = a.CreateLabel();
+            a.Label(ref salvoUi);
+            a.push(ecx); Strstr(ecx, "salvo"); a.pop(ecx);
+            a.test(eax, eax); a.je(five); a.mov(eax, SalvoSize); a.jmp(set);
+            a.Label(ref five); a.mov(eax, 5);
+            a.Label(ref set); a.mov(__dword_ptr[ecx + 0x394], eax); a.jmp(0x4c9eacUL);
+        }
+
+        // ── 4. SUnit::AimTarget: наведення корпусом ──
+        // Для "hullaim" башта стоїть уздовж корпусу, а на ціль доводиться корпус зі швидкістю TurretSpeed.
+        var aim = a.CreateLabel("aim");
+        {
+            var orig = a.CreateLabel(); var n1 = a.CreateLabel(); var n2 = a.CreateLabel(); var partial = a.CreateLabel();
+            var pos = a.CreateLabel(); var n3 = a.CreateLabel(); var n4 = a.CreateLabel();
+            a.Label(ref aim);
+            a.push(ebp); a.mov(ebp, esp); a.push(ecx);
+            Strstr(ecx, "hullaim"); a.pop(ecx); a.test(eax, eax); a.je(orig);
+            a.movss(xmm0, __dword_ptr[ebp + 8]); a.subss(xmm0, __dword_ptr[ecx + 0x270]);
+            a.comiss(xmm0, __dword_ptr[cst("pi")]); a.jbe(n1); a.subss(xmm0, __dword_ptr[cst("2pi")]); a.Label(ref n1);
+            a.comiss(xmm0, __dword_ptr[cst("-pi")]); a.jae(n2); a.addss(xmm0, __dword_ptr[cst("2pi")]); a.Label(ref n2);
+            a.movss(xmm1, __dword_ptr[ecx + 0x90]);
+            a.movaps(xmm2, xmm0); a.andps(xmm2, __xmmword_ptr[cst("absmask")]);
+            a.comiss(xmm1, xmm2); a.jb(partial);
+            a.movss(xmm0, __dword_ptr[ebp + 8]); a.movss(__dword_ptr[ecx + 0x270], xmm0); a.movss(__dword_ptr[ecx + 0x274], xmm0);
+            a.mov(al, 1); a.pop(ebp); a.ret(4);
+            a.Label(ref partial);
+            a.xorps(xmm3, xmm3); a.comiss(xmm0, xmm3); a.jae(pos); a.xorps(xmm1, __xmmword_ptr[cst("signmask")]);
+            a.Label(ref pos);
+            a.movss(xmm0, __dword_ptr[ecx + 0x270]); a.addss(xmm0, xmm1);
+            a.comiss(xmm0, __dword_ptr[cst("pi")]); a.jbe(n3); a.subss(xmm0, __dword_ptr[cst("2pi")]); a.Label(ref n3);
+            a.comiss(xmm0, __dword_ptr[cst("-pi")]); a.jae(n4); a.addss(xmm0, __dword_ptr[cst("2pi")]); a.Label(ref n4);
+            a.movss(__dword_ptr[ecx + 0x270], xmm0); a.movss(__dword_ptr[ecx + 0x274], xmm0);
+            a.xor(al, al); a.pop(ebp); a.ret(4);
+            a.Label(ref orig);
+            a.movss(xmm6, __dword_ptr[ebp + 8]); a.jmp(0x4b6e78UL);
+        }
+
+        // ── 5. SUnit::TakeDamage: уповільнення від влучання ──
+        // Влучання юніта з "slow" в імені по чужій стороні: швидкість і поворот ×SlowFactor на SlowTicks.
+        var takeDmg = a.CreateLabel("takedamage");
+        {
+            var done = a.CreateLabel();
+            a.Label(ref takeDmg);
+            a.push(ebp); a.mov(ebp, esp); a.pushad();
+            a.mov(esi, ecx);
+            a.cmp(__byte_ptr[esi + 0x57], 0); a.jne(done);
+            a.mov(eax, __dword_ptr[ebp + 0xC]); a.test(eax, eax); a.js(done);
+            a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(0); a.call(GetUnit);
+            a.test(eax, eax); a.je(done); a.mov(edi, eax);
+            Strstr(edi, "slow"); a.test(eax, eax); a.je(done);
+            a.mov(eax, __dword_ptr[edi + 0x258]); a.mov(edx, __dword_ptr[esi + 0x258]); a.mov(ecx, __dword_ptr[esi]);
+            a.call(sameSide); a.test(eax, eax); a.jne(done);
+            a.mov(ecx, SlowTicks); a.call(applySlow);
+            Log("ARC: unit %d slowed by hit of %d", Mem(edi, 4), Mem(esi, 4));
+            a.Label(ref done);
+            a.popad(); a.and(esp, -8); a.sub(esp, 0x30); a.jmp(0x4ca9f9UL);
+        }
+
+        // ── 6. SProjectile::ServerRefresh, вибух снаряда на землі: грязьова калюжа ──
+        // Було (0x4b5b4e): push dword ptr [esi+2Ch] / movss xmm0,[esi+58h] — перед RadiusDamage.
+        // Снаряд юніта з "slow" лишає калюжу (ZoneRadius, ZoneTicks) і пляму на землі (ефект MudEffect з effects.ini).
+        var mud = a.CreateLabel("mud");
+        {
+            var skip = a.CreateLabel(); var haveFx = a.CreateLabel(); var noFx = a.CreateLabel();
+            a.Label(ref mud);
+            a.pushad();
+            a.mov(eax, __dword_ptr[esi + 0x28]); a.test(eax, eax); a.js(skip);
+            a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(0); a.call(GetUnit);
+            a.test(eax, eax); a.je(skip); a.mov(edi, eax);
+            Strstr(edi, "slow"); a.test(eax, eax); a.je(skip);
+            a.mov(ebx, __dword_ptr[ZIDX]); a.inc(ebx); a.and(ebx, Zones - 1); a.mov(__dword_ptr[ZIDX], ebx);
+            a.shl(ebx, 4); a.add(ebx, ZONES);
+            a.mov(eax, __dword_ptr[esi + 0xC]); a.mov(__dword_ptr[ebx], eax);
+            a.mov(eax, __dword_ptr[esi + 0x14]); a.mov(__dword_ptr[ebx + 4], eax);
+            a.mov(ecx, __dword_ptr[esi]); a.mov(eax, __dword_ptr[ecx + 0x16F4]); a.add(eax, ZoneTicks); a.mov(__dword_ptr[ebx + 8], eax);
+            a.mov(eax, __dword_ptr[edi + 0x258]); a.mov(__dword_ptr[ebx + 12], eax);
+            Log("ARC: mud puddle by unit %d, ends at tick %d", Mem(ebx, 8), Mem(edi, 4));
+            // пляма: ефект вантажимо при першій потребі (id+1 у FXID; 0 — ще не вантажили)
+            a.mov(eax, __dword_ptr[FXID]); a.test(eax, eax); a.jne(haveFx);
+            a.mov(ecx, __dword_ptr[GepardVar]); a.test(ecx, ecx); a.je(skip);
+            a.mov(ecx, __dword_ptr[ecx + 0x1208]); a.test(ecx, ecx); a.je(skip);
+            a.push(unchecked((int)0xBF800000)); a.push(unchecked((int)0xBF800000)); a.push(0); a.push(S(MudEffect));
+            a.call(LoadEffect); a.inc(eax); a.mov(__dword_ptr[FXID], eax);
+            a.Label(ref haveFx);
+            a.dec(eax); a.js(skip);
+            a.mov(ecx, __dword_ptr[GepardVar]); a.test(ecx, ecx); a.je(skip);
+            a.mov(edx, __dword_ptr[ecx]);
+            a.push(0); a.push(__dword_ptr[esi + 0x14]); a.push(__dword_ptr[esi + 0x10]); a.push(__dword_ptr[esi + 0xC]); a.push(eax);
+            a.call(__dword_ptr[edx + 0x280]);
+            a.Label(ref skip);
+            a.popad(); a.push(__dword_ptr[esi + 0x2C]); a.movss(xmm0, __dword_ptr[esi + 0x58]); a.jmp(0x4b5b56UL);
+        }
+
+        // ── 7. SUnit::ServerRefresh (кожен тік кожного юніта) ──
+        // кінець уповільнення; калюжі; міни на ходу (спецздібність 13); таймер радара (14)
+        var tick = a.CreateLabel("tick");
+        {
+            var zones = a.CreateLabel(); var zl = a.CreateLabel(); var zn = a.CreateLabel(); var zdone = a.CreateLabel();
+            var mines = a.CreateLabel(); var outL = a.CreateLabel(); var own = a.CreateLabel(); var cd0 = a.CreateLabel(); var noset = a.CreateLabel();
+            var radar = a.CreateLabel(); var rCd = a.CreateLabel(); var rState = a.CreateLabel(); var rOn = a.CreateLabel();
+            a.Label(ref tick);
+            a.pushad(); a.mov(esi, ecx);
+            a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(outL);
+            a.shl(eax, 5); a.lea(edi, __dword_ptr[eax + tableVa]);
+            // кінець уповільнення
+            a.cmp(__dword_ptr[edi], esi); a.jne(zones);
+            a.mov(eax, __dword_ptr[edi + 4]); a.test(eax, eax); a.jle(zones);
+            a.dec(eax); a.mov(__dword_ptr[edi + 4], eax); a.jne(zones);
+            a.mov(eax, __dword_ptr[esi + 0x68]); a.cmp(eax, __dword_ptr[edi + 16]); a.jne(zones);
+            a.mov(eax, __dword_ptr[edi + 8]); a.mov(__dword_ptr[esi + 0x68], eax);
+            a.mov(eax, __dword_ptr[edi + 12]); a.mov(__dword_ptr[esi + 0x6C], eax);
+            // калюжі: юніт чужої сторони всередині — уповільнений, поки там
+            a.Label(ref zones);
+            a.cmp(__dword_ptr[esi + 0x68], 0); a.je(zdone);                                   // нерухоме (міни, будівлі)
+            a.xor(ebx, ebx);
+            a.Label(ref zl);
+            a.mov(ebp, ebx); a.shl(ebp, 4); a.add(ebp, ZONES);
+            a.mov(ecx, __dword_ptr[esi]); a.mov(eax, __dword_ptr[ecx + 0x16F4]); a.cmp(__dword_ptr[ebp + 8], eax); a.jle(zn);
+            a.mov(eax, __dword_ptr[ebp + 12]); a.mov(edx, __dword_ptr[esi + 0x258]); a.call(sameSide); a.test(eax, eax); a.jne(zn);
+            a.movss(xmm0, __dword_ptr[esi + 0x264]); a.subss(xmm0, __dword_ptr[ebp]); a.mulss(xmm0, xmm0);
+            a.movss(xmm1, __dword_ptr[esi + 0x26C]); a.subss(xmm1, __dword_ptr[ebp + 4]); a.mulss(xmm1, xmm1);
+            a.addss(xmm0, xmm1); a.comiss(xmm0, __dword_ptr[cst("zoner2")]); a.jae(zn);
+            a.mov(ecx, ZoneSlowTicks); a.call(applySlow); a.jmp(zdone);
+            a.Label(ref zn); a.inc(ebx); a.cmp(ebx, Zones); a.jl(zl);
+            a.Label(ref zdone);
+            a.mov(eax, __dword_ptr[esi + 0xC8]);
+            a.cmp(eax, SpecRadar); a.je(radar);
+            a.cmp(eax, SpecMines); a.jne(outL);
+            // міни на ходу
+            a.Label(ref mines);
+            a.cmp(__dword_ptr[esi + 0x3A4], 1); a.jne(outL);
+            a.cmp(__dword_ptr[esi + 0x290], 0); a.jle(outL);
+            a.cmp(__dword_ptr[edi], esi); a.je(own);
+            a.mov(__dword_ptr[edi], esi); a.mov(__dword_ptr[edi + 4], 0); a.mov(__dword_ptr[edi + 28], 0);
+            a.mov(eax, __dword_ptr[esi + 0x264]); a.mov(__dword_ptr[edi + 20], eax);
+            a.mov(eax, __dword_ptr[esi + 0x26C]); a.mov(__dword_ptr[edi + 24], eax);
+            a.Label(ref own);
+            a.mov(eax, __dword_ptr[edi + 28]); a.test(eax, eax); a.jle(cd0);
+            a.dec(eax); a.mov(__dword_ptr[edi + 28], eax); a.jmp(outL);
+            a.Label(ref cd0);
+            a.movss(xmm0, __dword_ptr[esi + 0x264]); a.subss(xmm0, __dword_ptr[edi + 20]); a.mulss(xmm0, xmm0);
+            a.movss(xmm1, __dword_ptr[esi + 0x26C]); a.subss(xmm1, __dword_ptr[edi + 24]); a.mulss(xmm1, xmm1);
+            a.addss(xmm0, xmm1); a.comiss(xmm0, __dword_ptr[cst("minedist2")]); a.jb(outL);
+            a.mov(eax, __dword_ptr[esi + 0x264]); a.mov(__dword_ptr[edi + 20], eax);
+            a.mov(eax, __dword_ptr[esi + 0x26C]); a.mov(__dword_ptr[edi + 24], eax);
+            a.mov(eax, __dword_ptr[esi + 0x98]); a.mov(__dword_ptr[edi + 28], eax);
+            // CreateUnit(гравець, "Akna", x, z, 0, NULL, 0, 0.0, false, 0) — як ванільний мінер (0x4c8ceb)
+            a.push(0); a.push(0); a.push(0); a.push(0); a.push(0); a.push(0);
+            a.push(__dword_ptr[esi + 0x26C]); a.push(__dword_ptr[esi + 0x264]);
+            a.push(S("Akna")); a.push(__dword_ptr[esi + 0x258]);
+            a.mov(ecx, __dword_ptr[esi]); a.call(CreateUnit);
+            a.push(eax); a.push(0); a.mov(ecx, __dword_ptr[esi]); a.call(GetUnit);
+            a.test(eax, eax); a.je(noset); a.mov(ecx, __dword_ptr[esi + 4]); a.mov(__dword_ptr[eax + 0x314], ecx);
+            a.Label(ref noset);
+            a.dec(__dword_ptr[esi + 0x290]);
+            Log("ARC: unit %d laid a mine, %d left", Mem(esi, 0x290), Mem(esi, 4));
+            a.jmp(outL);
+            // радар: посилення → відкат → готовий; стан кнопки [3A4h] = 1, поки не готовий
+            a.Label(ref radar);
+            a.cmp(__dword_ptr[edi], esi); a.jne(outL);
+            a.mov(eax, __dword_ptr[edi + 24]); a.test(eax, eax); a.jle(rCd);
+            a.dec(eax); a.mov(__dword_ptr[edi + 24], eax); a.jne(rState);
+            a.mov(eax, __dword_ptr[edi + 20]); a.mov(__dword_ptr[esi + 0x44], eax);
+            a.mov(__dword_ptr[edi + 28], RadarCooldown);
+            Log("ARC: unit %d radar off, cooldown%s", Imm((int)S("")), Mem(esi, 4));
+            a.jmp(rState);
+            a.Label(ref rCd);
+            a.mov(eax, __dword_ptr[edi + 28]); a.test(eax, eax); a.jle(rState);
+            a.dec(eax); a.mov(__dword_ptr[edi + 28], eax);
+            a.Label(ref rState);
+            a.mov(eax, __dword_ptr[edi + 24]); a.or(eax, __dword_ptr[edi + 28]); a.je(rOn);
+            a.mov(eax, 1);
+            a.Label(ref rOn); a.mov(__dword_ptr[esi + 0x3A4], eax);
+            a.Label(ref outL);
+            a.popad(); a.push(ebp); a.mov(ebp, esp); a.and(esp, -8); a.jmp(0x4c7236UL);
+        }
+
+        // ── 8. SGameWorld::ServerInit: союзники стартують поруч ──
+        // Було (0x4aca0b): jmp 4acb2e — кінець звичайної роздачі стартів (гравець N → "start N+1"), коли
+        // випадкову розстановку в лобі вимкнено. Перед переходом переставляємо: перший гравець команди лишається
+        // на своєму старті, кожен наступний бере вільний старт, найближчий до нього. Гравці без команди — як були.
+        var spawn = a.CreateLabel("spawn");
+        {
+            uint sc = tableVa + (uint)SpawnScratch, CX = sc, CZ = sc + 32, VALID = sc + 64, USED = sc + 96, ANCH = sc + 128;
+            var kloop = a.CreateLabel(); var aloop = a.CreateLabel(); var anext = a.CreateLabel(); var knext = a.CreateLabel();
+            var init = a.CreateLabel(); var pass = a.CreateLabel(); var ploop = a.CreateLabel(); var pnext = a.CreateLabel();
+            var noAnchor = a.CreateLabel(); var kk = a.CreateLabel(); var kkNext = a.CreateLabel(); var chosen = a.CreateLabel();
+            var firstFree = a.CreateLabel(); var ff = a.CreateLabel(); var ffNext = a.CreateLabel(); var done = a.CreateLabel();
+            a.Label(ref spawn);
+            a.pushad(); a.mov(ebp, edi);
+            // 1) центри стартових областей "start 1".."start 8"
+            a.xor(ebx, ebx);
+            a.Label(ref kloop);
+            a.mov(__dword_ptr[ebx * 4 + VALID], 0); a.mov(__dword_ptr[ebx * 4 + USED], 0);
+            a.xor(esi, esi);
+            a.Label(ref aloop);
+            a.cmp(esi, __dword_ptr[ebp + 0x500]); a.jge(knext);
+            a.mov(eax, __dword_ptr[ebp + 0x4FC]); a.lea(ecx, __dword_ptr[esi + esi * 8]); a.lea(eax, __dword_ptr[eax + ecx * 4]);
+            a.cmp(__dword_ptr[eax], 0x7FFFFFFF); a.jne(anext);
+            a.push(eax); a.push(__dword_ptr[ebx * 4 + cst("startnames")]); a.push(__dword_ptr[eax + 0x14]);
+            a.call(__dword_ptr[0x544460]); a.add(esp, 8); a.pop(ecx);                 // _stricmp(name, "start k")
+            a.test(eax, eax); a.jne(anext);
+            a.mov(eax, __dword_ptr[ecx + 4]); a.add(eax, __dword_ptr[ecx + 0xC]); a.mov(__dword_ptr[ebx * 4 + CX], eax);
+            a.mov(eax, __dword_ptr[ecx + 8]); a.add(eax, __dword_ptr[ecx + 0x10]); a.mov(__dword_ptr[ebx * 4 + CZ], eax);
+            a.mov(__dword_ptr[ebx * 4 + VALID], 1); a.jmp(knext);
+            a.Label(ref anext); a.inc(esi); a.jmp(aloop);
+            a.Label(ref knext); a.inc(ebx); a.cmp(ebx, 8); a.jl(kloop);
+            a.xor(ebx, ebx);
+            a.Label(ref init); a.mov(__dword_ptr[ebx * 4 + ANCH], -1); a.inc(ebx); a.cmp(ebx, 16); a.jl(init);
+            // 2) два проходи: спершу гравці (тип 0/1), потім порожні слоти
+            a.xor(edx, edx);                                                                // edx = номер проходу
+            a.Label(ref pass);
+            a.xor(esi, esi);                                                                // esi = гравець
+            a.Label(ref ploop);
+            a.imul(edi, esi, 0x5C); a.add(edi, ebp);                                       // edi = &гравець - 0xF8
+            a.xor(eax, eax); a.cmp(__dword_ptr[edi + 0x100], 1); a.setbe(al);               // eax = активний
+            a.xor(eax, 1); a.cmp(eax, edx); a.jne(pnext);                                    // прохід 0 — активні, 1 — решта
+            a.mov(ecx, __dword_ptr[edi + 0x104]); a.and(ecx, 15);                            // ecx = команда
+            a.test(ecx, ecx); a.je(noAnchor);
+            a.mov(eax, __dword_ptr[ecx * 4 + ANCH]); a.test(eax, eax); a.js(noAnchor);
+            // найближчий вільний старт до якоря eax
+            a.push(edx); a.push(ecx);
+            a.cvtsi2ss(xmm6, __dword_ptr[eax * 4 + CX]); a.cvtsi2ss(xmm7, __dword_ptr[eax * 4 + CZ]);
+            a.mov(ebx, -1); a.movss(xmm5, __dword_ptr[cst("big")]); a.xor(eax, eax);
+            a.Label(ref kk);
+            a.cmp(__dword_ptr[eax * 4 + VALID], 0); a.je(kkNext); a.cmp(__dword_ptr[eax * 4 + USED], 0); a.jne(kkNext);
+            a.cvtsi2ss(xmm0, __dword_ptr[eax * 4 + CX]); a.subss(xmm0, xmm6); a.mulss(xmm0, xmm0);
+            a.cvtsi2ss(xmm1, __dword_ptr[eax * 4 + CZ]); a.subss(xmm1, xmm7); a.mulss(xmm1, xmm1); a.addss(xmm0, xmm1);
+            a.comiss(xmm0, xmm5); a.jae(kkNext); a.movss(xmm5, xmm0); a.mov(ebx, eax);
+            a.Label(ref kkNext); a.inc(eax); a.cmp(eax, 8); a.jl(kk);
+            a.pop(ecx); a.pop(edx); a.jmp(chosen);
+            // без якоря: свій старт, якщо вільний, інакше перший вільний
+            a.Label(ref noAnchor);
+            a.mov(ebx, __dword_ptr[edi + 0x10C]); a.cmp(ebx, 8); a.jae(firstFree);
+            a.cmp(__dword_ptr[ebx * 4 + VALID], 0); a.je(firstFree); a.cmp(__dword_ptr[ebx * 4 + USED], 0); a.je(chosen);
+            a.Label(ref firstFree); a.mov(ebx, -1); a.xor(eax, eax);
+            a.Label(ref ff);
+            a.cmp(__dword_ptr[eax * 4 + VALID], 0); a.je(ffNext); a.cmp(__dword_ptr[eax * 4 + USED], 0); a.jne(ffNext);
+            a.mov(ebx, eax); a.jmp(chosen);
+            a.Label(ref ffNext); a.inc(eax); a.cmp(eax, 8); a.jl(ff);
+            a.Label(ref chosen);
+            a.test(ebx, ebx); a.js(pnext);                                                   // немає вільних — як було
+            a.mov(__dword_ptr[ebx * 4 + USED], 1); a.mov(__dword_ptr[edi + 0x10C], ebx);
+            a.test(ecx, ecx); a.je(pnext); a.cmp(__dword_ptr[ecx * 4 + ANCH], 0); a.jge(pnext); a.mov(__dword_ptr[ecx * 4 + ANCH], ebx);
+            a.Label(ref pnext); a.inc(esi); a.cmp(esi, 8); a.jl(ploop);
+            a.inc(edx); a.cmp(edx, 2); a.jl(pass);
+            a.Label(ref done);
+            a.popad(); a.jmp(0x4acb2eUL);
+        }
+
+        // ── 8a. SGameWorld::ServerInit (початок): чистимо наш стан — таблиця юнітів і калюжі живуть у пам'яті
+        //    між матчами, і без цього в новій грі могли б «ожити» старі калюжі чи таймери радара. ──
+        // Було (0x4ac410): push ebp / mov ebp,esp / push -1
+        var worldInit = a.CreateLabel("worldinit");
+        {
+            a.Label(ref worldInit);
+            a.pushad(); a.cld();
+            a.mov(edi, tableVa); a.xor(eax, eax); a.mov(ecx, (TableEntries * EntrySize) / 4); a.rep.stosd();
+            a.mov(edi, ZONES); a.mov(ecx, Zones * 4 + 1); a.rep.stosd();                    // калюжі + індекс
+            a.popad(); a.push(ebp); a.mov(ebp, esp); a.push(-1); a.jmp(0x4ac415UL);
+        }
+
+        // ── 9. SGameView::Create: атлас кнопок спецздібностей panel_spec.png ──
+        // LoadFixedFont(ім'я, 35, 35, 7 стовпців, к-сть клітинок, таблиця клітинка→гліф, HD). Таблиця була на стеку
+        // (48 клітинок); тепер — наша (cst "glyphs"), клітинок більше, атлас 512×1024 з іконками типів 12–14.
+        // Було (0x4e0191): lea edx,[ebp-34h] / push 1 / push edx
+        var glyphs = a.CreateLabel("glyphs");
+        {
+            a.Label(ref glyphs);
+            a.push(1); a.push(cst("glyphs")); a.jmp(0x4e0197UL);
+        }
+
+        // ── 10. SQuickMarket::Create, список класів для кнопок: пропускаємо клас 12 (MovingForce) ──
+        // Цикл тепер іде до N класів (раніше зупинявся на 12). Було (0x4f5217): cmp al,'-' / je 4f5254 / mov eax,[ebx+28ACh]
+        var qmSkip = a.CreateLabel("qmskip");
+        {
+            a.Label(ref qmSkip);
+            a.cmp(al, 0x2D); a.je(0x4f5254UL);
+            a.cmp(esi, 12); a.je(0x4f5254UL);
+            a.mov(eax, __dword_ptr[ebx + 0x28AC]); a.jmp(0x4f5221UL);
+        }
+
+        var w = new ByteWriter();
+        var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
+        ulong L(Label l) => res.GetLabelRIP(l);
+        hooks.Add(new Hook(0x4bcffa, Convert.FromHexString("83C40885C07550"), "SUnit::Explode → вибух камікадзе", (uint)L(explode), 7));
+        hooks.Add(new Hook(0x4bc190, Convert.FromHexString("568BF183BEA003000000"), "SUnit::EC_SpecAction → залп 40, підрив, мінування, радар", (uint)L(spec), 10));
+        hooks.Add(new Hook(0x4c9e96, Convert.FromHexString("C7819403000005000000"), "SetSpecialState спецрежим 6 → залп salvo", (uint)L(salvoUi), 10));
+        hooks.Add(new Hook(0x4b6e70, Convert.FromHexString("558BECF30F107508"), "SUnit::AimTarget → наведення корпусом (hullaim)", (uint)L(aim), 8));
+        hooks.Add(new Hook(0x4ca9f0, Convert.FromHexString("558BEC83E4F883EC30"), "SUnit::TakeDamage → уповільнення (slow)", (uint)L(takeDmg), 9));
+        hooks.Add(new Hook(0x4b5b4e, Convert.FromHexString("FF762CF30F104658"), "SProjectile::ServerRefresh → грязьова калюжа (slow)", (uint)L(mud), 8));
+        hooks.Add(new Hook(0x4aca0b, Convert.FromHexString("E91E010000"), "SGameWorld::ServerInit → союзники стартують поруч", (uint)L(spawn), 5));
+        hooks.Add(new Hook(0x4c7230, Convert.FromHexString("558BEC83E4F8"), "SUnit::ServerRefresh → уповільнення, калюжі, міни на ходу, радар", (uint)L(tick), 6));
+        hooks.Add(new Hook(0x4f5217, Convert.FromHexString("3C2D74398B83AC280000"), "SQuickMarket::Create → без класу 12 у списку кнопок", (uint)L(qmSkip), 10));
+        hooks.Add(new Hook(0x4ac410, Convert.FromHexString("558BEC6AFF"), "SGameWorld::ServerInit → скидання стану вставок", (uint)L(worldInit), 5));
+        hooks.Add(new Hook(0x4e0191, Convert.FromHexString("8D55CC6A0152"), "SGameView::Create → атлас кнопок спецздібностей з типами 12–14", (uint)L(glyphs), 6));
+
+        var dec = Iced.Intel.Decoder.Create(32, new ByteArrayCodeReader(w.ToArray())); dec.IP = codeVa;
+        var fmt = new MasmFormatter(); var so = new StringOutput(); var sb = new System.Text.StringBuilder();
+        while (dec.IP < codeVa + (uint)w.Count) { var ins = dec.Decode(); fmt.Format(ins, so); sb.AppendLine($"  {ins.IP:x8}  {so.ToStringAndReset()}"); }
+        return (w.ToArray(), hooks, sb.ToString());
+    }
+
+    // Атлас panel_spec.png: клітинка i (7 у рядку, 35×35 логічних px) показує гліф table[i]. Гліф кнопки = (тип·2 + стан)·2
+    // (+1 — під курсором). Перші 48 — як у грі; 48 — порожня; 49–60 — гліфи 48–59 (типи 12, 13, 14 × стан 0/1 × 2).
+    public static readonly byte[] GlyphTable = BuildGlyphs();
+    static byte[] BuildGlyphs()
+    {
+        var t = new List<byte> { 0x00, 0x02, 0x04, 0x06, 0x01, 0x03, 0x15, 0x08, 0x0A, 0x0C, 0x0E, 0x09, 0x0B, 0x17, 0x10, 0x12,
+            0x14, 0x16, 0x11, 0x13, 0x2B, 0x18, 0x1A, 0x28, 0x2A, 0x19, 0x1B, 0x29, 0x1C, 0x1E, 0x2C, 0x2D, 0x1D, 0x1F, 0x2E, 0x20,
+            0x22, 0x21, 0x23, 0x05, 0x07, 0x2F, 0x24, 0x26, 0x25, 0x27, 0x0D, 0x0F };
+        t.Add(0xFF);
+        for (int g = 48; g < 60; g++) t.Add((byte)g);
+        return t.ToArray();
+    }
+
+    sealed class ByteWriter : CodeWriter
+    {
+        readonly List<byte> b = new();
+        public override void WriteByte(byte value) => b.Add(value);
+        public int Count => b.Count;
+        public byte[] ToArray() => b.ToArray();
+    }
+}

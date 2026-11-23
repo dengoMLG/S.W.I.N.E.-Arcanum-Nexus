@@ -1,0 +1,24 @@
+# Файлы игры и всё, что из них собрано — не распространять
+/_extracted/
+/mods-test/
+/re/
+modpack/out/
+modpack/mods/*/gamedata/
+*.pak
+*.exe.orig
+swineHD*.exe
+
+# Скриншоты и концепты (большие)
+Экранчики/
+Экранчики (Новые танки)/
+Новая папка/
+screens.zip
+
+# Сборки .NET
+tools/re/bin/
+tools/re/bin-patchgen/
+**/obj/
+**/bin/
+
+node_modules/
+*.log
