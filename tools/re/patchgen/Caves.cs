@@ -29,6 +29,9 @@ static class Caves
     public const int SalvoSize = 40;                           // ракет у залпі для "salvo"
     public const int SpecDetonate = 12, SpecMines = 13, SpecRadar = 14;
     public const float RadarMul = 3f; public const int RadarTicks = 300, RadarCooldown = 900;   // 15 с ×3, відкат 45 с
+    public const int RadarRevealTicks = 12000;                                                 // #12: Ушастик стає видимим на мапі лише через 10 хв бою (10×60×20)
+    public const int VisMaxR = 64;                                                             // #12: розширені таблиці DrawVisMap (було 36 → Sight 18; тепер 64 → Sight 31.5)
+    public const float VisMaxSight = 31.5f;
     public const int Zones = 64, ZoneTicks = 200; public const float ZoneRadius = 2.5f;          // калюжа — 10 с
     public const string MudEffect = "arc_sar_folt";
 
@@ -42,7 +45,13 @@ static class Caves
     public const int CoNames = CoState + 0x20;                  // лобі: 8 × 128 Б — «ім'я армії + ім'я другого командира»
     public const int MenuVer = CoNames + 0x400;                 // головне меню: кадр рядка версії мода + 1, SMenu*
     public const int RadarSee = MenuVer + 8;
-    public const int RaceArg = MenuVer + 0x10;                  // «+race R» (перевірка): 3 dword                    // DrawVisMap: 1 — поточний юніт з увімкненим радаром (огляд без перешкод)
+    public const int RaceArg = MenuVer + 0x10;                  // «+race R» (перевірка): 3 dword
+    // #12: розширені таблиці CreateVisMap і буфери h/m для DrawVisMapAid/DetAid (у ванілі 36 → переповнення на SuperWindow* 0xED2344)
+    public const int VisBase = SpawnScratch + 0x1000;
+    public const int VisTbl1 = VisBase, VisTbl2 = VisTbl1 + 0x2100, VisTbl3 = VisTbl2 + 0x2100;   // по 2112 float (> 63·66/2 = 2079)
+    public const int VisAidH = VisTbl3 + 0x2100 + 0x10, VisAidM = VisAidH + 0x110;                // по 64 float (+16 Б запасу спереду для [-1])
+    public const int VisDetH = VisAidM + 0x110, VisDetM = VisDetH + 0x110;
+    public const int BssEnd = VisDetM + 0x120;
     public const int AirPricePig = 50, AirPriceRabbit = 100;    // авіаудар, SP (#10: кролики +50)
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
@@ -392,7 +401,20 @@ static class Caves
             Log("ARC: unit %d laid a mine, %d left", Mem(esi, 0x290), Mem(esi, 4));
             a.jmp(outL);
             // радар: посилення → відкат → готовий; стан кнопки [3A4h] = 1, поки не готовий
+            // #12: Ушастик відкривається ворогу на мапі лише через 10 хв бою (12000 тіків), не зі старту.
             a.Label(ref radar);
+            {
+                var visDone = a.CreateLabel(); var noSkin = a.CreateLabel();
+                a.cmp(__byte_ptr[esi + 0x56], 0); a.jne(visDone);
+                a.mov(ecx, __dword_ptr[esi]);
+                a.cmp(__dword_ptr[ecx + 0x16F4], RadarRevealTicks); a.jl(visDone);
+                a.mov(__byte_ptr[esi + 0x56], 1);
+                a.mov(ecx, __dword_ptr[esi + 0x128]); a.test(ecx, ecx); a.jz(noSkin);
+                a.mov(eax, __dword_ptr[ecx]); a.push(0); a.call(__dword_ptr[eax + 0x9C]);
+                a.Label(ref noSkin);
+                Log("ARC: unit %d always visible at tick %d", () => { a.mov(eax, __dword_ptr[esi]); a.push(__dword_ptr[eax + 0x16F4]); }, Mem(esi, 4));
+                a.Label(ref visDone);
+            }
             a.cmp(__dword_ptr[edi], esi); a.jne(outL);
             a.mov(eax, __dword_ptr[edi + 24]); a.test(eax, eax); a.jle(rCd);
             a.dec(eax); a.mov(__dword_ptr[edi + 24], eax); a.jne(rState);
@@ -1127,38 +1149,96 @@ static class Caves
             a.cmp(eax, edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
         }
 
-        // ── Радар Ушастика (#10): поки посилення діє, огляд не закривають дерева й пагорби. ──
-        // SGameWorld::DrawVisMap (0x4a0703, ecx = юніт, перед movss xmm0,[ecx+44h]): прапорець RadarSee = 1, якщо в юніта
-        // йде посилення радара (запис таблиці: +0 = цей юніт, +24 тіків посилення > 0). Стан — із таблиці (детермінований).
+        // ── Радар Ушастика (#10, виправлення #12): огляд ×3 крізь дерева й пагорби без переповнення DrawVisMap. ──
+        // У ванілі DrawVisMapAid/DetAid мають буфери h/m на 36 float (за ними лежить SuperWindow* 0xED2344 і RakNet
+        // SystemAddress) і таблиці на 36 клітинок, а перевірка краю мапи (48 тайлів = 96 клітинок) не тримає радіус
+        // радара (132…165) — тому при ввімкненні радара гра падала на 0x4A0DE2 або псувала SuperWindow* (0x4DC5DC).
+        // 1) Для звичайного огляду таблиці й буфери перенесені в .arcmod на VisMaxR = 64, Sight обмежено ≤ 31.5.
+        // 2) Коли діє радар — заповнюємо коло радіуса int(Sight·2) напряму в visMap/detMap із перевіркою меж [0,visW)×[0,visH).
         var visUnit = a.CreateLabel("visunit");
         {
-            var off = a.CreateLabel(); var set = a.CreateLabel();
+            var normal = a.CreateLabel(); var radarFill = a.CreateLabel();
+            var rowLoop = a.CreateLabel(); var nextRow = a.CreateLabel(); var doneFill = a.CreateLabel();
+            var z0Ok = a.CreateLabel(); var z1Ok = a.CreateLabel(); var x0Ok = a.CreateLabel(); var x1Ok = a.CreateLabel();
+            var noDet = a.CreateLabel();
             a.Label(ref visUnit);
-            a.push(eax); a.push(edx);
-            a.xor(edx, edx);
-            a.mov(eax, __dword_ptr[ecx + 4]); a.cmp(eax, TableEntries); a.jae(set);
+            a.mov(eax, __dword_ptr[ecx + 4]); a.cmp(eax, TableEntries); a.jae(normal);
             a.shl(eax, 5); a.add(eax, tableVa);
-            a.cmp(__dword_ptr[eax], ecx); a.jne(set);
-            a.cmp(__dword_ptr[eax + 24], 0); a.jle(set);
-            a.inc(edx);
-            a.Label(ref set);
-            a.mov(__dword_ptr[tableVa + RadarSee], edx);
-            a.pop(edx); a.pop(eax);
-            a.movss(xmm0, __dword_ptr[ecx + 0x44]); a.jmp(0x4a0708UL);
+            a.cmp(__dword_ptr[eax], ecx); a.jne(normal);
+            a.cmp(__dword_ptr[eax + 24], 0); a.jg(radarFill);
+            a.Label(ref normal);
+            a.movss(xmm0, __dword_ptr[ecx + 0x44]);
+            a.minss(xmm0, __dword_ptr[cst("maxsight")]);
+            a.jmp(0x4a0708UL);
+
+            a.Label(ref radarFill);
+            a.push(ebp); a.push(ebx); a.push(esi); a.push(edi);
+            a.sub(esp, 32);
+            // [esp+0]=visW, [esp+4]=visH, [esp+8]=visMap, [esp+12]=detMap, [esp+16]=cx, [esp+20]=cz, [esp+24]=R2, [esp+28]=z1
+            a.mov(eax, __dword_ptr[edi + 0x26E0]); a.mov(__dword_ptr[esp], eax);
+            a.mov(eax, __dword_ptr[edi + 0x26E4]); a.mov(__dword_ptr[esp + 4], eax);
+            a.mov(eax, __dword_ptr[edi + ebx * 4 + 0x26EC]); a.mov(__dword_ptr[esp + 8], eax);
+            a.xor(eax, eax); a.cmp(__byte_ptr[ecx + 0x54], 0); a.je(noDet);
+            a.mov(eax, __dword_ptr[edi + ebx * 4 + 0x270C]);
+            a.Label(ref noDet);
+            a.mov(__dword_ptr[esp + 12], eax);
+            a.addss(xmm1, xmm1); a.cvttss2si(eax, xmm1); a.mov(__dword_ptr[esp + 16], eax);       // cx = int(x * 2)
+            a.addss(xmm2, xmm2); a.cvttss2si(edx, xmm2); a.mov(__dword_ptr[esp + 20], edx);       // cz = int(z * 2)
+            a.movss(xmm0, __dword_ptr[ecx + 0x44]); a.addss(xmm0, xmm0); a.cvttss2si(eax, xmm0);  // R = int(Sight * 2)
+            a.mov(esi, eax); a.imul(esi, eax); a.mov(__dword_ptr[esp + 24], esi);                 // R2 = R * R
+            a.mov(ebp, edx); a.sub(ebp, eax); a.jns(z0Ok); a.xor(ebp, ebp);                       // gz = max(0, cz - R)
+            a.Label(ref z0Ok);
+            a.add(edx, eax); a.mov(ecx, __dword_ptr[esp + 4]); a.dec(ecx);
+            a.cmp(edx, ecx); a.jle(z1Ok); a.mov(edx, ecx);                                        // z1 = min(visH - 1, cz + R)
+            a.Label(ref z1Ok);
+            a.mov(__dword_ptr[esp + 28], edx);
+            a.cmp(ebp, edx); a.jg(doneFill);
+            a.cld();
+            a.Label(ref rowLoop);
+            a.mov(eax, ebp); a.sub(eax, __dword_ptr[esp + 20]); a.imul(eax, eax);                 // dz^2
+            a.mov(edx, __dword_ptr[esp + 24]); a.sub(edx, eax); a.jl(nextRow);                    // rem = R^2 - dz^2
+            a.cvtsi2sd(xmm0, edx); a.sqrtsd(xmm0, xmm0); a.cvttsd2si(edx, xmm0);                  // dxMax = floor(sqrt(rem))
+            a.mov(esi, __dword_ptr[esp + 16]); a.sub(esi, edx); a.jns(x0Ok); a.xor(esi, esi);     // gx0 = max(0, cx - dxMax)
+            a.Label(ref x0Ok);
+            a.mov(ebx, __dword_ptr[esp + 16]); a.add(ebx, edx);
+            a.mov(eax, __dword_ptr[esp]); a.dec(eax);
+            a.cmp(ebx, eax); a.jle(x1Ok); a.mov(ebx, eax);                                        // gx1 = min(visW - 1, cx + dxMax)
+            a.Label(ref x1Ok);
+            a.sub(ebx, esi); a.jl(nextRow); a.inc(ebx);                                           // count = gx1 - gx0 + 1
+            a.mov(eax, ebp); a.imul(eax, __dword_ptr[esp]); a.add(eax, esi); a.mov(esi, eax);     // rowStart = gz * visW + gx0
+            a.mov(edi, __dword_ptr[esp + 8]); a.add(edi, esi); a.mov(ecx, ebx); a.mov(al, 1); a.rep.stosb();
+            a.mov(edi, __dword_ptr[esp + 12]); a.test(edi, edi); a.jz(nextRow);
+            a.add(edi, esi); a.mov(ecx, ebx); a.mov(al, 1); a.rep.stosb();
+            a.Label(ref nextRow);
+            a.inc(ebp); a.cmp(ebp, __dword_ptr[esp + 28]); a.jle(rowLoop);
+            a.Label(ref doneFill);
+            a.add(esp, 32);
+            a.pop(edi); a.pop(esi); a.pop(ebx); a.pop(ebp);
+            a.jmp(0x4a05faUL);
         }
-        // DrawVisMapAid / DrawVisMapDetAid: клітинка видима, якщо її висота + 0.5 ≥ «горизонту» променя. З RadarSee — завжди.
-        // Було: addsd xmm0,xmm4 / comisd xmm0,xmm1 / jb (не видно)
-        Label VisTest(string name, ulong visible, ulong hidden)
+        // Обнулення розширених буферів h[64]/m[64] на вході DrawVisMapAid / DrawVisMapDetAid (#12).
+        var visAidInit = a.CreateLabel("visaidinit");
         {
-            var l = a.CreateLabel(name);
-            a.Label(ref l);
-            a.addsd(xmm0, xmm4);
-            a.cmp(__dword_ptr[tableVa + RadarSee], 0); a.jne(visible);
-            a.comisd(xmm0, xmm1); a.jb(hidden); a.jmp(visible);
-            return l;
+            a.Label(ref visAidInit);
+            a.push(ebp); a.mov(ebp, esp); a.and(esp, -8); a.sub(esp, 0x1C);
+            a.push(ebx); a.push(esi); a.push(edi);
+            a.mov(__dword_ptr[esp + 0x10], ecx);
+            a.mov(edx, ecx);
+            a.cld(); a.xor(eax, eax); a.mov(edi, tableVa + VisAidH - 0x10); a.mov(ecx, 0x220 / 4); a.rep.stosd();
+            a.mov(ecx, edx); a.xor(ebx, ebx); a.mov(esi, __dword_ptr[ebp + 0x0C]);
+            a.mov(edi, 1); a.mov(__dword_ptr[esp + 0x14], edi);
+            a.jmp(0x4a0985UL);
         }
-        var visAid = VisTest("visaid", 0x4a0b2cUL, 0x4a0b3eUL);
-        var visDet = VisTest("visdet", 0x4a0dd8UL, 0x4a0df1UL);
+        var visDetInit = a.CreateLabel("visdetinit");
+        {
+            a.Label(ref visDetInit);
+            a.push(ebp); a.mov(ebp, esp); a.and(esp, -8); a.sub(esp, 0x1C);
+            a.push(ebx); a.push(esi); a.push(edi);
+            a.mov(ebx, ecx); a.mov(esi, __dword_ptr[ebp + 0x0C]);
+            a.cld(); a.xor(eax, eax); a.mov(edi, tableVa + VisDetH - 0x10); a.mov(ecx, 0x220 / 4); a.rep.stosd();
+            a.xor(edi, edi); a.mov(__dword_ptr[esp + 0x10], edi);
+            a.jmp(0x4a0c2eUL);
+        }
 
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
         var w16Labels = new List<Label>();
@@ -1202,9 +1282,9 @@ static class Caves
         hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар кроликів 100", (uint)L(airBuy), 8));
         hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
         hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));
-        hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика — без перешкод", (uint)L(visUnit), 5));
-        hooks.Add(new Hook(0x4a0b22, Convert.FromHexString("F20F58C4660F2FC17212"), "SGameWorld::DrawVisMapAid: радар бачить крізь перешкоди", (uint)L(visAid), 10));
-        hooks.Add(new Hook(0x4a0dce, Convert.FromHexString("F20F58C4660F2FC17219"), "SGameWorld::DrawVisMapDetAid: радар бачить крізь перешкоди", (uint)L(visDet), 10));
+        hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика (коло без переповнення) + межа Sight", (uint)L(visUnit), 5));
+        hooks.Add(new Hook(0x4a08d0, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapAid: очищення розширених буферів h/m[64]", (uint)L(visAidInit), 6));
+        hooks.Add(new Hook(0x4a0b80, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapDetAid: очищення розширених буферів h/m[64]", (uint)L(visDetInit), 6));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));

@@ -97,14 +97,14 @@ uint F(float v) => BitConverter.SingleToUInt32Bits(v);
 foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect, "RPV" }) Str(v);   // RPV — літера файлу армії за расою (#3)
 Const("pi", F(MathF.PI)); Const("-pi", F(-MathF.PI)); Const("2pi", F(2 * MathF.PI));
 Const("absmask", 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff); Const("signmask", 0x80000000, 0x80000000, 0x80000000, 0x80000000);
-Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
+Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("maxsight", F(Caves.VisMaxSight)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
 var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]).ToArray();
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
 uint caveVa = Align(dataPtr, 16);
 const uint SecRaw = 0x6000, LateStr = 0x5C00;                       // код і дані — у файлі; код до 0x5C00, далі — рядки журналу з вставок (~0x230 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
-uint secVirtual = SecRaw + (uint)(Caves.TableEntries * Caves.EntrySize) + 0x1000;   // + дані розстановки стартів
+uint secVirtual = SecRaw + (uint)Caves.BssEnd;                       // + таблиці стану, розстановки й розширений DrawVisMap (64)
 uint oldMaskVa = FindString("JSTAHRMLtafsM\0");
 
 // ── правки інструкцій ──
@@ -165,6 +165,22 @@ Imm(0x4f4edf, 0xAAAAAAAB, 0x38E38E39, "SQuickMarket grid: i / 6 → i / 9 (magic
 Imm(0x4f4ee8, 2, 1, "SQuickMarket grid: i / 9 (shift)");
 // #2 (16 армій), крок 1: SGameWorld більший — гравці 8…15 у хвості (Caves.World16Delta).
 foreach (var va in new uint[] { 0x4e1511, 0x4e1d77 }) Imm(va, Caves.WorldOldSize, Caves.WorldNewSize, "#2: new SGameWorld 27A0h → 2A80h (гравці 8…15 у хвості)");
+// #12: розширені таблиці й буфери DrawVisMap (36 → 64 клітинок, до Sight 31.5 без переповнення на SuperWindow* 0xED2344).
+uint vt1 = stateVa + Caves.VisTbl1, vt2 = stateVa + Caves.VisTbl2, vt3 = stateVa + Caves.VisTbl3;
+uint vah = stateVa + Caves.VisAidH, vam = stateVa + Caves.VisAidM, vdh = stateVa + Caves.VisDetH, vdm = stateVa + Caves.VisDetM;
+Imm(0x4a0399, 0x24, Caves.VisMaxR, "#12 CreateVisMap: таблиці огляду 36 → 64");
+foreach (var va in new uint[] { 0x4a030e, 0x4a0a84, 0x4a0d31 }) Disp(va, 0x5C81B0, vt1, "#12 VisMap table 1 → .arcmod");
+foreach (var va in new uint[] { 0x4a0345, 0x4a0aac, 0x4a0d5a }) Disp(va, 0x5C8C18, vt2, "#12 VisMap table 2 → .arcmod");
+foreach (var va in new uint[] { 0x4a037d, 0x4a0b0a, 0x4a0db5 }) Disp(va, 0x5C9680, vt3, "#12 VisMap table 3 → .arcmod");
+foreach (var va in new uint[] { 0x4a0990, 0x4a0a90, 0x4a0ac0, 0x4a0ad2, 0x4a0ada, 0x4a0ae6, 0x4a0afe }) Disp(va, 0x0ED20E8, vah, "#12 DrawVisMapAid::h → .arcmod");
+Disp(0x4a0aa0, 0x0ED20E4, vah - 4, "#12 DrawVisMapAid::h[-1] → .arcmod");
+foreach (var va in new uint[] { 0x4a0998, 0x4a0a74, 0x4a0aca, 0x4a0b12 }) Disp(va, 0x0ED2178, vam, "#12 DrawVisMapAid::m → .arcmod");
+Disp(0x4a0a7c, 0x0ED2174, vam - 4, "#12 DrawVisMapAid::m[-1] → .arcmod");
+foreach (var va in new uint[] { 0x4a0c39, 0x4a0d3e, 0x4a0d6f, 0x4a0d81, 0x4a0d89, 0x4a0d97, 0x4a0da9 }) Disp(va, 0x0ED2208, vdh, "#12 DrawVisMapDetAid::h → .arcmod");
+Disp(0x4a0d4e, 0x0ED2204, vdh - 4, "#12 DrawVisMapDetAid::h[-1] → .arcmod");
+foreach (var va in new uint[] { 0x4a0c41, 0x4a0d21, 0x4a0d79, 0x4a0dbe }) Disp(va, 0x0ED2298, vdm, "#12 DrawVisMapDetAid::m → .arcmod");
+Disp(0x4a0d29, 0x0ED2294, vdm - 4, "#12 DrawVisMapDetAid::m[-1] → .arcmod");
+Imm(0x478fa6, 8, 16, "#12 SMulti::Disconnect: чистити всі 16 слотів");
 var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     (0x4f4efe, "8D0452", "8D04D2", "SQuickMarket grid: row·6 → row·9 (lea [edx+edx*8])"),
     (0x4f4f07, "03C0", "6690", "SQuickMarket grid: row·9 без подвоєння"),

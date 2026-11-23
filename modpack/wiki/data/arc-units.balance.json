@@ -594,17 +594,17 @@
       "ru": [
         "Кролик-Ушастик",
         "Машина разведки",
-        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда."
+        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет; спустя 10 минут боя становится виден врагу на всей карте."
       ],
       "uk": [
         "Кролик-Вухань",
         "Машина розвідки",
-        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди."
+        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає; за 10 хвилин бою стає видимим ворогу на всій мапі."
       ],
       "en": [
         "Big Ears",
         "Recon vehicle",
-        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."
+        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun; 10 minutes into the battle it becomes visible to the enemy across the whole map."
       ],
       "chassis": "Nyul light tank",
       "role": null,
@@ -635,7 +635,6 @@
         "minrange": "0",
         "maxrange": "0",
         "detector": "1",
-        "always visible": "1",
         "specialtype": "14"
       }
     },

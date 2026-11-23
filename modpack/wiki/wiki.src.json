@@ -26,15 +26,6 @@
       "mod": "full-rebalance"
     },
     {
-      "id": "arc-units",
-      "mod": "arcanum-units",
-      "title": {
-        "ru": "Arcanum Units",
-        "uk": "Arcanum Units",
-        "en": "Arcanum Units"
-      }
-    },
-    {
       "id": "arc-voices",
       "title": {
         "ru": "Arcanum Voices & Screens",
@@ -42,6 +33,15 @@
         "en": "Arcanum Voices & Screens"
       },
       "mod": "arcanum-voices"
+    },
+    {
+      "id": "arc-units",
+      "mod": "arcanum-units",
+      "title": {
+        "ru": "Arcanum Units",
+        "uk": "Arcanum Units",
+        "en": "Arcanum Units"
+      }
     },
     {
       "id": "help",
@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.1.0",
+              "value": "4.1.1",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -116,14 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Nexus Mod 4.0.3 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
-              "uk": "Arcanum Nexus Mod 4.0.3 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
-              "en": "Arcanum Nexus Mod 4.0.3 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.1.1 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, третья раса «Вороны» (заглушка), новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.1.1 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, третя раса «Ворони» (заглушка), нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.1.1 — one mod with everything: 10 new units (5 per side) with their own mechanics, the third race Ravens (placeholder), the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.3»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
-              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.3»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
-              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.3”), and in the launcher mod list. If your friends have a different one, update before playing."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.1.1»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.1.1»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.1.1”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -157,6 +157,40 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.1.1",
+          "text": {
+            "ru": "Мод 4.1.1 · хотфикс: радар Ушастика, разведмашина и выход из боя · 23.11.2026",
+            "uk": "Мод 4.1.1 · хотфікс: радар Вуханя, розвідмашина й вихід із бою · 23.11.2026",
+            "en": "Mod 4.1.1 · hotfix: Big Ears radar, scout car and exiting a match · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Исправлен вылет при включении «Радара» Ушастика («Access violation 004A0DE2»): при тройном обзоре радиус выходил за пределы карты и буферов видимости игры. Теперь радар заполняет круг обзора с проверкой границ карты, а таблицы видимости расширены с 36 до 64 клеток.",
+              "uk": "Виправлено виліт під час увімкнення «Радара» Вуханя («Access violation 004A0DE2»): за потрійного огляду радіус виходив за межі мапи й буферів видимості гри. Тепер радар заповнює коло огляду з перевіркою меж мапи, а таблиці видимості розширено з 36 до 64 клітинок.",
+              "en": "Fixed the crash when activating Big Ears’ Radar (“Access violation 004A0DE2”): triple sight overflowed the game’s visibility buffers and map bounds. Radar now fills the sight circle with map bounds checks, and visibility tables are expanded from 36 to 64 cells."
+            },
+            {
+              "ru": "Исправлен вылет при завершении боя и выходе из игры («Access violation 004DC5DC»): переполнение буферов видимости Ушастика затирало указатель окна игры и сетевые адреса RakNet; также в SMulti::Disconnect теперь очищаются все 16 слотов.",
+              "uk": "Виправлено виліт під час завершення бою й виходу з гри («Access violation 004DC5DC»): переповнення буферів видимості Вуханя затирало вказівник вікна гри та мережеві адреси RakNet; також у SMulti::Disconnect тепер очищаються всі 16 слотів.",
+              "en": "Fixed the crash when ending a match and exiting the game (“Access violation 004DC5DC”): Big Ears’ visibility buffer overflow corrupted the game window pointer and RakNet addresses; SMulti::Disconnect now also cleans up all 16 slots."
+            },
+            {
+              "ru": "Кролик-Ушастик: отображение врагу на карте теперь включается не сразу, а только спустя 10 минут боя.",
+              "uk": "Кролик-Вухань: відображення ворогу на мапі тепер вмикається не одразу, а лише за 10 хвилин бою.",
+              "en": "Big Ears: map-wide reveal to the enemy now turns on only 10 minutes into the match instead of at the start."
+            },
+            {
+              "ru": "Исправлен вылет при покупке и наведении на разведывательную машину (джип с авиаударом, «Access violation 004A5F75»).",
+              "uk": "Виправлено виліт під час купівлі й наведення на розвідувальну машину (джип з авіаударом, «Access violation 004A5F75»).",
+              "en": "Fixed the crash when ordering or hovering over the scout car (airstrike jeep, “Access violation 004A5F75”)."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.1.0",
@@ -472,9 +506,9 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Патч exe: 18 типов юнитов на расу вместо 13. Новые юниты продаются в магазине перед сетевым матчем.",
-              "uk": "Патч exe: 18 типів юнітів на расу замість 13. Нові юніти продаються в магазині перед мережевим матчем.",
-              "en": "Exe patch: 18 unit types per side instead of 13. New units are sold in the pre-match multiplayer shop."
+              "ru": "Патч exe: 24.5 типов юнитов на расу вместо 13. Новые юниты продаются в магазине перед сетевым матчем.",
+              "uk": "Патч exe: 24.5 типів юнітів на расу замість 13. Нові юніти продаються в магазині перед мережевим матчем.",
+              "en": "Exe patch: 24.5 unit types per side instead of 13. New units are sold in the pre-match multiplayer shop."
             },
             {
               "ru": "Свиньи: Чародей, Хряк-Гриль, Свин-Царь, Бомбохряк, Осадный Кабан, Гряземёт. Кролики: Чародей, Заяц-Призрак, Морковный Смерч, Кротобой, Пит-Стоп, Кролик-Ушастик.",
@@ -1166,6 +1200,172 @@
             "uk": "В описах мода згадуються кораблі й пак місій Bloodbath, але у файлах версії 1.0 їх немає. Файли ny_001, ny_002, test і menu_background2 лежать в архіві, але гра їх не завантажує.",
             "en": "Mod descriptions mention ships and the Bloodbath mission pack, but version 1.0's files don't contain them. ny_001, ny_002, test and menu_background2 are in the archive but the game never loads them."
           }
+        }
+      ]
+    },
+    {
+      "id": "av-overview",
+      "group": "arc-voices",
+      "title": {
+        "ru": "Экранчики и озвучка",
+        "uk": "Екранчики та озвучка",
+        "en": "Portraits & Voices"
+      },
+      "summary": {
+        "ru": "70 анимированных портретов HUD и 300 уникальных русских реплик для всех 10 новых танков Arcanum Units.",
+        "uk": "70 анімованих портретів HUD і 300 унікальних російських реплік для всіх 10 нових танків Arcanum Units.",
+        "en": "70 animated HUD portraits and 300 unique Russian voice lines for all 10 new Arcanum Units."
+      },
+      "blocks": [
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "70",
+              "label": {
+                "ru": "экранчиков .anif",
+                "uk": "екранчиків .anif",
+                "en": ".anif screens"
+              }
+            },
+            {
+              "value": "300",
+              "label": {
+                "ru": "уникальных реплик",
+                "uk": "унікальних реплік",
+                "en": "unique voice lines"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "новых персонажей",
+                "uk": "нових персонажів",
+                "en": "new characters"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Мод подключается поверх Arcanum Units через gamedata/base/units.ini.arcpatch и даёт каждому из 10 новых танков собственный анимированный портрет в окне радиосвязи (reportanim) и свой характерный голос в бою.",
+            "uk": "Мод підключається поверх Arcanum Units через gamedata/base/units.ini.arcpatch і дає кожному з 10 нових танків власний анімований портрет у вікні радіозв'язку (reportanim) та свій характерний голос у бою.",
+            "en": "This mod layers cleanly on top of Arcanum Units via gamedata/base/units.ini.arcpatch, giving every one of the 10 new tanks its own animated comms portrait (reportanim) and distinct combat voice."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Что добавляет мод",
+            "uk": "Що додає мод",
+            "en": "What the mod adds"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "70 файлов reportanim/<CharId>/*.anif (120×90, 25 FPS): полный набор из 7 эмоций (3mp, 5mp, success, laugh, spec, death, death2) для каждого из 10 танков, с бесшовным возвратом в нейтральную позу и аутентичным ТВ-шумом при гибели.",
+              "uk": "70 файлів reportanim/<CharId>/*.anif (120×90, 25 FPS): повний набір із 7 емоцій (3mp, 5mp, success, laugh, spec, death, death2) для кожного з 10 танків, із безшовним поверненням у нейтральну позу та автентичним ТВ-шумом під час загибелі.",
+              "en": "70 reportanim/<CharId>/*.anif files (120×90, 25 FPS): full 7-emotion set (3mp, 5mp, success, laugh, spec, death, death2) per tank, seamlessly looped and finished with authentic TV static on destruction."
+            },
+            {
+              "ru": "300 уникальных русских реплик (по 30 на персонажа в 9 категориях: выбор, движение, атака, спецспособность, обнаружение врага, убийство и смех, под огнём, нет топлива/боеприпасов, гибель) в формате оригинала MP3 22050 Hz mono 48 kbps.",
+              "uk": "300 унікальних російських реплік (по 30 на персонажа в 9 категоріях: вибір, рух, атака, спецздібність, виявлення ворога, убивство й сміх, під вогнем, немає пального/боєприпасів, загибель) у форматі оригіналу MP3 22050 Hz mono 48 kbps.",
+              "en": "300 unique Russian voice lines (30 per character across 9 categories: select, move, attack, special, spot enemy, kill/laugh, under fire, low supply, death) encoded in the original game format (MP3 22050 Hz mono 48 kbps)."
+            },
+            {
+              "ru": "Реплики разложены в gamedata/base/sounds/speech/<CharId>/ по всем 2620 числовым ID событий (включая раненые варианты *w.mp3), поэтому озвучка работает во всех локализациях игры без пропусков.",
+              "uk": "Репліки розкладені в gamedata/base/sounds/speech/<CharId>/ по всіх 2620 числових ID подій (включно з пораненими варіантами *w.mp3), тож озвучка працює в усіх локалізаціях гри без пропусків.",
+              "en": "Voice lines are mapped inside gamedata/base/sounds/speech/<CharId>/ across all 2,620 numeric event IDs (including wounded *w.mp3 variants), so playback works seamlessly in every game language."
+            },
+            {
+              "ru": "Главное меню: свинский город Штадт (missions/menu_background.scene + cameras.ini.arcpatch) с нашей техникой в цвете (DXT1 ver=0) и 26 прозрачных портретов новых свинов и кроликов для правого нижнего угла (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
+              "uk": "Головне меню: свиняче місто Штадт (missions/menu_background.scene + cameras.ini.arcpatch) з нашою технікою в кольорі (DXT1 ver=0) та 26 прозорих портретів нових свиней і кроликів для правого нижнього кутка (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
+              "en": "Main menu: Pig City Stahlstadt (missions/menu_background.scene + cameras.ini.arcpatch) with our new vehicles in full color (DXT1 ver=0) and 26 transparent corner portraits of our new pigs and rabbits (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Персонажи и ID",
+            "uk": "Персонажі та ID",
+            "en": "Characters & IDs"
+          }
+        },
+        {
+          "type": "table",
+          "columns": [
+            {
+              "ru": "Юнит",
+              "uk": "Юніт",
+              "en": "Unit"
+            },
+            {
+              "ru": "Персонаж",
+              "uk": "Персонаж",
+              "en": "Character"
+            },
+            {
+              "ru": "ID",
+              "uk": "ID",
+              "en": "ID"
+            }
+          ],
+          "rows": [
+            [
+              "Хряк-Гриль",
+              "Капрал Шкварка",
+              "P07-hryakgrill"
+            ],
+            [
+              "Свин-Царь",
+              "Фельдмаршал Боров-Великолепный",
+              "P06-svinczar"
+            ],
+            [
+              "Бомбохряк",
+              "Рядовой Детонатор",
+              "P05-bombohryak"
+            ],
+            [
+              "Осадный Кабан",
+              "Бомбардир Громила",
+              "P08-osadnykaban"
+            ],
+            [
+              "Гряземёт",
+              "Механик Шмяк",
+              "P04-gryazemet"
+            ],
+            [
+              "Заяц-Призрак",
+              "Снайпер Вектор",
+              "R06-zayacprizrak"
+            ],
+            [
+              "Морковный Смерч",
+              "Стрелок Вспышка",
+              "R03-morkovsmerch"
+            ],
+            [
+              "Кротобой",
+              "Сапёр Кусачка",
+              "R12-krotoboy"
+            ],
+            [
+              "Пит-Стоп",
+              "Механик Гайка",
+              "R02-pitstop"
+            ],
+            [
+              "Кролик-Ушастик",
+              "Радист Локатор",
+              "R05-ushastik"
+            ]
+          ]
         }
       ]
     },
@@ -2199,9 +2399,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда.",
-            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди.",
-            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."
+            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет; спустя 10 минут боя становится виден врагу на всей карте.",
+            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає; за 10 хвилин бою стає видимим ворогу на всій мапі.",
+            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun; 10 minutes into the battle it becomes visible to the enemy across the whole map."
           }
         },
         {
@@ -3689,172 +3889,6 @@
             "uk": "Якщо запустити swineHD.exe з мапою кампанії в параметрах, гра відкриває сценарний режим: магазин з усіма юнітами й 100 000 SP, потім мапа з ворогами кампанії. Готові ярлики — modpack/sandbox/sandbox-rabbits.cmd (мапа d_04, граєш кроликами) і sandbox-pigs.cmd (мапа ny_08).",
             "en": "Launching swineHD.exe with a campaign map as a parameter opens scenario mode: a shop with every unit and 100,000 SP, then the map with campaign enemies. Ready shortcuts: modpack/sandbox/sandbox-rabbits.cmd (map d_04, you play rabbits) and sandbox-pigs.cmd (map ny_08)."
           }
-        }
-      ]
-    },
-    {
-      "id": "av-overview",
-      "group": "arc-voices",
-      "title": {
-        "ru": "Экранчики и озвучка",
-        "uk": "Екранчики та озвучка",
-        "en": "Portraits & Voices"
-      },
-      "summary": {
-        "ru": "70 анимированных портретов HUD и 300 уникальных русских реплик для всех 10 новых танков Arcanum Units.",
-        "uk": "70 анімованих портретів HUD і 300 унікальних російських реплік для всіх 10 нових танків Arcanum Units.",
-        "en": "70 animated HUD portraits and 300 unique Russian voice lines for all 10 new Arcanum Units."
-      },
-      "blocks": [
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "70",
-              "label": {
-                "ru": "экранчиков .anif",
-                "uk": "екранчиків .anif",
-                "en": ".anif screens"
-              }
-            },
-            {
-              "value": "300",
-              "label": {
-                "ru": "уникальных реплик",
-                "uk": "унікальних реплік",
-                "en": "unique voice lines"
-              }
-            },
-            {
-              "value": "10",
-              "label": {
-                "ru": "новых персонажей",
-                "uk": "нових персонажів",
-                "en": "new characters"
-              }
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Мод подключается поверх Arcanum Units через gamedata/base/units.ini.arcpatch и даёт каждому из 10 новых танков собственный анимированный портрет в окне радиосвязи (reportanim) и свой характерный голос в бою.",
-            "uk": "Мод підключається поверх Arcanum Units через gamedata/base/units.ini.arcpatch і дає кожному з 10 нових танків власний анімований портрет у вікні радіозв'язку (reportanim) та свій характерний голос у бою.",
-            "en": "This mod layers cleanly on top of Arcanum Units via gamedata/base/units.ini.arcpatch, giving every one of the 10 new tanks its own animated comms portrait (reportanim) and distinct combat voice."
-          }
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Что добавляет мод",
-            "uk": "Що додає мод",
-            "en": "What the mod adds"
-          }
-        },
-        {
-          "type": "bullets",
-          "items": [
-            {
-              "ru": "70 файлов reportanim/<CharId>/*.anif (120×90, 25 FPS): полный набор из 7 эмоций (3mp, 5mp, success, laugh, spec, death, death2) для каждого из 10 танков, с бесшовным возвратом в нейтральную позу и аутентичным ТВ-шумом при гибели.",
-              "uk": "70 файлів reportanim/<CharId>/*.anif (120×90, 25 FPS): повний набір із 7 емоцій (3mp, 5mp, success, laugh, spec, death, death2) для кожного з 10 танків, із безшовним поверненням у нейтральну позу та автентичним ТВ-шумом під час загибелі.",
-              "en": "70 reportanim/<CharId>/*.anif files (120×90, 25 FPS): full 7-emotion set (3mp, 5mp, success, laugh, spec, death, death2) per tank, seamlessly looped and finished with authentic TV static on destruction."
-            },
-            {
-              "ru": "300 уникальных русских реплик (по 30 на персонажа в 9 категориях: выбор, движение, атака, спецспособность, обнаружение врага, убийство и смех, под огнём, нет топлива/боеприпасов, гибель) в формате оригинала MP3 22050 Hz mono 48 kbps.",
-              "uk": "300 унікальних російських реплік (по 30 на персонажа в 9 категоріях: вибір, рух, атака, спецздібність, виявлення ворога, убивство й сміх, під вогнем, немає пального/боєприпасів, загибель) у форматі оригіналу MP3 22050 Hz mono 48 kbps.",
-              "en": "300 unique Russian voice lines (30 per character across 9 categories: select, move, attack, special, spot enemy, kill/laugh, under fire, low supply, death) encoded in the original game format (MP3 22050 Hz mono 48 kbps)."
-            },
-            {
-              "ru": "Реплики разложены в gamedata/base/sounds/speech/<CharId>/ по всем 2620 числовым ID событий (включая раненые варианты *w.mp3), поэтому озвучка работает во всех локализациях игры без пропусков.",
-              "uk": "Репліки розкладені в gamedata/base/sounds/speech/<CharId>/ по всіх 2620 числових ID подій (включно з пораненими варіантами *w.mp3), тож озвучка працює в усіх локалізаціях гри без пропусків.",
-              "en": "Voice lines are mapped inside gamedata/base/sounds/speech/<CharId>/ across all 2,620 numeric event IDs (including wounded *w.mp3 variants), so playback works seamlessly in every game language."
-            },
-            {
-              "ru": "Главное меню: свинский город Штадт (missions/menu_background.scene + cameras.ini.arcpatch) с нашей техникой в цвете (DXT1 ver=0) и 26 прозрачных портретов новых свинов и кроликов для правого нижнего угла (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
-              "uk": "Головне меню: свиняче місто Штадт (missions/menu_background.scene + cameras.ini.arcpatch) з нашою технікою в кольорі (DXT1 ver=0) та 26 прозорих портретів нових свиней і кроликів для правого нижнього кутка (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
-              "en": "Main menu: Pig City Stahlstadt (missions/menu_background.scene + cameras.ini.arcpatch) with our new vehicles in full color (DXT1 ver=0) and 26 transparent corner portraits of our new pigs and rabbits (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png)."
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Персонажи и ID",
-            "uk": "Персонажі та ID",
-            "en": "Characters & IDs"
-          }
-        },
-        {
-          "type": "table",
-          "columns": [
-            {
-              "ru": "Юнит",
-              "uk": "Юніт",
-              "en": "Unit"
-            },
-            {
-              "ru": "Персонаж",
-              "uk": "Персонаж",
-              "en": "Character"
-            },
-            {
-              "ru": "ID",
-              "uk": "ID",
-              "en": "ID"
-            }
-          ],
-          "rows": [
-            [
-              "Хряк-Гриль",
-              "Капрал Шкварка",
-              "P07-hryakgrill"
-            ],
-            [
-              "Свин-Царь",
-              "Фельдмаршал Боров-Великолепный",
-              "P06-svinczar"
-            ],
-            [
-              "Бомбохряк",
-              "Рядовой Детонатор",
-              "P05-bombohryak"
-            ],
-            [
-              "Осадный Кабан",
-              "Бомбардир Громила",
-              "P08-osadnykaban"
-            ],
-            [
-              "Гряземёт",
-              "Механик Шмяк",
-              "P04-gryazemet"
-            ],
-            [
-              "Заяц-Призрак",
-              "Снайпер Вектор",
-              "R06-zayacprizrak"
-            ],
-            [
-              "Морковный Смерч",
-              "Стрелок Вспышка",
-              "R03-morkovsmerch"
-            ],
-            [
-              "Кротобой",
-              "Сапёр Кусачка",
-              "R12-krotoboy"
-            ],
-            [
-              "Пит-Стоп",
-              "Механик Гайка",
-              "R02-pitstop"
-            ],
-            [
-              "Кролик-Ушастик",
-              "Радист Локатор",
-              "R05-ushastik"
-            ]
-          ]
         }
       ]
     },

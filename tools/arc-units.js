@@ -119,11 +119,11 @@ const UNITS = [
     uk: ["Піт-Стоп","Бойовий ремонтник","Швидкий броньований багі техдопомоги: вривається в бій, за секунди латає підбитих кроликів і доливає їм пальне. Запас ресурсів малий — на 1–2 машини, потім назад до причепів."] },
   { s: 'Nyul fulesek', race: 'rabbit', chassis: 'Nyul light tank', role: null, model: 'ny_ushastik',
     set: { Price: 900, UpgradeMask: mask('fuel', 'sight', 'repair', 'turbo'), MaxHP: 45, FrontArmor: 0.5, BackArmor: 0, TopArmor: 0.5, Sight: 22,
-           MinRange: 0, MaxRange: 0, Detector: 1, 'Always Visible': 1, MoveType: 2, ChainSpeed: null, MoveSpeed: 1.2, SpinSpeed: 100,
-           SpecialType: 14, SpecialTime: null, SpecialSound1: null, SpecialSound2: null },   // 14 — своя кнопка «Радар»: обзор ×3 на 15 с
-    ru: ["Кролик-Ушастик","Машина разведки","Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда."],
-    en: ["Big Ears","Recon vehicle","A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."],
-    uk: ["Кролик-Вухань","Машина розвідки","Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди."] },
+           MinRange: 0, MaxRange: 0, Detector: 1, MoveType: 2, ChainSpeed: null, MoveSpeed: 1.2, SpinSpeed: 100,
+           SpecialType: 14, SpecialTime: null, SpecialSound1: null, SpecialSound2: null },   // 14 — своя кнопка «Радар»: обзор ×3 на 15 с; Always Visible вмикає патч через 10 хв (#12)
+    ru: ["Кролик-Ушастик","Машина разведки","Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет; спустя 10 минут боя становится виден врагу на всей карте."],
+    en: ["Big Ears","Recon vehicle","A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun; 10 minutes into the battle it becomes visible to the enemy across the whole map."],
+    uk: ["Кролик-Вухань","Машина розвідки","Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає; за 10 хвилин бою стає видимим ворогу на всій мапі."] },
 ];
 
 // Нові снаряди (секції, на які посилається Projectile=).
