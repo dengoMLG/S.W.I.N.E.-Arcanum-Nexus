@@ -20,18 +20,18 @@ static class Caves
     // Адреси гри (v1.7.1846, без ASLR — патч вимикає DYNAMIC_BASE).
     const uint ImpStrstr = 0x544224, TakeDamage = 0x4ca9f0, RadiusDamage = 0x4a97a0, GetUnit = 0x4a3c90, CreateUnit = 0x49ffe0,
                ShowEvent = 0x4afc10, LoadEffect = 0x4243e0, LogFn = 0x500490, LoggerVar = 0xED2A04, GepardVar = 0x59587C,
-               IsAllyFn = 0x4a5e80, EcFollowFn = 0x4bbf20;
+               IsAllyFn = 0x4a5e80, EcFollowFn = 0x4bbf20, LoadNewSkin = 0x4c53f0;
     public const int TableEntries = 4096, EntrySize = 32;   // таблиця стану юнітів за id: див. Entry*
     // Entry: +0 SUnit*  +4 тіків уповільнення  +8 швидкість до  +12 поворот до  +16 уповільнена швидкість
     //        мінер (13): +20/+24 x/z останньої міни  +28 тіків до наступної міни
-    //        радар (14): +20 обзор до  +24 тіків посилення  +28 тіків відкату
+    //        локатор (14, 4.2.5): +20 звичайний обзор  +24 = 1, коли вуха розкладені й обзор ×3  +28 тіків до кінця розкладання/складання
     public const int SlowTicks = 100, ZoneSlowTicks = 10;     // влучання — 5 с; у калюжі — поки стоїш + 0.5 с
     public const float SlowFactor = 0.4f, MineDist = 2.5f;
-    public const int SalvoSize = 40, RavenSalvoSize = 8;      // ракет у залпі: "salvo" — 40, "Varju" (Коршун) — 8, решта — 5; перший постріл миттєвий (4.1.3)
+    public const int SalvoSize = 20, RavenSalvoSize = 8;      // ракет у залпі: "salvo" — 20 (4.2.5; менше — усе, що лишилось), "Varju" (Коршун) — 8, решта — 5; перший постріл миттєвий (4.1.3)
     public const int SpecDetonate = 12, SpecMines = 13, SpecRadar = 14;
-    public const float RadarMul = 3f; public const int RadarTicks = 300, RadarCooldown = 900;   // 15 с ×3, відкат 45 с
+    public const float RadarMul = 3f;                                                          // локатор Ушастика: обзор ×3, поки вуха розкладені
     public const int FreeAirCooldown = 900; public const float SamRadius = 14f;                 // Ворони: безкоштовний тактичний авіаналіт (КД 45 с) і ППО Сапсан-ЗРК (R=14)
-    public const int RadarRevealTicks = 12000;                                                 // #12: Ушастик стає видимим на мапі лише через 10 хв бою (10×60×20)
+    public const int EarTicks = 100; public const float EarBlindSight = 0.5f;                  // 4.2.5: Ушастик розкладає/складає вуха 5 с, увесь цей час сліпий (обзор 0.5)
     public const int VisMaxR = 64;                                                             // #12: розширені таблиці DrawVisMap (було 36 → Sight 18; тепер 64 → Sight 31.5)
     public const float VisMaxSight = 31.5f;
     public const int Zones = 64, ZoneTicks = 400; public const float ZoneRadius = 2.5f;          // калюжа — 20 с (#11: ×2)
@@ -94,6 +94,15 @@ static class Caves
         Action Mem(AssemblerRegister32 r, int off) => () => a.push(__dword_ptr[r + off]);
         Action Reg(AssemblerRegister32 r) => () => a.push(r);
         Action Imm(int v) => () => a.push(v);
+        // 4.2.5: модель Ушастика (esi) з розкладеними / складеними вухами — [esi+20h] (основа імені «%s_%s.4d»)
+        // і SUnit::LoadNewSkinObject (Replace object, як при підвищенні до ветерана). Регістри цілі.
+        void EarModel(bool open)
+        {
+            a.pushad();
+            a.mov(__dword_ptr[esi + 0x20], S(open ? "units\\skinned\\ny_ushastik_open" : "units\\skinned\\ny_ushastik"));
+            a.mov(ecx, esi); a.call(LoadNewSkin);
+            a.popad();
+        }
         // r = i·5Ch (i — гравець) → зсув у SGameWorld з урахуванням хвоста для i ≥ 8 (#2). Прапорці портяться.
         void PlayerOff(AssemblerRegister32 r, int k = 0)
         {
@@ -247,19 +256,33 @@ static class Caves
             Log("ARC: unit %d mining = %d", Mem(esi, 0x3A4), Mem(esi, 4));
             a.jmp(ret);
 
-            // радар: обзор ×RadarMul на RadarTicks, потім відкат RadarCooldown
+            // локатор (4.2.5): перемикач «розкласти / скласти вуха» ([3A4h] = 1 — розкладені або розкладаються).
+            // Розкласти: одразу видно всім ([56h] = 1, модель з розкладеними вухами), 5 с сліпий, потім обзор ×3 (крізь
+            // дерева, visunit). Скласти: обзор ×3 зникає одразу, 5 с ще видно всім і сліпий, потім звичайний обзор і туман.
+            // Під час розкладання/складання ([+28] > 0) кнопка не діє.
             a.Label(ref radar);
-            a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(ret);
-            a.shl(eax, 5); a.add(eax, tableVa);
-            a.cmp(__dword_ptr[eax], esi); a.je(rOwn);
-            a.mov(__dword_ptr[eax], esi); a.mov(__dword_ptr[eax + 4], 0); a.mov(__dword_ptr[eax + 24], 0); a.mov(__dword_ptr[eax + 28], 0);
-            a.Label(ref rOwn);
-            a.mov(edx, __dword_ptr[eax + 24]); a.or(edx, __dword_ptr[eax + 28]); a.jne(ret);   // ще діє або відкат
-            a.mov(edx, __dword_ptr[esi + 0x44]); a.mov(__dword_ptr[eax + 20], edx);
-            a.movss(xmm0, __dword_ptr[esi + 0x44]); a.mulss(xmm0, __dword_ptr[cst("radarmul")]); a.movss(__dword_ptr[esi + 0x44], xmm0);
-            a.mov(__dword_ptr[eax + 24], RadarTicks); a.mov(__dword_ptr[esi + 0x3A4], 1);
-            Log("ARC: unit %d radar on%s", Imm((int)S("")), Mem(esi, 4));
-            a.jmp(ret);
+            {
+                var fold = a.CreateLabel();
+                a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(ret);
+                a.shl(eax, 5); a.add(eax, tableVa);
+                a.cmp(__dword_ptr[eax], esi); a.je(rOwn);
+                a.mov(__dword_ptr[eax], esi); a.mov(__dword_ptr[eax + 4], 0); a.mov(__dword_ptr[eax + 24], 0); a.mov(__dword_ptr[eax + 28], 0);
+                a.Label(ref rOwn);
+                a.cmp(__dword_ptr[eax + 28], 0); a.jg(ret);
+                a.mov(__dword_ptr[eax + 24], 0); a.mov(__dword_ptr[eax + 28], EarTicks);
+                a.cmp(__dword_ptr[esi + 0x3A4], 0); a.jne(fold);
+                a.mov(edx, __dword_ptr[esi + 0x44]); a.mov(__dword_ptr[eax + 20], edx);           // звичайний обзор
+                a.mov(edx, __dword_ptr[cst("blind")]); a.mov(__dword_ptr[esi + 0x44], edx);
+                a.mov(__dword_ptr[esi + 0x3A4], 1); a.mov(__byte_ptr[esi + 0x56], 1);
+                EarModel(true);
+                Log("ARC: unit %d ears unfolding%s", Imm((int)S("")), Mem(esi, 4));
+                a.jmp(ret);
+                a.Label(ref fold);
+                a.mov(edx, __dword_ptr[cst("blind")]); a.mov(__dword_ptr[esi + 0x44], edx);
+                a.mov(__dword_ptr[esi + 0x3A4], 0);
+                Log("ARC: unit %d ears folding%s", Imm((int)S("")), Mem(esi, 4));
+                a.jmp(ret);
+            }
         }
 
         // ── 3. SUnit::SetSpecialState (стан з інтерфейсу) для спецрежиму 6: у "salvo" — SalvoSize ракет, у "Varju" — RavenSalvoSize (8) ──
@@ -367,7 +390,7 @@ static class Caves
         {
             var zones = a.CreateLabel(); var zl = a.CreateLabel(); var zn = a.CreateLabel(); var zdone = a.CreateLabel();
             var mines = a.CreateLabel(); var outL = a.CreateLabel(); var own = a.CreateLabel(); var cd0 = a.CreateLabel(); var noset = a.CreateLabel();
-            var radar = a.CreateLabel(); var rCd = a.CreateLabel(); var rState = a.CreateLabel(); var rOn = a.CreateLabel();
+            var radar = a.CreateLabel();
             a.Label(ref tick);
             a.pushad(); a.mov(esi, ecx);
             a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(outL);
@@ -441,35 +464,32 @@ static class Caves
             a.dec(__dword_ptr[esi + 0x290]);
             Log("ARC: unit %d laid a mine, %d left", Mem(esi, 0x290), Mem(esi, 4));
             a.jmp(outL);
-            // радар: посилення → відкат → готовий; стан кнопки [3A4h] = 1, поки не готовий
-            // #12: Ушастик відкривається ворогу на мапі лише через 10 хв бою (12000 тіків), не зі старту.
+            // локатор (4.2.5): кінець розкладання вух — обзор ×3 (+24 = 1, visunit заливає коло крізь дерева);
+            // кінець складання — звичайний обзор, знову туман війни ([56h] = 0, клас видимості моделі) і модель зі складеними вухами.
             a.Label(ref radar);
             {
-                var visDone = a.CreateLabel(); var noSkin = a.CreateLabel();
-                a.cmp(__byte_ptr[esi + 0x56], 0); a.jne(visDone);
-                a.mov(ecx, __dword_ptr[esi]);
-                a.cmp(__dword_ptr[ecx + 0x16F4], RadarRevealTicks); a.jl(visDone);
-                a.mov(__byte_ptr[esi + 0x56], 1);
-                a.mov(ecx, __dword_ptr[esi + 0x128]); a.test(ecx, ecx); a.jz(noSkin);
-                a.mov(eax, __dword_ptr[ecx]); a.push(0); a.call(__dword_ptr[eax + 0x9C]);
-                a.Label(ref noSkin);
-                Log("ARC: unit %d always visible at tick %d", () => { a.mov(eax, __dword_ptr[esi]); a.push(__dword_ptr[eax + 0x16F4]); }, Mem(esi, 4));
-                a.Label(ref visDone);
+                var folded = a.CreateLabel(); var visOk = a.CreateLabel();
+                a.cmp(__dword_ptr[edi], esi); a.jne(outL);
+                a.mov(eax, __dword_ptr[edi + 28]); a.test(eax, eax); a.jle(outL);
+                a.dec(eax); a.mov(__dword_ptr[edi + 28], eax); a.jne(outL);
+                a.cmp(__dword_ptr[esi + 0x3A4], 0); a.je(folded);
+                a.movss(xmm0, __dword_ptr[edi + 20]); a.mulss(xmm0, __dword_ptr[cst("radarmul")]); a.movss(__dword_ptr[esi + 0x44], xmm0);
+                a.mov(__dword_ptr[edi + 24], 1);
+                Log("ARC: unit %d ears open, sight x3%s", Imm((int)S("")), Mem(esi, 4));
+                a.jmp(outL);
+                a.Label(ref folded);
+                a.mov(eax, __dword_ptr[edi + 20]); a.mov(__dword_ptr[esi + 0x44], eax);
+                a.mov(__byte_ptr[esi + 0x56], 0);
+                EarModel(false);
+                // клас видимості моделі (SGroup::SetVisClass, vt+9Ch): LoadNewSkinObject сам ставить 2/3/0 за [58h]/[55h]/[56h];
+                // інакше 1 — за картою огляду (туман війни), а своєму гравцеві 0 — як ServerInit.
+                a.cmp(__dword_ptr[esi + 0x58], 2); a.je(visOk); a.cmp(__byte_ptr[esi + 0x55], 0); a.jne(visOk);
+                a.mov(ecx, __dword_ptr[esi + 0x128]); a.test(ecx, ecx); a.jz(visOk);
+                a.mov(eax, __dword_ptr[esi]); a.mov(eax, __dword_ptr[eax + 0x434]); a.cmp(eax, __dword_ptr[esi + 0x258]); a.setne(al); a.movzx(eax, al);
+                a.mov(edx, __dword_ptr[ecx]); a.push(eax); a.call(__dword_ptr[edx + 0x9C]);
+                a.Label(ref visOk);
+                Log("ARC: unit %d ears folded, hidden%s", Imm((int)S("")), Mem(esi, 4));
             }
-            a.cmp(__dword_ptr[edi], esi); a.jne(outL);
-            a.mov(eax, __dword_ptr[edi + 24]); a.test(eax, eax); a.jle(rCd);
-            a.dec(eax); a.mov(__dword_ptr[edi + 24], eax); a.jne(rState);
-            a.mov(eax, __dword_ptr[edi + 20]); a.mov(__dword_ptr[esi + 0x44], eax);
-            a.mov(__dword_ptr[edi + 28], RadarCooldown);
-            Log("ARC: unit %d radar off, cooldown%s", Imm((int)S("")), Mem(esi, 4));
-            a.jmp(rState);
-            a.Label(ref rCd);
-            a.mov(eax, __dword_ptr[edi + 28]); a.test(eax, eax); a.jle(rState);
-            a.dec(eax); a.mov(__dword_ptr[edi + 28], eax);
-            a.Label(ref rState);
-            a.mov(eax, __dword_ptr[edi + 24]); a.or(eax, __dword_ptr[edi + 28]); a.je(rOn);
-            a.mov(eax, 1);
-            a.Label(ref rOn); a.mov(__dword_ptr[esi + 0x3A4], eax);
             a.Label(ref outL);
             a.popad(); a.push(ebp); a.mov(ebp, esp); a.and(esp, -8); a.jmp(0x4c7236UL);
         }
@@ -1401,6 +1421,16 @@ static class Caves
             var decReady = a.CreateLabel(); var done = a.CreateLabel();
             a.Label(ref reloadTick);
             a.mov(ecx, __dword_ptr[esi + 0x394]);
+            {   // 4.2.5: Морковний Смерч ("salvo") у залповому режимі, коли ракет 1…19 < 20, — залп на всі, що лишилися
+                var noClamp = a.CreateLabel();
+                a.cmp(ecx, 1); a.jle(noClamp);
+                a.mov(edx, __dword_ptr[esi + 0x290]); a.test(edx, edx); a.jle(noClamp); a.cmp(edx, ecx); a.jge(noClamp);
+                a.cmp(__dword_ptr[esi + 0xC8], 6); a.jne(noClamp);
+                a.push(ecx); a.push(edx); Strstr(esi, "salvo"); a.pop(edx); a.pop(ecx);
+                a.test(eax, eax); a.je(noClamp);
+                a.mov(ecx, edx);
+                a.Label(ref noClamp);
+            }
             a.mov(eax, __dword_ptr[esi + 0x388]);
             a.test(eax, eax); a.je(done);
             a.cmp(__dword_ptr[esi + 0x290], ecx); a.jge(decReady);
@@ -1517,6 +1547,34 @@ static class Caves
             a.push(0x9F8); a.jmp(0x4d03ccUL);
         }
 
+        // ── 4.2.5: SGameWorld::ProcessPacket (0x4a8cc9), «Inconsistency in frame %d with player %d» — знімок стану ──
+        // Перевірка йде, коли обидві копії виконують той самий кадр (контрольний байт кадру [1710h + (кадр & FFh)·4]),
+        // тож журнали обох гравців містять стан того самого кадру: порівняти рядки «ARC: desync unit» — і видно,
+        // який юніт розійшовся. Поля — сирі біти float (x, z, HP, швидкість), щоб порівнювати точно.
+        // Було: mov esi,[ebp-0CCh] (номер гравця).
+        var desyncDump = a.CreateLabel("desyncdump");
+        {
+            var lp = a.CreateLabel(); var nx = a.CreateLabel(); var end = a.CreateLabel();
+            a.Label(ref desyncDump);
+            Log("ARC: desync dump at frame %d, player %d", () => a.push(__dword_ptr[ebp - 0xCC]), Reg(edx));
+            a.pushad();
+            a.mov(esi, __dword_ptr[ebx + 0x43C]); a.xor(edi, edi);
+            a.Label(ref lp);
+            a.cmp(edi, __dword_ptr[ebx + 0x440]); a.jge(end);
+            a.cmp(__dword_ptr[esi + edi * 8], 0x7FFFFFFF); a.jne(nx);
+            a.mov(ecx, __dword_ptr[esi + edi * 8 + 4]); a.test(ecx, ecx); a.jz(nx);
+            a.push(__dword_ptr[ecx + 0x68]); a.push(__dword_ptr[ecx + 0x290]); a.push(__dword_ptr[ecx + 0x288]);
+            a.push(__dword_ptr[ecx + 0x26C]); a.push(__dword_ptr[ecx + 0x264]); a.push(__dword_ptr[ecx + 0x258]);
+            a.push(__dword_ptr[ecx + 0x254]); a.push(__dword_ptr[ecx + 4]);
+            a.push(S("ARC: desync unit %d %s owner %d x %08x z %08x hp %08x ammo %d spd %08x"));
+            a.push(0); a.push(__dword_ptr[LoggerVar]); a.call(LogFn); a.add(esp, 44);
+            a.Label(ref nx);
+            a.inc(edi); a.jmp(lp);
+            a.Label(ref end);
+            a.popad();
+            a.mov(esi, __dword_ptr[ebp - 0xCC]); a.jmp(0x4a8ccfUL);
+        }
+
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
         var w16Labels = new List<Label>();
         foreach (var st in World16)
@@ -1570,6 +1628,7 @@ static class Caves
         hooks.Add(new Hook(0x4c8e01, Convert.FromHexString("8B81900200003B8194000000"), "SUnit::ServerRefresh: причіп Ammo заряджає Cargo Піт-Стопа", (uint)L(pitstopAmmoCheck), 12));
         hooks.Add(new Hook(0x4cb682, Convert.FromHexString("898290020000"), "SUnit::TakeResource: Load Ammo поповнює Cargo Піт-Стопа до 300", (uint)L(pitstopTakeAmmo), 6));
         hooks.Add(new Hook(0x4d03c5, Convert.FromHexString("68F80900008BF8"), "SWorld::CreateUnit: чистий запис таблиці для нового юніта (рассинхрон при повторному id)", (uint)L(newUnit), 7));
+        hooks.Add(new Hook(0x4a8cc9, Convert.FromHexString("8BB534FFFFFF"), "SGameWorld::ProcessPacket: рассинхрон → стан усіх юнітів у журнал", (uint)L(desyncDump), 6));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));

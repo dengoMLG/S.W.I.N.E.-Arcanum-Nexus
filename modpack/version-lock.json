@@ -1,14 +1,14 @@
 {
   "arcanum-nexus": {
-    "version": "4.2.4",
-    "sha256": "5d73b977c3e10a9f77c7ac0b1b33f592d42d5fbc6ad3a70f7bb1f014bf4318b5",
-    "size": 170762,
-    "fingerprint": "22c317d336bf9687a5082536e034cb022b4a4ac2ffc45446711cfaceb6a636ae"
+    "version": "4.2.5",
+    "sha256": "428b712671445dda7e3fce88bcea6ab9f67dd7c5ffa50450504c5cc69c182333",
+    "size": 172844,
+    "fingerprint": "443931b52df9a4c66227e0971c315e91827e2ecbde1d64e0154fce9ee64bb3a8"
   },
   "arcanum-assets": {
-    "version": "4.2.3",
-    "sha256": "af663a96b33eddda1cf32ddb94ec768e228d8ac874d6fd8249e4750921192318",
-    "size": 498171687,
-    "fingerprint": "ac946ed52f2496912b9402987094ce83353b508523ecea8ae3c1741a79bcdc28"
+    "version": "4.2.5",
+    "sha256": "cde1522b72c38df443b945c33799775b7f3afe44a1072c8c84f08e3e8cbf24f5",
+    "size": 500046466,
+    "fingerprint": "2214d1fdb87c7239d1bfa9323b13be6b7e1c0739f07fb9d3960898d5dfb3337e"
   }
 }

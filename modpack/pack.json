@@ -1,13 +1,13 @@
 {
   "id": "arcanum-swine",
   "name": "Arcanum S.W.I.N.E.",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "baseUrl": "https://arcanum-nexus.com/launcher/games/swine/mods/",
   "mods": [
     {
       "id": "arcanum-assets",
       "name": "Arcanum Nexus Assets",
-      "version": "4.2.3",
+      "version": "4.2.5",
       "author": "Arcanum",
       "sources": ["mods/arcanum-units", "mods/arcanum-voices"],
       "excludeExt": [".ini", ".arcpatch", ".json"]

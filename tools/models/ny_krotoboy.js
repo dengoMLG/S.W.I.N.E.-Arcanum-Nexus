@@ -143,17 +143,7 @@ function buildKrotoboyGeometry() {
     // Бронированная рубка сапёра с наклонным лобовым стеклом
     m.addFrustum([-92, 92, 14, 144], [-78, 78, 28, 116], 48, 102, { top: UV.hullTop, bot: UV.metal, front: UV.window, back: UV.ribbed, left: UV.hullSkirt, right: UV.hullSkirt });
 
-    // ═══ ФИШКА #1: КАТКОВЫЙ ЗУБЧАТЫЙ МИННЫЙ ТРАЛ НА ГИДРОШТАНГАХ СПЕРЕДИ! ═══
-    for (const sx of [-98, 98]) {
-      m.addTube([[sx, 194, 12], [sx * 1.12, 266, -12], [sx * 1.12, 294, -22]], 9.5, 7, UV.chrome, { capStart: true, capEnd: true });
-    }
-    // Поперечная балка с предупреждающими полосами + вращающийся барабан-трал с зубцами!
-    m.addBox(-148, 148, 258, 284, -6, 16, { all: UV.hazard });
-    m.addLatheX(298, -24, [[-144, 26], [144, 26]], 10, UV.metal, { smooth: true, capStart: true, capEnd: true });
-    // Диски-режущие катки трала
-    for (const dx of [-120, -72, -24, 24, 72, 120]) {
-      m.addLatheX(298, -24, [[dx - 7, 42], [dx + 7, 42]], 10, UV.chrome, { smooth: false, capStart: true, capEnd: true });
-    }
+    // 4.2.5: передній катковий трал (циліндричний «ківш») прибрано за правками балансу — лишився чистий ніс.
 
     // ═══ ФИШКА #2: ЗАДНИЙ ЛОТОК МИНОУКЛАДЧИКА СО СТОПКОЙ ПРОТИВОТАНКОВЫХ МИН! ═══
     m.addFrustum([-66, 66, -252, -166], [-60, 60, -240, -158], 12, 46, { all: UV.hazard, top: UV.metal });
@@ -204,8 +194,9 @@ function buildKrotoboyGeometry() {
     nodes: [
       { name: 'Lanctalp',    parent: -1, m: ROOT_M, mesh: parts.Lanctalp },
       { name: 'Test',        parent:  0, m: ID_M(0, 0, 30), mesh: parts.Test },
-      { name: 'Lovegtorony', parent:  1, m: ID_M(0, 68, 114), mesh: parts.Lovegtorony },
-      { name: 'Cso',         parent:  2, m: ID_M(0, 62, 4), mesh: parts.Cso },
+      // 4.2.5: без башти й кулемета — вузли лишаються порожніми (гра шукає Lovegtorony / Cso / _Torkolattuz)
+      { name: 'Lovegtorony', parent:  1, m: ID_M(0, 68, 114), helper: true },
+      { name: 'Cso',         parent:  2, m: ID_M(0, 62, 4), helper: true },
       { name: '_Torkolattuz',parent:  3, m: ID_M(0, 128, 0), helper: true },
       { name: 'Zaszlorud',   parent:  1, m: ID_M(62, -12, 98), mesh: parts.Zaszlorud },
       { name: '_glow0piros', parent:  1, m: ID_M(-96, -220, 24, 0.30, -1, 0.30), helper: true },

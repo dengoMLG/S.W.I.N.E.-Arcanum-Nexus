@@ -14,7 +14,18 @@ const {
   Mesh, buildWheelMesh, Canvas, loadGameAssets, buildUnitPackage,
 } = require('../lib/swine-model-kit');
 
-const OUT = path.resolve(process.argv[2] || 'mods-test/units/ny_ushastik');
+// 4.2.5: два варіанти моделі. Типовий ny_ushastik — вуха складені назад на дах (так Ушастик виглядає в магазині,
+// на іконках і в бою, поки локатор вимкнено). --open → ny_ushastik_open: вуха розкладені (патч exe підміняє модель
+// кнопкою «Локатор», SUnit::LoadNewSkinObject).
+const OPEN = process.argv.includes('--open');
+const MODEL = OPEN ? 'ny_ushastik_open' : 'ny_ushastik';
+const OUT = path.resolve(process.argv.slice(2).find(a => !a.startsWith('--')) || 'mods-test/units/' + MODEL);
+// Складання вуха: поворот навколо осі X через шарнір (y = 0, z = 24) назад (−Y) на EAR_FOLD радіан.
+const EAR_FOLD = OPEN ? 0 : 1.36;
+const foldPt = ([x, y, z]) => {
+  const c = Math.cos(EAR_FOLD), s = Math.sin(EAR_FOLD), dz = z - 24;
+  return [x, y * c - dz * s, 24 + y * s + dz * c];
+};
 
 const UV = {
   vanSide:    [0.01, 0.01, 0.46, 0.25], // Борт фургона РЭБ + XV + оригинальная морковка + экраны связи!
@@ -175,7 +186,7 @@ function buildUshastikGeometry() {
       const rings = earPts.map(([px, py, pz], idx) => {
         const w = earWidths[idx], th = earThick[idx];
         // Наклон уха в сторону (tilt)
-        const tilt = sx * 0.28;
+        const tilt = sx * (OPEN ? 0.28 : 0.12);
         const ct = Math.cos(tilt), st = Math.sin(tilt);
         const ring = [];
         for (let i = 0; i < 10; i++) {
@@ -183,7 +194,7 @@ function buildUshastikGeometry() {
           // Передняя (+Y) сторона чуть вогнутая как тарелка радара!
           const lx = Math.cos(a) * w;
           const ly = Math.sin(a) * th - (Math.sin(a) > 0 ? 5 * (1 - Math.abs(Math.cos(a))) : 0);
-          ring.push([px + lx * ct, py + ly, pz - lx * st]);
+          ring.push(foldPt([px + lx * ct, py + ly, pz - lx * st]));
         }
         return ring;
       });
@@ -192,16 +203,16 @@ function buildUshastikGeometry() {
       const p0 = earPts[1], p1 = earPts[3];
       const dx = sx * 12;
       m.addQuad(
-        [p0[0] + 24, p0[1] + 15, p0[2]],
-        [p0[0] - 24, p0[1] + 15, p0[2]],
-        [p1[0] - 22, p1[1] + 14, p1[2]],
-        [p1[0] + 22, p1[1] + 14, p1[2]],
+        foldPt([p0[0] + 24, p0[1] + 15, p0[2]]),
+        foldPt([p0[0] - 24, p0[1] + 15, p0[2]]),
+        foldPt([p1[0] - 22, p1[1] + 14, p1[2]]),
+        foldPt([p1[0] + 22, p1[1] + 14, p1[2]]),
         UV.earDish, [0, 1], [1, 1], [1, 0], [0, 0]
       );
       // Хромированный стержень-облучатель (диполь), торчащий вперёд из середины каждого уха!
       const mid = earPts[2];
-      m.addTube([[mid[0], mid[1] + 10, mid[2]], [mid[0] + dx * 0.4, mid[1] + 54, mid[2] + 8]], [5, 2.5], 6, UV.chrome, { capStart: true, capEnd: true });
-      m.addLatheY(mid[0] + dx * 0.4, mid[2] + 8, [[mid[1] + 48, 9], [mid[1] + 58, 9]], 8, UV.lights, { smooth: true, capStart: true, capEnd: true });
+      m.addTube([foldPt([mid[0], mid[1] + 10, mid[2]]), foldPt([mid[0] + dx * 0.4, mid[1] + 54, mid[2] + 8])], [5, 2.5], 6, UV.chrome, { capStart: true, capEnd: true });
+      if (OPEN) m.addLatheY(mid[0] + dx * 0.4, mid[2] + 8, [[mid[1] + 48, 9], [mid[1] + 58, 9]], 8, UV.lights, { smooth: true, capStart: true, capEnd: true });
     }
     // Центральный световой маячок между ушами!
     m.addLatheZ(0, 0, [[26, 16, 16], [54, 14, 14], [62, 6, 6]], 8, UV.lights, { smooth: true, capStart: true, capEnd: true });
@@ -235,11 +246,11 @@ function buildUshastikGeometry() {
 }
 
 const summary = buildUnitPackage({
-  modelName: 'ny_ushastik',
+  modelName: MODEL,
   race: 'rabbit',
   anifFrom: 'ny_dzsip',
   outDir: OUT,
   buildGeometry: buildUshastikGeometry,
   buildAtlas: buildUshastikAtlas,
 });
-for (const s of summary) console.log(`ny_ushastik_${s.level.padEnd(7)}  V=${String(s.verts).padStart(4)}  F=${String(s.faces).padStart(4)}  .4d=${s.size4d}B  .dxt=${s.sizeDxt}B`);
+for (const s of summary) console.log(`${MODEL}_${s.level.padEnd(7)}  V=${String(s.verts).padStart(4)}  F=${String(s.faces).padStart(4)}  .4d=${s.size4d}B  .dxt=${s.sizeDxt}B`);

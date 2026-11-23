@@ -159,6 +159,60 @@
       "blocks": [
         {
           "type": "heading",
+          "key": "nexus-4.2.5",
+          "text": {
+            "ru": "Мод 4.2.5 · Кролики: Ушастик с «Локатором», залпы Смерча по 20, Кротобой без башни; Бомбохряк 200; журнал рассинхрона · 23.11.2026",
+            "uk": "Мод 4.2.5 · Кролики: Вухань із «Локатором», залпи Смерчу по 20, Кротобій без башти; Бомбокабан 200; журнал розсинхрону · 23.11.2026",
+            "en": "Mod 4.2.5 · Rabbits: Big Ears Locator, 20-rocket Twister salvos, turretless Mole Smasher; Boom Hog 200; desync log · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Кролик-Ушастик: обзор 22 → 15.4 (−30 %). Старый радар (×3 на 15 с, откат 45 с) и видимость на карте через 10 минут убраны: со сложенными ушами он прячется в тумане войны, как обычная техника.",
+              "uk": "Кролик-Вухань: огляд 22 → 15.4 (−30 %). Старий радар (×3 на 15 с, відкат 45 с) і видимість на мапі через 10 хвилин прибрано: зі складеними вухами він ховається в тумані війни, як звичайна техніка.",
+              "en": "Big Ears: sight 22 → 15.4 (−30%). The old radar (×3 for 15 s, 45 s cooldown) and the map reveal after 10 minutes are gone: with its ears folded it hides in the fog of war like any other vehicle."
+            },
+            {
+              "ru": "Новая кнопка Ушастика «Локатор» (та же кнопка спецспособности): уши раскладываются — его сразу видят все на карте, через 5 секунд обзор ×3 и сквозь деревья и холмы, без ограничения по времени. Повторное нажатие складывает уши: 5 секунд его ещё видно и он не видит никого, затем обычный обзор и снова туман войны. Пока уши раскладываются или складываются, он слеп (обзор 0.5), кнопка не нажимается. Модель: уши прижаты назад, а при раскладке ставится модель с поднятыми ушами (ny_ushastik_open).",
+              "uk": "Нова кнопка Вуханя «Локатор» (та сама кнопка спецздібності): вуха розкладаються — його одразу бачать усі на мапі, за 5 секунд огляд ×3 і крізь дерева й пагорби, без обмеження в часі. Повторне натискання складає вуха: 5 секунд його ще видно і він не бачить нікого, далі звичайний огляд і знову туман війни. Поки вуха розкладаються чи складаються, він сліпий (огляд 0.5), кнопка не натискається. Модель: вуха притиснуті назад, а під час розкладання ставиться модель із піднятими вухами (ny_ushastik_open).",
+              "en": "New Big Ears button Locator (the same special-ability button): the ears unfold — everyone on the map sees it at once, 5 seconds later sight ×3 through trees and hills, with no time limit. Press again to fold the ears: for 5 seconds it is still visible and sees nothing, then normal sight and the fog of war again. While the ears unfold or fold it is blind (sight 0.5) and the button does nothing. Model: ears laid back; on unfolding the game switches to the raised-ears model (ny_ushastik_open)."
+            },
+            {
+              "ru": "Морковный Смерч: урон ракеты 7 → 9; залп 40 → 20 ракет. Если ракет осталось меньше 20 (например, после одиночных выстрелов), залпом уходят все оставшиеся.",
+              "uk": "Морквяний Смерч: шкода ракети 7 → 9; залп 40 → 20 ракет. Якщо ракет лишилося менше 20 (наприклад, після поодиноких пострілів), залпом ідуть усі, що лишилися.",
+              "en": "Carrot Twister: rocket damage 7 → 9; salvo 40 → 20 rockets. If fewer than 20 are left (e.g. after single shots), the salvo fires all that remain."
+            },
+            {
+              "ru": "Кротобой (скоростной сапёр): с модели убраны башня с пулемётом и передний катковый трал — в бою, на иконках и в ролике магазина. Чужие мины больше не видит: убраны Detector и улучшение «искатель мин».",
+              "uk": "Кротобій (швидкий сапер): з моделі прибрано башту з кулеметом і передній катковий трал — у бою, на іконках і в ролику магазину. Чужих мін більше не бачить: прибрано Detector і покращення «шукач мін».",
+              "en": "Mole Smasher (fast sapper): the turret with its machine gun and the front roller trawl are removed from the model — in battle, on icons and in the shop clip. It no longer sees enemy mines: Detector and the mine-seeker upgrade are removed."
+            },
+            {
+              "ru": "Пит-Стоп и Заяц-Призрак (снайперский багги): скорость 95 → 70 (MoveSpeed 1.9 → 1.4).",
+              "uk": "Піт-Стоп і Заєць-Привид (снайперський багі): швидкість 95 → 70 (MoveSpeed 1.9 → 1.4).",
+              "en": "Pit Stop and Ghost Hare (sniper buggy): speed 95 → 70 (MoveSpeed 1.9 → 1.4)."
+            },
+            {
+              "ru": "Бомбохряк: цена 450 → 200 SP.",
+              "uk": "Бомбокабан: ціна 450 → 200 SP.",
+              "en": "Boom Hog: price 450 → 200 SP."
+            },
+            {
+              "ru": "Если игра снова выкинет игрока за «противоречие данных» (Inconsistency), в журнал игры у обоих игроков пишется состояние всех юнитов на этом кадре (строки «ARC: desync unit»): сравнив два журнала, видно, какой юнит разошёлся.",
+              "uk": "Якщо гра знову викине гравця за «суперечність даних» (Inconsistency), у журнал гри в обох гравців пишеться стан усіх юнітів на цьому кадрі (рядки «ARC: desync unit»): порівнявши два журнали, видно, який юніт розійшовся.",
+              "en": "If the game kicks a player for data inconsistency again, both players’ game logs get the state of every unit on that frame (lines “ARC: desync unit”): comparing the two logs shows which unit diverged."
+            },
+            {
+              "ru": "Обновляются оба слоя: arcanum-assets 4.2.5 (новые модели Кротобоя и Ушастика) и arcanum-nexus 4.2.5.",
+              "uk": "Оновлюються обидва шари: arcanum-assets 4.2.5 (нові моделі Кротобою й Вуханя) і arcanum-nexus 4.2.5.",
+              "en": "Both layers update: arcanum-assets 4.2.5 (new Mole Smasher and Big Ears models) and arcanum-nexus 4.2.5."
+            }
+          ]
+        },
+        {
+          "type": "heading",
           "key": "nexus-4.2.4",
           "text": {
             "ru": "Мод 4.2.4 · Исправлен кик «противоречие данных» посреди матча · 23.11.2026",
@@ -1951,7 +2005,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "450",
+              "value": "200",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2310,7 +2364,7 @@
               }
             },
             {
-              "value": "95",
+              "value": "70",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2346,9 +2400,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "В залповом режиме стреляет сразу без задержки и за 4 секунды вываливает все 40 морковных ракет (разброс 2.8) — один залп на весь боекомплект, затем 30 секунд перезарядки и к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует.",
-            "uk": "У залповому режимі стріляє одразу без затримки й за 4 секунди вивалює всі 40 морквяних ракет (розкид 2.8) — один залп на весь боєкомплект, потім 30 секунд перезаряджання й до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує.",
-            "en": "In salvo mode it fires immediately and dumps all 40 carrot rockets in 4 seconds (spread 2.8) — one salvo empties it, then a 30-second reload and back to the ammo trailer. No armour, and the ammo cooks off when it dies."
+            "ru": "В залповом режиме стреляет сразу без задержки и за 2 секунды выпускает залп из 20 морковных ракет по 9 урона (разброс 2.8); если ракет осталось меньше 20, залпом уходят все оставшиеся. 40 ракет — два залпа с перезарядкой 30 секунд, потом к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует.",
+            "uk": "У залповому режимі стріляє одразу без затримки й за 2 секунди випускає залп із 20 морквяних ракет по 9 шкоди (розкид 2.8); якщо ракет лишилося менше 20, залпом ідуть усі, що лишилися. 40 ракет — два залпи з перезаряджанням 30 секунд, потім до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує.",
+            "en": "In salvo mode it fires immediately and launches a 20-rocket salvo in 2 seconds, 9 damage each (spread 2.8); if fewer than 20 are left, the salvo fires all that remain. 40 rockets — two salvos with a 30-second reload, then back to the ammo trailer. No armour, and the ammo cooks off when it dies."
           }
         },
         {
@@ -2379,7 +2433,7 @@
               }
             },
             {
-              "value": "7",
+              "value": "9",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -2427,7 +2481,7 @@
               }
             },
             {
-              "value": "7 / r 2.8",
+              "value": "9 / r 2.8",
               "label": {
                 "ru": "взрыв при гибели",
                 "uk": "вибух під час загибелі",
@@ -2455,9 +2509,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Вёрткий бронетрактор без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Видит чужие мины.",
-            "uk": "Верткий бронетрактор без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Бачить чужі міни.",
-            "en": "A nimble armoured tractor with no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Spots enemy mines."
+            "ru": "Вёрткий бронетрактор без башни и без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Чужие мины не видит.",
+            "uk": "Верткий бронетрактор без башти й без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Чужих мін не бачить.",
+            "en": "A nimble armoured tractor with no turret and no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Cannot see enemy mines."
           }
         },
         {
@@ -2524,9 +2578,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, миноискатель, броня, ремкомплект, турбо.",
-            "uk": "Покращення: бак, боєзапас, приціл, міношукач, броня, ремкомплект, турбо.",
-            "en": "Upgrades: fuel, ammo, sight, mine detector, armour, repair kit, turbo."
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo."
           }
         },
         {
@@ -2589,7 +2643,7 @@
               }
             },
             {
-              "value": "95",
+              "value": "70",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2617,9 +2671,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет; спустя 10 минут боя становится виден врагу на всей карте.",
-            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає; за 10 хвилин бою стає видимим ворогу на всій мапі.",
-            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun; 10 minutes into the battle it becomes visible to the enemy across the whole map."
+            "ru": "Фургон с огромными антеннами-ушами: обзор 15.4 и видит мины; с прижатыми ушами в тумане войны не виден, как обычная техника. Своя кнопка «Локатор»: уши раскладываются — Ушастика сразу видят все на карте, а через 5 секунд его обзор становится втрое больше и сквозь деревья и холмы; так можно стоять сколько угодно. Повторное нажатие складывает уши: 5 секунд его ещё видно всем, а сам он не видит никого, потом снова обычный обзор и невидимость. Пока уши раскладываются или складываются (5 секунд), он слеп. Оружия нет.",
+            "uk": "Фургон з величезними антенами-вухами: огляд 15.4 і бачить міни; зі складеними вухами в тумані війни не видний, як звичайна техніка. Своя кнопка «Локатор»: вуха розкладаються — Вуханя одразу бачать усі на мапі, а за 5 секунд його огляд стає втричі більшим і крізь дерева й пагорби; так можна стояти скільки завгодно. Повторне натискання складає вуха: 5 секунд його ще бачать усі, а сам він не бачить нікого, потім знову звичайний огляд і невидимість. Поки вуха розкладаються чи складаються (5 секунд), він сліпий. Зброї немає.",
+            "en": "A van with huge ear-shaped antennas: sight 15.4 and it spots mines; with its ears folded it hides in the fog of war like any other vehicle. Its own Locator button: the ears unfold — everyone on the map sees Big Ears at once, and 5 seconds later its sight triples and reaches through trees and hills; it can stay like that as long as you want. Press again to fold the ears: for 5 seconds everyone still sees it while it sees nothing, then normal sight and stealth return. While the ears unfold or fold (5 seconds) it is blind. No gun."
           }
         },
         {
@@ -2650,7 +2704,7 @@
               }
             },
             {
-              "value": "22",
+              "value": "15.4",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -4194,9 +4248,9 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Свои кнопки спецдействий (новые иконки в панели): «Подрыв» у Бомбохряка — до 60 урона в радиусе 5; «Мины на ходу» у Кротобоя — включил, и он кладёт мину каждые 2.5 клетки пути (не чаще раза в секунду); «Радар» у Ушастика — обзор ×3 на 15 секунд, потом 45 секунд перезарядки.",
-              "uk": "Свої кнопки спецдій (нові іконки в панелі): «Підрив» у Бомбокабана — до 60 шкоди в радіусі 5; «Міни на ходу» у Кротобоя — увімкнув, і він кладе міну кожні 2.5 клітинки шляху (не частіше разу на секунду); «Радар» у Вуханя — огляд ×3 на 15 секунд, потім 45 секунд перезаряджання.",
-              "en": "Own special buttons (new panel icons): Boom Hog’s Detonate — up to 60 damage in a radius of 5; Mole Smasher’s Mines on the Move — switch it on and it drops a mine every 2.5 cells (at most once a second); Big Ears’ Radar — triple sight for 15 seconds, then a 45-second cooldown."
+              "ru": "Свои кнопки спецдействий (новые иконки в панели): «Подрыв» у Бомбохряка — до 60 урона в радиусе 5; «Мины на ходу» у Кротобоя — включил, и он кладёт мину каждые 2.5 клетки пути (не чаще раза в секунду); «Локатор» у Ушастика — уши раскладываются: его сразу видят все на карте, через 5 секунд обзор ×3 сквозь деревья и холмы, сколько угодно; повторное нажатие складывает уши (5 секунд он ещё виден и слеп).",
+              "uk": "Свої кнопки спецдій (нові іконки в панелі): «Підрив» у Бомбокабана — до 60 шкоди в радіусі 5; «Міни на ходу» у Кротобоя — увімкнув, і він кладе міну кожні 2.5 клітинки шляху (не частіше разу на секунду); «Локатор» у Вуханя — вуха розкладаються: його одразу бачать усі на мапі, за 5 секунд огляд ×3 крізь дерева й пагорби, скільки завгодно; повторне натискання складає вуха (5 секунд його ще видно і він сліпий).",
+              "en": "Own special buttons (new panel icons): Boom Hog’s Detonate — up to 60 damage in a radius of 5; Mole Smasher’s Mines on the Move — switch it on and it drops a mine every 2.5 cells (at most once a second); Big Ears’ Locator — the ears unfold: everyone on the map sees it at once, 5 seconds later triple sight through trees and hills for as long as you like; press again to fold the ears (for 5 seconds it is still visible and blind)."
             },
             {
               "ru": "Взрыв при гибели (Бомбохряк, Хряк-Гриль, Морковный Смерч): урон по площади всем вокруг, линейно слабеет к краю.",
@@ -4214,9 +4268,9 @@
               "en": "Hull aiming (Siege Boar): the gun points straight ahead; the vehicle turns onto the target."
             },
             {
-              "ru": "Залп (Морковный Смерч): в режиме залпа — все 40 ракет за 4 секунды.",
-              "uk": "Залп (Морквяний Смерч): у режимі залпу — усі 40 ракет за 4 секунди.",
-              "en": "Salvo (Carrot Twister): all 40 rockets in 4 seconds in salvo mode."
+              "ru": "Залп (Морковный Смерч): в режиме залпа — 20 ракет за 2 секунды, а если осталось меньше — все оставшиеся.",
+              "uk": "Залп (Морквяний Смерч): у режимі залпу — 20 ракет за 2 секунди, а якщо лишилося менше — усі, що лишилися.",
+              "en": "Salvo (Carrot Twister): 20 rockets in 2 seconds in salvo mode, or all that remain if fewer."
             },
             {
               "ru": "Журнал: каждая механика пишет строку «ARC: …» в журнал игры (папка Kite Games\\Swine\\log в LOCALAPPDATA) — по нему видно, что подрыв, мины, лужи, радар и залп сработали.",

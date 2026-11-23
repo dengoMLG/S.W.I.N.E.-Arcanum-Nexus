@@ -166,7 +166,7 @@
       "role": null,
       "stats": {
         "model": "units\\skinned\\d_bombohryak",
-        "price": "450",
+        "price": "200",
         "upgrademask": "85",
         "character": "P07-normaltank",
         "voice": "P04-normaltank",
@@ -370,7 +370,7 @@
         "sight": "8.4",
         "unitsize": "1",
         "movetype": "2",
-        "movespeed": "1.9",
+        "movespeed": "1.4",
         "spinspeed": "140",
         "maxfuel": "100",
         "consume": "1050",
@@ -403,17 +403,17 @@
       "ru": [
         "Морковный Смерч",
         "Лёгкая РСЗО",
-        "В залповом режиме стреляет сразу без задержки и за 4 секунды вываливает все 40 морковных ракет (разброс 2.8) — один залп на весь боекомплект, затем 30 секунд перезарядки и к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует."
+        "В залповом режиме стреляет сразу без задержки и за 2 секунды выпускает залп из 20 морковных ракет по 9 урона (разброс 2.8); если ракет осталось меньше 20, залпом уходят все оставшиеся. 40 ракет — два залпа с перезарядкой 30 секунд, потом к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует."
       ],
       "uk": [
         "Морквяний Смерч",
         "Легка РСЗВ",
-        "У залповому режимі стріляє одразу без затримки й за 4 секунди вивалює всі 40 морквяних ракет (розкид 2.8) — один залп на весь боєкомплект, потім 30 секунд перезаряджання й до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує."
+        "У залповому режимі стріляє одразу без затримки й за 2 секунди випускає залп із 20 морквяних ракет по 9 шкоди (розкид 2.8); якщо ракет лишилося менше 20, залпом ідуть усі, що лишилися. 40 ракет — два залпи з перезаряджанням 30 секунд, потім до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує."
       ],
       "en": [
         "Carrot Twister",
         "Light rocket launcher",
-        "In salvo mode it fires immediately and dumps all 40 carrot rockets in 4 seconds (spread 2.8) — one salvo empties it, then a 30-second reload and back to the ammo trailer. No armour, and the ammo cooks off when it dies."
+        "In salvo mode it fires immediately and launches a 20-rocket salvo in 2 seconds, 9 damage each (spread 2.8); if fewer than 20 are left, the salvo fires all that remain. 40 rockets — two salvos with a 30-second reload, then back to the ammo trailer. No armour, and the ammo cooks off when it dies."
       ],
       "chassis": "Nyul light tank",
       "role": "Nyul raketas",
@@ -450,7 +450,7 @@
         "turretspeed": "90",
         "ammo": "40",
         "ammovalue": "2",
-        "damage": "7",
+        "damage": "9",
         "reloadtime": "30",
         "reshottime": "0.1",
         "shotsound": "shoot\\raketa.wav",
@@ -477,24 +477,24 @@
       "ru": [
         "Кротобой",
         "Скоростной сапёр",
-        "Вёрткий бронетрактор без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Видит чужие мины."
+        "Вёрткий бронетрактор без башни и без оружия. Своя кнопка «Мины на ходу»: включил — едет и сам раскладывает мины по пути, каждые 2.5 клетки (30 мин); выключил — просто едет. Чужие мины не видит."
       ],
       "uk": [
         "Кротобій",
         "Швидкий сапер",
-        "Верткий бронетрактор без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Бачить чужі міни."
+        "Верткий бронетрактор без башти й без зброї. Своя кнопка «Міни на ходу»: увімкнув — їде й сам розкладає міни дорогою, кожні 2.5 клітинки (30 мін); вимкнув — просто їде. Чужих мін не бачить."
       ],
       "en": [
         "Mole Smasher",
         "Fast sapper",
-        "A nimble armoured tractor with no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Spots enemy mines."
+        "A nimble armoured tractor with no turret and no gun. Its own Mines on the Move button: switch it on and it drops a mine every 2.5 cells along its path (30 mines); switch it off and it just drives. Cannot see enemy mines."
       ],
       "chassis": "Nyul light tank",
       "role": "Nyul aknarako",
       "stats": {
         "model": "units\\skinned\\ny_krotoboy",
         "price": "750",
-        "upgrademask": "127",
+        "upgrademask": "119",
         "character": "R07-Tank",
         "voice": "R05-Tank",
         "icon": "ny_krotoboy",
@@ -527,8 +527,7 @@
         "specialtype": "13",
         "bodykick": "0.65",
         "kicksize": "0.2",
-        "kicktime": "1",
-        "detector": "1"
+        "kicktime": "1"
       }
     },
     {
@@ -567,7 +566,7 @@
         "sight": "8",
         "unitsize": "1",
         "movetype": "2",
-        "movespeed": "1.9",
+        "movespeed": "1.4",
         "spinspeed": "160",
         "maxfuel": "100",
         "consume": "1050",
@@ -594,17 +593,17 @@
       "ru": [
         "Кролик-Ушастик",
         "Машина разведки",
-        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет; спустя 10 минут боя становится виден врагу на всей карте."
+        "Фургон с огромными антеннами-ушами: обзор 15.4 и видит мины; с прижатыми ушами в тумане войны не виден, как обычная техника. Своя кнопка «Локатор»: уши раскладываются — Ушастика сразу видят все на карте, а через 5 секунд его обзор становится втрое больше и сквозь деревья и холмы; так можно стоять сколько угодно. Повторное нажатие складывает уши: 5 секунд его ещё видно всем, а сам он не видит никого, потом снова обычный обзор и невидимость. Пока уши раскладываются или складываются (5 секунд), он слеп. Оружия нет."
       ],
       "uk": [
         "Кролик-Вухань",
         "Машина розвідки",
-        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає; за 10 хвилин бою стає видимим ворогу на всій мапі."
+        "Фургон з величезними антенами-вухами: огляд 15.4 і бачить міни; зі складеними вухами в тумані війни не видний, як звичайна техніка. Своя кнопка «Локатор»: вуха розкладаються — Вуханя одразу бачать усі на мапі, а за 5 секунд його огляд стає втричі більшим і крізь дерева й пагорби; так можна стояти скільки завгодно. Повторне натискання складає вуха: 5 секунд його ще бачать усі, а сам він не бачить нікого, потім знову звичайний огляд і невидимість. Поки вуха розкладаються чи складаються (5 секунд), він сліпий. Зброї немає."
       ],
       "en": [
         "Big Ears",
         "Recon vehicle",
-        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun; 10 minutes into the battle it becomes visible to the enemy across the whole map."
+        "A van with huge ear-shaped antennas: sight 15.4 and it spots mines; with its ears folded it hides in the fog of war like any other vehicle. Its own Locator button: the ears unfold — everyone on the map sees Big Ears at once, and 5 seconds later its sight triples and reaches through trees and hills; it can stay like that as long as you want. Press again to fold the ears: for 5 seconds everyone still sees it while it sees nothing, then normal sight and stealth return. While the ears unfold or fold (5 seconds) it is blind. No gun."
       ],
       "chassis": "Nyul light tank",
       "role": null,
@@ -620,7 +619,7 @@
         "frontarmor": "0.5",
         "backarmor": "0",
         "toparmor": "0.5",
-        "sight": "22",
+        "sight": "15.4",
         "unitsize": "1",
         "movetype": "2",
         "movespeed": "1.2",
