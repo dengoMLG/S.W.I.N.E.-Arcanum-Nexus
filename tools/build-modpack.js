@@ -132,7 +132,8 @@ for (const m of pack.mods) {
   }
   mods.push(entry);
 }
-const manifest = { schema: 1, id: pack.id, name: pack.name || pack.id, version: String(pack.version), mods };
+// Схема 2: пак з exe_patch.json — лаунчери до 0.7.23.8 (лише схема 1) його відкидають і лишаються на старому паку.
+const manifest = { schema: 2, id: pack.id, name: pack.name || pack.id, version: String(pack.version), mods };
 fs.writeFileSync(path.join(outDir, 'modpack.json'), JSON.stringify(manifest, null, 2) + '\n');
 for (const id of Object.keys(lock)) if (!seen.has(id)) delete lock[id];
 fs.writeFileSync(LOCK, JSON.stringify(lock, null, 2) + '\n');
