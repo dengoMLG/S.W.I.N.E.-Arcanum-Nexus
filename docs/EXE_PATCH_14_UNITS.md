@@ -295,6 +295,27 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 побайтово); с флагом 842 правки, ни одна не попала в окна вставок шага 1 (проверено по байтам).
 Дальше: собрать с `--fog16`, `mp-run -Count 3` + `mp-check` (суммы мира, туман), затем включить по умолчанию.
 
+### Шаг 3: разбор границ «до 8» (23.11.2026)
+
+`scan-world16.js --list`, раздел C: 50 сравнений `cmp …,8` в функциях с доступом к игрокам. Разбор по месту:
+
+- **Граница по игроку — расширять до 16 (7 мест):** `CanSeeGroundUnit` 0x49e659 (`cmp ecx,8 / jge` — игрок вне
+  таблицы карт тумана), `CollectUnits` 0x49fa76 (`cmp ebx,8 / jge` — владелец юнита), `ServerInit` 0x4ac9d6 (`jae`),
+  0x4ac9e8 и 0x4aca06 (циклы по указателю игрока `add …,5Ch`), 0x4ad2f0 и 0x4adbc2 (циклы `[ebp−54h]`/`[ebp−58h]`).
+- **Триггеры (`TestTriggers`):** 0x4b1bcf/0x4b1bd4 — цикл по игрокам `add ecx,5Ch` (кампания и триггеры карт);
+  0x4b246e, 0x4b25b1, 0x4b3113, 0x4b32b5 — номер игрока из параметра триггера, 8 похоже на «любой игрок» — смотреть
+  отдельно, не трогать вслепую.
+- **Не игроки (оставить):** `cmp …,10h` в `BackupCampaignUnits` 0x49e442, `CollectUnitGroupForTrigger` 0x49f8e9,
+  `SendUnitGroupCompressed` 0x4ac0e8, `ServerInit` 0x4acda6/0x4ad024/0x4ad6c4, `TestTriggers` 0x4b1060/0x4b4801 —
+  длина строки (короткая строка ≤ 15 символов) или тип события; `GetPanelStatus` 0x4a3bb9, `WhiteFlag` 0x4b4e09,
+  `TestTriggers` 0x4b2d1d/0x4b2dbb — `SpecialType·2 == 8`; `PlaceUnits` 0x4a7622, `ProcessPacket` 0x4a88f8 — `switch`
+  по типу команды; `TestTriggers` 0x4b4a14 — цикл с шагом 14h. Остальные — вне `SGameWorld` (`SGepard`, RakNet,
+  колёса и модель `SUnit`, звук, магазин).
+
+Кроме этих сравнений шаг 3 должен поменять: `SMulti::GetLocalPlayerSlotNumber` (сейчас место 8 + k → игрок k),
+приём кадров 16 игроков в `SGameWorld::ServerRefresh` (сейчас кадр места 8 + k исполняется как армия k — вставки
+`getframeco`/`procco`), лобби (16 строк со своей расой, командой, цветом) и стартовые точки 9…16.
+
 ## Третья раса — Вороны (#3, мод 4.1.0, заглушка)
 
 Раса в игре — число: 0 кролики, 1 свиньи. Хранится байтом в слоте лобби (`SMulti` слот +68h, было +21F8h), в игроке мира (`SGameWorld` + F8h + i·5Ch + 4 = +FCh), в `SCampaign+4` (своя раса в сети — `SChatRoomMenu+916Ch` → `SCampaign::SetRace`) и в копиях: `SMarket+26A8h`, `SQuickMarket+2840h`, флаг меню `[0ED29E0h]` (он же «Race = N» в `menu.ini`). По сети раса идёт целым байтом (`OnPlayerChangeRace`, данные слота копируются записью 70h), так что 2 проходит без правок.
