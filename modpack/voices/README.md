@@ -7,7 +7,9 @@
 
 - `reportanim/<CharId>/*.anif` — **70 файлов** (7 эмоций × 10 юнитов, формат `ANI2`, `120×90`, `25 FPS`, Wan 2.2 + программный ТВ-шум для `death`/`death2`).
 - `lines/<CharId>/<category>/*.mp3` — **300 уникальных русских реплик** (30 реплик в 9 категориях × 10 юнитов, `Qwen3-TTS`, `22050 Hz`, `mono`, `48 kbps`).
+- `menu/faces/*.png` — **26 прозрачных RGBA-портретов** (`512×512`, `pig_face_01..12.png` для 5 новых Свинов и `rabbit_face_01..14.png` для 5 новых Кроликов) для вылезающих персонажей в правом нижнем углу главного меню.
 - `voice_scripts.json` — сценарии всех 300 реплик, описания тембров и привязка секций `units.ini` к игровым ID `Character`/`Voice`.
+- При сборке (`node tools/build-voices-mod.js`) также запускается `tools/build-menu-scene.js`: собирает фон главного меню в свинском городе Штадт (`missions/menu_background.scene` с корректной сигнатурой `SP.3 = 123456`), `cameras.ini.arcpatch` и 10 пред-окрашенных моделей танков (`ver=0 DXT1`) в `objects/arcanum_menu/`.
 
 ## Таблица ID персонажей (`Character` / `Voice`)
 

@@ -20,8 +20,11 @@
 'use strict';
 const fs = require('fs'), path = require('path'), zlib = require('zlib'), crypto = require('crypto');
 
-const packFile = path.resolve(process.argv[2] || path.join(__dirname, '..', 'modpack', 'pack.json'));
-const outDir = path.resolve(process.argv[3] || path.join(path.dirname(packFile), 'out'));
+const posArgs = process.argv.slice(2).filter(a => !a.startsWith('--'));
+const syncLauncher = process.argv.includes('--sync-launcher');
+const LAUNCHER_MODPACK_CS = 'A:/Arcanum/Launcher/Arcanum-Launcher/arcanum_vs_launcher/src/ArcanumVSLauncher/Services/SwineModpack.cs';
+const packFile = path.resolve(posArgs[0] || path.join(__dirname, '..', 'modpack', 'pack.json'));
+const outDir = path.resolve(posArgs[1] || path.join(path.dirname(packFile), 'out'));
 const pack = JSON.parse(fs.readFileSync(packFile, 'utf8'));
 const ID = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 
@@ -109,3 +112,42 @@ for (const m of pack.mods) {
 const manifest = { schema: 1, id: pack.id, name: pack.name || pack.id, version: String(pack.version), mods };
 fs.writeFileSync(path.join(outDir, 'modpack.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(`pack ${pack.id} v${pack.version}: ${mods.length} mods → ${path.join(outDir, 'modpack.json')}`);
+
+if (syncLauncher) {
+  if (!fs.existsSync(LAUNCHER_MODPACK_CS)) {
+    console.log('  лаунчер не знайдено, синхронізацію SwineModpack.cs пропущено');
+  } else {
+    const cs = fs.readFileSync(LAUNCHER_MODPACK_CS, 'utf8');
+    const esc = s => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    const entries = mods.map(m => [
+      '            new ModEntry',
+      '            {',
+      `                Id = "${esc(m.id)}",`,
+      `                Name = "${esc(m.name)}",`,
+      `                Version = "${esc(m.version)}",`,
+      `                Author = "${esc(m.author)}",`,
+      `                Url = "${esc(m.url)}",`,
+      `                Sha256 = "${esc(m.sha256)}",`,
+      `                Size = ${m.size},`,
+      '            },',
+    ].join('\n')).join('\n');
+    const replacement = [
+      '    public static Manifest BuiltIn() => new()',
+      '    {',
+      `        Id = "${esc(manifest.id)}",`,
+      `        Name = "${esc(manifest.name)}",`,
+      `        Version = "${esc(manifest.version)}",`,
+      '        Mods =',
+      '        {',
+      entries,
+      '        },',
+      '    };',
+    ].join('\n');
+    const rx = /    public static Manifest BuiltIn\(\) => new\(\)\r?\n    \{[\s\S]*?\r?\n    \};/;
+    if (!rx.test(cs)) fail('SwineModpack.cs: BuiltIn() block not found');
+    const eol = cs.includes('\r\n') ? '\r\n' : '\n';
+    const nextCs = cs.replace(rx, replacement.replace(/\n/g, eol));
+    fs.writeFileSync(LAUNCHER_MODPACK_CS, nextCs, 'utf8');
+    console.log(`  → ${LAUNCHER_MODPACK_CS} (BuiltIn v${manifest.version}, ${mods.length} mods)`);
+  }
+}

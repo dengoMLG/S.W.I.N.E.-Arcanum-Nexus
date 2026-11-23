@@ -27,13 +27,19 @@ Model = units\x
 
 ## Выпуск новой версии пака
 
-1. Добавить или изменить мод в `mods/`, вписать его в `pack.json` (`"source": "mods/<id>"`).
+1. Добавить или изменить мод в `mods/`, вписать его в `pack.json` (`"source": "mods/<id>"`). Для `arcanum-voices` перед упаковкой выполнить `node tools/build-voices-mod.js`.
 2. Поднять `"version"` в `pack.json`. Иначе у игроков, у которых пак уже стоит, обновление не установится.
-3. `node tools/build-modpack.js`, на выходе `modpack/out/modpack.json` и `modpack/out/mods/*.zip`.
+3. Собрать архивы, манифест и вики (и при наличии локального репозитория лаунчера синхронизировать `SwineModpack.BuiltIn()` и `Assets/swine_wiki.json`):
+   ```bash
+   node tools/build-modpack.js --sync-launcher
+   node tools/build-wiki.js
+   ```
+   На выходе: `modpack/out/modpack.json`, `modpack/out/wiki.json` и `modpack/out/mods/*.zip`.
 4. Выложить на CDN:
    - `out/mods/*.zip` → `/srv/arcanum/dist/launcher/games/swine/mods/`
+   - `out/wiki.json` → `/srv/arcanum/dist/launcher/games/swine/wiki.json`
    - `out/modpack.json` → `/srv/arcanum/dist/launcher/games/swine/modpack.json` (последним, после zip).
 
 Лаунчер подхватит новую версию при открытии страницы и поставит её перед «Играть».
 
-Если `modpack.json` на CDN нет или он битый, лаунчер берёт последнюю скачанную копию, а без неё — вшитый пак (только Full ReBalance).
+Если `modpack.json` на CDN нет или он битый, лаунчер берёт последнюю скачанную копию, а без неё — вшитый пак (`SwineModpack.BuiltIn()`).
