@@ -729,6 +729,11 @@ static class Caves
             a.Label(ref lrfMsg);
             a.cmp(esi, 8); a.jae(skip); a.cmp(edx, 8); a.jae(skip);
             a.lea(eax, __dword_ptr[esi + edx * 8]); a.mov(__dword_ptr[ebx + eax * 4 + 0x2794], ecx);
+            // Другий командир (мій слот ≥ 8) не веде UpdateConnectivity, тож «гравець edx відпав» (+2898h) дізнається з
+            // цього ж повідомлення: 0x98 шлють лише під час StartSyncAfterDisconnect. Тоді IsDisconnected(edx) у нього
+            // рахується з тих самих даних, що й у господарів армій, — і в той самий кадр.
+            a.cmp(__dword_ptr[ebx + MySlot - 4], 8); a.jl(skip);
+            a.mov(__byte_ptr[ebx + edx + 0x2894], 1);
             a.Label(ref skip);
             a.jmp(0x47c1d6UL);
         }
@@ -870,6 +875,23 @@ static class Caves
             a.Label(ref back);
             a.jmp(0x4ae92fUL);
         }
+        // StartSyncAfterDisconnect: «мій останній кадр від гравця, що відпав» (0x98) — ще й зайнятим слотам 8…15, інакше
+        // другі командири не дізнаються про відключення й чекають кадрів того гравця вічно (тест 23.11: стоп на 783).
+        // Було (0x47dea7): push dword ptr [ebp+8] (маска 0…7) / lea eax,[ebp-0Ch]; esi = this
+        var syncMask = a.CreateLabel("syncmask16");
+        {
+            var lp = a.CreateLabel(); var nx = a.CreateLabel();
+            a.Label(ref syncMask);
+            // ebx/ecx/edx далі не потрібні: після виклику SendMessageInternal — pop edi/esi/ebx і ret
+            a.movzx(eax, __byte_ptr[ebp + 8]); a.mov(ecx, 8);
+            a.Label(ref lp);
+            a.imul(ebx, ecx, SlotSize); a.mov(edx, __dword_ptr[esi + ebx + SlotBase + 0x60]); a.or(edx, __dword_ptr[esi + ebx + SlotBase + 0x64]); a.jz(nx);
+            a.bts(eax, ecx);
+            a.Label(ref nx);
+            a.inc(ecx); a.cmp(ecx, 16); a.jl(lp);
+            a.push(eax); a.lea(eax, __dword_ptr[ebp - 0x0C]); a.jmp(0x47deadUL);
+        }
+
         // Господар армії k пішов (IsDisconnected(k) — той самий момент, що у ванільній грі), а другий командир був на
         // старті: армію не прибираємо. Біт k у CoState+8 — «без господаря»: кадрів слота k більше не чекаємо й не
         // виконуємо, лише слота 8 + k. Було (0x4ae8e4): test al,al / je 4ae91e / push dword ptr [edi+3Ch]
@@ -973,7 +995,8 @@ static class Caves
         hooks.Add(new Hook(0x479de0,Convert.FromHexString("8B9190210000"), "SMulti::GetFullAndOpenSlots: + місця других командирів (ворота)", (uint)L(gate16), 6));
         hooks.Add(new Hook(0x47a880, Convert.FromHexString("558BEC538B5D08"), "SMulti::IsDisconnected: слот ≥ 8 — за GUID", (uint)L(isDisc16), 7));
         hooks.Add(new Hook(0x475360, Convert.FromHexString("558BEC8B4508"), "ConnectivityGraph::ClearPeerInfo: лише 0…7", (uint)L(clearPeer16), 6));
-        hooks.Add(new Hook(0x4ae8e4, Convert.FromHexString("84C07436FF773C"), "SGameWorld::ServerRefresh: господар пішов — армія лишається другому командиру", (uint)L(discCo), 7));
+        hooks.Add(new Hook(0x47dea7, Convert.FromHexString("FF75088D45F4"), "SMulti::StartSyncAfterDisconnect: 0x98 ще й слотам 8…15", (uint)L(syncMask), 6));
+        hooks.Add(new Hook(0x4ae8e4,Convert.FromHexString("84C07436FF773C"), "SGameWorld::ServerRefresh: господар пішов — армія лишається другому командиру", (uint)L(discCo), 7));
         hooks.Add(new Hook(0x4aeac5, Convert.FromHexString("E886B2FCFF"), "SGameWorld::ServerRefresh: армія без господаря — лише кадри 8 + k", (uint)L(getFrameCo), 5));
         hooks.Add(new Hook(0x4ae92a,Convert.FromHexString("E801BBFCFF"), "SGameWorld::ServerRefresh: чекати кадр другого командира", (uint)L(waitCo), 5));
         hooks.Add(new Hook(0x4aeade, Convert.FromHexString("8D4DACC745FCFFFFFFFF"), "SGameWorld::ServerRefresh: кадр слота 8 + k → армія k", (uint)L(procCo), 10));
