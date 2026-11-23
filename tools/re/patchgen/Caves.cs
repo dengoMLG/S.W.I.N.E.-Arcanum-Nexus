@@ -469,7 +469,7 @@ static class Caves
             // спільне командування: біт k = зайняті і слот k, і слот 8 + k (однаково в усіх — дані слотів з лобі)
             {
                 var none = a.CreateLabel(); var lp = a.CreateLabel(); var nx = a.CreateLabel();
-                a.mov(__dword_ptr[tableVa + CoState], 0); a.mov(__dword_ptr[tableVa + CoState + 4], 0);
+                a.mov(__dword_ptr[tableVa + CoState], 0); a.mov(__dword_ptr[tableVa + CoState + 4], 0); a.mov(__dword_ptr[tableVa + CoState + 8], 0);
                 a.mov(ecx, __dword_ptr[esp + 0x24]); a.test(ecx, ecx); a.jz(none);       // SMulti* (у грі на одного — 0)
                 a.xor(esi, esi);
                 a.Label(ref lp);
@@ -847,12 +847,14 @@ static class Caves
         // Чекаємо його, поки слот 8 + k зайнятий (вихід гравця — GUID порожній — не чекаємо).
         // Очікування: обгортка HasFrameData(k, кадр). ebx = світ, esi = k, [ebp-20h] = тік. Було (0x4ae92a): call HasFrameData
         var waitCo = a.CreateLabel("waitco");
+        var coCheck = a.CreateLabel("cocheck");
         {
             var back = a.CreateLabel(); var gone = a.CreateLabel(); var wait = a.CreateLabel();
             a.Label(ref waitCo);
             a.call(HasFrameData);
             a.test(al, al); a.jz(back);
             a.bt(__dword_ptr[tableVa + CoState], esi); a.jae(back);
+            a.Label(ref coCheck);                                                  // сюди ж — армія без господаря (discCo)
             a.lea(eax, __dword_ptr[esi + 8]); a.push(__dword_ptr[ebx + 0x1B14]); a.push(eax); a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(HasFrameData);
             a.test(al, al); a.jnz(back);
             a.lea(eax, __dword_ptr[esi + 8]); a.push(eax); a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(GetSlots);
@@ -868,6 +870,36 @@ static class Caves
             a.Label(ref back);
             a.jmp(0x4ae92fUL);
         }
+        // Господар армії k пішов (IsDisconnected(k) — той самий момент, що у ванільній грі), а другий командир був на
+        // старті: армію не прибираємо. Біт k у CoState+8 — «без господаря»: кадрів слота k більше не чекаємо й не
+        // виконуємо, лише слота 8 + k. Було (0x4ae8e4): test al,al / je 4ae91e / push dword ptr [edi+3Ch]
+        var discCo = a.CreateLabel("discco");
+        {
+            var remove = a.CreateLabel();
+            a.Label(ref discCo);
+            // IsDisconnected(k) каже «пішов» лише в один узгоджений кадр (ваніль тоді ж прибирає армію); далі знову
+            // «на місці» — і без цієї перевірки гра чекала б кадрів господаря вічно («Ожидание данных от P2»).
+            a.bt(__dword_ptr[tableVa + CoState + 8], esi); a.jc(coCheck);
+            a.test(al, al); a.jz(0x4ae91eUL);
+            a.bt(__dword_ptr[tableVa + CoState], esi); a.jae(remove);
+            a.bts(__dword_ptr[tableVa + CoState + 8], esi); a.jc(coCheck);
+            Log("ARC: army %d owner left, co-commander keeps it", Imm(0), Reg(esi));
+            a.jmp(coCheck);
+            a.Label(ref remove);
+            a.push(__dword_ptr[edi + 0x3C]); a.jmp(0x4ae8ebUL);
+        }
+        // Виконання армії без господаря: GetFrameData(k) пропускаємо (кадрів k немає), одразу до кадру 8 + k (procCo).
+        // Було (0x4aeac5): call GetFrameData (аргументи вже в стеку)
+        var getFrameCo = a.CreateLabel("getframeco");
+        {
+            var normal = a.CreateLabel();
+            a.Label(ref getFrameCo);
+            a.bt(__dword_ptr[tableVa + CoState + 8], esi); a.jae(normal);
+            a.add(esp, 12); a.jmp(0x4aeadeUL);
+            a.Label(ref normal);
+            a.call(GetFrameData); a.jmp(0x4aeacaUL);
+        }
+
         // Виконання: після ProcessPacket(k, буфер) — той самий буфер наново, GetFrameData(8 + k) і ProcessPacket(k).
         // Було (0x4aeade): lea ecx,[ebp-54h] / mov dword ptr [ebp-4],-1 (далі виклик деструктора буфера)
         var procCo = a.CreateLabel("procco");
@@ -941,7 +973,9 @@ static class Caves
         hooks.Add(new Hook(0x479de0,Convert.FromHexString("8B9190210000"), "SMulti::GetFullAndOpenSlots: + місця других командирів (ворота)", (uint)L(gate16), 6));
         hooks.Add(new Hook(0x47a880, Convert.FromHexString("558BEC538B5D08"), "SMulti::IsDisconnected: слот ≥ 8 — за GUID", (uint)L(isDisc16), 7));
         hooks.Add(new Hook(0x475360, Convert.FromHexString("558BEC8B4508"), "ConnectivityGraph::ClearPeerInfo: лише 0…7", (uint)L(clearPeer16), 6));
-        hooks.Add(new Hook(0x4ae92a, Convert.FromHexString("E801BBFCFF"), "SGameWorld::ServerRefresh: чекати кадр другого командира", (uint)L(waitCo), 5));
+        hooks.Add(new Hook(0x4ae8e4, Convert.FromHexString("84C07436FF773C"), "SGameWorld::ServerRefresh: господар пішов — армія лишається другому командиру", (uint)L(discCo), 7));
+        hooks.Add(new Hook(0x4aeac5, Convert.FromHexString("E886B2FCFF"), "SGameWorld::ServerRefresh: армія без господаря — лише кадри 8 + k", (uint)L(getFrameCo), 5));
+        hooks.Add(new Hook(0x4ae92a,Convert.FromHexString("E801BBFCFF"), "SGameWorld::ServerRefresh: чекати кадр другого командира", (uint)L(waitCo), 5));
         hooks.Add(new Hook(0x4aeade, Convert.FromHexString("8D4DACC745FCFFFFFFFF"), "SGameWorld::ServerRefresh: кадр слота 8 + k → армія k", (uint)L(procCo), 10));
         var frameOld = new Dictionary<uint, string> {
             [0x477f02] = "83C02F8975F0", [0x477f32] = "83C02F03C2", [0x477f5e] = "83C02F03C2", [0x479d74] = "83C02F03C7",

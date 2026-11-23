@@ -1,5 +1,6 @@
 param([int]$Count = 8, [int]$Wait = 10, [string]$Shot = "", [string]$Game = "A:\SteamLibrary\steamapps\common\SWINE HD Remaster",
-      [int]$AutoStart = 0, [int]$ShotOf = 0)
+      [int]$AutoStart = 0, [int]$ShotOf = 0, [int]$Kill = -1, [int]$KillAfter = 30)
+# -Kill i -KillAfter s — через s с після запуску всіх копій закрити копію i (гравець вийшов посеред матчу).
 # -AutoStart 99 — матч не починати (лишитися в лобі); -Shot файл.png -ShotOf i — знімок вікна копії i (0 — хост).
 if ($AutoStart -le 0) { $AutoStart = $Count }
 # Неінтерактивна перевірка мережі: N копій з +autostart N у вікні, журнали, (знімок), закриття, повернення options.ini.
@@ -16,6 +17,7 @@ public struct R { public int L, T, Ri, B; } }
 try {
   (Get-Content $opt) -replace '^Display mode = .*','Display mode = 0' -replace '^Screen resolution = .*','Screen resolution = 0' -replace '^Resolution scale = .*','Resolution scale = 1000' | Set-Content $opt -Encoding ascii
   for ($i=0; $i -lt $Count; $i++) { $a = if ($i -eq 0) { @("+host","+name","P1","+autostart","$AutoStart") } else { @("+connect","127.0.0.1","+name","P$($i+1)","+autostart","$AutoStart") }; $procs += Start-Process "$g\swineHD.exe" -ArgumentList $a -WorkingDirectory $g -PassThru; Start-Sleep -Seconds 7 }
+  if ($Kill -ge 0) { Start-Sleep -Seconds $KillAfter; Stop-Process -Id $procs[$Kill].Id -Force; "killed copy $Kill" }
   Start-Sleep -Seconds $Wait
   "alive: " + (($procs | Where-Object { -not $_.HasExited }).Count) + " / $Count"
   if ($Shot) {
