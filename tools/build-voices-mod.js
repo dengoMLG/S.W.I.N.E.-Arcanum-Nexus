@@ -19,10 +19,15 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'modpack/voices');
+const RAVEN_SRC = path.join(ROOT, 'modpack/raven');
 const DST = path.join(ROOT, 'modpack/mods/arcanum-voices');
 const GD = path.join(DST, 'gamedata/base');
 
 const scripts = JSON.parse(fs.readFileSync(path.join(SRC, 'voice_scripts.json'), 'utf8'));
+const ravenScripts = fs.existsSync(path.join(RAVEN_SRC, 'raven_voice_scripts.json'))
+  ? JSON.parse(fs.readFileSync(path.join(RAVEN_SRC, 'raven_voice_scripts.json'), 'utf8'))
+  : { units: [] };
+const RAVEN_RACE = require('./raven-race');
 
 function expandRange(ranges) {
   const out = [];
@@ -68,9 +73,32 @@ const patchLines = [
 let anifFiles = 0, anifBytes = 0;
 let speechFiles = 0, speechBytes = 0;
 
-for (const u of scripts.units) {
-  const charId = u.char_id;
-  const voiceId = u.voice_id;
+const allVoiceUnits = [
+  ...scripts.units.map(u => ({
+    section: u.section,
+    charId: u.char_id,
+    voiceId: u.voice_id,
+    srcAnifDir: path.join(SRC, 'reportanim', u.char_id),
+    srcLinesDir: path.join(SRC, 'lines', u.char_id),
+  })),
+  ...ravenScripts.units.map(u => {
+    const ru = RAVEN_RACE.UNITS.find(x => x.model === u.id);
+    if (!ru) throw new Error(`Missing Raven unit in raven-race.js for model ${u.id}`);
+    const charId = ru.set.Character;
+    const voiceId = ru.set.Voice;
+    return {
+      section: ru.s,
+      charId,
+      voiceId,
+      srcAnifDir: path.join(RAVEN_SRC, 'reportanim', u.char_id),
+      srcLinesDir: path.join(RAVEN_SRC, 'lines', u.char_id),
+    };
+  }),
+];
+
+for (const u of allVoiceUnits) {
+  const charId = u.charId;
+  const voiceId = u.voiceId;
   const race = charId.startsWith('P') ? 'pig' : 'rabbit';
 
   patchLines.push(`[${u.section}]`);
@@ -79,7 +107,7 @@ for (const u of scripts.units) {
   patchLines.push('');
 
   // 1. Copy 7 .anif animations
-  const srcAnifDir = path.join(SRC, 'reportanim', charId);
+  const srcAnifDir = u.srcAnifDir;
   const dstAnifDir = path.join(GD, 'reportanim', charId);
   fs.mkdirSync(dstAnifDir, { recursive: true });
   for (const em of ['3mp', '5mp', 'success', 'laugh', 'spec', 'death', 'death2']) {
@@ -96,7 +124,7 @@ for (const u of scripts.units) {
   fs.mkdirSync(dstSpeechDir, { recursive: true });
 
   for (const rule of SPEECH_MAP[race]) {
-    const catDir = path.join(SRC, 'lines', charId, rule.cat);
+    const catDir = path.join(u.srcLinesDir, rule.cat);
     const pool = fs.readdirSync(catDir).filter(f => f.endsWith('.mp3')).sort().map(f => path.join(catDir, f));
     if (!pool.length) throw new Error(`Empty voice category: ${catDir}`);
 
@@ -124,15 +152,16 @@ for (const u of scripts.units) {
 
 fs.writeFileSync(path.join(GD, 'units.ini.arcpatch'), patchLines.join('\r\n'), 'latin1');
 
-// 3. Copy custom menu corner faces (pig_face_01..12.png, rabbit_face_01..14.png)
-const srcFaces = path.join(SRC, 'menu/faces');
+// 3. Copy custom menu corner faces (pig_face_01..12.png, rabbit_face_01..14.png, raven_face_01..15.png)
 let faceFiles = 0;
-if (fs.existsSync(srcFaces)) {
-  const dstFaces = path.join(GD, 'menu/faces');
-  fs.mkdirSync(dstFaces, { recursive: true });
-  for (const f of fs.readdirSync(srcFaces).filter(x => x.endsWith('.png')).sort()) {
-    fs.copyFileSync(path.join(srcFaces, f), path.join(dstFaces, f));
-    faceFiles++;
+for (const srcFaces of [path.join(SRC, 'menu/faces'), path.join(RAVEN_SRC, 'menu/faces')]) {
+  if (fs.existsSync(srcFaces)) {
+    const dstFaces = path.join(GD, 'menu/faces');
+    fs.mkdirSync(dstFaces, { recursive: true });
+    for (const f of fs.readdirSync(srcFaces).filter(x => x.endsWith('.png')).sort()) {
+      fs.copyFileSync(path.join(srcFaces, f), path.join(dstFaces, f));
+      faceFiles++;
+    }
   }
 }
 

@@ -14,7 +14,7 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), SRC = path.join(ROOT, 'mods-test/arcunits'), DST = path.join(ROOT, 'modpack/mods/arcanum-units');
 // Фон меню (сцена, моделі, камера) — частина tools/build-voices-mod.js (там камера як cameras.ini.arcpatch);
 // build-menu-scene.js без аргументу пише його в mods-test/arcunits, тож тут пропускаємо, щоб не було двох копій.
-const SKIP = /(^|\/)(d|ny)_arctank[^/]*$|^gamedata\/base\/(cameras\.ini|missions\/menu_background\.scene|objects\/arcanum_menu\/.*)$/i;
+const SKIP = /(^|\/)(d_arctank|ny_arctank|v_charodey)[^/]*$|^gamedata\/base\/(cameras\.ini|missions\/menu_background\.scene|objects\/arcanum_menu\/.*)$/i;
 // Спершу — чи є в моді/грі всі файли, на які посилаються наші ini (інакше — «Fatal error» уже в бою, як 23.11.2026).
 require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'check-arc-refs.js'), SRC], { stdio: 'inherit' });
 
@@ -32,7 +32,7 @@ const patch = JSON.parse(fs.readFileSync(path.join(SRC, 'exe_patch.json'), 'utf8
 fs.copyFileSync(path.join(SRC, 'exe_patch.json'), path.join(DST, 'exe_patch.json'));
 fs.writeFileSync(path.join(DST, 'README.md'), `# Arcanum Units
 
-Новые юниты (по 5 у свиней и кроликов), их механики и баланс цен. Собирается скриптом \`tools/build-arcunits-mod.js\`, руками не править.
+Новые юниты (по 5 у свиней и кроликов + третья раса «Корпус Воронов» из 15 машин и 2 бомбардировщиков), их механики и баланс цен. Собирается скриптом \`tools/build-arcunits-mod.js\`, руками не править.
 
 - \`gamedata/**\` — данные игры (units.ini, тексты, модели, иконки, эффекты, звук, атлас кнопок, маски магазина кампании).
 - \`exe_patch.json\` — патч \`swineHD.exe\` v1.7.1846 (${patch.edits.length} правок + секция .arcmod). Лаунчер применяет его сам: бэкап оригинала, проверка sha до и после.

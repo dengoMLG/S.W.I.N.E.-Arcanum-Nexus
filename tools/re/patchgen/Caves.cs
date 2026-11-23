@@ -19,16 +19,18 @@ static class Caves
 {
     // Адреси гри (v1.7.1846, без ASLR — патч вимикає DYNAMIC_BASE).
     const uint ImpStrstr = 0x544224, TakeDamage = 0x4ca9f0, RadiusDamage = 0x4a97a0, GetUnit = 0x4a3c90, CreateUnit = 0x49ffe0,
-               ShowEvent = 0x4afc10, LoadEffect = 0x4243e0, LogFn = 0x500490, LoggerVar = 0xED2A04, GepardVar = 0x59587C;
+               ShowEvent = 0x4afc10, LoadEffect = 0x4243e0, LogFn = 0x500490, LoggerVar = 0xED2A04, GepardVar = 0x59587C,
+               IsAllyFn = 0x4a5e80, EcFollowFn = 0x4bbf20;
     public const int TableEntries = 4096, EntrySize = 32;   // таблиця стану юнітів за id: див. Entry*
     // Entry: +0 SUnit*  +4 тіків уповільнення  +8 швидкість до  +12 поворот до  +16 уповільнена швидкість
     //        мінер (13): +20/+24 x/z останньої міни  +28 тіків до наступної міни
     //        радар (14): +20 обзор до  +24 тіків посилення  +28 тіків відкату
     public const int SlowTicks = 100, ZoneSlowTicks = 10;     // влучання — 5 с; у калюжі — поки стоїш + 0.5 с
     public const float SlowFactor = 0.4f, MineDist = 2.5f;
-    public const int SalvoSize = 40, SalvoFirstShotTicks = 40; // ракет у залпі для "salvo"; перший постріл після ввімкнення — 2 с (#11)
+    public const int SalvoSize = 40, RavenSalvoSize = 8;      // ракет у залпі: "salvo" — 40, "Varju" (Коршун) — 8, решта — 5; перший постріл миттєвий (4.1.3)
     public const int SpecDetonate = 12, SpecMines = 13, SpecRadar = 14;
     public const float RadarMul = 3f; public const int RadarTicks = 300, RadarCooldown = 900;   // 15 с ×3, відкат 45 с
+    public const int FreeAirCooldown = 900; public const float SamRadius = 14f;                 // Ворони: безкоштовний тактичний авіаналіт (КД 45 с) і ППО Сапсан-ЗРК (R=14)
     public const int RadarRevealTicks = 12000;                                                 // #12: Ушастик стає видимим на мапі лише через 10 хв бою (10×60×20)
     public const int VisMaxR = 64;                                                             // #12: розширені таблиці DrawVisMap (було 36 → Sight 18; тепер 64 → Sight 31.5)
     public const float VisMaxSight = 31.5f;
@@ -52,7 +54,7 @@ static class Caves
     public const int VisAidH = VisTbl3 + 0x2100 + 0x10, VisAidM = VisAidH + 0x110;                // по 64 float (+16 Б запасу спереду для [-1])
     public const int VisDetH = VisAidM + 0x110, VisDetM = VisDetH + 0x110;
     public const int BssEnd = VisDetM + 0x120;
-    public const int AirPricePig = 50, AirPriceRabbit = 100;    // авіаудар, SP (#10: кролики +50)
+    public const int AirPricePig = 50, AirPriceRabbit = 100, AirPriceRaven = 35;    // авіаудар, SP (свині 50, кролики 100, ворони 35)
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
     // місця imul …,5Ch з tools/re/world16.json; вікно (≥ 5 Б) — Program.cs: інструкції до imul, сам imul, після
@@ -191,22 +193,42 @@ static class Caves
             a.Label(ref orig); a.jmp(0x4bc1a0UL);
             a.Label(ref ret); a.pop(esi); a.ret();
 
-            // залп: у "salvo" — SalvoSize ракет замість 5
+            // залп: у "salvo" — SalvoSize (40) ракет, у "Varju" (Коршун) — RavenSalvoSize (8), у решти — 5.
+            // 4.1.3: перший постріл залпу спрацьовує ОДРАЗУ (0 тіків), якщо гармата вже заряджена ([388h]==0 і залп не розпочато).
             a.Label(ref salvo);
-            Strstr(esi, "salvo"); a.test(eax, eax); a.je(orig);
+            {
+                var doSalvo = a.CreateLabel(); var tryV = a.CreateLabel();
+                Strstr(esi, "salvo"); a.test(eax, eax); a.mov(ecx, SalvoSize); a.jne(doSalvo);
+                Strstr(esi, "Varju"); a.test(eax, eax); a.mov(ecx, RavenSalvoSize); a.jne(doSalvo);
+                a.mov(ecx, 5);
+                a.Label(ref doSalvo);
+            }
             a.mov(edx, __dword_ptr[esi + 0x394]); a.mov(eax, 1); a.cmp(edx, 1); a.jg(salvoSet);
-            a.Label(ref salvoOn); a.mov(eax, SalvoSize);
+            a.Label(ref salvoOn); a.mov(eax, ecx);
             a.Label(ref salvoSet);
             a.mov(__dword_ptr[esi + 0x394], eax);
-            a.xor(eax, eax); a.cmp(edx, 1); a.setg(al); a.add(eax, 0xE);              // подія 0Eh — увімкнено, 0Fh — вимкнено
+            a.push(edx);                                                                // старий salvoCount
+            a.xor(eax, eax); a.cmp(edx, 1); a.setg(al); a.add(eax, 0xE);                // подія 0Eh — увімкнено, 0Fh — вимкнено
             a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(__dword_ptr[esi + 4]); a.call(ShowEvent);
-            // #11: перший постріл залпу — 2 с (40 тіків) замість повної перезарядки 30 с; але якщо вже йде довший КД — не скидаємо
+            a.pop(edx);                                                                 // edx = старий salvoCount
             {
-                var keepCd = a.CreateLabel();
+                var onCd = a.CreateLabel(); var midSalvo = a.CreateLabel(); var waitAmmo = a.CreateLabel(); var doneSalvo = a.CreateLabel();
+                a.cmp(__dword_ptr[esi + 0x388], 0); a.jg(onCd);                         // уже на перезарядці — КД не скидаємо
+                a.cmp(__dword_ptr[esi + 0x398], edx); a.jl(midSalvo);                   // перервав залп посередині — чесний КД
+                a.mov(eax, __dword_ptr[esi + 0x394]);
+                a.cmp(__dword_ptr[esi + 0x290], eax); a.jl(waitAmmo);                   // замало ракет — чекаємо причепа (1 тік)
+                a.mov(__dword_ptr[esi + 0x398], eax);                                   // заряджений повністю — стріляє ОДРАЗУ!
+                a.jmp(doneSalvo);
+                a.Label(ref waitAmmo);
                 a.mov(__dword_ptr[esi + 0x398], -1);
-                a.cmp(__dword_ptr[esi + 0x388], SalvoFirstShotTicks); a.jg(keepCd);
-                a.mov(__dword_ptr[esi + 0x388], SalvoFirstShotTicks);
-                a.Label(ref keepCd);
+                a.mov(__dword_ptr[esi + 0x388], 1);
+                a.jmp(doneSalvo);
+                a.Label(ref midSalvo);
+                a.mov(eax, __dword_ptr[esi + 0x98]);
+                a.mov(__dword_ptr[esi + 0x388], eax);
+                a.Label(ref onCd);
+                a.mov(__dword_ptr[esi + 0x398], -1);
+                a.Label(ref doneSalvo);
             }
             Log("ARC: unit %d salvo = %d", Mem(esi, 0x394), Mem(esi, 4));
             a.jmp(ret);
@@ -240,14 +262,17 @@ static class Caves
             a.jmp(ret);
         }
 
-        // ── 3. SUnit::SetSpecialState (стан з інтерфейсу) для спецрежиму 6: у "salvo" — SalvoSize ракет ──
+        // ── 3. SUnit::SetSpecialState (стан з інтерфейсу) для спецрежиму 6: у "salvo" — SalvoSize ракет, у "Varju" — RavenSalvoSize (8) ──
         // Було (0x4c9e96): mov dword ptr [ecx+394h],5
         var salvoUi = a.CreateLabel("salvoui");
         {
-            var five = a.CreateLabel(); var set = a.CreateLabel();
+            var tryV = a.CreateLabel(); var five = a.CreateLabel(); var set = a.CreateLabel();
             a.Label(ref salvoUi);
             a.push(ecx); Strstr(ecx, "salvo"); a.pop(ecx);
-            a.test(eax, eax); a.je(five); a.mov(eax, SalvoSize); a.jmp(set);
+            a.test(eax, eax); a.je(tryV); a.mov(eax, SalvoSize); a.jmp(set);
+            a.Label(ref tryV);
+            a.push(ecx); Strstr(ecx, "Varju"); a.pop(ecx);
+            a.test(eax, eax); a.je(five); a.mov(eax, RavenSalvoSize); a.jmp(set);
             a.Label(ref five); a.mov(eax, 5);
             a.Label(ref set); a.mov(__dword_ptr[ecx + 0x394], eax); a.jmp(0x4c9eacUL);
         }
@@ -377,6 +402,15 @@ static class Caves
             a.Label(ref zdone);
             a.mov(eax, __dword_ptr[esi + 0xC8]);
             a.cmp(eax, SpecRadar); a.je(radar);
+            {   // Ворони: відкат безкоштовного тактичного авіанальоту ("freeair", SpecialType = 11) у [edi+28]
+                var notAir = a.CreateLabel();
+                a.cmp(eax, 11); a.jne(notAir);
+                a.cmp(__dword_ptr[edi], esi); a.jne(outL);
+                a.mov(eax, __dword_ptr[edi + 28]); a.test(eax, eax); a.jle(outL);
+                a.dec(eax); a.mov(__dword_ptr[edi + 28], eax);
+                a.jmp(outL);
+                a.Label(ref notAir);
+            }
             a.cmp(eax, SpecMines); a.jne(outL);
             // міни на ходу
             a.Label(ref mines);
@@ -1120,61 +1154,149 @@ static class Caves
             a.mov(ecx, esi); a.call(SDXWidgetDtor); a.jmp(0x4f9724UL);
         }
 
-        // ── Авіаудар (#10): у кроликів 100 SP замість 50, у свиней як було. Раса: [світ + гравець·5Ch + FCh] ≠ 0 — свині
-        //    (так SGameWorld::AirStrike вибирає «Diszno bombazo»). Швидкість бомбардувальника — у units.ini (arc-units.js). ──
+        // ── Авіаудар (#10, #3 Ворони): кролики 100 SP, свині 50 SP, ворони 35 SP (платний Varju bombazo) або 0 SP з КД 45 с ("freeair" → Varju taktikai bombazo). ──
         // SUnit::EC_SpecTargetGround (0x4bc609): push 32h / push [esi+258h] → TryToBuy(гравець, ціна); edi = світ, esi = юніт
         var airBuy = a.CreateLabel("airbuy");
         {
-            var pig = a.CreateLabel();
+            var paid = a.CreateLabel(); var fOwn = a.CreateLabel(); var fReady = a.CreateLabel();
+            var notRab = a.CreateLabel(); var priceOk = a.CreateLabel();
             a.Label(ref airBuy);
+            Strstr(esi, "freeair"); a.test(eax, eax); a.je(paid);
+            a.mov(eax, __dword_ptr[esi + 4]); a.cmp(eax, TableEntries); a.jae(0x4bc654UL);
+            a.shl(eax, 5); a.add(eax, tableVa);
+            a.cmp(__dword_ptr[eax], esi); a.je(fOwn);
+            a.mov(__dword_ptr[eax], esi); a.mov(__dword_ptr[eax + 4], 0); a.mov(__dword_ptr[eax + 24], 0); a.mov(__dword_ptr[eax + 28], 0);
+            a.Label(ref fOwn);
+            a.cmp(__dword_ptr[eax + 28], 0); a.jle(fReady);
+            Log("ARC: unit %d freeair cooldown %d", Mem(eax, 28), Mem(esi, 4));
+            a.jmp(0x4bc654UL);
+            a.Label(ref fReady);
+            a.mov(__dword_ptr[eax + 28], FreeAirCooldown);
+            Log("ARC: unit %d called freeair strike%s", Imm((int)S("")), Mem(esi, 4));
+            a.xor(eax, eax); a.jmp(priceOk);
+
+            a.Label(ref paid);
             a.mov(eax, __dword_ptr[esi + 0x258]); a.imul(eax, eax, 0x5C); PlayerOff(eax);
-            a.cmp(__dword_ptr[edi + eax + 0xFC], 0); a.mov(eax, AirPricePig); a.jne(pig); a.mov(eax, AirPriceRabbit);
-            a.Label(ref pig);
+            a.mov(ecx, __dword_ptr[edi + eax + 0xFC]);
+            a.cmp(ecx, 0); a.jne(notRab); a.mov(eax, AirPriceRabbit); a.jmp(priceOk);
+            a.Label(ref notRab);
+            a.mov(eax, AirPricePig); a.cmp(ecx, 2); a.jne(priceOk); a.mov(eax, AirPriceRaven);
+            a.Label(ref priceOk);
             a.push(eax); a.push(__dword_ptr[esi + 0x258]); a.jmp(0x4bc611UL);
         }
         // SGameWorld::IsBomberAvailable, мережа (0x4a5f5d): cmp [eax+esi+138h],32h — гроші гравця eax/5Ch ≥ ціни
+        // Для раси 2 (Ворони) поріг = 0 SP, бо машини з "freeair" викликають тактичний наліт безкоштовно, а платні
+        // перевіряються через TryToBuy(35) в airBuy.
         var airAvail = a.CreateLabel("airavail");
         {
-            var pig = a.CreateLabel();
+            var notRab = a.CreateLabel(); var checkSp = a.CreateLabel();
             a.Label(ref airAvail);
-            a.push(edx); a.mov(edx, AirPricePig); a.cmp(__dword_ptr[eax + esi + 0xFC], 0); a.jne(pig); a.mov(edx, AirPriceRabbit);
-            a.Label(ref pig);
-            // Далі в грі 0x4a5f65: jmp short 4a5f75 (setge al) — але 4a5f72…4a5f77 зайняті переходом «airavailcamp»,
-            // і 4a5f75 — середина нашої інструкції jmp. До 4.1.0 тут був стрибок у сміття: «Access violation
-            // (004A5F75)», щойно в мережевому бою гра питала, чи доступний бомбардувальник (армія з джипом).
-            // Тому setge робимо самі й повертаємось уже після обох вставок.
+            a.push(edx);
+            a.mov(edx, __dword_ptr[eax + esi + 0xFC]);
+            a.cmp(edx, 0); a.jne(notRab); a.mov(edx, AirPriceRabbit); a.jmp(checkSp);
+            a.Label(ref notRab);
+            a.cmp(edx, 2); a.mov(edx, AirPricePig); a.jne(checkSp); a.xor(edx, edx);
+            a.Label(ref checkSp);
             a.cmp(__dword_ptr[eax + esi + 0x138], edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
         }
         // те саме в кампанії (0x4a5f72): cmp eax(SP кампанії),32h / setge al; гравець — [esi+434h]
         var airAvailCamp = a.CreateLabel("airavailcamp");
         {
-            var pig = a.CreateLabel();
+            var notRab = a.CreateLabel(); var checkSp = a.CreateLabel();
             a.Label(ref airAvailCamp);
             a.push(edx); a.mov(edx, __dword_ptr[esi + 0x434]); a.imul(edx, edx, 0x5C); PlayerOff(edx);
-            a.cmp(__dword_ptr[edx + esi + 0xFC], 0); a.mov(edx, AirPricePig); a.jne(pig); a.mov(edx, AirPriceRabbit);
-            a.Label(ref pig);
+            a.mov(edx, __dword_ptr[edx + esi + 0xFC]);
+            a.cmp(edx, 0); a.jne(notRab); a.mov(edx, AirPriceRabbit); a.jmp(checkSp);
+            a.Label(ref notRab);
+            a.cmp(edx, 2); a.mov(edx, AirPricePig); a.jne(checkSp); a.xor(edx, edx);
+            a.Label(ref checkSp);
             a.cmp(eax, edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
         }
+        // SGameWorld::AirStrike (0x49e1da): вибір секції літака за расою ([ecx+ebx+FCh]) і тим, хто викликав ([ebp+14h]):
+        // 0 → "Nyul bombazo" (вже в esi), 1 → "Diszno bombazo", 2 → "Varju taktikai bombazo" (якщо "freeair") або "Varju bombazo".
+        // Було (0x49e1da): mov eax, offset "Diszno bombazo" (0x552370) / cmovne esi, eax
+        var airPick = a.CreateLabel("airpick");
+        {
+            var notPig = a.CreateLabel(); var donePop = a.CreateLabel(); var donePick = a.CreateLabel();
+            a.Label(ref airPick);
+            a.mov(eax, __dword_ptr[ecx + ebx + 0xFC]);
+            a.cmp(eax, 1); a.jne(notPig);
+            a.mov(esi, 0x552370); a.jmp(donePick);
+            a.Label(ref notPig);
+            a.cmp(eax, 2); a.jne(donePick);
+            a.mov(esi, S("Varju bombazo"));
+            a.sub(esp, 4); a.movss(__dword_ptr[esp], xmm0);
+            a.push(ecx); a.push(edx);
+            a.push(__dword_ptr[ebp + 0x14]); a.push(0); a.mov(ecx, ebx); a.call(GetUnit);
+            a.test(eax, eax); a.je(donePop);
+            Strstr(eax, "freeair"); a.test(eax, eax); a.je(donePop);
+            a.mov(esi, S("Varju taktikai bombazo"));
+            a.Label(ref donePop);
+            a.pop(edx); a.pop(ecx);
+            a.movss(xmm0, __dword_ptr[esp]); a.add(esp, 4);
+            a.Label(ref donePick);
+            a.jmp(0x49e1e2UL);
+        }
 
-        // ── Бомбардувальник кроликів: MoveSpeed ×3 (14.4 замість 4.8) прискорює підліт і відліт, але під час скидання
-        //    бомб ([ebx+9B4h] == 1, 0.8 с) бомби успадковували швидкість 14.4 і перелітали ціль на +15…+26 клітинок.
-        //    Під час скидання (лише раса 0 — кролики) ділимо vx/vz на 3 (повертаємо до 4.8): бомби лягають точно в ціль.
+        // ── Політ бомбардувальника (SUnit::AirPlaneCallBack, 0x4b722e):
+        //    1) Перехоплення ППО «Сапсан-ЗРК» (sokolzrk): на першому тіку скидання бомб ([ebx+9B4h]==1, [918h]==0, [914h]==0),
+        //       якщо в радіусі 14 клітинок є ворожий живий sokolzrk із боєзапасом > 0 — списуємо 1 ракету й зриваємо скидання ([ebx+9B4h]=2)!
+        //    2) Точне скидання бомб при підвищеній швидкості літака (повертаємо vx/vz бомб до 4.8):
+        //       кролики (14.4) → ×1/3; ворони важкий (9.6) → ×1/2; ворони тактичний (12.0) → ×2/5.
         // Було (0x4b722e): fmul dword ptr [esp+18h] / fstp dword ptr [esp+20h]; ebx = SUnit*, eax = [ebx+9A8h]
         var airBomb = a.CreateLabel("airbomb");
         {
-            var done = a.CreateLabel();
+            var done = a.CreateLabel(); var noSam = a.CreateLabel(); var samLoop = a.CreateLabel(); var samNext = a.CreateLabel();
+            var notRab = a.CreateLabel(); var notRav = a.CreateLabel(); var takBomb = a.CreateLabel(); var applyMul = a.CreateLabel();
             a.Label(ref airBomb);
             a.fmul(__dword_ptr[esp + 0x18]);
             a.fstp(__dword_ptr[esp + 0x20]);
             a.cmp(__dword_ptr[ebx + 0x9B4], 1); a.jne(done);
-            a.push(eax); a.push(ecx);
+            a.pushad();
+            // 1) ППО Сапсан-ЗРК: перевіряємо лише на старті бомбометання ([918h]==0 і [914h]==0)
+            a.mov(eax, __dword_ptr[ebx + 0x918]); a.or(eax, __dword_ptr[ebx + 0x914]); a.jne(noSam);
+            a.mov(ebp, __dword_ptr[ebx]);                                           // ebp = SGameWorld*
+            a.xor(edi, edi);
+            a.Label(ref samLoop);
+            a.cmp(edi, __dword_ptr[ebp + 0x440]); a.jge(noSam);
+            a.mov(eax, __dword_ptr[ebp + 0x43C]);
+            a.cmp(__dword_ptr[eax + edi * 8], 0x7FFFFFFF); a.jne(samNext);
+            a.mov(esi, __dword_ptr[eax + edi * 8 + 4]); a.test(esi, esi); a.jz(samNext);
+            a.cmp(__byte_ptr[esi + 0x58], 0); a.jne(samNext);                       // живий
+            a.cmp(__dword_ptr[esi + 0x290], 0); a.jle(samNext);                     // є ракети
+            a.mov(eax, __dword_ptr[esi + 0x258]); a.mov(edx, __dword_ptr[ebx + 0x258]);
+            a.mov(ecx, ebp); a.call(sameSide); a.test(eax, eax); a.jne(samNext);    // ворожий
+            Strstr(esi, "sokolzrk"); a.test(eax, eax); a.je(samNext);
+            a.movss(xmm0, __dword_ptr[esi + 0x264]); a.subss(xmm0, __dword_ptr[ebx + 0x264]); a.mulss(xmm0, xmm0);
+            a.movss(xmm1, __dword_ptr[esi + 0x26C]); a.subss(xmm1, __dword_ptr[ebx + 0x26C]); a.mulss(xmm1, xmm1);
+            a.addss(xmm0, xmm1); a.comiss(xmm0, __dword_ptr[cst("samr2")]); a.jae(samNext);
+            // Перехоплено! Списуємо 1 ракету ЗРК і скасовуємо скидання бомб ([ebx+9B4h] = 2)
+            a.dec(__dword_ptr[esi + 0x290]);
+            a.mov(__dword_ptr[ebx + 0x9B4], 2);
+            Log("ARC: sokolzrk %d intercepted bomber %d", Mem(ebx, 4), Mem(esi, 4));
+            a.popad();
+            a.jmp(done);
+            a.Label(ref samNext);
+            a.inc(edi); a.jmp(samLoop);
+
+            // 2) Масштаб швидкості бомб під час скидання (усередині pushad: vx = [esp+3Ch], vz = [esp+40h])
+            a.Label(ref noSam);
             a.mov(ecx, __dword_ptr[ebx]);
             a.mov(eax, __dword_ptr[ebx + 0x258]); a.imul(eax, eax, 0x5C); PlayerOff(eax);
-            a.cmp(__dword_ptr[ecx + eax + 0xFC], 0);
-            a.pop(ecx); a.pop(eax);
-            a.jne(done);
-            a.movss(xmm0, __dword_ptr[esp + 0x1C]); a.mulss(xmm0, __dword_ptr[cst("third")]); a.movss(__dword_ptr[esp + 0x1C], xmm0);
-            a.movss(xmm0, __dword_ptr[esp + 0x20]); a.mulss(xmm0, __dword_ptr[cst("third")]); a.movss(__dword_ptr[esp + 0x20], xmm0);
+            a.mov(edx, __dword_ptr[ecx + eax + 0xFC]);
+            a.cmp(edx, 0); a.jne(notRab);
+            a.mov(esi, cst("third")); a.jmp(applyMul);
+            a.Label(ref notRab);
+            a.cmp(edx, 2); a.jne(notRav);
+            Strstr(ebx, "taktikai"); a.test(eax, eax); a.jne(takBomb);
+            a.mov(esi, cst("half")); a.jmp(applyMul);
+            a.Label(ref takBomb);
+            a.mov(esi, cst("twofifths"));
+            a.Label(ref applyMul);
+            a.movss(xmm0, __dword_ptr[esp + 0x3C]); a.mulss(xmm0, __dword_ptr[esi]); a.movss(__dword_ptr[esp + 0x3C], xmm0);
+            a.movss(xmm0, __dword_ptr[esp + 0x40]); a.mulss(xmm0, __dword_ptr[esi]); a.movss(__dword_ptr[esp + 0x40], xmm0);
+            a.Label(ref notRav);
+            a.popad();
             a.Label(ref done);
             a.jmp(0x4b7236UL);
         }
@@ -1270,6 +1392,114 @@ static class Caves
             a.jmp(0x4a0c2eUL);
         }
 
+        // ── 4.1.3: Миттєвий перший постріл після поповнення БК (SUnit::DoGunner, 0x4ba279) ──
+        // У ванілі при ammo < salvoCount ([290h] < [394h]) таймер перезарядки [388h] взагалі не зменшувався:
+        // танк після поїздки до причепа з 0 БК все одно чекав повний ReloadTime (25–30 с) перед першим пострілом.
+        // Тепер [388h] чесно тікає до 1 навіть із порожнім БК і спрацьовує миттєво, щойно БК поповнено.
+        var reloadTick = a.CreateLabel("reloadtick");
+        {
+            var decReady = a.CreateLabel(); var done = a.CreateLabel();
+            a.Label(ref reloadTick);
+            a.mov(ecx, __dword_ptr[esi + 0x394]);
+            a.mov(eax, __dword_ptr[esi + 0x388]);
+            a.test(eax, eax); a.je(done);
+            a.cmp(__dword_ptr[esi + 0x290], ecx); a.jge(decReady);
+            a.cmp(eax, 1); a.jle(done);
+            a.dec(eax); a.mov(__dword_ptr[esi + 0x388], eax);
+            a.jmp(done);
+            a.Label(ref decReady);
+            a.dec(eax); a.mov(__dword_ptr[esi + 0x388], eax); a.jne(done);
+            a.mov(__dword_ptr[esi + 0x398], ecx);
+            a.Label(ref done);
+            a.jmp(0x4ba2a2UL);
+        }
+
+        // ── 4.1.3: Піт-Стоп (SpecialType 8, Resource == 0) не вибухає при Cargo == 0 і заряджається від причепа Ammo ──
+        // 1) SUnit::ServerRefresh (0x4c8fe3): не викликати Explode при Cargo == 0, якщо [edi+2C0h] == 0 (не причіп).
+        var pitstopNoBoom = a.CreateLabel("pitstopnoboom");
+        {
+            a.Label(ref pitstopNoBoom);
+            a.cmp(__dword_ptr[edi + 0x294], 0); a.jne(0x4c903dUL);
+            a.cmp(__dword_ptr[edi + 0x2C0], 0); a.je(0x4c903dUL);
+            a.jmp(0x4c8fecUL);
+        }
+        // 2) SUnit::EC_SpecTargetUnit (0x4bc8b1): ПКМ Піт-Стопом по союзному причепу Ammo/Fuel/Service (навіть коли Cargo == 0)
+        //    відправляє Піт-Стоп під'їхати й зарядитися (EC_Follow → причіп отримує команду обслуговування).
+        var pitstopClick = a.CreateLabel("pitstopclick");
+        {
+            var orig = a.CreateLabel(); var checkFuel = a.CreateLabel(); var checkSvc = a.CreateLabel(); var doFollow = a.CreateLabel();
+            a.Label(ref pitstopClick);
+            a.cmp(__dword_ptr[esi + 0xC8], 8); a.jne(orig);
+            a.cmp(__dword_ptr[esi + 0x2C0], 0); a.jne(orig);
+            a.push(__dword_ptr[ebp + 8]); a.push(esi); a.mov(ecx, __dword_ptr[esi]); a.call(GetUnit);
+            a.test(eax, eax); a.je(orig);
+            a.mov(edi, eax);
+            a.push(__dword_ptr[edi + 0x258]); a.push(__dword_ptr[esi + 0x258]); a.mov(ecx, __dword_ptr[esi]); a.call(IsAllyFn);
+            a.test(al, al); a.je(orig);
+            a.mov(eax, __dword_ptr[edi + 0xC8]);
+            a.cmp(eax, 9); a.jne(checkFuel);                                            // причіп Ammo
+            a.mov(ecx, __dword_ptr[esi + 0x294]); a.cmp(ecx, __dword_ptr[esi + 0xD8]); a.jl(doFollow);
+            a.jmp(orig);
+            a.Label(ref checkFuel);
+            a.cmp(eax, 1); a.jne(checkSvc);                                             // причіп Fuel
+            a.movss(xmm0, __dword_ptr[esi + 0x28C]); a.cvtsi2ss(xmm1, __dword_ptr[esi + 0x78]);
+            a.comiss(xmm0, xmm1); a.jb(doFollow);
+            a.jmp(orig);
+            a.Label(ref checkSvc);
+            a.cmp(eax, 8); a.jne(orig);                                                 // причіп Service (ремонт власного HP)
+            a.cmp(__dword_ptr[edi + 0x2C0], 0); a.je(orig);
+            a.movss(xmm0, __dword_ptr[esi + 0x288]); a.comiss(xmm0, __dword_ptr[esi + 0x28]); a.jb(doFollow);
+            a.jmp(orig);
+            a.Label(ref doFollow);
+            a.push(__dword_ptr[ebp + 8]); a.mov(ecx, esi); a.call(EcFollowFn);
+            a.jmp(0x4bc9bcUL);
+            a.Label(ref orig);
+            a.mov(edx, __dword_ptr[ebp + 8]);
+            a.cmp(__dword_ptr[esi + 0x294], 0); a.je(0x4bc9bcUL);
+            a.jmp(0x4bc8beUL);
+        }
+        // 3) SUnit::ServerRefresh (0x4c8e01): причіп Ammo (SpecialType 9) бачить, що Піт-Стопу потрібен Cargo ([294h] < [D8h]).
+        var pitstopAmmoCheck = a.CreateLabel("pitstopammocheck");
+        {
+            a.Label(ref pitstopAmmoCheck);
+            a.mov(eax, __dword_ptr[ecx + 0x290]);
+            a.cmp(eax, __dword_ptr[ecx + 0x94]); a.jl(0x4c8e4aUL);
+            a.cmp(__dword_ptr[ecx + 0xC8], 8); a.jne(0x4c8fb0UL);
+            a.cmp(__dword_ptr[ecx + 0x2C0], 0); a.jne(0x4c8fb0UL);
+            a.mov(eax, __dword_ptr[ecx + 0x294]);
+            a.cmp(eax, __dword_ptr[ecx + 0xD8]); a.jl(0x4c8e4aUL);
+            a.jmp(0x4c8fb0UL);
+        }
+        // 4) SUnit::TakeResource (0x4cb682): пакет Load Ammo (addAmmo > 0) поповнює Cargo ([294h]) Піт-Стопа до [D8h] (300).
+        //    Зберігаємо EFLAGS (pushfd/popfd), бо 0x4cb688 перевіряє ZF від cmp [edx+2C4h],0 на 0x4cb605!
+        var pitstopTakeAmmo = a.CreateLabel("pitstoptakeammo");
+        {
+            var done = a.CreateLabel(); var hasDelta = a.CreateLabel(); var storeCargo = a.CreateLabel();
+            a.Label(ref pitstopTakeAmmo);
+            a.mov(__dword_ptr[edx + 0x290], eax);
+            a.pushfd();
+            a.cmp(__dword_ptr[edx + 0xC8], 8); a.jne(done);
+            a.cmp(__dword_ptr[edx + 0x2C0], 0); a.jne(done);
+            a.movss(xmm3, __dword_ptr[ebp + 0x0C]);
+            a.xorps(xmm4, xmm4);
+            a.comiss(xmm3, xmm4); a.jbe(done);
+            a.mov(eax, __dword_ptr[edx]);
+            a.mulss(xmm3, __dword_ptr[eax + 0x1F30]);
+            a.cvttss2si(eax, xmm3);
+            a.test(eax, eax); a.jg(hasDelta);
+            a.mov(eax, 1);
+            a.Label(ref hasDelta);
+            a.add(eax, __dword_ptr[edx + 0x294]);
+            a.mov(ecx, __dword_ptr[edx + 0xD8]);
+            a.cmp(eax, ecx); a.jle(storeCargo);
+            a.mov(eax, ecx);
+            a.Label(ref storeCargo);
+            a.mov(__dword_ptr[edx + 0x294], eax);
+            a.Label(ref done);
+            a.popfd();
+            a.jmp(0x4cb688UL);
+        }
+
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
         var w16Labels = new List<Label>();
         foreach (var st in World16)
@@ -1309,13 +1539,19 @@ static class Caves
         hooks.Add(new Hook(0x4f971d, Convert.FromHexString("8BCEE8CCEEF8FF"), "~SMenu: прибрати рядок версії мода", (uint)L(menuVerDtor), 7));
         for (int i = 0; i < World16.Count; i++)
             hooks.Add(new Hook(World16[i].Va, World16[i].Old, "#2: зсув гравця i·5Ch → хвіст SGameWorld для i ≥ 8", (uint)L(w16Labels[i]), World16[i].Len));
-        hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар кроликів 100", (uint)L(airBuy), 8));
+        hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар за расою та freeair", (uint)L(airBuy), 8));
         hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
         hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));
-        hooks.Add(new Hook(0x4b722e, Convert.FromHexString("D84C2418D95C2420"), "SUnit::AirPlaneCallBack: кролячий бомбардувальник скидає бомби на 4.8 (точно в ціль)", (uint)L(airBomb), 8));
+        hooks.Add(new Hook(0x49e1da, Convert.FromHexString("B8702355000F45F0"), "SGameWorld::AirStrike: вибір бомбардувальника Воронів (важкий / тактичний)", (uint)L(airPick), 8));
+        hooks.Add(new Hook(0x4b722e, Convert.FromHexString("D84C2418D95C2420"), "SUnit::AirPlaneCallBack: ППО Сапсан-ЗРК + точне скидання бомб на 4.8", (uint)L(airBomb), 8));
         hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика (коло без переповнення) + межа Sight", (uint)L(visUnit), 5));
         hooks.Add(new Hook(0x4a08d0, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapAid: очищення розширених буферів h/m[64]", (uint)L(visAidInit), 6));
         hooks.Add(new Hook(0x4a0b80, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapDetAid: очищення розширених буферів h/m[64]", (uint)L(visDetInit), 6));
+        hooks.Add(new Hook(0x4ba279, Convert.FromHexString("8B8E94030000"), "SUnit::DoGunner: перезарядка тікає навіть при 0 БК → миттєвий перший постріл після зарядки", (uint)L(reloadTick), 6));
+        hooks.Add(new Hook(0x4c8fe3, Convert.FromHexString("83BF94020000007551"), "SUnit::ServerRefresh: Піт-Стоп (Resource==0) не вибухає при Cargo==0", (uint)L(pitstopNoBoom), 9));
+        hooks.Add(new Hook(0x4bc8b1, Convert.FromHexString("83BE9402000000"), "SUnit::EC_SpecTargetUnit: ПКМ Піт-Стопом по причепу Ammo/Fuel/Service → під'їхати й зарядитись", (uint)L(pitstopClick), 7));
+        hooks.Add(new Hook(0x4c8e01, Convert.FromHexString("8B81900200003B8194000000"), "SUnit::ServerRefresh: причіп Ammo заряджає Cargo Піт-Стопа", (uint)L(pitstopAmmoCheck), 12));
+        hooks.Add(new Hook(0x4cb682, Convert.FromHexString("898290020000"), "SUnit::TakeResource: Load Ammo поповнює Cargo Піт-Стопа до 300", (uint)L(pitstopTakeAmmo), 6));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));

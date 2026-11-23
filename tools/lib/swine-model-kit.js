@@ -469,12 +469,19 @@ class Canvas {
     const S = {
       '0': [[0.2,0.12,0.8,0.12],[0.8,0.12,0.9,0.28],[0.9,0.28,0.9,0.74],[0.9,0.74,0.8,0.90],[0.8,0.90,0.2,0.90],[0.2,0.90,0.1,0.74],[0.1,0.74,0.1,0.28],[0.1,0.28,0.2,0.12]],
       '1': [[0.52,0.12,0.52,0.90],[0.25,0.28,0.52,0.12],[0.25,0.90,0.78,0.90]],
-      '6': [[0.85,0.12,0.3,0.12],[0.3,0.12,0.12,0.35],[0.12,0.35,0.12,0.82],[0.12,0.82,0.35,0.92],[0.35,0.92,0.78,0.92],[0.78,0.92,0.92,0.72],[0.92,0.72,0.92,0.55],[0.92,0.55,0.72,0.45],[0.72,0.45,0.15,0.45]],
+      '2': [[0.14,0.28,0.28,0.12],[0.28,0.12,0.76,0.12],[0.76,0.12,0.88,0.28],[0.88,0.28,0.88,0.44],[0.88,0.44,0.14,0.90],[0.14,0.90,0.90,0.90]],
+      '3': [[0.14,0.14,0.78,0.14],[0.78,0.14,0.88,0.28],[0.88,0.28,0.76,0.48],[0.36,0.48,0.76,0.48],[0.76,0.48,0.90,0.68],[0.90,0.68,0.78,0.90],[0.78,0.90,0.14,0.90]],
       '4': [[0.72,0.92,0.72,0.10],[0.72,0.10,0.10,0.62],[0.10,0.62,0.92,0.62]],
+      '5': [[0.86,0.12,0.16,0.12],[0.16,0.12,0.16,0.48],[0.16,0.48,0.74,0.48],[0.74,0.48,0.88,0.64],[0.88,0.64,0.88,0.78],[0.88,0.78,0.72,0.90],[0.72,0.90,0.14,0.90]],
+      '6': [[0.85,0.12,0.3,0.12],[0.3,0.12,0.12,0.35],[0.12,0.35,0.12,0.82],[0.12,0.82,0.35,0.92],[0.35,0.92,0.78,0.92],[0.78,0.92,0.92,0.72],[0.92,0.72,0.92,0.55],[0.92,0.55,0.72,0.45],[0.72,0.45,0.15,0.45]],
+      '7': [[0.12,0.14,0.88,0.14],[0.88,0.14,0.36,0.90]],
+      '8': [[0.24,0.12,0.76,0.12],[0.76,0.12,0.86,0.26],[0.86,0.26,0.74,0.48],[0.26,0.48,0.74,0.48],[0.26,0.48,0.14,0.26],[0.14,0.26,0.24,0.12],[0.26,0.48,0.12,0.68],[0.12,0.68,0.24,0.90],[0.24,0.90,0.76,0.90],[0.76,0.90,0.88,0.68],[0.88,0.68,0.74,0.48]],
       '9': [[0.15,0.90,0.70,0.90],[0.70,0.90,0.88,0.68],[0.88,0.68,0.88,0.22],[0.88,0.22,0.68,0.12],[0.68,0.12,0.24,0.12],[0.24,0.12,0.10,0.30],[0.10,0.30,0.10,0.48],[0.10,0.48,0.28,0.56],[0.28,0.56,0.86,0.56]],
+      'A': [[0.12,0.90,0.50,0.12],[0.50,0.12,0.88,0.90],[0.26,0.62,0.74,0.62]],
       'X': [[0.12,0.12,0.88,0.90],[0.88,0.12,0.12,0.90]],
       'V': [[0.10,0.12,0.50,0.90],[0.50,0.90,0.90,0.12]],
       'I': [[0.50,0.12,0.50,0.90],[0.25,0.12,0.75,0.12],[0.25,0.90,0.75,0.90]],
+      '-': [[0.22,0.52,0.78,0.52]],
     }[ch];
     if (!S) return;
     const x0 = cx - w / 2, y0 = cy - h / 2, thick = Math.max(4, h * 0.16);
@@ -564,9 +571,11 @@ class Canvas {
     if (Canvas._armorCache[key]) { this.px.set(Canvas._armorCache[key]); return; }
     const ga = loadGameAssets();
     // 100% чистые крупные участки живой кистевой брони без лючков, швов и бирюзовых краёв!
-    const sx0 = race === 'pig' ? 12 : 298, sy0 = race === 'pig' ? 246 : 148;
-    const sw = race === 'pig' ? 132 : 86, sh = race === 'pig' ? 92 : 66;
-    const src = race === 'pig' ? ga.dVont : ga.nyLt;
+    const isPig = race === 'pig';
+    const isRaven = race === 'raven';
+    const sx0 = isPig ? 12 : 298, sy0 = isPig ? 246 : 148;
+    const sw = isPig ? 132 : 86, sh = isPig ? 92 : 66;
+    const src = isPig ? ga.dVont : ga.nyLt;
     const tileW = sw * 2.2, tileH = sh * 2.2;
     const s = [0, 0, 0, 0];
     for (let y = 0; y < this.W; y++) {
@@ -578,9 +587,16 @@ class Canvas {
         Canvas.sampleBilinear(src, sx0 + fx, sy0 + fy, s);
         const macro = 1.0 + (vnoise(x * 0.015, y * 0.015, 55) - 0.5) * 0.12;
         const i = (y * this.W + x) * 4;
-        this.px[i]     = clamp(s[0] * gain * macro, 0, 1);
-        this.px[i + 1] = clamp(s[1] * gain * macro, 0, 1);
-        this.px[i + 2] = clamp(s[2] * gain * macro, 0, 1);
+        if (isRaven) {
+          // Сохраняем точную HSV-насыщенность и яркость nyLt (идеально для COLORIZE!), сдвигая тон в авиационную сталь
+          this.px[i]     = clamp(s[2] * gain * macro, 0, 1);
+          this.px[i + 1] = clamp(s[1] * 0.96 * gain * macro, 0, 1);
+          this.px[i + 2] = clamp(s[0] * gain * macro, 0, 1);
+        } else {
+          this.px[i]     = clamp(s[0] * gain * macro, 0, 1);
+          this.px[i + 1] = clamp(s[1] * gain * macro, 0, 1);
+          this.px[i + 2] = clamp(s[2] * gain * macro, 0, 1);
+        }
         this.px[i + 3] = 1.0;
       }
     }
@@ -658,6 +674,102 @@ function drawFlameHazardSign(cv, cx, cy, r) {
   cv.fillPoly(fl, yel, 1, 0);
   const flIn = fl.map(([x, y]) => [lerp(cx, x, 0.58), lerp(cy + r * 0.22, y, 0.62)]);
   cv.fillPoly(flIn, org, 1, 0);
+}
+
+// Фирменная авиационная эмблема Корпуса Воронов (опознавательный знак + расправленные крылья + профиль ворона с золотым клювом, alpha = 0)
+function drawRavenEmblem(cv, cx, cy, r, variant = 'normal') {
+  const blk = [0.05, 0.06, 0.08], navy = [0.10, 0.14, 0.22], crm = [0.84, 0.14, 0.12];
+  const gold = [0.96, 0.78, 0.16], wht = [0.95, 0.96, 0.98], amb = [1.0, 0.84, 0.12];
+  // Расправленные острые крылья по бокам раунделя
+  for (const s of [-1, 1]) {
+    cv.fillPoly([
+      [cx + s * r * 0.55, cy - r * 0.18],
+      [cx + s * r * 1.55, cy - r * 0.56],
+      [cx + s * r * 1.38, cy - r * 0.12],
+      [cx + s * r * 1.48, cy + r * 0.04],
+      [cx + s * r * 1.16, cy + r * 0.22],
+      [cx + s * r * 0.55, cy + r * 0.30],
+    ], blk, 1, 0);
+    cv.fillPoly([
+      [cx + s * r * 0.62, cy - r * 0.10],
+      [cx + s * r * 1.42, cy - r * 0.44],
+      [cx + s * r * 1.24, cy - r * 0.08],
+      [cx + s * r * 1.34, cy + r * 0.03],
+      [cx + s * r * 1.08, cy + r * 0.16],
+      [cx + s * r * 0.62, cy + r * 0.22],
+    ], variant === 'elite' ? gold : wht, 1, 0);
+    // Перья-прорези на крыльях
+    cv.drawLine(cx + s * r * 0.74, cy - r * 0.06, cx + s * r * 1.28, cy - r * 0.26, Math.max(2, r * 0.07), blk, 1, 0);
+    cv.drawLine(cx + s * r * 0.72, cy + r * 0.08, cx + s * r * 1.18, cy - r * 0.02, Math.max(2, r * 0.07), blk, 1, 0);
+  }
+  // Авиационный круглый медальон (раундель)
+  cv.fillCircle(cx, cy, r * 0.92, blk, 1, 0);
+  cv.fillCircle(cx, cy, r * 0.80, variant === 'elite' ? gold : wht, 1, 0);
+  cv.fillCircle(cx, cy, r * 0.68, crm, 1, 0);
+  cv.fillCircle(cx, cy, r * 0.56, navy, 1, 0);
+  // Голова хищного ворона в профиль (смотрит вправо)
+  cv.fillPoly([
+    [cx - r * 0.44, cy + r * 0.40],
+    [cx - r * 0.48, cy - r * 0.06],
+    [cx - r * 0.24, cy - r * 0.40],
+    [cx + r * 0.12, cy - r * 0.36],
+    [cx + r * 0.22, cy - r * 0.08],
+    [cx + r * 0.10, cy + r * 0.38],
+  ], blk, 1, 0);
+  // Внутренний блик оперения ворона
+  cv.fillPoly([
+    [cx - r * 0.34, cy + r * 0.26],
+    [cx - r * 0.36, cy - r * 0.04],
+    [cx - r * 0.18, cy - r * 0.28],
+    [cx + r * 0.05, cy - r * 0.24],
+    [cx + r * 0.02, cy + r * 0.20],
+  ], [0.18, 0.24, 0.36], 1, 0);
+  // Крючковатый золотой клюв
+  cv.fillPoly([
+    [cx + r * 0.10, cy - r * 0.20],
+    [cx + r * 0.64, cy - r * 0.06],
+    [cx + r * 0.50, cy + r * 0.16],
+    [cx + r * 0.40, cy + r * 0.04],
+    [cx + r * 0.10, cy + r * 0.08],
+  ], blk, 1, 0);
+  cv.fillPoly([
+    [cx + r * 0.14, cy - r * 0.14],
+    [cx + r * 0.54, cy - r * 0.04],
+    [cx + r * 0.44, cy + r * 0.09],
+    [cx + r * 0.14, cy + r * 0.03],
+  ], gold, 1, 0);
+  // Хищный прищуренный глаз
+  cv.fillPoly([
+    [cx - r * 0.12, cy - r * 0.16],
+    [cx + r * 0.08, cy - r * 0.10],
+    [cx - r * 0.04, cy - r * 0.02],
+  ], amb, 1, 0);
+}
+
+// Стекло фонаря кабины истребителя/экраноплана (градиент, блик, переплёт, alpha = 0)
+function drawCanopyPanel(cv, x0, y0, x1, y1, tint = [0.16, 0.44, 0.68]) {
+  const W = x1 - x0, H = y1 - y0;
+  for (let y = Math.floor(y0); y < Math.ceil(y1); y++) {
+    const ty = clamp((y - y0) / Math.max(1, H), 0, 1);
+    for (let x = Math.floor(x0); x < Math.ceil(x1); x++) {
+      const tx = clamp((x - x0) / Math.max(1, W), 0, 1);
+      const gl = Math.exp(-Math.pow((tx * 0.7 + ty * 0.9 - 0.42) * 5.2, 2)) * 0.55;
+      const gl2 = Math.exp(-Math.pow((tx * 0.7 + ty * 0.9 - 0.62) * 11.0, 2)) * 0.28;
+      const shade = 0.45 + 0.75 * (1 - ty * 0.65);
+      const r = clamp(tint[0] * shade + gl * 0.75 + gl2 * 0.6, 0, 1);
+      const g = clamp(tint[1] * shade + gl * 0.88 + gl2 * 0.75, 0, 1);
+      const b = clamp(tint[2] * shade + gl * 0.96 + gl2 * 0.85, 0, 1);
+      cv.blendPx(x, y, [r, g, b], 1, 0);
+    }
+  }
+  const frm = [0.12, 0.14, 0.17];
+  const bw = Math.max(4, Math.round(Math.min(W, H) * 0.055));
+  cv.fillRect(x0, y0, x1, y0 + bw, frm, 1, 0);
+  cv.fillRect(x0, y1 - bw, x1, y1, frm, 1, 0);
+  cv.fillRect(x0, y0, x0 + bw, y1, frm, 1, 0);
+  cv.fillRect(x1 - bw, y0, x1, y1, frm, 1, 0);
+  cv.drawLine(x0 + W * 0.5, y0, x0 + W * 0.5, y1, bw * 0.85, frm, 1, 0);
+  cv.drawLine(x0, y0 + H * 0.55, x1, y0 + H * 0.55, bw * 0.65, frm, 1, 0);
 }
 
 // ─── Сериализация .4d, .dxt (DXT5), .obj, PNG ───
@@ -1131,7 +1243,7 @@ function buildUnitPackage({ modelName, race, anifFrom, outDir, buildGeometry, bu
   const trackDxtName = trackTexName.replace(/\.tga$/i, '.dxt');
   const trackImg = decodeDxtSimple(readPakEntry(PAK_PATH, `units/skinned/${trackDxtName}`));
   const teams = TEAM_PRESETS(race);
-  const defaultTeam = race === 'pig' ? teams.blue : teams.yellow;
+  const defaultTeam = race === 'pig' ? teams.blue : (race === 'raven' ? teams.blue : teams.yellow);
 
   const FOUR_VIEWS = [
     { x0: 0,   y0: 0,   w: 480, h: 320, yaw: 0.65, pitch: 0.44 },
@@ -1231,6 +1343,6 @@ module.exports = {
   GAME_DIR, PAK_PATH,
   sub, add, scale, cross, dot, norm, clamp, lerp, uvRect,
   mulberry, vnoise, fbm,
-  Mesh, buildTrackLoop, buildWheelMesh, Canvas, drawPigEmblem, drawFlameHazardSign,
+  Mesh, buildTrackLoop, buildWheelMesh, Canvas, drawPigEmblem, drawFlameHazardSign, drawRavenEmblem, drawCanopyPanel,
   loadGameAssets, buildUnitPackage,
 };

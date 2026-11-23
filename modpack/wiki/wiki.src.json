@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.1.2",
+              "value": "4.2.0",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -87,7 +87,7 @@
               }
             },
             {
-              "value": "≈213 MB",
+              "value": "≈475 MB",
               "label": {
                 "ru": "скачивается",
                 "uk": "завантажується",
@@ -116,14 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Nexus Mod 4.1.2 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, третья раса «Вороны» (заглушка), новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
-              "uk": "Arcanum Nexus Mod 4.1.2 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, третя раса «Ворони» (заглушка), нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
-              "en": "Arcanum Nexus Mod 4.1.2 — one mod with everything: 10 new units (5 per side) with their own mechanics, the third race Ravens (placeholder), the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.2.0 — один мод со всем сразу: 25 новых юнитов (по 5 у свиней и кроликов + полная третья раса «Корпус Воронов» из 15 машин и 2 бомбардировщиков) со своими 3D-моделями и механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), 175 экранчиков и русская озвучка всех 25 новых машин, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.2.0 — один мод з усім одразу: 25 нових юнітів (по 5 у свиней і кроликів + повна третя раса «Корпус Воронів» із 15 машин і 2 бомбардувальників) зі своїми 3D-моделями й механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), 175 екранчиків і російська озвучка всіх 25 нових машин, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.2.0 — one mod with everything: 25 new units (5 each for pigs and rabbits + the full Raven Air Corps third race with 15 vehicles and 2 bombers) with their own 3D models and mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), 175 HUD portraits and Russian voices for all 25 new vehicles, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.1.2»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
-              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.1.2»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
-              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.1.2”), and in the launcher mod list. If your friends have a different one, update before playing."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.2.0»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.2.0»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.2.0”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -157,6 +157,40 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.2.0",
+          "text": {
+            "ru": "Мод 4.2.0 · Корпус Воронов: полная третья раса (15 машин, 3D-модели, авиация, озвучка) · 23.11.2026",
+            "uk": "Мод 4.2.0 · Корпус Воронів: повна третя раса (15 машин, 3D-моделі, авіація, озвучення) · 23.11.2026",
+            "en": "Mod 4.2.0 · Raven Air Corps: full third race (15 vehicles, 3D models, aviation, voices) · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Корпус Воронов (Пернатый Авиакорпус) полностью интегрирован как третья игровая раса: все 15 наземных машин (9 базовых боевых + аэродромный тягач «Скворец» + 5 уникальных машин Arcanum) переведены с заглушки «Чародей» на собственные 3D-модели с крыльями, турбинами и килями (45 вариантов Normal/Veteran/Elite с выровненной плотностью UV-текстур без растяжений), иконками и 200-кадровыми роликами магазина.",
+              "uk": "Корпус Воронів (Пернатий Авіакорпус) повністю інтегровано як третю ігрову расу: усі 15 наземних машин (9 базових бойових + тягач «Шпак» + 5 унікальних машин Arcanum) переведено із заглушки «Чародій» на власні 3D-моделі з крилами, турбінами й кілями (45 варіантів Normal/Veteran/Elite з вирівняною щільністю UV-текстур без розтягувань), іконками та 200-кадровими роликами магазину.",
+              "en": "The Raven Air Corps is now fully integrated as the third playable race: all 15 ground vehicles (9 core combat classes + Starling airfield tow tractor + 5 unique Arcanum vehicles) replace the Sorcerer placeholder with custom winged/turbine 3D models (45 Normal/Veteran/Elite variants with aspect-compensated UVs), shop icons and 200-frame turntable videos."
+            },
+            {
+              "ru": "Авиационная доктрина Воронов в патче exe: тяжёлый авиаудар («Стриж» и флагман «Кондор») стоит 35 SP и вызывает быстрый бомбардировщик Varju bombazo (скорость 9.6, урон 24). Машины поддержки («Ястреб-ЗУ», «Сокол-ПТ», «Сапсан-ЗРК») вызывают БЕСПЛАТНЫЙ лёгкий тактический штурмовик Varju taktikai bombazo (0 SP, откат 45 с, скорость 12.0, урон 11). Оба бомбардировщика сбрасывают бомбы точно в цель.",
+              "uk": "Авіаційна доктрина Воронів у патчі exe: важкий авіаудар («Стриж» і флагман «Кондор») коштує 35 SP і викликає швидкий бомбардувальник Varju bombazo (швидкість 9.6, шкода 24). Машини підтримки («Яструб-ЗУ», «Сокіл-ПТ», «Сапсан-ЗРК») викликають БЕЗКОШТОВНИЙ легкий тактичний штурмовик Varju taktikai bombazo (0 SP, відкат 45 с, швидкість 12.0, шкода 11). Обидва бомбардувальники скидають бомби точно в ціль.",
+              "en": "Raven aviation doctrine in the exe patch: heavy airstrikes (Swift and Condor) cost 35 SP and call in Varju bombazo (speed 9.6, 24 damage). Support vehicles (Hawk AA, Falcon AT, Peregrine SAM) call in a FREE light tactical striker Varju taktikai bombazo (0 SP, 45 s cooldown, speed 12.0, 11 damage). Both drop bombs dead on target."
+            },
+            {
+              "ru": "Спецмеханики Воронов: «Сапсан-ЗРК» автоматически перехватывает вражеские бомбардировщики в радиусе 14 клеток (срывает сброс бомб за 1 ракету!); сухопутный авианосец «Альбатрос» каждые 35 секунд бесплатно запускает с катапульты крылатый дрон (65 урона в радиусе 3.5 на 24 клетки); «Коршун» выпускает залп из 8 ракет вместо 5; «Филин» бьёт шламовыми авиабомбами на 15 урона с замедлением и 20-секундной зоной помех; экраноплан «Буревестник» скользит по воде (CanSwim) и косит багги Гатлингом (0.8 с); «Сова-ДРЛО» включает бесплатный радар ×3 сквозь рельеф.",
+              "uk": "Спецмеханіки Воронів: «Сапсан-ЗРК» автоматично перехоплює ворожі бомбардувальники в радіусі 14 клітинок (зриває скидання бомб за 1 ракету!); сухопутний авіаносець «Альбатрос» кожні 35 секунд безкоштовно запускає з катапульти крилатий дрон (65 шкоди в радіусі 3.5 на 24 клітинки); «Коршун» випускає залп із 8 ракет замість 5; «Пугач» б'є шламовими авіабомбами на 15 шкоди зі сповільненням і 20-секундною зоною перешкод; екраноплан «Буревісник» ковзає по воді (CanSwim) і косить багі Гатлінгом (0.8 с); «Сова-ДРЛВ» вмикає безкоштовний радар ×3 крізь рельєф.",
+              "en": "Raven special mechanics: Peregrine SAM automatically intercepts enemy bombers within 14 cells (aborting their bomb run for 1 missile!); Albatross land carrier launches a free catapult cruise-drone every 35 s (65 damage in a 3.5 radius up to 24 cells); Kite MLRS fires an 8-rocket salvo instead of 5; Eagle Owl lobs 15-damage sludge bombs with a 20 s jammer puddle; Petrel ekranoplan skims across water (CanSwim) with a 0.8 s Gatling; Owl AWACS activates a free 3× terrain-piercing radar."
+            },
+            {
+              "ru": "Озвучка и экранчики Корпуса Воронов: 105 анимированных экранчиков HUD (120×90 @ 25 FPS, 7 эмоций на каждого из 15 пилотов-пернатых с ТВ-шумом при гибели), 450 уникальных русских голосовых реплик и 15 портретов для главного меню.",
+              "uk": "Озвучення й екранчики Корпусу Воронів: 105 анімованих екранчиків HUD (120×90 @ 25 FPS, 7 емоцій на кожного з 15 пілотів-пернатих із ТБ-шумом під час загибелі), 450 унікальних голосових реплік і 15 портретів для головного меню.",
+              "en": "Raven Air Corps voices and HUD screens: 105 animated HUD portraits (120×90 @ 25 FPS, 7 emotions for each of the 15 bird pilots with CRT static on death), 450 unique Russian voice lines and 15 main-menu character faces."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "launcher-wiki-api",
@@ -2541,77 +2575,72 @@
       "id": "au-ravens",
       "group": "arc-units",
       "title": {
-        "ru": "Вороны (третья раса, заглушка)",
-        "uk": "Ворони (третя раса, заглушка)",
-        "en": "Ravens (third race, placeholder)"
+        "ru": "Корпус Воронов (третья раса)",
+        "uk": "Корпус Воронів (третя раса)",
+        "en": "Raven Air Corps (third race)"
       },
       "summary": {
-        "ru": "Третья раса в лобби. Пока все машины — на модели «Чародей», характеристики временные.",
-        "uk": "Третя раса в лобі. Поки всі машини — на моделі «Чародій», характеристики тимчасові.",
-        "en": "A third race in the lobby. For now every vehicle uses the Sorcerer model and the stats are temporary."
+        "ru": "Пернатый Авиакорпус: 15 собственных 3D-машин, дешёвая и бесплатная авиаподдержка, ПВО-зонтик, композитная крыша и русская озвучка с экранчиками.",
+        "uk": "Пернатий Авіакорпус: 15 власних 3D-машин, дешева й безкоштовна авіапідтримка, ППО-парасолька, композитний дах та озвучення з екранчиками.",
+        "en": "The Raven Air Corps: 15 custom 3D vehicles, cheap and free air support, SAM umbrella, composite roof armour, HUD animations and Russian voices."
       },
       "blocks": [
         {
           "type": "bullets",
           "items": [
             {
-              "ru": "В лобби у расы третий пункт — «Ворон». Работает и в сети: остальные игроки видят выбор и играют против Воронов.",
-              "uk": "У лобі в раси третій пункт — «Ворон». Працює й у мережі: інші гравці бачать вибір і грають проти Воронів.",
-              "en": "The lobby race list has a third entry, Raven. It works online too: other players see the choice and play against the Ravens."
+              "ru": "В лобби у выбора расы третий пункт — «Ворон». Полностью работает по сети: магазин из 18 слотов (10 базовых машин Воронов, включая аэродромный тягач «Скворец» и флагман «Альбатрос», 3 общих прицепа и 5 уникальных машин Arcanum).",
+              "uk": "У лобі у виборі раси третій пункт — «Ворон». Повністю працює по мережі: магазин із 18 слотів (10 базових машин Воронів, включно з тягачем «Шпак» і флагманом «Альбатрос», 3 спільні причепи та 5 унікальних машин Arcanum).",
+              "en": "The lobby race dropdown has a third entry, Raven. Fully playable online: an 18-slot shop (10 base Raven vehicles including the Starling tow tractor and Albatross carrier, 3 shared trailers and 5 unique Arcanum units)."
             },
             {
-              "ru": "В магазине Воронов 13 боевых машин: аналоги обычной линейки и 5 своих. Все — на временной модели «Чародей»; свои модели Корпуса Воронов в работе.",
-              "uk": "У магазині Воронів 13 бойових машин: аналоги звичайної лінійки і 5 своїх. Усі — на тимчасовій моделі «Чародій»; свої моделі Корпусу Воронів у роботі.",
-              "en": "The Raven shop has 13 combat vehicles: counterparts of the standard line-up plus 5 of their own. All use the temporary Sorcerer model; the Raven Corps models are in progress."
+              "ru": "Все 15 машин получили собственные 3D-модели с крыльями, турбинами, килями и кабинами пилотов (45 вариантов Normal/Veteran/Elite с выровненной плотностью UV-текстур без растяжений), иконки, 200-кадровые ролики магазина, 105 анимированных экранчиков HUD и 450 русских реплик.",
+              "uk": "Усі 15 машин отримали власні 3D-моделі з крилами, турбінами, кілями й кабінами пілотів (45 варіантів Normal/Veteran/Elite з вирівняною щільністю UV-текстур без розтягувань), іконки, 200-кадрові ролики магазину, 105 анімованих екранчиків HUD і 450 реплік.",
+              "en": "All 15 vehicles have custom 3D models with wings, turbines, tail fins and cockpits (45 Normal/Veteran/Elite variants with aspect-compensated UVs), shop icons, 200-frame turntable videos, 105 animated HUD screens and 450 Russian voice lines."
             },
             {
-              "ru": "Тягач, прицепы (боеприпасы, топливо, ремонт) и вертолёт снабжения пока свиные.",
-              "uk": "Тягач, причепи (боєприпаси, пальне, ремонт) і гелікоптер постачання поки свинячі.",
-              "en": "The tractor, trailers (ammo, fuel, repair) and the supply helicopter are the pigs' for now."
+              "ru": "Доктрина авиаподдержки: тяжёлый авиаудар («Стриж» и флагман «Кондор») стоит всего 35 SP (бомбардировщик Varju bombazo летит вдвое быстрее свиного — 9.6, урон 24). Машины поддержки («Ястреб-ЗУ», «Сокол-ПТ», «Сапсан-ЗРК») вызывают БЕСПЛАТНЫЙ лёгкий тактический штурмовик (0 SP, откат 45 с, скорость 12.0, урон 11). Сухопутный авианосец «Альбатрос» каждые 35 секунд бесплатно запускает с катапульты крылатый дрон (65 урона в радиусе 3.5 на 24 клетки).",
+              "uk": "Доктрина авіапідтримки: важкий авіаудар («Стриж» і флагман «Кондор») коштує лише 35 SP (бомбардувальник Varju bombazo летить удвічі швидше за свинячий — 9.6, шкода 24). Машини підтримки («Яструб-ЗУ», «Сокіл-ПТ», «Сапсан-ЗРК») викликають БЕЗКОШТОВНИЙ легкий тактичний штурмовик (0 SP, відкат 45 с, швидкість 12.0, шкода 11). Сухопутний авіаносець «Альбатрос» кожні 35 секунд безкоштовно запускає крилатий дрон (65 шкоди в радіусі 3.5 на 24 клітинки).",
+              "en": "Air-support doctrine: heavy airstrikes (Swift jeep and Condor flagship) cost only 35 SP (Varju bombazo flies twice as fast as the pig bomber at 9.6, 24 damage). Support vehicles (Hawk AA, Falcon AT, Peregrine SAM) call in a FREE light tactical striker (0 SP, 45 s cooldown, speed 12.0, 11 damage). The Albatross land carrier launches a free catapult cruise-drone every 35 s (65 damage in a 3.5 radius up to 24 cells)."
             },
             {
-              "ru": "Меню, музыка и бомбардировщик у Воронов тоже свиные: игра выбирает их по правилу «не кролики — значит свиньи».",
-              "uk": "Меню, музика й бомбардувальник у Воронів теж свинячі: гра вибирає їх за правилом «не кролики — отже свині».",
-              "en": "Menus, music and the bomber are the pigs' as well: the game picks them by the rule \"not rabbits means pigs\"."
+              "ru": "Господство в воздухе и спецмеханики: «Сапсан-ЗРК» автоматически перехватывает вражеские бомбардировщики в радиусе 14 клеток (срывает сброс бомб за 1 ракету!); «Коршун» даёт залп из 8 ракет вместо 5; «Филин» бьёт шламовыми авиабомбами на 15 урона с замедлением и 20-секундной зоной помех; экраноплан «Буревестник» скользит по воде (CanSwim) и косит багги Гатлингом (0.8 с); «Сова-ДРЛО» включает бесплатный радар ×3 сквозь рельеф.",
+              "uk": "Панування в повітрі та спецмеханіки: «Сапсан-ЗРК» автоматично перехоплює ворожі бомбардувальники в радіусі 14 клітинок (зриває скидання бомб за 1 ракету!); «Коршун» дає залп із 8 ракет замість 5; «Пугач» б'є шламовими авіабомбами на 15 шкоди зі сповільненням і 20-секундною зоною перешкод; екраноплан «Буревісник» ковзає по воді (CanSwim) і косить багі Гатлінгом (0.8 с); «Сова-ДРЛВ» вмикає безкоштовний радар ×3 крізь рельєф.",
+              "en": "Air superiority and special mechanics: Peregrine SAM automatically intercepts enemy bombers within 14 cells (aborting their bomb run for 1 missile!); Kite MLRS fires an 8-rocket salvo instead of 5; Eagle Owl lobs 15-damage sludge bombs with a 20 s jammer puddle; Petrel ekranoplan skims across water (CanSwim) with a 0.8 s Gatling; Owl AWACS activates a free 3× terrain-piercing radar."
             },
             {
-              "ru": "Гаубица «Гриф» стреляет без развёртывания, минёр «Дятел» ставит мины кнопкой «Мины на ходу», как Кротобой: обычным способам нужны детали модели, которых у «Чародея» нет.",
-              "uk": "Гаубиця «Гриф» стріляє без розгортання, мінер «Дятел» ставить міни кнопкою «Міни на ходу», як Кротобій: звичайним способам потрібні деталі моделі, яких у «Чародія» нема.",
-              "en": "The Vulture howitzer fires without deploying, and the Woodpecker minelayer lays mines with the Mines on the Move button, like the Mole Smasher: the usual ways need model parts the Sorcerer lacks."
+              "ru": "Сильные и слабые стороны: композитная броня крыши (TopArmor до 4.5) защищает Воронов от мортир и чужой авиации, но турбины расходуют много топлива, а корма большинства машин тонкая (0–0.5) — без аэродромного тягача «Скворец» с прицепами снабжения эскадрилья быстро встанет.",
+              "uk": "Сильні й слабкі сторони: композитна броня даху (TopArmor до 4.5) захищає Воронів від мортир і чужої авіації, але турбіни витрачають багато пального, а корма більшості машин тонка (0–0.5) — без тягача «Шпак» із причепами ескадрилья швидко зупиниться.",
+              "en": "Strengths and weaknesses: composite roof armour (TopArmor up to 4.5) shields Ravens from mortars and enemy air, but their turbines burn fuel rapidly and rear armour is thin (0–0.5) — without the Starling tow tractor and supply trailers the squadron will stall."
             },
             {
-              "ru": "Сохранённые армии Воронов — отдельные файлы (V…army), со свиными не смешиваются.",
-              "uk": "Збережені армії Воронів — окремі файли (V…army), зі свинячими не змішуються.",
-              "en": "Saved Raven armies are separate files (V…army) and do not mix with the pigs'."
-            },
-            {
-              "ru": "В кампании и одиночной игре Воронов нет. Мыши — следующая раса, после Воронов.",
-              "uk": "У кампанії й одиночній грі Воронів нема. Миші — наступна раса, після Воронів.",
-              "en": "There are no Ravens in the campaign or single-player. Mice are the next race, after the Ravens."
+              "ru": "Сохранённые армии Воронов пишутся в отдельные файлы (V…army) и не смешиваются со свиными.",
+              "uk": "Збережені армії Воронів пишуться в окремі файли (V…army) і не змішуються зі свинячими.",
+              "en": "Saved Raven armies use separate V…army files and do not mix with pig armies."
             }
           ]
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Стриж — Разведчик Воронов",
-            "uk": "Стриж — Розвідник Воронів",
-            "en": "Swift — Raven scout"
+            "ru": "Стриж — Разведчик-наводчик",
+            "uk": "Стриж — Розвідник-навідник",
+            "en": "Swift — Air-spotter jeep"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: быстрый разведчик-командир Корпуса Воронов на модели «Чародей». Своя модель будет позже.",
-            "uk": "Заглушка: швидкий розвідник-командир Корпусу Воронів на моделі «Чародій». Своя модель буде пізніше.",
-            "en": "Placeholder: fast Raven Corps scout on the Sorcerer model. Its own model comes later."
+            "ru": "Сверхбыстрый авиа-джип с радаром: вызывает тяжёлый штурмовой авиаудар всего за 35 SP (быстрый бомбардировщик Воронов, скорость 9.6, 24 урона). Обзор 15, композитная крыша 1.5, но картонная корма и прожорливые турбины.",
+            "uk": "Надшвидкий авіа-джип із радаром: викликає важкий штурмовий авіаудар лише за 35 SP (бомбардувальник Воронів, швидкість 9.6, 24 шкоди). Огляд 15, дах 1.5, але тонка корма і ненажерливі турбіни.",
+            "en": "Blazing aero-jeep with spotter radar: calls in a heavy Raven airstrike for only 35 SP (fast bomber speed 9.6, 24 damage). Sight 15, composite roof 1.5, fragile rear and thirsty turbines."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "260",
+              "value": "280",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2619,7 +2648,7 @@
               }
             },
             {
-              "value": "70",
+              "value": "65",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -2627,7 +2656,7 @@
               }
             },
             {
-              "value": "1 / 0.5 / 1",
+              "value": "1 / 0 / 1.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -2635,7 +2664,7 @@
               }
             },
             {
-              "value": "0–14",
+              "value": "0–15",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -2651,7 +2680,7 @@
               }
             },
             {
-              "value": "85",
+              "value": "93",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2663,25 +2692,25 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, прицел, броня, ремкомплект, турбо.",
-            "uk": "Покращення: бак, приціл, броня, ремкомплект, турбо.",
-            "en": "Upgrades: fuel, sight, armour, repair kit, turbo."
+            "ru": "Улучшения: бак, прицел, ремкомплект, турбо.",
+            "uk": "Покращення: бак, приціл, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, sight, repair kit, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Ястреб-ЗУ — Броневик Воронов",
-            "uk": "Яструб-ЗУ — Броньовик Воронів",
-            "en": "Hawk AA — Raven armoured car"
+            "ru": "Ястреб-ЗУ — Броневик ПВО",
+            "uk": "Яструб-ЗУ — Броньовик ППО",
+            "en": "Hawk AA — AA armored car"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: броневик со спаренной автопушкой на модели «Чародей».",
-            "uk": "Заглушка: броньовик зі спареною автогарматою на моделі «Чародій».",
-            "en": "Placeholder: armoured car with a twin autocannon on the Sorcerer model."
+            "ru": "Скорострельная спаренная автопушка (4 урона каждые 1.2 с) + БЕСПЛАТНЫЙ лёгкий авианалёт прикрытия (0 SP, откат 45 с, штурмовик на 11 урона)! Отлично косит разведку и багги кроликов, но бессилен против тяжёлой брони.",
+            "uk": "Швидкострільна спарена автогармата (4 шкоди кожні 1.2 с) + БЕЗКОШТОВНИЙ легкий авіаналіт прикриття (0 SP, відкат 45 с, штурмовик на 11 шкоди)! Косить розвідку й багі, але слабкий проти важкої броні.",
+            "en": "Rapid twin autocannon (4 damage every 1.2s) + FREE light tactical air support strike (0 SP, 45s cooldown, 11-damage striker)! Shreds light scouts and buggies, weak against heavy armor."
           }
         },
         {
@@ -2696,7 +2725,7 @@
               }
             },
             {
-              "value": "75",
+              "value": "70",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -2704,7 +2733,7 @@
               }
             },
             {
-              "value": "1.5 / 0.5 / 1",
+              "value": "1 / 0.5 / 1.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -2712,7 +2741,7 @@
               }
             },
             {
-              "value": "5",
+              "value": "4",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -2720,7 +2749,7 @@
               }
             },
             {
-              "value": "1.4 s",
+              "value": "1.2 s",
               "label": {
                 "ru": "перезарядка",
                 "uk": "перезаряджання",
@@ -2728,7 +2757,7 @@
               }
             },
             {
-              "value": "0.7–7",
+              "value": "0.7–8",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -2736,7 +2765,7 @@
               }
             },
             {
-              "value": "11",
+              "value": "12",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -2744,7 +2773,7 @@
               }
             },
             {
-              "value": "70",
+              "value": "78",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2752,7 +2781,7 @@
               }
             },
             {
-              "value": "160",
+              "value": "120",
               "label": {
                 "ru": "боезапас",
                 "uk": "боєзапас",
@@ -2764,25 +2793,25 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, миноискатель, ремкомплект, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, міношукач, ремкомплект, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, mine detector, repair kit, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Беркут — Основной танк Воронов",
-            "uk": "Беркут — Основний танк Воронів",
-            "en": "Golden Eagle — Raven main tank"
+            "ru": "Беркут — Основной стелс-танк",
+            "uk": "Беркут — Основний стелс-танк",
+            "en": "Golden Eagle — Stealth main battle tank"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: основной танк Корпуса Воронов на модели «Чародей».",
-            "uk": "Заглушка: основний танк Корпусу Воронів на моделі «Чародій».",
-            "en": "Placeholder: Raven Corps main battle tank on the Sorcerer model."
+            "ru": "Танк с композитной крышей (2.5), скоростными турбинами (1.05) и пушкой на 8 урона: лучше всех держит навесной огонь и авиаудары, умеет окапываться (+2.0 к броне), но имеет слабую корму (0.5) и повышенный расход топлива.",
+            "uk": "Танк із композитним дахом (2.5), швидкими турбінами (1.05) і гарматою на 8 шкоди: найкраще тримає навісний вогонь, окопується (+2.0 до броні), але має тонку корму (0.5) і високу витрату пального.",
+            "en": "MBT with composite roof armor (2.5), fast turbines (1.05) and an 8-damage gun: shrugs off artillery and air splashes, can dig in (+2.0 armor), but has thin rear armor (0.5) and higher fuel burn."
           }
         },
         {
@@ -2797,7 +2826,7 @@
               }
             },
             {
-              "value": "90",
+              "value": "80",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -2805,7 +2834,7 @@
               }
             },
             {
-              "value": "2 / 1 / 2",
+              "value": "2 / 0.5 / 2.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -2813,7 +2842,7 @@
               }
             },
             {
-              "value": "7",
+              "value": "8",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -2821,7 +2850,7 @@
               }
             },
             {
-              "value": "4.6 s",
+              "value": "5.2 s",
               "label": {
                 "ru": "перезарядка",
                 "uk": "перезаряджання",
@@ -2829,7 +2858,7 @@
               }
             },
             {
-              "value": "1.1–7.5",
+              "value": "1–7.5",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -2837,7 +2866,7 @@
               }
             },
             {
-              "value": "8.5",
+              "value": "9.5",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -2845,7 +2874,7 @@
               }
             },
             {
-              "value": "50",
+              "value": "53",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2853,7 +2882,7 @@
               }
             },
             {
-              "value": "90",
+              "value": "75",
               "label": {
                 "ru": "боезапас",
                 "uk": "боєзапас",
@@ -2865,25 +2894,25 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Гриф — Гаубица Воронов",
-            "uk": "Гриф — Гаубиця Воронів",
-            "en": "Vulture — Raven howitzer"
+            "ru": "Гриф — Дальнобойная авиа-гаубица",
+            "uk": "Гриф — Далекобійна авіа-гаубиця",
+            "en": "Vulture — Long-range aero-howitzer"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: дальнобойная гаубица на модели «Чародей». Стреляет без развёртывания.",
-            "uk": "Заглушка: далекобійна гаубиця на моделі «Чародій». Стріляє без розгортання.",
-            "en": "Placeholder: long-range howitzer on the Sorcerer model. Fires without deploying."
+            "ru": "Скоростная 4×4 гаубица на 26 клеток: стреляет сразу с хода без долгого развёртывания, а по кнопке «Стабилизация» за 4 секунды встаёт на упоры (+1.5 к броне). Возит всего 35 снарядов — берегите тягач с БК.",
+            "uk": "Швидка 4×4 гаубиця на 26 клітинок: стріляє одразу з ходу без розгортання, а за кнопкою «Стабілізація» за 4 секунди стає на упори (+1.5 до броні). Везе лише 35 снарядів.",
+            "en": "Fast 4x4 howitzer reaching 26 cells: fires immediately on the move without deploying, or locks down on outriggers in 4s (+1.5 armor). Carries only 35 shells — keep an ammo trailer close."
           }
         },
         {
@@ -2906,7 +2935,7 @@
               }
             },
             {
-              "value": "1.5 / 1 / 1.5",
+              "value": "1.5 / 0.5 / 2",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -2914,7 +2943,7 @@
               }
             },
             {
-              "value": "8",
+              "value": "7",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -2922,7 +2951,7 @@
               }
             },
             {
-              "value": "7.5 s",
+              "value": "6.8 s",
               "label": {
                 "ru": "перезарядка",
                 "uk": "перезаряджання",
@@ -2930,7 +2959,7 @@
               }
             },
             {
-              "value": "4–22",
+              "value": "4–26",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -2938,7 +2967,7 @@
               }
             },
             {
-              "value": "8",
+              "value": "8.5",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -2946,7 +2975,7 @@
               }
             },
             {
-              "value": "50",
+              "value": "63",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -2954,7 +2983,7 @@
               }
             },
             {
-              "value": "80",
+              "value": "35",
               "label": {
                 "ru": "боезапас",
                 "uk": "боєзапас",
@@ -2966,227 +2995,25 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, миноискатель, броня, ремкомплект, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, міношукач, броня, ремкомплект, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, mine detector, armour, repair kit, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Сокол-ПТ — Истребитель танков Воронов",
-            "uk": "Сокіл-ПТ — Винищувач танків Воронів",
-            "en": "Falcon AT — Raven tank destroyer"
+            "ru": "Сокол-ПТ — Истребитель танков (ПТУР)",
+            "uk": "Сокіл-ПТ — Винищувач танків (ПТКР)",
+            "en": "Falcon AT — ATGM tank destroyer"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: быстрый истребитель танков с ракетами на модели «Чародей».",
-            "uk": "Заглушка: швидкий винищувач танків з ракетами на моделі «Чародій».",
-            "en": "Placeholder: fast missile tank destroyer on the Sorcerer model."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "580",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "70",
-              "label": {
-                "ru": "живучесть",
-                "uk": "живучість",
-                "en": "HP"
-              }
-            },
-            {
-              "value": "1 / 0.5 / 1",
-              "label": {
-                "ru": "броня: лоб / корма / верх",
-                "uk": "броня: лоб / корма / дах",
-                "en": "armour: front / rear / top"
-              }
-            },
-            {
-              "value": "9",
-              "label": {
-                "ru": "урон",
-                "uk": "шкода",
-                "en": "damage"
-              }
-            },
-            {
-              "value": "5.5 s",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            },
-            {
-              "value": "2–10",
-              "label": {
-                "ru": "дальность",
-                "uk": "дальність",
-                "en": "range"
-              }
-            },
-            {
-              "value": "10",
-              "label": {
-                "ru": "обзор",
-                "uk": "огляд",
-                "en": "sight"
-              }
-            },
-            {
-              "value": "75",
-              "label": {
-                "ru": "скорость",
-                "uk": "швидкість",
-                "en": "speed"
-              }
-            },
-            {
-              "value": "60",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
-              }
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, морковный напиток.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, морквяний напій.",
-            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, carrot drink."
-          }
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Коршун — РСЗО Воронов",
-            "uk": "Шуліка — РСЗВ Воронів",
-            "en": "Kite — Raven rocket launcher"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Заглушка: реактивная система залпового огня на модели «Чародей».",
-            "uk": "Заглушка: реактивна система залпового вогню на моделі «Чародій».",
-            "en": "Placeholder: multiple rocket launcher on the Sorcerer model."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "640",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "70",
-              "label": {
-                "ru": "живучесть",
-                "uk": "живучість",
-                "en": "HP"
-              }
-            },
-            {
-              "value": "1.5 / 0.5 / 1",
-              "label": {
-                "ru": "броня: лоб / корма / верх",
-                "uk": "броня: лоб / корма / дах",
-                "en": "armour: front / rear / top"
-              }
-            },
-            {
-              "value": "8",
-              "label": {
-                "ru": "урон",
-                "uk": "шкода",
-                "en": "damage"
-              }
-            },
-            {
-              "value": "6 s",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            },
-            {
-              "value": "3–11",
-              "label": {
-                "ru": "дальность",
-                "uk": "дальність",
-                "en": "range"
-              }
-            },
-            {
-              "value": "9",
-              "label": {
-                "ru": "обзор",
-                "uk": "огляд",
-                "en": "sight"
-              }
-            },
-            {
-              "value": "43",
-              "label": {
-                "ru": "скорость",
-                "uk": "швидкість",
-                "en": "speed"
-              }
-            },
-            {
-              "value": "70",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
-              }
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, beer."
-          }
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Филин — Мортира Воронов",
-            "uk": "Пугач — Мортира Воронів",
-            "en": "Eagle Owl — Raven mortar"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Заглушка: тяжёлая мортира на модели «Чародей».",
-            "uk": "Заглушка: важка мортира на моделі «Чародій».",
-            "en": "Placeholder: heavy mortar on the Sorcerer model."
+            "ru": "Сверхбыстрый перехватчик с управляемыми ракетами на крыльевых пилонах (10 урона на 10.5 клеток) + БЕСПЛАТНЫЙ точечный авианалёт (0 SP, откат 45 с, штурмовик на 11 урона). Прошивает тяжёлую броню Свинов, но возит лишь 24 ракеты.",
+            "uk": "Надшвидкий перехоплювач із керованими ракетами (10 шкоди на 10.5 клітинок) + БЕЗКОШТОВНИЙ точковий авіаналіт (0 SP, відкат 45 с, 11 шкоди). Прошиває важку броню, але має лише 24 ракети.",
+            "en": "Ultra-fast interceptor with wing-mounted guided missiles (10 damage at 10.5 range) + FREE tactical air strike (0 SP, 45s cooldown, 11-damage striker). Pierces heavy Pig armor, carries only 24 missiles."
           }
         },
         {
@@ -3201,7 +3028,7 @@
               }
             },
             {
-              "value": "110",
+              "value": "65",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -3209,7 +3036,7 @@
               }
             },
             {
-              "value": "2.5 / 1.5 / 2",
+              "value": "1 / 0 / 1.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -3217,7 +3044,108 @@
               }
             },
             {
-              "value": "13",
+              "value": "10",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "5.8 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2–10.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "11",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "73",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "24",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Коршун — Гусеничная авиа-РСЗО",
+            "uk": "Коршун — Гусенична авіа-РСЗВ",
+            "en": "Kite MLRS — Tracked aero-MLRS"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "12-ствольная пусковая авиационных ракет: в залповом режиме выпускает плотный веер из 8 ракет подряд (вместо 5 у обычных РСЗО) на 11 клеток! Быстро расходует боекомплект (48 ракет) и требует прикрытия.",
+            "uk": "12-ствольна пускова авіаракет: у залповому режимі випускає щільне віяло з 8 ракет поспіль (замість 5) на 11 клітинок! Швидко витрачає боєкомплект (48 ракет).",
+            "en": "12-tube aircraft-rocket battery: in salvo mode unleashes an enhanced 8-rocket barrage (instead of 5) up to 11 cells! Burns through its 48-rocket reserve quickly."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "680",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0.5 / 2",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "8",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -3233,7 +3161,7 @@
               }
             },
             {
-              "value": "2–5.5",
+              "value": "3–11",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -3241,7 +3169,7 @@
               }
             },
             {
-              "value": "7",
+              "value": "9.5",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3249,7 +3177,108 @@
               }
             },
             {
-              "value": "33",
+              "value": "44",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "48",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня.",
+            "en": "Upgrades: fuel, ammo, sight, armour."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Филин — Авиабомбомёт-мортира",
+            "uk": "Пугач — Авіабомбомет-мортира",
+            "en": "Eagle Owl — Aerial bomb-mortar"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Крепкий штурмовой бункер (115 HP, крыша 3.0): навесом метает фугасные авиабомбы со шламом на 15 урона — каждое попадание замедляет врага более чем вдвое и оставляет зону помех на 20 секунд! Умеет окапываться (+2.0 к броне).",
+            "uk": "Міцний штурмовий бункер (115 HP, дах 3.0): навісом кидає авіабомби на 15 шкоди — кожне влучання сповільнює ворога більш ніж удвічі та лишає зону перешкод на 20 секунд! Окопується (+2.0 до броні).",
+            "en": "Tough assault bunker (115 HP, roof 3.0): lobs 15-damage aerial sludge-bombs — every hit slows the target by over half and leaves a 20-second jammer puddle! Can fortify (+2.0 armor)."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "650",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "115",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "3 / 1.5 / 3",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "15",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "6.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2–6.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "34",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -3269,32 +3298,32 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Дятел — Минёр Воронов",
-            "uk": "Дятел — Мінер Воронів",
-            "en": "Woodpecker — Raven minelayer"
+            "ru": "Дятел — Инженерный авиа-минёр",
+            "uk": "Дятел — Інженерний авіа-мінер",
+            "en": "Woodpecker — Aero-minelayer"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: минёр на модели «Чародей». Кнопка «Мины на ходу», видит мины.",
-            "uk": "Заглушка: мінер на моделі «Чародій». Кнопка «Міни на ходу», бачить міни.",
-            "en": "Placeholder: minelayer on the Sorcerer model. Mines on the Move button, spots mines."
+            "ru": "Оснащён широким крылом-миноискателем (обзор 15, видит мины) и револьверной каруселью авиамин. Кнопка «Мины на ходу»: раскладывает мины каждые 2.5 клетки прямо в движении (30 мин). Оружия прямого боя нет.",
+            "uk": "Широке крило-міношукач (огляд 15, бачить міни) і револьверна карусель авіамін. Кнопка «Міни на ходу»: сам розкладає міни кожні 2.5 клітинки в русі (30 мін).",
+            "en": "Equipped with a wide wing-detector (sight 15, spots mines) and rotary aerial-mine carousel. Mines on the Move button: drops a mine every 2.5 cells while driving (30 mines)."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "420",
+              "value": "400",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3310,7 +3339,7 @@
               }
             },
             {
-              "value": "2 / 1 / 1.5",
+              "value": "2 / 1 / 2",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -3326,7 +3355,7 @@
               }
             },
             {
-              "value": "14",
+              "value": "15",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3362,24 +3391,24 @@
         {
           "type": "heading",
           "text": {
-            "ru": "Сапсан-ЗРК — Ракетный комплекс Воронов",
-            "uk": "Сапсан-ЗРК — Ракетний комплекс Воронів",
-            "en": "Peregrine SAM — Raven missile system"
+            "ru": "Скворец — Аэродромный тягач",
+            "uk": "Шпак — Аеродромний тягач",
+            "en": "Starling — Airfield tow tractor"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: тяжёлый ракетный комплекс на модели «Чародей».",
-            "uk": "Заглушка: важкий ракетний комплекс на моделі «Чародій».",
-            "en": "Placeholder: heavy missile system on the Sorcerer model."
+            "ru": "Быстрый бронированный аэродромный буксир со сцепной фермой для стандартных прицепов (Топливо, Боеприпасы, Ремонт). Быстрее и крепче ванильных тягачей (60 HP, броня 1.5/0.5/1) — основа логистики прожорливого Корпуса Воронов.",
+            "uk": "Швидкий броньований аеродромний буксир для причепів (Пальне, Боєприпаси, Ремонт). Швидший і міцніший за ванільні тягачі (60 HP, броня 1.5/0.5/1).",
+            "en": "Fast armored airfield pushback tug for standard trailers (Fuel, Ammo, Service). Faster and tougher than vanilla tow trucks (60 HP, armor 1.5/0.5/1) — vital for thirsty Raven turbines."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "700",
+              "value": "220",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3387,7 +3416,7 @@
               }
             },
             {
-              "value": "80",
+              "value": "60",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -3403,23 +3432,7 @@
               }
             },
             {
-              "value": "10",
-              "label": {
-                "ru": "урон",
-                "uk": "шкода",
-                "en": "damage"
-              }
-            },
-            {
-              "value": "7 s",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            },
-            {
-              "value": "3–12",
+              "value": "0–6",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -3427,7 +3440,7 @@
               }
             },
             {
-              "value": "9",
+              "value": "7",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3435,19 +3448,11 @@
               }
             },
             {
-              "value": "45",
+              "value": "75",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
                 "en": "speed"
-              }
-            },
-            {
-              "value": "70",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
               }
             }
           ]
@@ -3455,72 +3460,64 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, beer."
+            "ru": "Улучшения: бак, прицел, броня, турбо.",
+            "uk": "Покращення: бак, приціл, броня, турбо.",
+            "en": "Upgrades: fuel, sight, armour, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Буревестник — Экраноплан-штурмовик",
-            "uk": "Буревісник — Екраноплан-штурмовик",
-            "en": "Petrel — Ground-effect striker"
+            "ru": "Альбатрос — Сухопутный авианосец",
+            "uk": "Альбатрос — Сухопутний авіаносець",
+            "en": "Albatross — Land aircraft carrier"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: очень быстрый штурмовик на модели «Чародей».",
-            "uk": "Заглушка: дуже швидкий штурмовик на моделі «Чародій».",
-            "en": "Placeholder: very fast striker on the Sorcerer model."
+            "ru": "Колоссальный флагман с полётной палубой (195 HP, броня крыши 4.5): каждые 35 секунд БЕСПЛАТНО запускает с катапульты крылатый дрон-камикадзе на 24 клетки (65 урона по площади в радиусе 3.5)! Неповоротлив в ближнем бою.",
+            "uk": "Колосальний флагман із польотною палубою (195 HP, дах 4.5): кожні 35 секунд БЕЗКОШТОВНО запускає з катапульти крилатий дрон на 24 клітинки (65 шкоди в радіусі 3.5)!",
+            "en": "Colossal flight-deck flagship (195 HP, roof armor 4.5): launches a FREE catapult cruise-drone every 35 seconds up to 24 cells away (65 splash damage in a 3.5 radius)!"
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "750",
+              "value": "1450",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
                 "en": "price"
+              }
+            },
+            {
+              "value": "195",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "4 / 2.5 / 4.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
               }
             },
             {
               "value": "65",
               "label": {
-                "ru": "живучесть",
-                "uk": "живучість",
-                "en": "HP"
-              }
-            },
-            {
-              "value": "1 / 0.5 / 0.5",
-              "label": {
-                "ru": "броня: лоб / корма / верх",
-                "uk": "броня: лоб / корма / дах",
-                "en": "armour: front / rear / top"
-              }
-            },
-            {
-              "value": "8",
-              "label": {
                 "ru": "урон",
                 "uk": "шкода",
                 "en": "damage"
               }
             },
             {
-              "value": "4 s",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            },
-            {
-              "value": "2–9",
+              "value": "5–24",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -3528,7 +3525,7 @@
               }
             },
             {
-              "value": "10",
+              "value": "11",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3536,7 +3533,100 @@
               }
             },
             {
-              "value": "110",
+              "value": "31",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, ремкомплект.",
+            "uk": "Покращення: бак, приціл, ремкомплект.",
+            "en": "Upgrades: fuel, sight, repair kit."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Сапсан-ЗРК — Комплекс ПВО/ПРО",
+            "uk": "Сапсан-ЗРК — Комплекс ППО/ПРО",
+            "en": "Peregrine SAM — Air-defense SAM system"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Гусеничный зенитно-ракетный комплекс: автоматически ПЕРЕХВАТЫВАЕТ вражеские бомбардировщики в радиусе 14 клеток (срывает авиаудар врага за 1 ракету!), бьёт тяжёлыми ЗУР по танкам на 11 клеток (11 урона) и вызывает БЕСПЛАТНЫЙ авианалёт прикрытия (0 SP, КД 45 с)! Малый боекомплект (16 ракет).",
+            "uk": "Гусеничний ЗРК: автоматично ПЕРЕХОПЛЮЄ ворожі бомбардувальники в радіусі 14 клітинок (зриває авіаудар за 1 ракету!), б'є ракетами по танках на 11 клітинок (11 шкоди) та викликає БЕЗКОШТОВНИЙ авіаналіт (0 SP, КД 45 с)! Лише 16 ракет.",
+            "en": "Tracked SAM battery: automatically INTERCEPTS enemy bombers within 14 cells (aborts enemy airstrikes for 1 missile!), fires 11-damage guided missiles at armor up to 11 cells, and calls a FREE tactical air strike (0 SP, 45s CD)! Small 16-missile reserve."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "780",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "95",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2 / 1 / 2.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "11",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "5.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2.5–11",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "13",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "43",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -3544,7 +3634,7 @@
               }
             },
             {
-              "value": "60",
+              "value": "16",
               "label": {
                 "ru": "боезапас",
                 "uk": "боєзапас",
@@ -3556,32 +3646,32 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, морковный напиток.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, морквяний напій.",
-            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, carrot drink."
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Сова-ДРЛО — Радар Воронов",
-            "uk": "Сова-ДРЛВ — Радар Воронів",
-            "en": "Owl AWACS — Raven radar"
+            "ru": "Буревестник — Ударный экраноплан",
+            "uk": "Буревісник — Ударний екраноплан",
+            "en": "Petrel — Amphibious assault ekranoplan"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: машина радара на модели «Чародей»: обзор 22, видит мины. Без оружия.",
-            "uk": "Заглушка: машина радара на моделі «Чародій»: огляд 22, бачить міни. Без зброї.",
-            "en": "Placeholder: radar vehicle on the Sorcerer model: sight 22, spots mines. No gun."
+            "ru": "Сверхбыстрый амфибийный штурмовик (скорость 2.05, скользит по воде — CanSwim!): носовой шестиствольный Гатлинг выплёвывает 6 урона каждые 0.8 секунды, в клочья разрывая багги, артиллерию и тыловые колонны. Огромный расход топлива и нулевая корма.",
+            "uk": "Надшвидкий амфібійний штурмовик (швидкість 2.05, ковзає по воді — CanSwim!): носовий шестиствольний Гатлінг видає 6 шкоди кожні 0.8 секунди, рвучи багі й артилерію. Велика витрата пального і нульова корма.",
+            "en": "Blazing amphibious ground-effect striker (speed 2.05, skims across water — CanSwim!): nose 6-barrel Gatling deals 6 damage every 0.8s, shredding buggies and rear artillery. Huge fuel burn and zero rear armor."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "650",
+              "value": "720",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3589,7 +3679,7 @@
               }
             },
             {
-              "value": "60",
+              "value": "70",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -3597,7 +3687,7 @@
               }
             },
             {
-              "value": "0.5 / 0 / 0.5",
+              "value": "1.5 / 0 / 1.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -3605,84 +3695,7 @@
               }
             },
             {
-              "value": "0–14",
-              "label": {
-                "ru": "дальность",
-                "uk": "дальність",
-                "en": "range"
-              }
-            },
-            {
-              "value": "22",
-              "label": {
-                "ru": "обзор",
-                "uk": "огляд",
-                "en": "sight"
-              }
-            },
-            {
-              "value": "60",
-              "label": {
-                "ru": "скорость",
-                "uk": "швидкість",
-                "en": "speed"
-              }
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Улучшения: бак, прицел, броня, ремкомплект, турбо.",
-            "uk": "Покращення: бак, приціл, броня, ремкомплект, турбо.",
-            "en": "Upgrades: fuel, sight, armour, repair kit, turbo."
-          }
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Пикировщик — Штурмовой дрон Воронов",
-            "uk": "Пікірувальник — Штурмовий дрон Воронів",
-            "en": "Dive Bomber — Raven assault drone"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Заглушка: быстрый хрупкий штурмовик ближнего боя на модели «Чародей».",
-            "uk": "Заглушка: швидкий крихкий штурмовик ближнього бою на моделі «Чародій».",
-            "en": "Placeholder: fast, fragile close-range striker on the Sorcerer model."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "480",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "55",
-              "label": {
-                "ru": "живучесть",
-                "uk": "живучість",
-                "en": "HP"
-              }
-            },
-            {
-              "value": "1 / 0 / 1",
-              "label": {
-                "ru": "броня: лоб / корма / верх",
-                "uk": "броня: лоб / корма / дах",
-                "en": "armour: front / rear / top"
-              }
-            },
-            {
-              "value": "14",
+              "value": "6",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -3690,7 +3703,7 @@
               }
             },
             {
-              "value": "8 s",
+              "value": "0.8 s",
               "label": {
                 "ru": "перезарядка",
                 "uk": "перезаряджання",
@@ -3698,7 +3711,7 @@
               }
             },
             {
-              "value": "1.1–4",
+              "value": "0.5–6.5",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -3706,7 +3719,7 @@
               }
             },
             {
-              "value": "8.5",
+              "value": "11",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3714,7 +3727,7 @@
               }
             },
             {
-              "value": "80",
+              "value": "102",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -3734,32 +3747,32 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, turbo."
           }
         },
         {
           "type": "heading",
           "text": {
-            "ru": "Кондор — Тяжёлый танк Воронов",
-            "uk": "Кондор — Важкий танк Воронів",
-            "en": "Condor — Raven heavy tank"
+            "ru": "Сова-ДРЛО — Командный пункт ДРЛО",
+            "uk": "Сова-ДРЛВ — Командний пункт ДРЛВ",
+            "en": "Owl AWACS — Command AWACS radar van"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Заглушка: тяжёлая штурмовая платформа на модели «Чародей».",
-            "uk": "Заглушка: важка штурмова платформа на моделі «Чародій».",
-            "en": "Placeholder: heavy assault platform on the Sorcerer model."
+            "ru": "Бронефургон с вращающейся тарелкой AWACS: обзор 20 и обнаружение мин. Бесплатная кнопка «Орлиный Глаз» (0 SP): на 15 секунд утраивает обзор (до 60!) сквозь леса и горы, затем 45 секунд перезарядки. Оружия нет; через 10 минут боя засекается врагом.",
+            "uk": "Бронефургон із тарілкою AWACS: огляд 20 і виявлення мін. Безкоштовна кнопка «Орлине Око» (0 SP): на 15 секунд потроює огляд крізь ліс і гори, потім 45 секунд відкату. Без зброї.",
+            "en": "Armored van with rotating AWACS rotodome: sight 20 and mine detector. Free \"Eagle Eye\" button (0 SP): triples sight through hills and woods for 15 seconds, 45-second cooldown. No gun; revealed after 10 minutes."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "1100",
+              "value": "540",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3767,7 +3780,7 @@
               }
             },
             {
-              "value": "160",
+              "value": "55",
               "label": {
                 "ru": "живучесть",
                 "uk": "живучість",
@@ -3775,7 +3788,7 @@
               }
             },
             {
-              "value": "4 / 2 / 3",
+              "value": "1 / 0 / 1.5",
               "label": {
                 "ru": "броня: лоб / корма / верх",
                 "uk": "броня: лоб / корма / дах",
@@ -3783,7 +3796,161 @@
               }
             },
             {
-              "value": "12",
+              "value": "20",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "63",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, ремкомплект, турбо.",
+            "uk": "Покращення: бак, приціл, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, sight, repair kit, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Пикировщик — Крылатая бомба-брандер",
+            "uk": "Пікірувальник — Крилата бомба-брандер",
+            "en": "Dive Bomber — Winged cruise-bomb"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Беспилотная реактивная крылатая бомба на гоночном шасси (скорость 2.15 — быстрее Бомбохряка!). Своя кнопка «Подрыв»: термитный взрыв до 55 урона в радиусе 4.5. Хрупкая (40 HP, броня 0.5) — если подобьют по дороге, сдетонирует на месте.",
+            "uk": "Безпілотна реактивна крилата бомба на шасі (швидкість 2.15!). Своя кнопка «Підрив»: термітний вибух до 55 шкоди в радіусі 4.5. Крихка (40 HP).",
+            "en": "Unmanned jet-boosted cruise bomb on racing wheels (speed 2.15 — faster than Boom Hog!). Detonate button: thermite blast dealing up to 55 damage in a 4.5 radius. Fragile (40 HP)."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "420",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "0.5 / 0 / 0.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "55",
+              "label": {
+                "ru": "урон взрыва",
+                "uk": "шкода вибуху",
+                "en": "blast damage"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "108",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "55 / r 4.5",
+              "label": {
+                "ru": "взрыв при гибели",
+                "uk": "вибух під час загибелі",
+                "en": "death blast"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, турбо.",
+            "uk": "Покращення: бак, приціл, турбо.",
+            "en": "Upgrades: fuel, sight, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Кондор — Командный штурмовой флагман",
+            "uk": "Кондор — Командний штурмовий флагман",
+            "en": "Condor — Command assault flagship"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Тяжёлый двухпушечный флагман Воронов (170 HP, броня 4 / 1.5 / 4): бьёт залпами на 16 урона каждые 6 секунд на 9.5 клеток И прямо с передовой вызывает тяжёлый бомбардировщик за 35 SP! Медленный и прожорливый, берегите корму от диверсантов.",
+            "uk": "Важкий двогарматний флагман Воронів (170 HP, броня 4 / 1.5 / 4): б'є на 16 шкоди кожні 6 секунд на 9.5 клітинок ТА прямо з передової викликає важкий бомбардувальник за 35 SP!",
+            "en": "Heavy twin-gun Raven flagship (170 HP, armor 4 / 1.5 / 4): fires 16-damage salvos every 6s at 9.5 range AND calls in heavy 35 SP airstrikes straight from the front line! Slow and thirsty."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1250",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "170",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "4 / 1.5 / 4",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "16",
               "label": {
                 "ru": "урон",
                 "uk": "шкода",
@@ -3799,7 +3966,7 @@
               }
             },
             {
-              "value": "1.4–8.5",
+              "value": "1.5–9.5",
               "label": {
                 "ru": "дальность",
                 "uk": "дальність",
@@ -3807,7 +3974,7 @@
               }
             },
             {
-              "value": "10",
+              "value": "10.5",
               "label": {
                 "ru": "обзор",
                 "uk": "огляд",
@@ -3815,7 +3982,7 @@
               }
             },
             {
-              "value": "30",
+              "value": "31",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
@@ -3823,7 +3990,7 @@
               }
             },
             {
-              "value": "70",
+              "value": "40",
               "label": {
                 "ru": "боезапас",
                 "uk": "боєзапас",
@@ -3835,9 +4002,9 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
-            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
-            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+            "ru": "Улучшения: бак, боезапас, прицел, ремкомплект.",
+            "uk": "Покращення: бак, боєзапас, приціл, ремкомплект.",
+            "en": "Upgrades: fuel, ammo, sight, repair kit."
           }
         }
       ]

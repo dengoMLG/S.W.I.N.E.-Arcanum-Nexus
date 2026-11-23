@@ -94,10 +94,13 @@ var strings = new Dictionary<string, uint>(); var consts = new Dictionary<string
 uint Str(string v) { if (strings.TryGetValue(v, out var a)) return a; var b = Encoding.ASCII.GetBytes(v + "\0"); b.CopyTo(sec, dataPtr - newVa); strings[v] = dataPtr; dataPtr += (uint)b.Length; return dataPtr - (uint)b.Length; }
 void Const(string name, params uint[] words) { dataPtr = Align(dataPtr, 16); consts[name] = dataPtr; foreach (var w in words) { BitConverter.GetBytes(w).CopyTo(sec, dataPtr - newVa); dataPtr += 4; } }
 uint F(float v) => BitConverter.SingleToUInt32Bits(v);
-foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect, "RPV" }) Str(v);   // RPV — літера файлу армії за расою (#3)
+foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect, "RPV",
+    "freeair", "Varju", "sokolzrk", "taktikai", "Varju bombazo", "Varju taktikai bombazo" }) Str(v);   // RPV — літера файлу армії за расою (#3)
 Const("pi", F(MathF.PI)); Const("-pi", F(-MathF.PI)); Const("2pi", F(2 * MathF.PI));
 Const("absmask", 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff); Const("signmask", 0x80000000, 0x80000000, 0x80000000, 0x80000000);
-Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("maxsight", F(Caves.VisMaxSight)); Const("third", F(1f / 3f)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
+Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("maxsight", F(Caves.VisMaxSight));
+Const("third", F(1f / 3f)); Const("half", F(0.5f)); Const("twofifths", F(0.4f)); Const("samr2", F(Caves.SamRadius * Caves.SamRadius));
+Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
 var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]).ToArray();
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());

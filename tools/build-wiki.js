@@ -54,7 +54,7 @@ function unitDiffTable(block, where) {
   if (!fs.existsSync(modIni)) { err(where, `unitDiff: нема ${path.relative(ROOT, modIni)}`); return null; }
   const mod = parseIni(fs.readFileSync(modIni, 'latin1'));
   const van = fs.existsSync(VANILLA_INI) ? parseIni(fs.readFileSync(VANILLA_INI, 'latin1')) : {};
-  const prefix = block.side === 'pig' ? 'Diszno ' : 'Nyul ';
+  const prefix = block.side === 'pig' ? 'Diszno ' : (block.side === 'raven' ? 'Varju ' : 'Nyul ');
   const keys = ['Price', 'HitPoint', 'Damage', 'MaxRange', 'ReloadTime', 'Ammo', 'Armor', 'Speed'];
   const rows = [];
   for (const [sec, kv] of Object.entries(mod)) {
