@@ -1,4 +1,4 @@
-param([int]$Count = 8, [int]$Wait = 10, [string]$Shot = "", [string]$Game = "A:\SteamLibrary\steamapps\common\SWINE HD Remaster",
+param([int]$Count = 8, [int]$Wait = 10, [string]$Shot = "", [string]$Game = "$PSScriptRoot\..\mods-test\game",
       [int]$AutoStart = 0, [int]$ShotOf = 0, [int]$Kill = -1, [int]$KillAfter = 30)
 # -Kill i -KillAfter s — через s с після запуску всіх копій закрити копію i (гравець вийшов посеред матчу).
 # -AutoStart 99 — матч не починати (лишитися в лобі); -Shot файл.png -ShotOf i — знімок вікна копії i (0 — хост).

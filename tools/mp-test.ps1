@@ -1,5 +1,5 @@
 # Локальна перевірка мережевої гри: N копій гри на одному ПК (хост + N-1 підключень на 127.0.0.1).
-#   powershell -File tools/mp-test.ps1 [-Count 2] [-AutoStart] [-Game "A:\SteamLibrary\steamapps\common\SWINE HD Remaster"]
+#   powershell -File tools/mp-test.ps1 [-Count 2] [-AutoStart] [-Game <тека гри, типово mods-test/game>]
 #
 # Гра сама розуміє ключі: +host, +connect <ip>, +name <ім'я> (SSuperWindow::Play).
 # Порт: перша копія займає 60500, наступні — 60501…; оригінальний exe пробує лише 4 порти,
@@ -10,7 +10,7 @@
 # Що відбувалось — у журналах %LOCALAPPDATA%\Kite Games\Swine\log (рядки SwineNet / ARC:).
 param(
     [int]$Count = 2,
-    [string]$Game = "A:\SteamLibrary\steamapps\common\SWINE HD Remaster",
+    [string]$Game = "$PSScriptRoot\..\mods-test\game",
     [int]$DelaySec = 6,
     [switch]$AutoStart
 )

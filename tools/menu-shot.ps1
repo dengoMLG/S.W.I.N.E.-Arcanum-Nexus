@@ -1,4 +1,4 @@
-param([string]$Shot = "menu.png", [int]$Wait = 25, [string]$Game = "A:\SteamLibrary\steamapps\common\SWINE HD Remaster")
+param([string]$Shot = "menu.png", [int]$Wait = 25, [string]$Game = "$PSScriptRoot\..\mods-test\game")
 # Знімок головного меню: одна копія гри у вікні, через $Wait с — знімок екрана там, де вікно, закриття, повернення options.ini.
 # Для перевірки рядка «Arcanum Nexus Mod v…» під версією гри (Caves.cs, menuver). Не запускати, поки граєш.
 $opt = "$env:LOCALAPPDATA\Kite Games\Swine\options.ini"; $bak = "$opt.menu-shot.bak"; Copy-Item $opt $bak -Force

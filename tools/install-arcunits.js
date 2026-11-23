@@ -6,7 +6,8 @@
 'use strict';
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..'), SRC = path.join(ROOT, 'mods-test/arcunits'), LIST = path.join(ROOT, 'mods-test/arcunits.installed.txt');
-const GAME = 'A:/SteamLibrary/steamapps/common/SWINE HD Remaster';
+const GAME = process.env.SWINE_TEST_DIR || path.join(ROOT, 'mods-test/game');   // не тека Steam: tools/make-test-game.ps1
+if (/steamapps/i.test(GAME) && !process.argv.includes("--steam")) throw new Error(`${GAME}: це тека Steam — тестові збірки йдуть у mods-test/game (tools/make-test-game.ps1); лаунчер не патчить не-оригінальний exe. Свідомо — --steam`);
 const ORIG = path.join(ROOT, 'mods-test/backup/swineHD.exe.orig');
 const sha = f => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 

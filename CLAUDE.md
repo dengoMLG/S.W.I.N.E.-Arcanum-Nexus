@@ -36,7 +36,8 @@
   3. `tools/make-mp-maps.js` — сетевые карты из кампании;
   4. `tools/re/bin-patchgen/patchgen.exe` — патч exe;
   5. `tools/build-arcunits-mod.js` — `modpack/mods/arcanum-units`. Сначала сам запускает `tools/check-arc-refs.js`: каждый файл, на который ссылаются наши `units.ini` и `effects.ini` (модели, иконки, звуки, текстуры эффектов, включая копии по тайлсетам), должен быть в моде или в `base.pak`, иначе сборка останавливается.
-  `tools/install-arcunits.js` ставит мод в игру для проверки, `--uninstall` возвращает оригинал.
+  `tools/install-arcunits.js` ставит мод в **тестовую копию игры** `mods-test/game` для проверки, `--uninstall` возвращает оригинал.
+- **Тестовая копия игры — `mods-test/game`** (`tools/make-test-game.ps1` создаёт/обновляет её из папки Steam). Туда ставят `install-arcunits.js` / `install-voices.js`, оттуда запускают `mp-run`, `mp-test`, `menu-shot`. В папку Steam тестовые сборки **не ставить**: её обновляет лаунчер, а он отказывается патчить не-оригинальный `swineHD.exe` (так 23.11.2026 у пользователя сломалось обновление до 4.0.2). Скрипты установки сами откажутся писать в `steamapps` без `--steam`.
 - Сборка Arcanum Voices & Screens:
   - `modpack/voices/` — исходники 70 экранчиков `.anif`, 300 русских реплик `.mp3` (`voice_scripts.json`) и 26 прозрачных портретов угла меню (`menu/faces/*.png`);
   - `tools/build-menu-scene.js` — фон главного меню в свинском городе Штадт (`missions/menu_background.scene`, 10 моделей танков в `objects/arcanum_menu/` в `ver=0 DXT1`, секция камеры `cameras.ini`);
