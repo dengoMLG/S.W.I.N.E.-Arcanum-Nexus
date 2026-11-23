@@ -1155,6 +1155,13 @@
    "why": "?GetSlotFromRaknetGuid@SMulti: slot"
   },
   {
+   "va": "0x47a19f",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "GetSlotFromRaknetGuid: slots16 цикл до 16"
+  },
+  {
    "va": "0x47a1c7",
    "kind": "disp",
    "old": "0x21f0",
@@ -1328,6 +1335,13 @@
    "old": "0x21f0",
    "new": "0x2950",
    "why": "?OnIntroductionMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47b1bd",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "OnIntroductionMessage: slots16 GUID-цикл до 16"
   },
   {
    "va": "0x47b1d0",

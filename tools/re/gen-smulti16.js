@@ -89,7 +89,10 @@ for (const [va, kind, old, nw, why] of [
   [0x47c02c, 'disp', 0x238, FR + 4, 'OnMessage (this+4): кадр +8'],
   [0x47dd94, 'imm', 0x234, FR, 'StartSyncAfterDisconnect: база кадрів'],
   [0x47e02a, 'disp', 0x234, FR, 'UpdateConnectivity: база кадрів'],
-]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why: why.split(': ')[0] + ': frames ' + why.split(': ')[1] });
+  // етап 3: пошук слота за GUID — до 16 (другий командир)
+  [0x47a19f, 'imm', 8, 16, 'GetSlotFromRaknetGuid: slots16 цикл до 16'],
+  [0x47b1bd, 'imm', 8, 16, 'OnIntroductionMessage: slots16 GUID-цикл до 16'],
+]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why: why.split(': ')[0] + (why.includes('slots16') ? ': ' : ': frames ') + why.split(': ')[1] });
 
 edits.sort((a, b) => parseInt(a.va) - parseInt(b.va));
 const seen = new Set();

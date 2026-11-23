@@ -41,6 +41,7 @@ static class Caves
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
+    const int SlotBase = 0x28F0, SlotSize = 0x70, ConnBase = 0x2FF0;   // = smulti16.json layout.slot / conn
     public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
         Func<string, uint> str, Func<string, uint> cst)
     {
@@ -548,6 +549,52 @@ static class Caves
             frameLabels.Add(l);
         }
 
+        // ── 13. SMulti, етап 3: слоти 8…15 — другий командир армії (слот − 8) ──
+        // Вільний слот: спершу відкритий з 0…7 (статус & 0Fh = 0), інакше 8 + k, де слот k зайнятий людиною (2),
+        // а 8 + k відкритий. Поки GetFullAndOpenSlots рахує лише 0…7 (ліміт вхідних RakNet), дев'ятий не зайде —
+        // це «ворота», їх відчиняємо останніми (docs/EXE_PATCH_14_UNITS.md, етап 3).
+        var freeSlot16 = a.CreateLabel("freeslot16");
+        {
+            var l1 = a.CreateLabel(); var l2 = a.CreateLabel(); var nx = a.CreateLabel(); var ok = a.CreateLabel();
+            a.Label(ref freeSlot16);
+            a.push(edx); a.xor(eax, eax);
+            a.Label(ref l1);
+            a.imul(edx, eax, SlotSize); a.test(__dword_ptr[ecx + edx + SlotBase], 0xF); a.jz(ok);
+            a.inc(eax); a.cmp(eax, 8); a.jl(l1);
+            a.xor(eax, eax);
+            a.Label(ref l2);
+            a.imul(edx, eax, SlotSize); a.mov(edx, __dword_ptr[ecx + edx + SlotBase]); a.and(edx, 0xF); a.cmp(edx, 2); a.jne(nx);
+            a.imul(edx, eax, SlotSize); a.test(__dword_ptr[ecx + edx + SlotBase + 8 * SlotSize], 0xF); a.jnz(nx);
+            a.add(eax, 8); a.jmp(ok);
+            a.Label(ref nx);
+            a.inc(eax); a.cmp(eax, 8); a.jl(l2);
+            a.or(eax, -1);
+            a.Label(ref ok);
+            a.pop(edx); a.ret();
+        }
+        // OnIntroductionMessage: вбудований пошук вільного слота → freeslot16 (результат у ebx, як було).
+        // Було (0x47b1ce): xor ebx,ebx / lea eax,[edi+2190h]; далі test ebx,ebx / jns «знайдено» (0x47b1e9).
+        var introSlot = a.CreateLabel("introslot");
+        {
+            a.Label(ref introSlot);
+            a.push(eax); a.push(ecx); a.push(edx);
+            a.mov(ecx, edi); a.call(freeSlot16); a.mov(ebx, eax);
+            a.pop(edx); a.pop(ecx); a.pop(eax);
+            a.jmp(0x47b1e9UL);
+        }
+        // ClearSlotArray: очищає лише 0…7 (розгорнуто). Хвіст об'єкта після new не обнулений — чистимо 8…15
+        // і з'єднання 8…15 = −1. Було (0x478c57): mov dword ptr [esi+2504h],0 (тепер слот 7 +64h у новому місці).
+        var clearSlots = a.CreateLabel("clearslots");
+        {
+            a.Label(ref clearSlots);
+            a.mov(__dword_ptr[esi + SlotBase + 7 * SlotSize + 0x64], 0);
+            a.push(edi); a.push(ecx); a.push(eax);
+            a.lea(edi, __dword_ptr[esi + SlotBase + 8 * SlotSize]); a.xor(eax, eax); a.mov(ecx, 8 * SlotSize / 4); a.cld(); a.rep.stosd();
+            a.lea(edi, __dword_ptr[esi + ConnBase + 8 * 4]); a.or(eax, -1); a.mov(ecx, 8); a.rep.stosd();
+            a.pop(eax); a.pop(ecx); a.pop(edi);
+            a.jmp(0x478c61UL);
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -563,6 +610,9 @@ static class Caves
         hooks.Add(new Hook(0x4ac410, Convert.FromHexString("558BEC6AFF"), "SGameWorld::ServerInit → скидання стану вставок", (uint)L(worldInit), 5));
         hooks.Add(new Hook(0x4e0191, Convert.FromHexString("8D55CC6A0152"), "SGameView::Create → атлас кнопок спецздібностей з типами 12–14", (uint)L(glyphs), 6));
         hooks.Add(new Hook(0x47df40, Convert.FromHexString("558BEC83EC2C"), "SMulti::Update → +autostart N (перевірка мережі)", (uint)L(autoStart), 6));
+        hooks.Add(new Hook(0x479dc0, Convert.FromHexString("33C081C190210000"), "SMulti::GetFreePlayerSlot → 16 слотів (другий командир)", (uint)L(freeSlot16), 8));
+        hooks.Add(new Hook(0x47b1ce, Convert.FromHexString("33DB8D8790210000"), "SMulti::OnIntroductionMessage: вільний слот → 16", (uint)L(introSlot), 8));
+        hooks.Add(new Hook(0x478c57, Convert.FromHexString("C7860425000000000000"), "SMulti::ClearSlotArray: очистити слоти 8…15", (uint)L(clearSlots), 10));
         var frameOld = new Dictionary<uint, string> {
             [0x477f02] = "83C02F8975F0", [0x477f32] = "83C02F03C2", [0x477f5e] = "83C02F03C2", [0x479d74] = "83C02F03C7",
             [0x47a451] = "83C02F03C7", [0x47d235] = "83C02F03C1", [0x47dee3] = "83C02F03C6" };

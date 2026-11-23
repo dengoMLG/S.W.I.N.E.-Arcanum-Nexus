@@ -160,8 +160,9 @@ Imm(0x473f53, 4, 20, "ConnectionManager::ConnectionManager (вбудований
 // Список правок генерує tools/re/gen-smulti16.js (smulti16.json поруч із цим файлом).
 if (Environment.GetEnvironmentVariable("ARC_NO_SMULTI16") != "1")   // для порівняльних прогонів без переносу
 {
-    var sm = Path.Combine(AppContext.BaseDirectory, "smulti16.json");
-    if (!File.Exists(sm)) sm = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "..", "patchgen", "smulti16.json");
+    // спершу вихідник (tools/re/patchgen), копія поруч із exe — лише запасна: вона застаріває до перезбірки
+    var sm = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "..", "patchgen", "smulti16.json");
+    if (!File.Exists(sm)) sm = Path.Combine(AppContext.BaseDirectory, "smulti16.json");
     using var sj = JsonDocument.Parse(File.ReadAllText(sm));
     foreach (var e in sj.RootElement.GetProperty("edits").EnumerateArray())
     {
@@ -228,6 +229,8 @@ foreach (var hk in hooks)
 {
     int off = Off(hk.Va);
     if (!exe.AsSpan(off, hk.Len).SequenceEqual(hk.Old)) throw new Exception($"{hk.Va:x}: bytes differ ({hk.Why})");
+    // Хук перекриває точкові правки (напр. smulti16 у функції, яку переписано цілком) — їх прибираємо з exe_patch.json.
+    edits.RemoveAll(e => { dynamic d = e; int o = d.offset; string n = d.@new; return o < off + hk.Len && o + n.Length / 2 > off; });
     var nb = Enumerable.Repeat((byte)0x90, hk.Len).ToArray(); nb[0] = 0xE9;
     BitConverter.GetBytes((int)(hk.Target - (hk.Va + 5))).CopyTo(nb, 1);
     nb.CopyTo(outExe, off);
