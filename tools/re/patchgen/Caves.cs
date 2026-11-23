@@ -39,6 +39,7 @@ static class Caves
     public const int ZoneIdx = ZoneTable + Zones * 16, FxId = ZoneIdx + 4;
     public const int AutoState = FxId + 0x100;                  // +autostart: 4 dword (мережа, не світ — детермінізм не зачіпає)
     public const int CoState = AutoState + 0x10;                // біт k — у армії k на старті матчу був другий командир (слот 8 + k)
+    public const int CoNames = CoState + 0x20;                  // лобі: 8 × 128 Б — «ім'я армії + ім'я другого командира»
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
@@ -762,6 +763,29 @@ static class Caves
             a.jmp(0x47da16UL);
         }
 
+        // DisplaySlotData (лобі): ім'я в рядку армії k — перший пункт списку. Якщо зайнятий слот 8 + k, показуємо
+        // «ім'я + ім'я другого командира» (рядків лише 8). Список тепер перезаповнюється щоразу (Program.cs raws).
+        // Було (0x47949e): add ecx,3A84h / push eax / add ecx,ebx; eax = ім'я, esi = this, edi = k
+        var coName = a.CreateLabel("coname16");
+        {
+            var plain = a.CreateLabel(); var l1 = a.CreateLabel(); var d1 = a.CreateLabel(); var l2 = a.CreateLabel();
+            a.Label(ref coName);
+            a.add(ecx, 0x3A84); a.push(ecx);
+            a.lea(edx, __dword_ptr[edi + 8]); a.imul(edx, edx, SlotSize);
+            a.mov(ecx, __dword_ptr[esi + edx + SlotBase + 0x60]); a.or(ecx, __dword_ptr[esi + edx + SlotBase + 0x64]); a.jz(plain);
+            a.push(esi); a.push(edi); a.cld();
+            a.mov(ecx, edi); a.shl(ecx, 7); a.add(ecx, (int)(tableVa + CoNames)); a.push(ecx);
+            a.mov(esi, eax); a.mov(edi, ecx);
+            a.Label(ref l1); a.lodsb(); a.test(al, al); a.jz(d1); a.stosb(); a.jmp(l1);
+            a.Label(ref d1);
+            a.mov(al, 0x20); a.stosb(); a.mov(al, 0x2B); a.stosb(); a.mov(al, 0x20); a.stosb();
+            a.mov(esi, __dword_ptr[esp + 8]); a.lea(esi, __dword_ptr[esi + edx + SlotBase + 4]);
+            a.Label(ref l2); a.lodsb(); a.stosb(); a.test(al, al); a.jnz(l2);
+            a.pop(eax); a.pop(edi); a.pop(esi);
+            a.Label(ref plain);
+            a.pop(ecx); a.push(eax); a.add(ecx, ebx); a.jmp(0x4794a7UL);
+        }
+
         // ── 15. Етап 3: ворота, вихід гравця, бій ──
         // Ворота: GetFullAndOpenSlots (→ SetMaxPlayers, ліміт вхідних) — відкриті й зайняті з 0…7 плюс місце другого
         // командира 8 + k (відкрите чи зайняте) у кожної зайнятої людиною армії k. Було (0x479de0): mov edx,[ecx+2190h]
@@ -900,7 +924,8 @@ static class Caves
         hooks.Add(new Hook(0x47a406, Convert.FromHexString("8D04F789948198270000"), "SMulti::HandleLastReceivedFrameMessage: лише 8×8", (uint)L(lrfFn), 10));
         hooks.Add(new Hook(0x47c1f9, Convert.FromHexString("0F1047040FB6F1"), "SMulti::OnMessage 0x99: граф лише від слотів 0…7", (uint)L(graph16), 7));
         hooks.Add(new Hook(0x47e000, Convert.FromHexString("558BEC83EC58"), "SMulti::UpdateConnectivity: не для слота ≥ 8", (uint)L(conn16), 6));
-        hooks.Add(new Hook(0x47da11, Convert.FromHexString("E8EA050000"), "SMulti::SetPingToolTips: не для слота ≥ 8", (uint)L(pingTips), 5));
+        hooks.Add(new Hook(0x47949e, Convert.FromHexString("81C1843A00005003CB"), "SMulti::DisplaySlotData: ім'я армії + другий командир", (uint)L(coName), 9));
+        hooks.Add(new Hook(0x47da11,Convert.FromHexString("E8EA050000"), "SMulti::SetPingToolTips: не для слота ≥ 8", (uint)L(pingTips), 5));
         hooks.Add(new Hook(0x479de0,Convert.FromHexString("8B9190210000"), "SMulti::GetFullAndOpenSlots: + місця других командирів (ворота)", (uint)L(gate16), 6));
         hooks.Add(new Hook(0x47a880, Convert.FromHexString("558BEC538B5D08"), "SMulti::IsDisconnected: слот ≥ 8 — за GUID", (uint)L(isDisc16), 7));
         hooks.Add(new Hook(0x475360, Convert.FromHexString("558BEC8B4508"), "ConnectivityGraph::ClearPeerInfo: лише 0…7", (uint)L(clearPeer16), 6));
