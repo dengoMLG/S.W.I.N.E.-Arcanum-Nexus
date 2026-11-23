@@ -259,6 +259,11 @@
               "en": "Fixed the Mud Slinger crash “cannot load texture effects/tileset_normal/arc_sar_folt_a.tga” on maps with another tileset: the mud puddle texture now also ships in all five tileset folders (desert, jungle, normal, rock, snow)."
             },
             {
+              "ru": "Сборка мода теперь сама проверяет, что все файлы, на которые ссылаются новые юниты и эффекты (модели, иконки, звуки, текстуры, включая варианты для каждого тайлсета), есть в моде или в игре. Пропуск вроде текстуры лужи Гряземёта больше не дойдёт до игроков.",
+              "uk": "Збірка мода тепер сама перевіряє, що всі файли, на які посилаються нові юніти й ефекти (моделі, іконки, звуки, текстури, зокрема варіанти для кожного тайлсету), є в моді або в грі. Пропуск на кшталт текстури калюжі Гряземета більше не дійде до гравців.",
+              "en": "The mod build now checks that every file the new units and effects refer to (models, icons, sounds, textures, including per-tileset variants) exists in the mod or the game. A gap like the Mud Slinger puddle texture will no longer reach players."
+            },
+            {
               "ru": "Исправлено падение игры при гибели камикадзе (Бомбохряк, Хряк-Гриль, Морковный Смерч). Его взрыв задевал его самого, и он «погибал» снова и снова, пока игра не вылетала с «Stack overflow». Теперь свой взрыв камикадзе не задевает, а два камикадзе рядом больше не подрывают друг друга по кругу.",
               "uk": "Виправлено падіння гри під час загибелі камікадзе (Бомбокабан, Хряк-Гриль, Морквяний Смерч). Його вибух зачіпав його самого, і він «гинув» знову й знову, доки гра не вилітала зі «Stack overflow». Тепер власний вибух камікадзе не зачіпає, а два камікадзе поруч більше не підривають одне одного по колу.",
               "en": "Fixed a crash when a kamikaze unit dies (Boom Hog, Hog Grill, Carrot Twister). Its blast hit the unit itself, so it “died” again and again until the game crashed with “Stack overflow”. A kamikaze’s own blast no longer hits it, and two kamikazes next to each other no longer set each other off in a loop."

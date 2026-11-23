@@ -13,6 +13,8 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), SRC = path.join(ROOT, 'mods-test/arcunits'), DST = path.join(ROOT, 'modpack/mods/arcanum-units');
 const SKIP = /(^|\/)(d|ny)_arctank[^/]*$/i;
+// Спершу — чи є в моді/грі всі файли, на які посилаються наші ini (інакше — «Fatal error» уже в бою, як 23.11.2026).
+require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'check-arc-refs.js'), SRC], { stdio: 'inherit' });
 
 fs.rmSync(DST, { recursive: true, force: true });
 let n = 0, bytes = 0;

@@ -25,7 +25,7 @@
   2. `tools/make-arc-assets.js` — эффекты, звук, атлас кнопок, маски кампании;
   3. `tools/make-mp-maps.js` — сетевые карты из кампании;
   4. `tools/re/bin-patchgen/patchgen.exe` — патч exe;
-  5. `tools/build-arcunits-mod.js` — `modpack/mods/arcanum-units`.
+  5. `tools/build-arcunits-mod.js` — `modpack/mods/arcanum-units`. Сначала сам запускает `tools/check-arc-refs.js`: каждый файл, на который ссылаются наши `units.ini` и `effects.ini` (модели, иконки, звуки, текстуры эффектов, включая копии по тайлсетам), должен быть в моде или в `base.pak`, иначе сборка останавливается.
   `tools/install-arcunits.js` ставит мод в игру для проверки, `--uninstall` возвращает оригинал.
 - Сборка Arcanum Voices & Screens:
   - `modpack/voices/` — исходники 70 экранчиков `.anif` и 300 русских реплик `.mp3` (`voice_scripts.json`);
