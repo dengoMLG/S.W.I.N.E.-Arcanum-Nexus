@@ -403,17 +403,17 @@
       "ru": [
         "Морковный Смерч",
         "Лёгкая РСЗО",
-        "В залповом режиме готовится 2 секунды и за 4 секунды вываливает все 40 морковных ракет (разброс 2.8) — один залп на весь боекомплект, затем 30 секунд перезарядки и к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует."
+        "В залповом режиме стреляет сразу без задержки и за 4 секунды вываливает все 40 морковных ракет (разброс 2.8) — один залп на весь боекомплект, затем 30 секунд перезарядки и к прицепу с боеприпасами. Брони нет, а при гибели боекомплект детонирует."
       ],
       "uk": [
         "Морквяний Смерч",
         "Легка РСЗВ",
-        "У залповому режимі готується 2 секунди й за 4 секунди вивалює всі 40 морквяних ракет (розкид 2.8) — один залп на весь боєкомплект, потім 30 секунд перезаряджання й до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує."
+        "У залповому режимі стріляє одразу без затримки й за 4 секунди вивалює всі 40 морквяних ракет (розкид 2.8) — один залп на весь боєкомплект, потім 30 секунд перезаряджання й до причепа з боєприпасами. Броні немає, а під час загибелі боєкомплект детонує."
       ],
       "en": [
         "Carrot Twister",
         "Light rocket launcher",
-        "In salvo mode it readies in 2 seconds and dumps all 40 carrot rockets in 4 seconds (spread 2.8) — one salvo empties it, then a 30-second reload and back to the ammo trailer. No armour, and the ammo cooks off when it dies."
+        "In salvo mode it fires immediately and dumps all 40 carrot rockets in 4 seconds (spread 2.8) — one salvo empties it, then a 30-second reload and back to the ammo trailer. No armour, and the ammo cooks off when it dies."
       ],
       "chassis": "Nyul light tank",
       "role": "Nyul raketas",
@@ -538,17 +538,17 @@
       "ru": [
         "Пит-Стоп",
         "Боевой ремонтник",
-        "Быстрый бронированный багги техпомощи: врывается в бой, за секунды латает подбитых кроликов и подливает им топливо. Запас ресурсов маленький — на 1–2 машины, потом обратно к прицепам."
+        "Быстрый бронированный багги техпомощи: врывается в бой, за секунды латает подбитых кроликов и подливает им топливо. Запас чинилки 300 единиц; когда заканчивается — не взрывается, а может подъехать к прицепу с боеприпасами и зарядиться снова."
       ],
       "uk": [
         "Піт-Стоп",
         "Бойовий ремонтник",
-        "Швидкий броньований багі техдопомоги: вривається в бій, за секунди латає підбитих кроликів і доливає їм пальне. Запас ресурсів малий — на 1–2 машини, потім назад до причепів."
+        "Швидкий броньований багі техдопомоги: вривається в бій, за секунди латає підбитих кроликів і доливає їм пальне. Запас лагодження 300 одиниць; коли закінчується — не вибухає, а може під'їхати до причепа з боєприпасами й зарядитися знову."
       ],
       "en": [
         "Pit Stop",
         "Combat repair buggy",
-        "A fast armoured service buggy: rushes in, patches damaged rabbits in seconds and tops up their fuel. Its stock is small — enough for 1–2 vehicles, then back to the trailers."
+        "A fast armoured service buggy: rushes in, patches damaged rabbits in seconds and tops up their fuel. Carries 300 repair stock; when empty it does not explode and can drive up to an ammo trailer to recharge."
       ],
       "chassis": "Nyul light tank",
       "role": "Service",
@@ -567,7 +567,7 @@
         "sight": "8",
         "unitsize": "1",
         "movetype": "2",
-        "movespeed": "2.2",
+        "movespeed": "1.9",
         "spinspeed": "160",
         "maxfuel": "100",
         "consume": "1050",
@@ -584,7 +584,7 @@
         "shotspeed": "2.1",
         "shotangle": "60",
         "specialsound1": "special/szereles.wav",
-        "cargo": "200"
+        "cargo": "300"
       }
     },
     {
