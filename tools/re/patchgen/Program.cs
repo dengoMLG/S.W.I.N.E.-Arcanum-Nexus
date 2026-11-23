@@ -3,7 +3,8 @@
 // патч не будується.
 //
 //   patchgen <swineHD.exe> <out-dir> [--classes classes.json]
-//   classes.json: { "rabbit": ["Nyul arctank", ...], "pig": ["Diszno arctank", ...] } — однакова кількість.
+//   classes.json: { "rabbit": ["Nyul arctank", ...], "pig": ["Diszno arctank", ...] } — однакова кількість;
+//                 "raven": [N імен] — необов'язково: увесь рядок третьої раси (Ворони, раса 2), 13 + K класів.
 //
 // Пише: <out>/swineHD.patched.exe, <out>/exe_patch.json (для лаунчера: зсуви/старі/нові байти + нова секція).
 //
@@ -30,11 +31,13 @@ const uint OldMaskStr = 0; // знаходимо за вмістом
 
 var exePath = args[0]; var outDir = args[1];
 string[][] classes = { new[] { "Nyul arctank" }, new[] { "Diszno arctank" } };
+string[]? ravenRow = null;          // #3: третя раса — Ворони (раса 2), повний рядок таблиці класів
 var ci = Array.IndexOf(args, "--classes");
 if (ci > 0)
 {
     using var cj = JsonDocument.Parse(File.ReadAllText(args[ci + 1]));
     classes = new[] { "rabbit", "pig" }.Select(r => cj.RootElement.GetProperty(r).EnumerateArray().Select(e => e.GetString()!).ToArray()).ToArray();
+    if (cj.RootElement.TryGetProperty("raven", out var rv)) ravenRow = rv.EnumerateArray().Select(e => e.GetString()!).ToArray();
 }
 // Версія мода (рядок у головному меню): --modver X, інакше "version" з modpack/pack.json у поточній теці.
 var mvi = Array.IndexOf(args, "--modver");
@@ -46,6 +49,8 @@ Caves.ModLine = $"Arcanum Nexus Mod v{modVer}";
 int K = classes[0].Length, N = 13 + K;
 if (K < 1 || classes[1].Length != K) throw new Exception("rabbit and pig need the same number of new classes");
 if (N > 32) throw new Exception("too many classes");
+if (ravenRow != null && ravenRow.Length != N) throw new Exception($"raven row needs {N} classes (13 + {K}), got {ravenRow.Length}");
+int Races = ravenRow == null ? 2 : 3;
 
 var exe = File.ReadAllBytes(exePath);
 var sha = Convert.ToHexString(SHA256.HashData(exe)).ToLowerInvariant();
@@ -64,7 +69,7 @@ uint newRva = Align(last.va - imageBase + Math.Max(last.vs, last.rs), secAlign);
 uint newVa = imageBase + newRva;
 uint newRaw = Align((uint)exe.Length, fileAlign);
 var sec = new byte[0x6000];                 // = SecRaw
-uint tableVa = newVa;                       // [2][N][64]
+uint tableVa = newVa;                       // [Races][N][64]
 for (int race = 0; race < 2; race++)
 {
     for (int i = 0; i < 13; i++) Array.Copy(exe, Off(OldTable) + (race * 13 + i) * 64, sec, (race * N + i) * 64, 64);
@@ -74,7 +79,14 @@ for (int race = 0; race < 2; race++)
         Array.Copy(nm, 0, sec, (race * N + 13 + k) * 64, nm.Length);
     }
 }
-uint maskVa = newVa + (uint)(2 * N * 64);
+// Раса 2 (Ворони): код рахує рядок як раса·N, тож третій рядок таблиці працює без інших правок — магазин,
+// IsValidUnit (розстановка, мережеві пакети), GetClassIndex. Раса ≠ 0 в інших місцях гри = «свині» (меню, гелікоптер).
+for (int i = 0; ravenRow != null && i < N; i++)
+{
+    var nm = Encoding.ASCII.GetBytes(ravenRow[i]); if (nm.Length > 63) throw new Exception("name too long");
+    Array.Copy(nm, 0, sec, (2 * N + i) * 64, nm.Length);
+}
+uint maskVa = newVa + (uint)(Races * N * 64);
 var mask = Encoding.ASCII.GetBytes("JSTAHRMLtafsM" + new string('X', K) + "\0"); Array.Copy(mask, 0, sec, maskVa - newVa, mask.Length);
 // Рядки й константи для вставок (Caves.cs) — одразу після маски.
 uint dataPtr = Align(maskVa + (uint)mask.Length, 16);
@@ -82,7 +94,7 @@ var strings = new Dictionary<string, uint>(); var consts = new Dictionary<string
 uint Str(string v) { if (strings.TryGetValue(v, out var a)) return a; var b = Encoding.ASCII.GetBytes(v + "\0"); b.CopyTo(sec, dataPtr - newVa); strings[v] = dataPtr; dataPtr += (uint)b.Length; return dataPtr - (uint)b.Length; }
 void Const(string name, params uint[] words) { dataPtr = Align(dataPtr, 16); consts[name] = dataPtr; foreach (var w in words) { BitConverter.GetBytes(w).CopyTo(sec, dataPtr - newVa); dataPtr += 4; } }
 uint F(float v) => BitConverter.SingleToUInt32Bits(v);
-foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect }) Str(v);
+foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect, "RPV" }) Str(v);   // RPV — літера файлу армії за расою (#3)
 Const("pi", F(MathF.PI)); Const("-pi", F(-MathF.PI)); Const("2pi", F(2 * MathF.PI));
 Const("absmask", 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff); Const("signmask", 0x80000000, 0x80000000, 0x80000000, 0x80000000);
 Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
@@ -174,6 +186,13 @@ var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     // командира (Caves «coname16») не з'являлось би. Перезаповнюємо щоразу.
     (0x47946e, "0F84A7000000", "909090909090", "SMulti16 DisplaySlotData: ім'я в рядку армії оновлюється завжди"),
     // Гравець світу для слота 8 + k — армія k (другий командир). Єдиний виклик — SGameWorld::ServerInit → [world+434h].
+    // #3 (Ворони, раса 2): політ бомбардувальника «як у свиней» було лише для раси 1 — тепер для раси ≠ 0,
+    // як і вибір літака в SGameWorld::AirStrike («Diszno bombazo» при раса ≠ 0). cmp …,1 / jne → cmp …,0 / je.
+    (0x4b7083, "83BC01FC000000010F85", "83BC01FC000000000F84", "#3 SUnit::AirPlaneCallBack: політ «свиней» для раси ≠ 0 (Ворони)"),
+    // Армії зберігаються як armies/<літера><SP>-<час>.army: літера була «раса 0 → R, інакше P», тож армії Воронів
+    // змішувались би зі свинячими. Тепер "RPV"[раса] (movzx eax,[esi+26A8h] / movzx eax,[eax+RPV]); список — Caves «armyprefix».
+    (0x4f8b69, "3886A82600000F94C08D044550000000", "0FB686A82600000FB680" + Convert.ToHexString(BitConverter.GetBytes(strings["RPV"])) + "9090",
+        "#3 SMarket::SaveArmy: літера файлу армії R/P/V за расою"),
     (0x479f00, "8B8130250000C3CCCCCCCCCCCCCCCCCC", "8B813025000083F8087C0383E808C3CC", "SMulti16 GetLocalPlayerSlotNumber: слот ≥ 8 → слот − 8"),
 };
 Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центрування 9 стовпців");
@@ -316,6 +335,7 @@ uint CaveStr(string v)
     var b = Encoding.ASCII.GetBytes(v + "\0"); if (latePtr + b.Length > newVa + SecRaw) throw new Exception("late strings do not fit");
     b.CopyTo(sec, latePtr - newVa); strings[v] = latePtr; latePtr += (uint)b.Length; return latePtr - (uint)b.Length;
 }
+Caves.Ravens = ravenRow != null;
 var (caveCode, hooks, caveListing) = Caves.Build(newVa, caveVa, stateVa, CaveStr, n => consts[n]);
 if (caveVa + caveCode.Length > newVa + LateStr) throw new Exception("caves do not fit into .arcmod");
 {   // хуки не повинні перекриватися (вікна world16 і сталі хуки Caves.cs)
@@ -378,7 +398,7 @@ var json = new
 {
     schema = 1, game = "S.W.I.N.E. HD Remaster v1.7.1846", modVersion = modVer, file = "swineHD.exe",
     originalSha256 = OriginalSha, patchedSha256 = patchedSha, patchedSize = withSec.Length,
-    unitClasses = new { rabbit = classes[0], pig = classes[1] }, classesPerRace = N,
+    unitClasses = new { rabbit = classes[0], pig = classes[1], raven = ravenRow }, classesPerRace = N, races = Races,
     header = new[] {
         new { offset = pe + 6, old = Convert.ToHexString(exe, pe + 6, 2), @new = Convert.ToHexString(withSec, pe + 6, 2) },
         new { offset = opt + 56, old = Convert.ToHexString(exe, opt + 56, 4), @new = Convert.ToHexString(withSec, opt + 56, 4) },

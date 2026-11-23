@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.0.3",
+              "value": "4.1.0",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -157,6 +157,30 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.1.0",
+          "text": {
+            "ru": "Мод 4.1.0 · Вороны — третья раса (заглушка) · 23.11.2026",
+            "uk": "Мод 4.1.0 · Ворони — третя раса (заглушка) · 23.11.2026",
+            "en": "Mod 4.1.0 · Ravens, a third race (placeholder) · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Новая раса «Вороны»: третий пункт в выборе расы в лобби, работает по сети. 13 своих боевых машин в магазине (аналоги обычных и 5 новых) — пока все на модели «Чародей» с временными характеристиками. Тягач, прицепы и вертолёт снабжения пока свиные. Подробнее — страница «Вороны».",
+              "uk": "Нова раса «Ворони»: третій пункт у виборі раси в лобі, працює по мережі. 13 своїх бойових машин у магазині (аналоги звичайних і 5 нових) — поки всі на моделі «Чародій» з тимчасовими характеристиками. Тягач, причепи й гелікоптер постачання поки свинячі. Докладніше — сторінка «Ворони».",
+              "en": "New race, the Ravens: a third entry in the lobby race list, works online. 13 vehicles of their own in the shop (standard counterparts plus 5 new ones), all on the Sorcerer model with temporary stats for now. The tractor, trailers and supply helicopter are the pigs' for now. See the Ravens page."
+            },
+            {
+              "ru": "Исправлен вылет «Access violation (004A5F75)» в сетевом бою: он случался, когда игра проверяла, доступен ли бомбардировщик (например, в армии есть джип). Ошибка была в моде с версии с ценой авиаудара по расе.",
+              "uk": "Виправлено виліт «Access violation (004A5F75)» у мережевому бою: він траплявся, коли гра перевіряла, чи доступний бомбардувальник (наприклад, в армії є джип). Помилка була в моді з версії з ціною авіаудару за расою.",
+              "en": "Fixed the “Access violation (004A5F75)” crash in online matches: it happened when the game checked whether the bomber was available (for example, with a jeep in the army). The bug had been in the mod since the per-race airstrike price."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.0.3",
@@ -2231,6 +2255,1311 @@
             "ru": "Улучшения: бак, прицел, ремкомплект, турбо.",
             "uk": "Покращення: бак, приціл, ремкомплект, турбо.",
             "en": "Upgrades: fuel, sight, repair kit, turbo."
+          }
+        }
+      ]
+    },
+    {
+      "id": "au-ravens",
+      "group": "arc-units",
+      "title": {
+        "ru": "Вороны (третья раса, заглушка)",
+        "uk": "Ворони (третя раса, заглушка)",
+        "en": "Ravens (third race, placeholder)"
+      },
+      "summary": {
+        "ru": "Третья раса в лобби. Пока все машины — на модели «Чародей», характеристики временные.",
+        "uk": "Третя раса в лобі. Поки всі машини — на моделі «Чародій», характеристики тимчасові.",
+        "en": "A third race in the lobby. For now every vehicle uses the Sorcerer model and the stats are temporary."
+      },
+      "blocks": [
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "В лобби у расы третий пункт — «Ворон». Работает и в сети: остальные игроки видят выбор и играют против Воронов.",
+              "uk": "У лобі в раси третій пункт — «Ворон». Працює й у мережі: інші гравці бачать вибір і грають проти Воронів.",
+              "en": "The lobby race list has a third entry, Raven. It works online too: other players see the choice and play against the Ravens."
+            },
+            {
+              "ru": "В магазине Воронов 13 боевых машин: аналоги обычной линейки и 5 своих. Все — на временной модели «Чародей»; свои модели Корпуса Воронов в работе.",
+              "uk": "У магазині Воронів 13 бойових машин: аналоги звичайної лінійки і 5 своїх. Усі — на тимчасовій моделі «Чародій»; свої моделі Корпусу Воронів у роботі.",
+              "en": "The Raven shop has 13 combat vehicles: counterparts of the standard line-up plus 5 of their own. All use the temporary Sorcerer model; the Raven Corps models are in progress."
+            },
+            {
+              "ru": "Тягач, прицепы (боеприпасы, топливо, ремонт) и вертолёт снабжения пока свиные.",
+              "uk": "Тягач, причепи (боєприпаси, пальне, ремонт) і гелікоптер постачання поки свинячі.",
+              "en": "The tractor, trailers (ammo, fuel, repair) and the supply helicopter are the pigs' for now."
+            },
+            {
+              "ru": "Меню, музыка и бомбардировщик у Воронов тоже свиные: игра выбирает их по правилу «не кролики — значит свиньи».",
+              "uk": "Меню, музика й бомбардувальник у Воронів теж свинячі: гра вибирає їх за правилом «не кролики — отже свині».",
+              "en": "Menus, music and the bomber are the pigs' as well: the game picks them by the rule \"not rabbits means pigs\"."
+            },
+            {
+              "ru": "Гаубица «Гриф» стреляет без развёртывания, минёр «Дятел» ставит мины кнопкой «Мины на ходу», как Кротобой: обычным способам нужны детали модели, которых у «Чародея» нет.",
+              "uk": "Гаубиця «Гриф» стріляє без розгортання, мінер «Дятел» ставить міни кнопкою «Міни на ходу», як Кротобій: звичайним способам потрібні деталі моделі, яких у «Чародія» нема.",
+              "en": "The Vulture howitzer fires without deploying, and the Woodpecker minelayer lays mines with the Mines on the Move button, like the Mole Smasher: the usual ways need model parts the Sorcerer lacks."
+            },
+            {
+              "ru": "Сохранённые армии Воронов — отдельные файлы (V…army), со свиными не смешиваются.",
+              "uk": "Збережені армії Воронів — окремі файли (V…army), зі свинячими не змішуються.",
+              "en": "Saved Raven armies are separate files (V…army) and do not mix with the pigs'."
+            },
+            {
+              "ru": "В кампании и одиночной игре Воронов нет. Мыши — следующая раса, после Воронов.",
+              "uk": "У кампанії й одиночній грі Воронів нема. Миші — наступна раса, після Воронів.",
+              "en": "There are no Ravens in the campaign or single-player. Mice are the next race, after the Ravens."
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Стриж — Разведчик Воронов",
+            "uk": "Стриж — Розвідник Воронів",
+            "en": "Swift — Raven scout"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: быстрый разведчик-командир Корпуса Воронов на модели «Чародей». Своя модель будет позже.",
+            "uk": "Заглушка: швидкий розвідник-командир Корпусу Воронів на моделі «Чародій». Своя модель буде пізніше.",
+            "en": "Placeholder: fast Raven Corps scout on the Sorcerer model. Its own model comes later."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "260",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "0–14",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "15",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "85",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, приціл, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, sight, armour, repair kit, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Ястреб-ЗУ — Броневик Воронов",
+            "uk": "Яструб-ЗУ — Броньовик Воронів",
+            "en": "Hawk AA — Raven armoured car"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: броневик со спаренной автопушкой на модели «Чародей».",
+            "uk": "Заглушка: броньовик зі спареною автогарматою на моделі «Чародій».",
+            "en": "Placeholder: armoured car with a twin autocannon on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "320",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "1.4 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "0.7–7",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "11",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "160",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, миноискатель, ремкомплект, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, міношукач, ремкомплект, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, mine detector, repair kit, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Беркут — Основной танк Воронов",
+            "uk": "Беркут — Основний танк Воронів",
+            "en": "Golden Eagle — Raven main tank"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: основной танк Корпуса Воронов на модели «Чародей».",
+            "uk": "Заглушка: основний танк Корпусу Воронів на моделі «Чародій».",
+            "en": "Placeholder: Raven Corps main battle tank on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "420",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "90",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2 / 1 / 2",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "4.6 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "1.1–7.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "8.5",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "50",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "90",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Гриф — Гаубица Воронов",
+            "uk": "Гриф — Гаубиця Воронів",
+            "en": "Vulture — Raven howitzer"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: дальнобойная гаубица на модели «Чародей». Стреляет без развёртывания.",
+            "uk": "Заглушка: далекобійна гаубиця на моделі «Чародій». Стріляє без розгортання.",
+            "en": "Placeholder: long-range howitzer on the Sorcerer model. Fires without deploying."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "520",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 1 / 1.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "7.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "4–22",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "50",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, миноискатель, броня, ремкомплект, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, міношукач, броня, ремкомплект, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, mine detector, armour, repair kit, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Сокол-ПТ — Истребитель танков Воронов",
+            "uk": "Сокіл-ПТ — Винищувач танків Воронів",
+            "en": "Falcon AT — Raven tank destroyer"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: быстрый истребитель танков с ракетами на модели «Чародей».",
+            "uk": "Заглушка: швидкий винищувач танків з ракетами на моделі «Чародій».",
+            "en": "Placeholder: fast missile tank destroyer on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "580",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "5.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2–10",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, морковный напиток.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, морквяний напій.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, carrot drink."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Коршун — РСЗО Воронов",
+            "uk": "Шуліка — РСЗВ Воронів",
+            "en": "Kite — Raven rocket launcher"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: реактивная система залпового огня на модели «Чародей».",
+            "uk": "Заглушка: реактивна система залпового вогню на моделі «Чародій».",
+            "en": "Placeholder: multiple rocket launcher on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "640",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "6 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "3–11",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "43",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Филин — Мортира Воронов",
+            "uk": "Пугач — Мортира Воронів",
+            "en": "Eagle Owl — Raven mortar"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: тяжёлая мортира на модели «Чародей».",
+            "uk": "Заглушка: важка мортира на моделі «Чародій».",
+            "en": "Placeholder: heavy mortar on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "620",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "110",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2.5 / 1.5 / 2",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "13",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "6.5 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2–5.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "7",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "33",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "40",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Дятел — Минёр Воронов",
+            "uk": "Дятел — Мінер Воронів",
+            "en": "Woodpecker — Raven minelayer"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: минёр на модели «Чародей». Кнопка «Мины на ходу», видит мины.",
+            "uk": "Заглушка: мінер на моделі «Чародій». Кнопка «Міни на ходу», бачить міни.",
+            "en": "Placeholder: minelayer on the Sorcerer model. Mines on the Move button, spots mines."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "420",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "75",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "2 / 1 / 1.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "0–14",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "14",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "57",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, миноискатель, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, боєзапас, приціл, міношукач, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, ammo, sight, mine detector, armour, repair kit, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Сапсан-ЗРК — Ракетный комплекс Воронов",
+            "uk": "Сапсан-ЗРК — Ракетний комплекс Воронів",
+            "en": "Peregrine SAM — Raven missile system"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: тяжёлый ракетный комплекс на модели «Чародей».",
+            "uk": "Заглушка: важкий ракетний комплекс на моделі «Чародій».",
+            "en": "Placeholder: heavy missile system on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "700",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1.5 / 0.5 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "7 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "3–12",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "9",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "45",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Буревестник — Экраноплан-штурмовик",
+            "uk": "Буревісник — Екраноплан-штурмовик",
+            "en": "Petrel — Ground-effect striker"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: очень быстрый штурмовик на модели «Чародей».",
+            "uk": "Заглушка: дуже швидкий штурмовик на моделі «Чародій».",
+            "en": "Placeholder: very fast striker on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "750",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "65",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1 / 0.5 / 0.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "8",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "4 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "2–9",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "110",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, ремкомплект, турбо, морковный напиток.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, ремкомплект, турбо, морквяний напій.",
+            "en": "Upgrades: fuel, ammo, sight, armour, repair kit, turbo, carrot drink."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Сова-ДРЛО — Радар Воронов",
+            "uk": "Сова-ДРЛВ — Радар Воронів",
+            "en": "Owl AWACS — Raven radar"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: машина радара на модели «Чародей»: обзор 22, видит мины. Без оружия.",
+            "uk": "Заглушка: машина радара на моделі «Чародій»: огляд 22, бачить міни. Без зброї.",
+            "en": "Placeholder: radar vehicle on the Sorcerer model: sight 22, spots mines. No gun."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "650",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "0.5 / 0 / 0.5",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "0–14",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "22",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "60",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, прицел, броня, ремкомплект, турбо.",
+            "uk": "Покращення: бак, приціл, броня, ремкомплект, турбо.",
+            "en": "Upgrades: fuel, sight, armour, repair kit, turbo."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Пикировщик — Штурмовой дрон Воронов",
+            "uk": "Пікірувальник — Штурмовий дрон Воронів",
+            "en": "Dive Bomber — Raven assault drone"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: быстрый хрупкий штурмовик ближнего боя на модели «Чародей».",
+            "uk": "Заглушка: швидкий крихкий штурмовик ближнього бою на моделі «Чародій».",
+            "en": "Placeholder: fast, fragile close-range striker on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "480",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "55",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "1 / 0 / 1",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "14",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "8 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "1.1–4",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "8.5",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "80",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "90",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "ru": "Кондор — Тяжёлый танк Воронов",
+            "uk": "Кондор — Важкий танк Воронів",
+            "en": "Condor — Raven heavy tank"
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Заглушка: тяжёлая штурмовая платформа на модели «Чародей».",
+            "uk": "Заглушка: важка штурмова платформа на моделі «Чародій».",
+            "en": "Placeholder: heavy assault platform on the Sorcerer model."
+          }
+        },
+        {
+          "type": "facts",
+          "facts": [
+            {
+              "value": "1100",
+              "label": {
+                "ru": "цена",
+                "uk": "ціна",
+                "en": "price"
+              }
+            },
+            {
+              "value": "160",
+              "label": {
+                "ru": "живучесть",
+                "uk": "живучість",
+                "en": "HP"
+              }
+            },
+            {
+              "value": "4 / 2 / 3",
+              "label": {
+                "ru": "броня: лоб / корма / верх",
+                "uk": "броня: лоб / корма / дах",
+                "en": "armour: front / rear / top"
+              }
+            },
+            {
+              "value": "12",
+              "label": {
+                "ru": "урон",
+                "uk": "шкода",
+                "en": "damage"
+              }
+            },
+            {
+              "value": "6 s",
+              "label": {
+                "ru": "перезарядка",
+                "uk": "перезаряджання",
+                "en": "reload"
+              }
+            },
+            {
+              "value": "1.4–8.5",
+              "label": {
+                "ru": "дальность",
+                "uk": "дальність",
+                "en": "range"
+              }
+            },
+            {
+              "value": "10",
+              "label": {
+                "ru": "обзор",
+                "uk": "огляд",
+                "en": "sight"
+              }
+            },
+            {
+              "value": "30",
+              "label": {
+                "ru": "скорость",
+                "uk": "швидкість",
+                "en": "speed"
+              }
+            },
+            {
+              "value": "70",
+              "label": {
+                "ru": "боезапас",
+                "uk": "боєзапас",
+                "en": "ammo"
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": {
+            "ru": "Улучшения: бак, боезапас, прицел, броня, турбо, пиво.",
+            "uk": "Покращення: бак, боєзапас, приціл, броня, турбо, пиво.",
+            "en": "Upgrades: fuel, ammo, sight, armour, turbo, beer."
           }
         }
       ]

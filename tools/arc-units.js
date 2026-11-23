@@ -210,6 +210,10 @@ function applySet(body, set) {
 const readSection = (lines, name) => { const [a, b] = sectionRange(lines, name); return lines.slice(a + 1, b); };
 const props = body => Object.fromEntries(body.map(l => [keyOf(l), l.split('=').slice(1).join('=').trim()]).filter(([k]) => k));
 
+// #3: третя раса — Ворони (раса 2), поки заглушка на моделі «Чародій»: tools/raven-race.js
+const RAVEN = require('./raven-race');
+UNITS.push(...RAVEN.UNITS);
+
 // ───────────── збірка ─────────────
 const base = readPakEntry(path.join(GAME, 'gamedata/base/base.pak'), 'units.ini').toString('latin1');
 let lines = base.split('\r\n');
@@ -259,7 +263,8 @@ for (const lang of fs.readdirSync(path.join(GAME, 'gamedata'))) {
 }
 
 fs.writeFileSync(path.join(OUT, 'classes.json'), JSON.stringify({
-  rabbit: UNITS.filter(u => u.race === 'rabbit').map(u => u.s), pig: UNITS.filter(u => u.race === 'pig').map(u => u.s) }, null, 2));
+  rabbit: UNITS.filter(u => u.race === 'rabbit').map(u => u.s), pig: UNITS.filter(u => u.race === 'pig').map(u => u.s), raven: RAVEN.row }, null, 2));
+RAVEN.extra(OUT, GAME, readPakEntry);              // модель v_charodey, messages.ini (SWINE_RAVEN — раса в лобі)
 fs.writeFileSync(path.join(OUT, 'balance.json'), JSON.stringify(balance, null, 2));
 console.log(`units.ini: ${balance.vanilla.length} vanilla sections changed, ${UNITS.length} new units → ${OUT}`);
 for (const u of balance.units) { const p = u.stats; console.log(`  ${u.section.padEnd(26)} ${u.ru[0].padEnd(16)} price ${p.price} hp ${p.maxhp} arm ${p.frontarmor}/${p.backarmor}/${p.toparmor} dmg ${p.damage ?? '-'} rl ${p.reloadtime ?? '-'} rng ${p.minrange ?? '-'}-${p.maxrange ?? '-'} spd ${p.movespeed} sp ${p.specialtype ?? '-'} shot ${p.shottype ?? '-'} proj ${p.projectile ?? '-'}`); }

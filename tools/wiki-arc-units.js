@@ -99,6 +99,21 @@ const pages = [
   { id: 'au-rabbits', group: 'arc-units', title: T('Новые юниты кроликов', 'Нові юніти кроликів', 'New rabbit units'),
     summary: T('Скорость, засады и хитрые гаджеты.', 'Швидкість, засідки й хитрі гаджети.', 'Speed, ambushes and clever gadgets.'),
     blocks: bal.units.filter(u => u.race === 'rabbit').flatMap(unitBlocks) },
+  // #3: третя раса (tools/raven-race.js) — поки заглушка
+  { id: 'au-ravens', group: 'arc-units', title: T('Вороны (третья раса, заглушка)', 'Ворони (третя раса, заглушка)', 'Ravens (third race, placeholder)'),
+    summary: T('Третья раса в лобби. Пока все машины — на модели «Чародей», характеристики временные.', 'Третя раса в лобі. Поки всі машини — на моделі «Чародій», характеристики тимчасові.', 'A third race in the lobby. For now every vehicle uses the Sorcerer model and the stats are temporary.'),
+    blocks: [
+      { type: 'bullets', items: [
+        T('В лобби у расы третий пункт — «Ворон». Работает и в сети: остальные игроки видят выбор и играют против Воронов.', 'У лобі в раси третій пункт — «Ворон». Працює й у мережі: інші гравці бачать вибір і грають проти Воронів.', 'The lobby race list has a third entry, Raven. It works online too: other players see the choice and play against the Ravens.'),
+        T('В магазине Воронов 13 боевых машин: аналоги обычной линейки и 5 своих. Все — на временной модели «Чародей»; свои модели Корпуса Воронов в работе.', 'У магазині Воронів 13 бойових машин: аналоги звичайної лінійки і 5 своїх. Усі — на тимчасовій моделі «Чародій»; свої моделі Корпусу Воронів у роботі.', 'The Raven shop has 13 combat vehicles: counterparts of the standard line-up plus 5 of their own. All use the temporary Sorcerer model; the Raven Corps models are in progress.'),
+        T('Тягач, прицепы (боеприпасы, топливо, ремонт) и вертолёт снабжения пока свиные.', 'Тягач, причепи (боєприпаси, пальне, ремонт) і гелікоптер постачання поки свинячі.', 'The tractor, trailers (ammo, fuel, repair) and the supply helicopter are the pigs\' for now.'),
+        T('Меню, музыка и бомбардировщик у Воронов тоже свиные: игра выбирает их по правилу «не кролики — значит свиньи».', 'Меню, музика й бомбардувальник у Воронів теж свинячі: гра вибирає їх за правилом «не кролики — отже свині».', 'Menus, music and the bomber are the pigs\' as well: the game picks them by the rule "not rabbits means pigs".'),
+        T('Гаубица «Гриф» стреляет без развёртывания, минёр «Дятел» ставит мины кнопкой «Мины на ходу», как Кротобой: обычным способам нужны детали модели, которых у «Чародея» нет.', 'Гаубиця «Гриф» стріляє без розгортання, мінер «Дятел» ставить міни кнопкою «Міни на ходу», як Кротобій: звичайним способам потрібні деталі моделі, яких у «Чародія» нема.', 'The Vulture howitzer fires without deploying, and the Woodpecker minelayer lays mines with the Mines on the Move button, like the Mole Smasher: the usual ways need model parts the Sorcerer lacks.'),
+        T('Сохранённые армии Воронов — отдельные файлы (V…army), со свиными не смешиваются.', 'Збережені армії Воронів — окремі файли (V…army), зі свинячими не змішуються.', 'Saved Raven armies are separate files (V…army) and do not mix with the pigs\'.'),
+        T('В кампании и одиночной игре Воронов нет. Мыши — следующая раса, после Воронов.', 'У кампанії й одиночній грі Воронів нема. Миші — наступна раса, після Воронів.', 'There are no Ravens in the campaign or single-player. Mice are the next race, after the Ravens.'),
+      ] },
+      ...bal.units.filter(u => u.race === 'raven').flatMap(unitBlocks),
+    ] },
   { id: 'au-balance', group: 'arc-units', title: T('Правки старых юнитов', 'Правки старих юнітів', 'Changes to old units'),
     summary: T('Обычные юниты и улучшения — как в игре; изменена только авиация кроликов.', 'Звичайні юніти й покращення — як у грі; змінено лише авіацію кроликів.', 'Stock units and upgrades are as in the game; only rabbit aviation changed.'),
     blocks: [

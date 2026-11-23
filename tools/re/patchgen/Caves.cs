@@ -41,7 +41,8 @@ static class Caves
     public const int CoState = AutoState + 0x10;                // біт k — у армії k на старті матчу був другий командир (слот 8 + k)
     public const int CoNames = CoState + 0x20;                  // лобі: 8 × 128 Б — «ім'я армії + ім'я другого командира»
     public const int MenuVer = CoNames + 0x400;                 // головне меню: кадр рядка версії мода + 1, SMenu*
-    public const int RadarSee = MenuVer + 8;                    // DrawVisMap: 1 — поточний юніт з увімкненим радаром (огляд без перешкод)
+    public const int RadarSee = MenuVer + 8;
+    public const int RaceArg = MenuVer + 0x10;                  // «+race R» (перевірка): 3 dword                    // DrawVisMap: 1 — поточний юніт з увімкненим радаром (огляд без перешкод)
     public const int AirPricePig = 50, AirPriceRabbit = 100;    // авіаудар, SP (#10: кролики +50)
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
@@ -51,9 +52,11 @@ static class Caves
     public record W16Site(uint Va, Instruction[] Ins, int[] K, byte[] Old, int Len, Register PreReg = Register.None, int PreK = 0);
     public static List<W16Site> World16 = new();
     const uint BoardVar = 0x58d060, SDXWidgetDtor = 0x4885f0;   // SIBoard* Board; SDXWidget::~SDXWidget
-    public static string ModLine = "Arcanum Nexus Mod";         // Program.cs: «Arcanum Nexus Mod v<версія з modpack/pack.json>»
+    public static string ModLine = "Arcanum Nexus Mod";
+    public static bool Ravens;                                  // #3: третя раса (Program.cs — є рядок "raven" у classes.json)
+    const uint GetTextFn = 0x4f9b00, DropAddItem = 0x487250;    // GetText(key) cdecl; SDropList::AddItem(text, bool, DWORD) thiscall         // Program.cs: «Arcanum Nexus Mod v<версія з modpack/pack.json>»
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
-               GetFullSlots = 0x479e70, StartGame = 0x47dba0;
+               GetFullSlots = 0x479e70, StartGame = 0x47dba0, SendPlayerChangeRace = 0x47d700;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
     const int SlotBase = 0x28F0, SlotSize = 0x70, ConnBase = 0x2FF0;   // = smulti16.json layout.slot / conn
     const int RecvBase = 0x6EB8, ReqBase = 0x6EF8;                      // = smulti16.json layout.recv / req
@@ -558,6 +561,40 @@ static class Caves
             a.Label(ref next);
             a.inc(edi); a.jmp(loop);
             a.Label(ref parsed);
+            // «+race R» (перевірка рас, зокрема Воронів = 2): поки своя раса в слоті не R — раз на 200 викликів
+            // SMulti::SendPlayerChangeRace(R), як вибір у списку лобі. Без ключа нічого не змінюється.
+            {
+                uint RA = tableVa + RaceArg;        // +0 розібрано, +4 R + 1 (0 — ключа нема), +8 лічильник
+                var rParsed = a.CreateLabel(); var rLoop = a.CreateLabel(); var rNext = a.CreateLabel(); var rDone = a.CreateLabel();
+                a.cmp(__dword_ptr[RA], 0); a.jne(rParsed);
+                a.mov(__dword_ptr[RA], 1);
+                a.call(__dword_ptr[ImpArgc]); a.mov(ebx, __dword_ptr[eax]);
+                a.call(__dword_ptr[ImpArgv]); a.mov(esi, __dword_ptr[eax]);
+                a.mov(edi, 1);
+                a.Label(ref rLoop);
+                a.cmp(edi, ebx); a.jge(rParsed);
+                a.push(S("+race")); a.push(__dword_ptr[esi + edi * 4]); a.call(__dword_ptr[ImpStricmp]); a.add(esp, 8);
+                a.test(eax, eax); a.jne(rNext);
+                a.lea(eax, __dword_ptr[edi + 1]); a.cmp(eax, ebx); a.jge(rParsed);
+                a.push(__dword_ptr[esi + eax * 4]); a.call(Atoi); a.add(esp, 4);
+                a.inc(eax); a.mov(__dword_ptr[RA + 4], eax);
+                a.jmp(rParsed);
+                a.Label(ref rNext);
+                a.inc(edi); a.jmp(rLoop);
+                a.Label(ref rParsed);
+                a.cmp(__dword_ptr[RA + 4], 0); a.je(rDone);
+                a.mov(ecx, __dword_ptr[esp + 0x18]);                                   // this з pushad
+                a.mov(eax, __dword_ptr[ecx + MySlot]); a.cmp(eax, 16); a.jae(rDone);
+                a.imul(eax, eax, SlotSize);
+                a.mov(edx, __dword_ptr[ecx + eax + SlotBase]); a.and(edx, 0xF); a.cmp(edx, 2); a.jne(rDone);   // слот зайнятий людиною
+                a.movzx(edx, __byte_ptr[ecx + eax + SlotBase + 0x68]);                // раса слота (було +21F8h = слот +68h)
+                a.mov(eax, __dword_ptr[RA + 4]); a.dec(eax); a.cmp(edx, eax); a.je(rDone);
+                a.inc(__dword_ptr[RA + 8]); a.cmp(__dword_ptr[RA + 8], 200); a.jl(rDone);
+                a.mov(__dword_ptr[RA + 8], 0);
+                Log("ARC: +race %d (slot race %d)", () => a.push(edx), () => a.push(eax));
+                a.push(eax); a.call(SendPlayerChangeRace);
+                a.Label(ref rDone);
+            }
             a.cmp(__dword_ptr[ST + 4], 0); a.jle(done);
             var notStarted = a.CreateLabel();
             a.cmp(__dword_ptr[ST + 12], 0); a.je(notStarted);
@@ -1017,6 +1054,29 @@ static class Caves
             a.popad();
             a.mov(ecx, __dword_ptr[BoardVar]); a.jmp(0x4f9acdUL);
         }
+        // ── #3 Ворони: третій пункт у списку раси лобі. SChatRoomMenu::Create додає «SWINE_RABBIT», «SWINE_PIG» (індекс =
+        //    раса) і ставить вибір [ebx+916Ch]. Додаємо «SWINE_RAVEN» (messages.ini, arc-units.js → raven-race.js) — раса 2.
+        // Було (0x4d912f): movzx eax,byte ptr [ebx+916Ch]; esi = SDropList*, ebx = SChatRoomMenu*
+        var lobbyRace = a.CreateLabel("lobbyrace");
+        {
+            a.Label(ref lobbyRace);
+            a.push(0); a.push(1); a.push(S("SWINE_RAVEN")); a.call(GetTextFn); a.add(esp, 4);
+            a.mov(ecx, esi); a.push(eax); a.call(DropAddItem);
+            a.movzx(eax, __byte_ptr[ebx + 0x916C]); a.jmp(0x4d9136UL);
+        }
+        // #3: список армій у лобі — маска «R*.army» для раси 0, інакше «P*.army». Для раси 2 — «V*.army» (SaveArmy, Program.cs).
+        // Було (0x4dac50): mov ax,word ptr ["P"]; esi = SChatRoomMenu*, [esi+916Ch] — своя раса
+        var armyPrefix = a.CreateLabel("armyprefix");
+        {
+            var back = a.CreateLabel();
+            a.Label(ref armyPrefix);
+            a.cmp(__byte_ptr[esi + 0x916C], 2);
+            a.mov(ax, __word_ptr[0x555678]);                      // рядок "P" гри (2 байти: P і нуль)
+            a.jne(back);
+            a.mov(ax, __word_ptr[S("RPV") + 2]);                  // "V" і нуль — кінець рядка "RPV"
+            a.Label(ref back);
+            a.jmp(0x4dac56UL);
+        }
         // ~SMenu: прибрати наш кадр, якщо він цього меню. Було (0x4f971d): mov ecx,esi / call ~SDXWidget; esi = SMenu*
         var menuVerDtor = a.CreateLabel("menuverdtor");
         {
@@ -1050,7 +1110,11 @@ static class Caves
             a.Label(ref airAvail);
             a.push(edx); a.mov(edx, AirPricePig); a.cmp(__dword_ptr[eax + esi + 0xFC], 0); a.jne(pig); a.mov(edx, AirPriceRabbit);
             a.Label(ref pig);
-            a.cmp(__dword_ptr[eax + esi + 0x138], edx); a.pop(edx); a.jmp(0x4a5f65UL);
+            // Далі в грі 0x4a5f65: jmp short 4a5f75 (setge al) — але 4a5f72…4a5f77 зайняті переходом «airavailcamp»,
+            // і 4a5f75 — середина нашої інструкції jmp. До 4.1.0 тут був стрибок у сміття: «Access violation
+            // (004A5F75)», щойно в мережевому бою гра питала, чи доступний бомбардувальник (армія з джипом).
+            // Тому setge робимо самі й повертаємось уже після обох вставок.
+            a.cmp(__dword_ptr[eax + esi + 0x138], edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
         }
         // те саме в кампанії (0x4a5f72): cmp eax(SP кампанії),32h / setge al; гравець — [esi+434h]
         var airAvailCamp = a.CreateLabel("airavailcamp");
@@ -1130,6 +1194,8 @@ static class Caves
         hooks.Add(new Hook(0x478c57, Convert.FromHexString("C7860425000000000000"), "SMulti::ClearSlotArray: очистити слоти 8…15", (uint)L(clearSlots), 10));
         hooks.Add(new Hook(0x47a543, Convert.FromHexString("C7865421000000000000"), "SMulti::Initialize: слоти, conn, recv/req 8…15", (uint)L(initTail), 10));
         hooks.Add(new Hook(0x4f9ac7, Convert.FromHexString("8B0D60D05800"), "SMenu::Create: рядок «Arcanum Nexus Mod v…» під версією гри", (uint)L(menuVer), 6));
+        if (Ravens) hooks.Add(new Hook(0x4dac50, Convert.FromHexString("66A178565500"), "#3 SChatRoomMenu::LoadArmyNames: армії Воронів — V*.army", (uint)L(armyPrefix), 6));
+        if (Ravens) hooks.Add(new Hook(0x4d912f, Convert.FromHexString("0FB6836C910000"), "#3 SChatRoomMenu::Create: раса «Ворон» у списку лобі", (uint)L(lobbyRace), 7));
         hooks.Add(new Hook(0x4f971d, Convert.FromHexString("8BCEE8CCEEF8FF"), "~SMenu: прибрати рядок версії мода", (uint)L(menuVerDtor), 7));
         for (int i = 0; i < World16.Count; i++)
             hooks.Add(new Hook(World16[i].Va, World16[i].Old, "#2: зсув гравця i·5Ch → хвіст SGameWorld для i ≥ 8", (uint)L(w16Labels[i]), World16[i].Len));
