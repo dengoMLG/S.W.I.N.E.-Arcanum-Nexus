@@ -98,7 +98,7 @@ foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.
     "freeair", "Varju", "sokolzrk", "taktikai", "Varju bombazo", "Varju taktikai bombazo" }) Str(v);   // RPV — літера файлу армії за расою (#3)
 Const("pi", F(MathF.PI)); Const("-pi", F(-MathF.PI)); Const("2pi", F(2 * MathF.PI));
 Const("absmask", 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff); Const("signmask", 0x80000000, 0x80000000, 0x80000000, 0x80000000);
-Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("blind", F(Caves.EarBlindSight)); Const("maxsight", F(Caves.VisMaxSight));
+Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("blind", F(Caves.EarBlindSight)); Const("dropk", F(0.4f)); Const("dropf", F(8.08f)); Const("maxsight", F(Caves.VisMaxSight));
 Const("third", F(1f / 3f)); Const("half", F(0.5f)); Const("twofifths", F(0.4f)); Const("samr2", F(Caves.SamRadius * Caves.SamRadius));
 Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
 var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]).ToArray();

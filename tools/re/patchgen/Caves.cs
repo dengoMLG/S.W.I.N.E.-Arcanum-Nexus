@@ -1321,6 +1321,19 @@ static class Caves
             a.jmp(0x4b7236UL);
         }
 
+        // ── 4.2.6: початок скидання бомб (SUnit::AirPlaneCallBack, 0x4b728d) за швидкістю літака ──
+        // Ваніль починає скидання за 10 клітинок до цілі й кидає 8 бомб ~0.8 с; за цей час літак (4.8) пролітає 3.84 —
+        // серія лягає на ціль (бомби летять уперед ~8.08 клітинки, швидкість бомб airbomb повертає до 4.8). Літак кроликів
+        // (14.4) за 0.8 с пролітає 11.5 — серія лягала до ~10 клітинок за ціллю. Тепер поріг = 8.08 + 0.4·v
+        // (v = GetMaxMoveSpeed, уже в [esp+18h]): 4.8 → 10 (як у ванілі), 14.4 → 13.84, Ворони 9.6 → 11.92, 12.0 → 12.88.
+        // Було: movss xmm0,[__real@41200000] (10.0); далі comiss xmm0,xmm1 (xmm1 — відстань до цілі).
+        var dropStart = a.CreateLabel("dropstart");
+        {
+            a.Label(ref dropStart);
+            a.movss(xmm0, __dword_ptr[esp + 0x18]); a.mulss(xmm0, __dword_ptr[cst("dropk")]); a.addss(xmm0, __dword_ptr[cst("dropf")]);
+            a.jmp(0x4b7295UL);
+        }
+
         // ── Радар Ушастика (#10, виправлення #12): огляд ×3 крізь дерева й пагорби без переповнення DrawVisMap. ──
         // У ванілі DrawVisMapAid/DetAid мають буфери h/m на 36 float (за ними лежить SuperWindow* 0xED2344 і RakNet
         // SystemAddress) і таблиці на 36 клітинок, а перевірка краю мапи (48 тайлів = 96 клітинок) не тримає радіус
@@ -1618,6 +1631,7 @@ static class Caves
         hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
         hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));
         hooks.Add(new Hook(0x49e1da, Convert.FromHexString("B8702355000F45F0"), "SGameWorld::AirStrike: вибір бомбардувальника Воронів (важкий / тактичний)", (uint)L(airPick), 8));
+        hooks.Add(new Hook(0x4b728d, Convert.FromHexString("F30F1005B09E5400"), "SUnit::AirPlaneCallBack: початок скидання бомб за швидкістю літака (точно в точку виклику)", (uint)L(dropStart), 8));
         hooks.Add(new Hook(0x4b722e, Convert.FromHexString("D84C2418D95C2420"), "SUnit::AirPlaneCallBack: ППО Сапсан-ЗРК + точне скидання бомб на 4.8", (uint)L(airBomb), 8));
         hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика (коло без переповнення) + межа Sight", (uint)L(visUnit), 5));
         hooks.Add(new Hook(0x4a08d0, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapAid: очищення розширених буферів h/m[64]", (uint)L(visAidInit), 6));
