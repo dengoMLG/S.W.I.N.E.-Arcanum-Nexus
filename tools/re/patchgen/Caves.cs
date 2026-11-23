@@ -108,10 +108,16 @@ static class Caves
         // Було (0x4bcffa): add esp,8 / test eax,eax / jne 4bd051 — після _stricmp(name, "Akna").
         var explode = a.CreateLabel("explode");
         {
-            var noBoom = a.CreateLabel(); var dmgOk = a.CreateLabel();
+            var noBoom = a.CreateLabel(); var dmgOk = a.CreateLabel(); var guarded = a.CreateLabel(); var unguarded = a.CreateLabel();
             a.Label(ref explode);
             a.add(esp, 8); a.test(eax, eax); a.je(0x4bd001UL);                    // міна — як було
             Strstr(edi, "kamikaze"); a.test(eax, eax); a.je(noBoom);
+            // Захист від повторного входу: поки йде RadiusDamage цього камікадзе, у записі таблиці +28 = SUnit*.
+            // Інакше два камікадзе в радіусі одне одного «вмирали» знову й знову — переповнення стека (лист 23.11).
+            a.mov(eax, __dword_ptr[edi + 4]); a.cmp(eax, TableEntries); a.jae(unguarded);
+            a.shl(eax, 5); a.cmp(__dword_ptr[eax + (int)tableVa + 28], edi); a.je(0x4bd063UL);   // уже вибухає — без шкоди
+            a.mov(__dword_ptr[eax + (int)tableVa + 28], edi);
+            a.Label(ref unguarded);
             Log("ARC: kamikaze %d explodes", Imm(0), Mem(edi, 4));
             a.push(__dword_ptr[edi + 4]); a.movss(xmm0, __dword_ptr[esi]); a.push(2); a.sub(esp, 0x10);
             a.movss(xmm1, __dword_ptr[edi + 0xA4]); a.movss(__dword_ptr[esp + 0xC], xmm1);   // радіус = ShotSpread
@@ -121,12 +127,18 @@ static class Caves
             a.movss(xmm0, __dword_ptr[edi + 0xD0]); a.xorps(xmm2, xmm2); a.comiss(xmm0, xmm2); a.ja(dmgOk);
             a.movss(xmm0, __dword_ptr[edi + 0xA0]);                                // урон = ExtraArmor, інакше Damage
             a.Label(ref dmgOk);
-            // RadiusDamage(урон, нападник = сам камікадзе, -1, x, y, z, радіус, 2, id) — як у ванільної міни.
+            // RadiusDamage(урон, нападник = сам камікадзе, не чіпати = індекс самого камікадзе, x, y, z, радіус, 2, id).
+            // Третій аргумент — індекс юніта в масиві світу (= id), якого вибух не зачіпає. Було −1, як у міни: вибух бив
+            // і по самому камікадзе, той «помирав» удруге й знову вибухав — нескінченна рекурсія.
             // ecx = світ (у першій версії цей mov загубився в коментарі — RadiusDamage отримував сміття й падав).
-            a.push(-1); a.push(__dword_ptr[edi + 4]); a.push(ecx);
+            a.push(__dword_ptr[edi + 4]); a.push(__dword_ptr[edi + 4]); a.push(ecx);
             a.mov(ecx, __dword_ptr[edi]);
             a.movss(__dword_ptr[esp], xmm0);
-            a.call(RadiusDamage); a.jmp(0x4bd063UL);
+            a.call(RadiusDamage);
+            a.mov(eax, __dword_ptr[edi + 4]); a.cmp(eax, TableEntries); a.jae(guarded);
+            a.shl(eax, 5); a.mov(__dword_ptr[eax + (int)tableVa + 28], 0);
+            a.Label(ref guarded);
+            a.jmp(0x4bd063UL);
             a.Label(ref noBoom); a.jmp(0x4bd051UL);
         }
 

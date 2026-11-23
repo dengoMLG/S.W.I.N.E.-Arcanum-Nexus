@@ -83,7 +83,7 @@ var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
 uint caveVa = Align(dataPtr, 16);
-const uint SecRaw = 0x2000, LateStr = 0x1C00;                       // код і дані — у файлі; код до 0x1C00, далі — рядки журналу з вставок
+const uint SecRaw = 0x2000, LateStr = 0x1D00;                       // код і дані — у файлі; код до 0x1D00, далі — рядки журналу з вставок (~0x1F0 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
 uint secVirtual = SecRaw + (uint)(Caves.TableEntries * Caves.EntrySize) + 0x1000;   // + дані розстановки стартів
 uint oldMaskVa = FindString("JSTAHRMLtafsM\0");
