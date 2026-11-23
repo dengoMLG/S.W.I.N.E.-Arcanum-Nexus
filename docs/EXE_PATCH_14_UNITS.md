@@ -318,6 +318,34 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 приём кадров 16 игроков в `SGameWorld::ServerRefresh` (сейчас кадр места 8 + k исполняется как армия k — вставки
 `getframeco`/`procco`), лобби (16 строк со своей расой, командой, цветом) и стартовые точки 9…16.
 
+### Шаг 3: циклы по игрокам указателем (24.11.2026)
+
+Игроки 8…15 лежат в хвосте (`+27A0h`), а не сразу за игроком 7 (`+3D8h`), поэтому циклы `add r,5Ch` нельзя просто
+продлить до 16: на переходе 7 → 8 указатель надо сдвинуть на `World16Delta` (23C8h). План вставки на каждом
+`add r,5Ch`: если счётчик после шага стал «8-м игроком» — `r += 23C8h`; границу — 8 → 16. Найдено 16 циклов:
+
+| Функция | `add …,5Ch` | Указатель | Счётчик и граница | Что делает |
+|---|---|---|---|---|
+| `IncreasePlayerScore` | 0x4a47aa | `edx` | `ebx`, вниз до 0 | очки союзникам |
+| `IncreaseUnitXP` | 0x4a49c0 | `edx` | `[ebp+0Ch]`, вниз | опыт союзникам |
+| `IsMapRunningForAnyPlayer` | 0x4a5fb4 | `eax` | `edx`, `cmp 8` | есть ли живой игрок |
+| `LoadGame` | 0x4a6781 | `esi` | `ebx`, вниз | сейв кампании — оставить 8 |
+| `ServerInit` | 0x4ac962 | `esi` (+ `[ebp−60h]`, `ecx`+4) | `[ebp−58h]` | стартовые SP |
+| `ServerInit` | 0x4ac9e4 | `edx` | `eax`, `cmp 8` (`jae` и `jl`) | сброс команд |
+| `ServerInit` | 0x4aca02 (`lea`) | `ecx` | `eax`, `cmp 8` | номера игроков |
+| `ServerInit` | 0x4acaa8 | `ecx` | `esi`, вниз | раздача стартов |
+| `ServerInit` | 0x4acb23 | `ecx` | `[ebp−5Ch]`, вниз | раздача стартов |
+| `ServerInit` | 0x4adbb9 | `[ebp−5Ch]` | `[ebp−58h]`, `cmp 8` | расстановка армий |
+| `ServerInit` | 0x4ae1ce | `esi` | `[ebp−5Ch]`, `cmp 8` | старт авиации |
+| `ServerRefresh` | 0x4ae831 | `eax` | `ecx`, `cmp 8` | конец матча |
+| `ServerRefresh` | 0x4aea75 | `edi` | `esi`; граница — слот `SMulti` `cmp …,28E4h` | кадры игроков |
+| `ServerRefresh` | 0x4aeaee | `edi` | `esi`, `cmp 8` | исполнение кадров (рядом `procco`) |
+| `ServerRefresh` | 0x4aee42 | `esi` | `edi`, `cmp 8` | траты SP |
+| `TestTriggers` | 0x4b1bcc | `ecx` | `edx`, `cmp 8` | триггеры по игрокам |
+
+Цикл 0x4aea75 ходит параллельно по слотам `SMulti` (с шагом 4 до `28E4h`) — его граница зависит от переноса слотов
+`SMulti` (этап 1 сетевой части), разбирать вместе с `getframeco`/`procco`.
+
 ## Третья раса — Вороны (#3, мод 4.1.0, заглушка)
 
 Раса в игре — число: 0 кролики, 1 свиньи. Хранится байтом в слоте лобби (`SMulti` слот +68h, было +21F8h), в игроке мира (`SGameWorld` + F8h + i·5Ch + 4 = +FCh), в `SCampaign+4` (своя раса в сети — `SChatRoomMenu+916Ch` → `SCampaign::SetRace`) и в копиях: `SMarket+26A8h`, `SQuickMarket+2840h`, флаг меню `[0ED29E0h]` (он же «Race = N» в `menu.ini`). По сети раса идёт целым байтом (`OnPlayerChangeRace`, данные слота копируются записью 70h), так что 2 проходит без правок.
