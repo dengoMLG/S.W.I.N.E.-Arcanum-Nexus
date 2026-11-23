@@ -9,7 +9,7 @@
 - исходник вики: `modpack/wiki/wiki.src.json` (страницы, тексты uk/ru/en);
 - страница «Что нового» получает запись с версией пака и датой;
 - у нового мода есть своя группа страниц (обзор + что меняет), таблицы юнитов генерируются скриптом, а не пишутся руками;
-- после правки: `node tools/build-wiki.js` → `modpack/out/wiki.json`, копия уходит в лаунчер (`Assets/swine_wiki.json`) и на CDN (`/launcher/games/swine/wiki.json`).
+- после правки: `node tools/build-wiki.js --no-launcher` → `modpack/out/wiki.json`, файл заливается на сервер (`/srv/arcanum/dist/launcher/games/swine/wiki.json`, отдаётся без кеша через API `https://arcanum-nexus.com/api/launcher/swine/wiki` и `/launcher/games/swine/wiki.json`). Лаунчер (с `0.7.23.10`) подтягивает правки сразу с сервера — обновлять лаунчер ради вики не нужно; встроенная копия `Assets/swine_wiki.json` служит лишь офлайн-запасом.
 
 В вики пишем только то, что подтверждено файлами мода или игры. Если в описании мода заявлено что-то, чего в файлах нет, так и пишем.
 

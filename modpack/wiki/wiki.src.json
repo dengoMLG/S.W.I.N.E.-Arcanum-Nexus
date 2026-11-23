@@ -159,6 +159,30 @@
       "blocks": [
         {
           "type": "heading",
+          "key": "launcher-wiki-api",
+          "text": {
+            "ru": "Лаунчер 0.7.23.10 · живая Вики с сервера (API) · 23.11.2026",
+            "uk": "Лаунчер 0.7.23.10 · жива Вікі з сервера (API) · 23.11.2026",
+            "en": "Launcher 0.7.23.10 · live server API Wiki · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Вики мод-пака теперь подтягивается напрямую с сервера через API (/api/launcher/swine/wiki, без кеширования): любые правки цифр и описаний на сервере сразу появляются в лаунчере без его обновления.",
+              "uk": "Вікі мод-паку тепер підтягується напряму з сервера через API (/api/launcher/swine/wiki, без кешування): будь-які правки цифр і описів на сервері одразу зʼявляються в лаунчері без його оновлення.",
+              "en": "The modpack wiki now loads live from the server API (/api/launcher/swine/wiki, no-cache): any edits to stats or descriptions on the server appear immediately without updating the launcher."
+            },
+            {
+              "ru": "В окне Вики добавлено автообновление при открытии, индикатор статуса синхронизации и кнопка «Обновить» (сохраняет текущую страницу).",
+              "uk": "У вікні Вікі додано автооновлення при відкритті, індикатор статусу синхронізації та кнопку «Оновити» (зберігає поточну сторінку).",
+              "en": "The Wiki window now auto-refreshes on open and includes a sync status indicator plus a manual “Refresh” button that preserves the open page."
+            }
+          ]
+        },
+        {
+          "type": "heading",
           "key": "nexus-4.1.2",
           "text": {
             "ru": "Мод 4.1.2 · точность авиации кроликов и правки баланса · 23.11.2026",
