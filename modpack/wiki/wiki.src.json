@@ -22,7 +22,8 @@
         "ru": "Full ReBalance",
         "uk": "Full ReBalance",
         "en": "Full ReBalance"
-      }
+      },
+      "mod": "full-rebalance"
     },
     {
       "id": "arc-units",
@@ -30,7 +31,8 @@
         "ru": "Arcanum Units",
         "uk": "Arcanum Units",
         "en": "Arcanum Units"
-      }
+      },
+      "mod": "arcanum-units"
     },
     {
       "id": "help",
@@ -60,7 +62,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "v1",
+              "value": "v2",
               "label": {
                 "ru": "версия пака",
                 "uk": "версія паку",
@@ -76,7 +78,7 @@
               }
             },
             {
-              "value": "≈17 MB",
+              "value": "≈130 MB",
               "label": {
                 "ru": "скачивается",
                 "uk": "завантажується",
@@ -105,9 +107,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Full ReBalance 1.0 (COMMANDER) — переработанный баланс: больше урона, здоровья и дальности, выбираемая авиация, вооружённые бункеры и герои.",
-              "uk": "Full ReBalance 1.0 (COMMANDER) — перероблений баланс: більше шкоди, здоров'я й дальності, авіація, яку можна обирати, озброєні бункери й герої.",
-              "en": "Full ReBalance 1.0 (COMMANDER) — reworked balance: more damage, health and range, selectable aircraft, armed bunkers and heroes."
+              "ru": "Arcanum Units 2 — 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками: подрыв, мины на ходу, радар, грязевые лужи, залп; новые юниты в магазине кампании и в «Штабе»; 19 сетевых карт из кампании; патч swineHD.exe.",
+              "uk": "Arcanum Units 2 — 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками: підрив, міни на ходу, радар, грязьові калюжі, залп; нові юніти в магазині кампанії й у «Штабі»; 19 мережевих мап з кампанії; патч swineHD.exe.",
+              "en": "Arcanum Units 2 — 10 new units (5 per side) with their own mechanics: detonation, mines on the move, radar, mud puddles, salvo; new units in the campaign shop and Headquarters; 19 multiplayer maps from the campaign; a swineHD.exe patch."
+            },
+            {
+              "ru": "Full ReBalance в паке v2 больше нет: его страницы убраны из вики, исходники описания сохранены.",
+              "uk": "Full ReBalance у паку v2 більше немає: його сторінки прибрано з вікі, вихідні тексти опису збережено.",
+              "en": "Full ReBalance is no longer in pack v2: its pages are dropped from the wiki, the source texts are kept."
             }
           ]
         },
@@ -197,6 +204,16 @@
               "ru": "Ограничение: больше 8 игроков игра не держит — массивы игроков, туман войны, слоты лобби и сетевые пакеты рассчитаны ровно на 8.",
               "uk": "Обмеження: понад 8 гравців гра не тримає — масиви гравців, туман війни, слоти лобі й мережеві пакети розраховані рівно на 8.",
               "en": "Limit: the game cannot take more than 8 players — player arrays, fog of war, lobby slots and network packets are sized for exactly 8."
+            },
+            {
+              "ru": "Вики пака в лаунчере теперь общая для всего мод-пака: страницы по группам слева, свежая версия подтягивается с сайта, без сети — встроенная копия. Страницы Full ReBalance убраны: этого мода в паке v2 нет.",
+              "uk": "Вікі паку в лаунчері тепер спільна для всього мод-паку: сторінки за групами ліворуч, свіжа версія підтягується з сайту, без мережі — вбудована копія. Сторінки Full ReBalance прибрано: цього мода в паку v2 немає.",
+              "en": "The launcher wiki now covers the whole mod pack: pages grouped on the left, the latest version is fetched from the site, the built-in copy is used offline. Full ReBalance pages are gone: that mod is not in pack v2."
+            },
+            {
+              "ru": "Предел в 8 игроков разбирается: следующим шагом будет совместное командование (до 16 человек, по двое на армию).",
+              "uk": "Межу у 8 гравців розбираємо: наступним кроком буде спільне командування (до 16 людей, по двоє на армію).",
+              "en": "The 8-player limit is being worked on: the next step is co-command (up to 16 people, two per army)."
             }
           ]
         },
@@ -996,14 +1013,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Только в магазине перед сетевым матчем: в списке новых юнитов они идут последними, листайте стрелкой.",
-              "uk": "Лише в магазині перед мережевим матчем: у списку нових юнітів вони йдуть останніми, гортайте стрілкою.",
-              "en": "Only in the pre-match multiplayer shop: they are last in the new-units list, page with the arrow."
+              "ru": "В магазине перед сетевым матчем: в списке новых юнитов они идут последними, листайте стрелкой.",
+              "uk": "У магазині перед мережевим матчем: у списку нових юнітів вони йдуть останніми, гортайте стрілкою.",
+              "en": "In the pre-match multiplayer shop: they are last in the new-units list, page with the arrow."
             },
             {
-              "ru": "В быстрый магазин во время матча и в кампанию они пока не попадают.",
-              "uk": "У швидкий магазин під час матчу й у кампанію вони поки не потрапляють.",
-              "en": "They are not in the in-match quick shop or in the campaign yet."
+              "ru": "В магазине кампании (во всех миссиях с магазином) и в «Штабе» — покупке прямо во время боя (сетка 9×2).",
+              "uk": "У магазині кампанії (в усіх місіях з магазином) і в «Штабі» — купівлі просто під час бою (сітка 9×2).",
+              "en": "In the campaign shop (every mission that has one) and in Headquarters — buying mid-battle (a 9×2 grid)."
             },
             {
               "ru": "Все 10 новых юнитов (по 5 у свиней и кроликов) получили свои 3D-модели, иконки и ролики магазина, включая колёсную ходовую (MoveType 2) с поворотными передними колёсами. Временный «Чародей» убран.",
@@ -2472,6 +2489,11 @@
               "ru": "Если Steam проверит или обновит игру и перезапишет файлы, «Играть» заметит это и поставит пак заново.",
               "uk": "Якщо Steam перевірить чи оновить гру й перезапише файли, «Грати» це помітить і поставить пак знову.",
               "en": "If Steam verifies or updates the game and overwrites files, Play notices and reinstalls the pack."
+            },
+            {
+              "ru": "Arcanum Units ещё меняет swineHD.exe: лаунчер сохраняет оригинал, проверяет версию игры до и после патча и возвращает оригинал при «Удалить моды».",
+              "uk": "Arcanum Units ще змінює swineHD.exe: лаунчер зберігає оригінал, перевіряє версію гри до й після патча і повертає оригінал при «Видалити моди».",
+              "en": "Arcanum Units also patches swineHD.exe: the launcher backs up the original, checks the game version before and after patching and restores the original on “Remove mods”."
             }
           ]
         },
