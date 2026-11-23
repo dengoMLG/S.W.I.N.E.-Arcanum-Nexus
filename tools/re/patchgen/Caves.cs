@@ -57,6 +57,12 @@ static class Caves
     public const int AirPricePig = 50, AirPriceRabbit = 100, AirPriceRaven = 35;    // авіаудар, SP (свині 50, кролики 100, ворони 35)
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
+    // #2 крок 2 (--fog16): карти туману ×16 у хвості після гравців 8…15 — обзор +2A80h, виявлення +2AC0h; об'єкт 2B00h.
+    public static bool Fog16;
+    public const uint FogVis = WorldNewSize, FogDet = WorldNewSize + 0x40;
+    public static uint WorldSize => Fog16 ? (uint)WorldNewSize + 0x80 : WorldNewSize;
+    static int VisOff => Fog16 ? (int)FogVis : 0x26EC;
+    static int DetOff => Fog16 ? (int)FogDet : 0x270C;
     // місця imul …,5Ch з tools/re/world16.json; вікно (≥ 5 Б) — Program.cs: інструкції до imul, сам imul, після
     // K[i] ≥ 0 — після Ins[i] (imul) PlayerOff(k); PreReg — PlayerOff перед вікном (вікно починається одразу після imul,
     // бо на наступну інструкцію є перехід з іншого місця — там регістр уже з переміщеного imul, PlayerOff ідемпотентний)
@@ -1362,9 +1368,9 @@ static class Caves
             // [esp+0]=visW, [esp+4]=visH, [esp+8]=visMap, [esp+12]=detMap, [esp+16]=cx, [esp+20]=cz, [esp+24]=R2, [esp+28]=z1
             a.mov(eax, __dword_ptr[edi + 0x26E0]); a.mov(__dword_ptr[esp], eax);
             a.mov(eax, __dword_ptr[edi + 0x26E4]); a.mov(__dword_ptr[esp + 4], eax);
-            a.mov(eax, __dword_ptr[edi + ebx * 4 + 0x26EC]); a.mov(__dword_ptr[esp + 8], eax);
+            a.mov(eax, __dword_ptr[edi + ebx * 4 + VisOff]); a.mov(__dword_ptr[esp + 8], eax);
             a.xor(eax, eax); a.cmp(__byte_ptr[ecx + 0x54], 0); a.je(noDet);
-            a.mov(eax, __dword_ptr[edi + ebx * 4 + 0x270C]);
+            a.mov(eax, __dword_ptr[edi + ebx * 4 + DetOff]);
             a.Label(ref noDet);
             a.mov(__dword_ptr[esp + 12], eax);
             a.addss(xmm1, xmm1); a.cvttss2si(eax, xmm1); a.mov(__dword_ptr[esp + 16], eax);       // cx = int(x * 2)
@@ -1588,6 +1594,19 @@ static class Caves
             a.mov(esi, __dword_ptr[ebp - 0xCC]); a.jmp(0x4a8ccfUL);
         }
 
+        // ── #2 крок 2 (--fog16): кінець SGameWorld::SGameWorld (0x49d84a) — обнулити карти туману ×16 у хвості ──
+        // (ванільний конструктор свої +26ECh/+270Ch не чистить; RemoveVisMap звільняє ненульові вказівники).
+        // Було: mov eax,esi / mov dword ptr [esi+2784h],0
+        var fogCtor = a.CreateLabel("fogctor");
+        if (Fog16)
+        {
+            a.Label(ref fogCtor);
+            a.push(edi); a.push(ecx);
+            a.lea(edi, __dword_ptr[esi + (int)FogVis]); a.xor(eax, eax); a.mov(ecx, 0x20); a.cld(); a.rep.stosd();
+            a.pop(ecx); a.pop(edi);
+            a.mov(eax, esi); a.mov(__dword_ptr[esi + 0x2784], 0); a.jmp(0x49d856UL);
+        }
+
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
         var w16Labels = new List<Label>();
         foreach (var st in World16)
@@ -1642,6 +1661,7 @@ static class Caves
         hooks.Add(new Hook(0x4c8e01, Convert.FromHexString("8B81900200003B8194000000"), "SUnit::ServerRefresh: причіп Ammo заряджає Cargo Піт-Стопа", (uint)L(pitstopAmmoCheck), 12));
         hooks.Add(new Hook(0x4cb682, Convert.FromHexString("898290020000"), "SUnit::TakeResource: Load Ammo поповнює Cargo Піт-Стопа до 300", (uint)L(pitstopTakeAmmo), 6));
         hooks.Add(new Hook(0x4d03c5, Convert.FromHexString("68F80900008BF8"), "SWorld::CreateUnit: чистий запис таблиці для нового юніта (рассинхрон при повторному id)", (uint)L(newUnit), 7));
+        if (Fog16) hooks.Add(new Hook(0x49d84a, Convert.FromHexString("8BC6C7868427000000000000"), "#2 крок 2: SGameWorld::SGameWorld — обнулити карти туману ×16", (uint)L(fogCtor), 12));
         hooks.Add(new Hook(0x4a8cc9, Convert.FromHexString("8BB534FFFFFF"), "SGameWorld::ProcessPacket: рассинхрон → стан усіх юнітів у журнал", (uint)L(desyncDump), 6));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));

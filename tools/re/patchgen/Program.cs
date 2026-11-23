@@ -46,6 +46,8 @@ if (modVer == null && File.Exists("modpack/pack.json"))
     using (var pj = JsonDocument.Parse(File.ReadAllText("modpack/pack.json"))) modVer = pj.RootElement.GetProperty("version").GetString();
 if (modVer == null) { Console.Error.WriteLine("mod version unknown: pass --modver X or run from the repo root (modpack/pack.json)"); return 2; }
 Caves.ModLine = $"Arcanum Nexus Mod v{modVer}";
+// #2 крок 2 (16 армій): карти туману на 16 гравців — лише з --fog16, поки не перевірено mp-run/mp-check.
+Caves.Fog16 = args.Contains("--fog16");
 int K = classes[0].Length, N = 13 + K;
 if (K < 1 || classes[1].Length != K) throw new Exception("rabbit and pig need the same number of new classes");
 if (N > 32) throw new Exception("too many classes");
@@ -167,7 +169,25 @@ foreach (var va in new uint[] { 0x4f38c3, 0x541630 }) Imm(va, QmOld, QmSize, "de
 Imm(0x4f4edf, 0xAAAAAAAB, 0x38E38E39, "SQuickMarket grid: i / 6 → i / 9 (magic)");
 Imm(0x4f4ee8, 2, 1, "SQuickMarket grid: i / 9 (shift)");
 // #2 (16 армій), крок 1: SGameWorld більший — гравці 8…15 у хвості (Caves.World16Delta).
-foreach (var va in new uint[] { 0x4e1511, 0x4e1d77 }) Imm(va, Caves.WorldOldSize, Caves.WorldNewSize, "#2: new SGameWorld 27A0h → 2A80h (гравці 8…15 у хвості)");
+foreach (var va in new uint[] { 0x4e1511, 0x4e1d77 }) Imm(va, Caves.WorldOldSize, Caves.WorldSize, Caves.Fog16 ? "#2: new SGameWorld 27A0h → 2B00h (гравці 8…15 і карти туману ×16 у хвості)" : "#2: new SGameWorld 27A0h → 2A80h (гравці 8…15 у хвості)");
+// #2 крок 2: карти туману (вказівники обзору +26ECh і виявлення +270Ch, по 8) → хвіст SGameWorld, по 16 (+2A80h, +2AC0h).
+// 18 звернень [world + гравець·4 + X] (ще 2 — у вставці visunit) і цикли CreateVisMap / RemoveVisMap / ServerShutdown 8 → 16.
+if (Caves.Fog16)
+{
+    foreach (var va in new uint[] { 0x49e6b7, 0x49fac9, 0x4a05cc, 0x4a0651, 0x4a072f, 0x4a0b33, 0x4a0ddb, 0x4a915d, 0x4af5b5, 0x4afa36 })
+        Disp(va, 0x26EC, Caves.FogVis, "#2 крок 2: карта обзору гравця → хвіст ×16");
+    foreach (var va in new uint[] { 0x49e672, 0x49faa6, 0x4a05e8, 0x4a0648, 0x4a0747, 0x4a0de6, 0x4af5ac, 0x4afa2d })
+        Disp(va, 0x270C, Caves.FogDet, "#2 крок 2: карта виявлення гравця → хвіст ×16");
+    foreach (var (cnt, lea, slots) in new (uint, uint, uint[])[] {
+        (0x4a00ad, 0x4a00bd, new uint[] { 0x4a0103 }),                 // CreateVisMap: mov ebx,8 / lea edi,[esi+270Ch] / [edi-20h]
+        (0x4aa765, 0x4aa76a, new uint[] { 0x4aa770, 0x4aa782 }),       // RemoveVisMap
+        (0x4af477, 0x4af471, new uint[] { 0x4af480, 0x4af492 }) })     // ServerShutdown
+    {
+        Imm(cnt, 8, 16, "#2 крок 2: цикл карт туману 8 → 16");
+        Disp(lea, 0x270C, Caves.FogDet, "#2 крок 2: цикл карт туману → хвіст");
+        foreach (var va in slots) Disp(va, 0xE0, 0xC0, "#2 крок 2: обзор = виявлення − 40h ([r−20h] → [r−40h])");
+    }
+}
 // #12: розширені таблиці й буфери DrawVisMap (36 → 64 клітинок, до Sight 31.5 без переповнення на SuperWindow* 0xED2344).
 uint vt1 = stateVa + Caves.VisTbl1, vt2 = stateVa + Caves.VisTbl2, vt3 = stateVa + Caves.VisTbl3;
 uint vah = stateVa + Caves.VisAidH, vam = stateVa + Caves.VisAidM, vdh = stateVa + Caves.VisDetH, vdm = stateVa + Caves.VisDetM;
