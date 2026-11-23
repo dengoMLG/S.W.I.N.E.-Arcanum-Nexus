@@ -159,6 +159,35 @@
       "blocks": [
         {
           "type": "heading",
+          "key": "nexus-4.2.3",
+          "text": {
+            "ru": "Мод 4.2.3 · Дельта-слои баланса (~170 КБ вместо 498 МБ) и админ-инструменты · 23.11.2026",
+            "uk": "Мод 4.2.3 · Дельта-шари балансу (~170 КБ замість 498 МБ) та адмін-інструменти · 23.11.2026",
+            "en": "Mod 4.2.3 · Delta balance layers (~170 KB instead of 498 MB) & admin tools · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Мод-пак разделён на два слоя: базовые ассеты (arcanum-assets 4.2.3 — 3D-модели, текстуры, экранчики, озвучка, ~498 МБ) и слой баланса и кода (arcanum-nexus 4.2.3 — units.ini, effects.ini, тексты и патч exe, ~170 КБ).",
+              "uk": "Мод-пак розділено на два шари: базові асети (arcanum-assets 4.2.3 — 3D-моделі, текстури, екранчики, озвучка, ~498 МБ) і шар балансу та коду (arcanum-nexus 4.2.3 — units.ini, effects.ini, тексти й патч exe, ~170 КБ).",
+              "en": "The mod pack is now split into two layers: base media assets (arcanum-assets 4.2.3 — 3D models, textures, portraits, voices, ~498 MB) and the balance & code layer (arcanum-nexus 4.2.3 — units.ini, effects.ini, localization, exe patch, ~170 KB)."
+            },
+            {
+              "ru": "Все последующие правки баланса и исправления кода (смена последней цифры версии: 4.2.3 → 4.2.4…) скачивают только слой баланса (~170 КБ) и накатываются поверх уже установленных ассетов без повторной загрузки 498 МБ.",
+              "uk": "Усі подальші правки балансу та виправлення коду (зміна останньої цифри версії: 4.2.3 → 4.2.4…) завантажують лише шар балансу (~170 КБ) і накладаються поверх уже встановлених асетів без повторного завантаження 498 МБ.",
+              "en": "All future balance and code updates (bumping the patch version: 4.2.3 → 4.2.4…) download only the ~170 KB balance layer and apply it on top of already-installed assets without re-downloading 498 MB."
+            },
+            {
+              "ru": "В лаунчере 0.7.24.1 добавлена очистка старых архивов кеша (чтобы версии не копились на диске), инкрементальная установка без перекопирования неизменных ассетов, телеметрия сессий S.W.I.N.E., вкладка S.W.I.N.E. в Админ-панели и админ-кнопка на странице игры (тест-канал мода, статус слоёв, очистка кеша).",
+              "uk": "У лаунчері 0.7.24.1 додано очищення старих архівів кешу (щоб версії не накопичувалися на диску), інкрементальне встановлення без перекопіювання незмінних асетів, телеметрію сесій S.W.I.N.E., вкладку S.W.I.N.E. в Адмін-панелі та адмін-кнопку на сторінці гри (тест-канал моду, статус шарів, очищення кешу).",
+              "en": "Launcher 0.7.24.1 adds automatic old-cache cleanup (no stale zips piling up on disk), incremental installation skipping unchanged assets, S.W.I.N.E. session telemetry, a S.W.I.N.E. tab inside the Admin Panel, and an Admin button on the S.W.I.N.E. page (test channel toggle, layer status, cache cleanup)."
+            }
+          ]
+        },
+        {
+          "type": "heading",
           "key": "nexus-4.2.2",
           "text": {
             "ru": "Мод 4.2.2 · Корпус Воронов: режим просмотра в магазине (цена 100 000 SP) · 23.11.2026",

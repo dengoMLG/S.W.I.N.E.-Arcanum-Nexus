@@ -29,6 +29,8 @@ const fs = require('fs'), path = require('path'), zlib = require('zlib'), crypto
 
 const posArgs = process.argv.slice(2).filter(a => !a.startsWith('--'));
 const syncLauncher = process.argv.includes('--sync-launcher');
+const verifyAll = process.argv.includes('--verify-all');
+const testChannel = process.argv.includes('--test');
 const LAUNCHER_MODPACK_CS = 'A:/Arcanum/Launcher/Arcanum-Launcher/arcanum_vs_launcher/src/ArcanumVSLauncher/Services/SwineModpack.cs';
 const packFile = path.resolve(posArgs[0] || path.join(__dirname, '..', 'modpack', 'pack.json'));
 const outDir = path.resolve(posArgs[1] || path.join(path.dirname(packFile), 'out'));
@@ -91,40 +93,64 @@ function checkExePatch(id, p) {
 
 if (!ID.test(pack.id || '') || !pack.version || !Array.isArray(pack.mods) || !pack.mods.length) fail('pack.json: id/version/mods required');
 fs.mkdirSync(path.join(outDir, 'mods'), { recursive: true });
-const seen = new Set(), mods = [];
+const seen = new Set(), globalFiles = new Map(), mods = [];
 for (const m of pack.mods) {
   if (m.version == null && (m.sources || m.source)) m.version = pack.version;
   if (!ID.test(m.id || '') || !ID.test(String(m.version || '')) || !m.name) fail(`mod ${m.id}: id/name/version required`);
   if (seen.has(m.id)) fail('duplicate mod id ' + m.id); seen.add(m.id);
   const entry = { id: m.id, name: m.name, version: String(m.version), author: m.author || '' };
   if (m.source || m.sources) {
+    const inc = Array.isArray(m.includeExt) ? new Set(m.includeExt.map(e => e.toLowerCase())) : null;
+    const exc = Array.isArray(m.excludeExt) ? new Set(m.excludeExt.map(e => e.toLowerCase())) : null;
+    const matchExt = n => {
+      const ext = path.extname(n).toLowerCase();
+      if (inc && !inc.has(ext)) return false;
+      if (exc && exc.has(ext)) return false;
+      return true;
+    };
     const from = new Map();   // ім'я в zip → файл на диску
     for (const rel of m.sources || [m.source]) {
       const src = path.resolve(path.dirname(packFile), rel);
-      const own = walk(src).filter(n => !n.endsWith('.md'));
-      if (!own.length) fail(`${m.id}: ${src} is empty`);
+      const own = walk(src).filter(n => !n.endsWith('.md') && matchExt(n));
       for (const n of own) { if (from.has(n)) fail(`${m.id}: ${n} is in two sources`); from.set(n, path.join(src, n)); }
     }
     const names = [...from.keys()].sort();
+    if (!names.length) fail(`${m.id}: no files matched`);
+    const fpHash = crypto.createHash('sha256');
     for (const n of names) {
+      if (globalFiles.has(n)) fail(`${m.id}: ${n} already belongs to ${globalFiles.get(n)}`);
+      globalFiles.set(n, m.id);
+      const full = from.get(n);
+      const st = fs.statSync(full);
+      fpHash.update(`${n}\0${st.size}\0${Math.floor(st.mtimeMs)}\n`);
       if (n === 'exe_patch.json') {
-        const p = JSON.parse(fs.readFileSync(from.get(n), 'utf8')); checkExePatch(m.id, p);
+        const p = JSON.parse(fs.readFileSync(full, 'utf8')); checkExePatch(m.id, p);
         if (m.sources && p.modVersion !== entry.version) fail(`${m.id}: exe_patch.json is for v${p.modVersion}, mod is v${entry.version} — rebuild the exe (tools/re/bin-patchgen/patchgen.exe …)`);
         continue;
       }
       if (!n.startsWith('gamedata/') || n.includes('..')) fail(`${m.id}: ${n} must be under gamedata/`);
-      if (n.endsWith('.arcpatch')) checkPatch(`${m.id}/${n}`, fs.readFileSync(from.get(n), 'latin1'));
+      if (n.endsWith('.arcpatch')) checkPatch(`${m.id}/${n}`, fs.readFileSync(full, 'latin1'));
     }
-    const data = zip(names.map(n => ({ name: n, data: fs.readFileSync(from.get(n)) })));
-    const sha = crypto.createHash('sha256').update(data).digest('hex'), was = lock[m.id];
-    if (was && was.sha256 !== sha && was.version === entry.version)
-      fail(`${m.id}: content changed but version is still ${entry.version} — bump "version" in modpack/pack.json (and rebuild the exe)`);
-    lock[m.id] = { version: entry.version, sha256: sha };
+    const fingerprint = fpHash.digest('hex');
     const file = `${m.id}-${entry.version}.zip`;
-    fs.writeFileSync(path.join(outDir, 'mods', file), data);
-    Object.assign(entry, { url: pack.baseUrl.replace(/\/?$/, '/') + file,
-      sha256: sha, size: data.length });
-    console.log(`  ${m.id} ${entry.version}: ${names.length} files → mods/${file} (${data.length} B)`);
+    const outZip = path.join(outDir, 'mods', file);
+    const was = lock[m.id];
+    let sha, size;
+    if (!verifyAll && was && was.version === entry.version && was.fingerprint === fingerprint && was.sha256 && was.size > 0 && fs.existsSync(outZip)) {
+      sha = was.sha256;
+      size = was.size;
+      console.log(`  ${m.id} ${entry.version}: ${names.length} files → mods/${file} (${size} B) [unchanged, cached]`);
+    } else {
+      const data = zip(names.map(n => ({ name: n, data: fs.readFileSync(from.get(n)) })));
+      sha = crypto.createHash('sha256').update(data).digest('hex');
+      size = data.length;
+      if (was && was.sha256 !== sha && was.version === entry.version)
+        fail(`${m.id}: content changed but version is still ${entry.version} — bump "version" in modpack/pack.json (and rebuild the exe)`);
+      fs.writeFileSync(outZip, data);
+      console.log(`  ${m.id} ${entry.version}: ${names.length} files → mods/${file} (${size} B)`);
+    }
+    lock[m.id] = { version: entry.version, sha256: sha, size, fingerprint };
+    Object.assign(entry, { url: pack.baseUrl.replace(/\/?$/, '/') + file, sha256: sha, size });
   } else {
     if (!/^https:\/\//.test(m.url || '') || !/^[0-9a-f]{64}$/.test(m.sha256 || '') || !(m.size > 0)) fail(`${m.id}: url/sha256/size required`);
     Object.assign(entry, { url: m.url, sha256: m.sha256, size: m.size });
@@ -134,10 +160,11 @@ for (const m of pack.mods) {
 }
 // Схема 2: пак з exe_patch.json — лаунчери до 0.7.23.8 (лише схема 1) його відкидають і лишаються на старому паку.
 const manifest = { schema: 2, id: pack.id, name: pack.name || pack.id, version: String(pack.version), mods };
-fs.writeFileSync(path.join(outDir, 'modpack.json'), JSON.stringify(manifest, null, 2) + '\n');
+const manifestName = testChannel ? 'modpack-test.json' : 'modpack.json';
+fs.writeFileSync(path.join(outDir, manifestName), JSON.stringify(manifest, null, 2) + '\n');
 for (const id of Object.keys(lock)) if (!seen.has(id)) delete lock[id];
 fs.writeFileSync(LOCK, JSON.stringify(lock, null, 2) + '\n');
-console.log(`pack ${pack.id} v${pack.version}:${mods.length} mods → ${path.join(outDir, 'modpack.json')}`);
+console.log(`pack ${pack.id} v${pack.version}:${mods.length} mods → ${path.join(outDir, manifestName)}`);
 
 if (syncLauncher) {
   if (!fs.existsSync(LAUNCHER_MODPACK_CS)) {
