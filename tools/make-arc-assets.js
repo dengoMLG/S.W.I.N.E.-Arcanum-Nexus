@@ -33,14 +33,14 @@ function readPakEntry(pakPath, want) {
 // ── 1. effects.ini + пляма ──
 const MUD = `
 ;*************************************************************************
-; Arcanum Units: грязьова калюжа Гряземета (вставка в exe кладе її там, де впав снаряд; калюжа сповільнює 10 с)
+; Arcanum Units: грязьова калюжа Гряземета (вставка в exe кладе її там, де впав снаряд; калюжа сповільнює 20 с)
 ;*************************************************************************
 [arc_sar_folt]
 EffectType = 2
 ManageType = 1
 Texture = arc_sar_folt_a.tga
 DrawType = 0
-Eltunes_Kezdete = 8
+Eltunes_Kezdete = 18
 Eltunes_Sebesseg = 0.25
 Felfutas_sebesseg = 3
 `.replace(/\n/g, '\r\n');

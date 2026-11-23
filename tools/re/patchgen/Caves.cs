@@ -26,13 +26,13 @@ static class Caves
     //        радар (14): +20 обзор до  +24 тіків посилення  +28 тіків відкату
     public const int SlowTicks = 100, ZoneSlowTicks = 10;     // влучання — 5 с; у калюжі — поки стоїш + 0.5 с
     public const float SlowFactor = 0.4f, MineDist = 2.5f;
-    public const int SalvoSize = 40;                           // ракет у залпі для "salvo"
+    public const int SalvoSize = 40, SalvoFirstShotTicks = 40; // ракет у залпі для "salvo"; перший постріл після ввімкнення — 2 с (#11)
     public const int SpecDetonate = 12, SpecMines = 13, SpecRadar = 14;
     public const float RadarMul = 3f; public const int RadarTicks = 300, RadarCooldown = 900;   // 15 с ×3, відкат 45 с
     public const int RadarRevealTicks = 12000;                                                 // #12: Ушастик стає видимим на мапі лише через 10 хв бою (10×60×20)
     public const int VisMaxR = 64;                                                             // #12: розширені таблиці DrawVisMap (було 36 → Sight 18; тепер 64 → Sight 31.5)
     public const float VisMaxSight = 31.5f;
-    public const int Zones = 64, ZoneTicks = 200; public const float ZoneRadius = 2.5f;          // калюжа — 10 с
+    public const int Zones = 64, ZoneTicks = 400; public const float ZoneRadius = 2.5f;          // калюжа — 20 с (#11: ×2)
     public const string MudEffect = "arc_sar_folt";
 
     public record Hook(uint Va, byte[] Old, string Why, uint Target, int Len);
@@ -200,7 +200,14 @@ static class Caves
             a.mov(__dword_ptr[esi + 0x394], eax);
             a.xor(eax, eax); a.cmp(edx, 1); a.setg(al); a.add(eax, 0xE);              // подія 0Eh — увімкнено, 0Fh — вимкнено
             a.mov(ecx, __dword_ptr[esi]); a.push(eax); a.push(__dword_ptr[esi + 4]); a.call(ShowEvent);
-            a.mov(eax, __dword_ptr[esi + 0x98]); a.mov(__dword_ptr[esi + 0x398], -1); a.mov(__dword_ptr[esi + 0x388], eax);
+            // #11: перший постріл залпу — 2 с (40 тіків) замість повної перезарядки 30 с; але якщо вже йде довший КД — не скидаємо
+            {
+                var keepCd = a.CreateLabel();
+                a.mov(__dword_ptr[esi + 0x398], -1);
+                a.cmp(__dword_ptr[esi + 0x388], SalvoFirstShotTicks); a.jg(keepCd);
+                a.mov(__dword_ptr[esi + 0x388], SalvoFirstShotTicks);
+                a.Label(ref keepCd);
+            }
             Log("ARC: unit %d salvo = %d", Mem(esi, 0x394), Mem(esi, 4));
             a.jmp(ret);
 
@@ -1149,6 +1156,29 @@ static class Caves
             a.cmp(eax, edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
         }
 
+        // ── Бомбардувальник кроликів: MoveSpeed ×3 (14.4 замість 4.8) прискорює підліт і відліт, але під час скидання
+        //    бомб ([ebx+9B4h] == 1, 0.8 с) бомби успадковували швидкість 14.4 і перелітали ціль на +15…+26 клітинок.
+        //    Під час скидання (лише раса 0 — кролики) ділимо vx/vz на 3 (повертаємо до 4.8): бомби лягають точно в ціль.
+        // Було (0x4b722e): fmul dword ptr [esp+18h] / fstp dword ptr [esp+20h]; ebx = SUnit*, eax = [ebx+9A8h]
+        var airBomb = a.CreateLabel("airbomb");
+        {
+            var done = a.CreateLabel();
+            a.Label(ref airBomb);
+            a.fmul(__dword_ptr[esp + 0x18]);
+            a.fstp(__dword_ptr[esp + 0x20]);
+            a.cmp(__dword_ptr[ebx + 0x9B4], 1); a.jne(done);
+            a.push(eax); a.push(ecx);
+            a.mov(ecx, __dword_ptr[ebx]);
+            a.mov(eax, __dword_ptr[ebx + 0x258]); a.imul(eax, eax, 0x5C); PlayerOff(eax);
+            a.cmp(__dword_ptr[ecx + eax + 0xFC], 0);
+            a.pop(ecx); a.pop(eax);
+            a.jne(done);
+            a.movss(xmm0, __dword_ptr[esp + 0x1C]); a.mulss(xmm0, __dword_ptr[cst("third")]); a.movss(__dword_ptr[esp + 0x1C], xmm0);
+            a.movss(xmm0, __dword_ptr[esp + 0x20]); a.mulss(xmm0, __dword_ptr[cst("third")]); a.movss(__dword_ptr[esp + 0x20], xmm0);
+            a.Label(ref done);
+            a.jmp(0x4b7236UL);
+        }
+
         // ── Радар Ушастика (#10, виправлення #12): огляд ×3 крізь дерева й пагорби без переповнення DrawVisMap. ──
         // У ванілі DrawVisMapAid/DetAid мають буфери h/m на 36 float (за ними лежить SuperWindow* 0xED2344 і RakNet
         // SystemAddress) і таблиці на 36 клітинок, а перевірка краю мапи (48 тайлів = 96 клітинок) не тримає радіус
@@ -1282,6 +1312,7 @@ static class Caves
         hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар кроликів 100", (uint)L(airBuy), 8));
         hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
         hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));
+        hooks.Add(new Hook(0x4b722e, Convert.FromHexString("D84C2418D95C2420"), "SUnit::AirPlaneCallBack: кролячий бомбардувальник скидає бомби на 4.8 (точно в ціль)", (uint)L(airBomb), 8));
         hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика (коло без переповнення) + межа Sight", (uint)L(visUnit), 5));
         hooks.Add(new Hook(0x4a08d0, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapAid: очищення розширених буферів h/m[64]", (uint)L(visAidInit), 6));
         hooks.Add(new Hook(0x4a0b80, Convert.FromHexString("558BEC83E4F8"), "SGameWorld::DrawVisMapDetAid: очищення розширених буферів h/m[64]", (uint)L(visDetInit), 6));

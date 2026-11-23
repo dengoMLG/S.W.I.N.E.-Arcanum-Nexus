@@ -97,7 +97,7 @@ uint F(float v) => BitConverter.SingleToUInt32Bits(v);
 foreach (var v in new[] { "kamikaze", "slow", "hullaim", "salvo", "Akna", Caves.MudEffect, "RPV" }) Str(v);   // RPV — літера файлу армії за расою (#3)
 Const("pi", F(MathF.PI)); Const("-pi", F(-MathF.PI)); Const("2pi", F(2 * MathF.PI));
 Const("absmask", 0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff); Const("signmask", 0x80000000, 0x80000000, 0x80000000, 0x80000000);
-Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("maxsight", F(Caves.VisMaxSight)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
+Const("slow", F(Caves.SlowFactor)); Const("radarmul", F(Caves.RadarMul)); Const("maxsight", F(Caves.VisMaxSight)); Const("third", F(1f / 3f)); Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
 var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]).ToArray();
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
