@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Ассети Arcanum Units поза units.ini (усе — з оригінальних файлів гри + наші додатки):
 //   gamedata/base/effects.ini                 — оригінал + [arc_sar_folt]: грязьова пляма Гряземета (≈ 10 с);
-//   gamedata/base/effects/arc_sar_folt_a.dxt  — текстура плями (DXT5 256×256);
+//   gamedata/base/effects/arc_sar_folt_a.dxt  — текстура плями (DXT5 256×256), копії в effects/tileset_*/;
 //   gamedata/base/sounds/shoot/arc_lang.wav    — постріл вогнемета Хряка-Гриля (тріск вогню гри + шипіння полум'я);
 //   gamedata/base/menu/panel/panel_spec.png    — атлас кнопок спецздібностей з іконками типів 12–14 (tools/make-panel-spec.ps1);
 //   gamedata/base/missions.ini                 — маски магазину кампанії: нові класи доступні в кожній місії з магазином.
@@ -38,7 +38,6 @@ const MUD = `
 [arc_sar_folt]
 EffectType = 2
 ManageType = 1
-MultiTileset = 0
 Texture = arc_sar_folt_a.tga
 DrawType = 0
 Eltunes_Kezdete = 8
@@ -75,7 +74,12 @@ fs.writeFileSync(out('effects.ini'), fx + MUD, 'latin1');
   if (d.toString('latin1', 84, 88) !== 'DXT5') throw new Error('magick did not write DXT5');
   const h = Buffer.alloc(16); h.writeUInt32LE(3, 0); h.writeUInt32LE(W, 4); h.writeUInt32LE(W, 8); h.write('DXT5', 12, 'latin1');
   const body = Buffer.concat([h, d.subarray(128)]), th = Buffer.alloc(8); th.write('TEXT', 0, 'latin1'); th.writeUInt32LE(body.length, 4);
-  fs.writeFileSync(out('effects/arc_sar_folt_a.dxt'), Buffer.concat([Buffer.from([0x53, 0x72, 0x1A, 0x1B, 0x0D, 0x0A, 0x87, 0x0A]), th, body]));
+  const dxt = Buffer.concat([Buffer.from([0x53, 0x72, 0x1A, 0x1B, 0x0D, 0x0A, 0x87, 0x0A]), th, body]);
+  // Наземні ефекти (EffectType 2, ManageType 1) гра вантажить і з папки тайлсету карти: на сніговій карті
+  // Гряземет падав з «SEffect::Init_ShaderLight: cannot load texture effects/tileset_normal/arc_sar_folt_a.tga»
+  // (лист 23.11). Тож — у загальну папку і в усі п'ять тайлсетів, як ванільні сліди під юнітами.
+  for (const dir of ['', 'tileset_desert/', 'tileset_jungle/', 'tileset_normal/', 'tileset_rock/', 'tileset_snow/'])
+    fs.writeFileSync(out(`effects/${dir}arc_sar_folt_a.dxt`), dxt);
 }
 
 // ── 2. Звук вогнемета ──

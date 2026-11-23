@@ -101,7 +101,7 @@ node tools/wiki-arc-units.js mods-test/arcunits/balance.json   # страниц�
 - Морковный Смерч — секция `… salvo`, без `Cargo`, 40 ракет за залп.
 - Осадный Кабан — 20 снарядов. Хряк-Гриль — `ShotSound = shoot/arc_lang.wav`.
 - Ассеты вне `units.ini` — `tools/make-arc-assets.js`:
-  - `effects.ini` + `arc_sar_folt`;
+  - `effects.ini` + `arc_sar_folt`; текстура `effects/arc_sar_folt_a.dxt` и её копии в `effects/tileset_{desert,jungle,normal,rock,snow}/`. Наземный эффект (`EffectType 2`, `ManageType 1`) игра грузит из папки тайлсета карты; без копий был вылет «SEffect::Init_ShaderLight: cannot load texture effects/tileset_normal/arc_sar_folt_a.tga» (23.11.2026);
   - звук;
   - атлас кнопок (`tools/make-panel-spec.ps1`);
   - маски магазина кампании в `missions.ini`, чтобы новые классы были во всех миссиях с магазином.
