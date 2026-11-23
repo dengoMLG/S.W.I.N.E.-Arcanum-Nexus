@@ -147,6 +147,7 @@ Imm(0x4f4ee8, 2, 1, "SQuickMarket grid: i / 9 (shift)");
 var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     (0x4f4efe, "8D0452", "8D04D2", "SQuickMarket grid: row·6 → row·9 (lea [edx+edx*8])"),
     (0x4f4f07, "03C0", "6690", "SQuickMarket grid: row·9 без подвоєння"),
+    (0x4ffae0, "FFD68B00FF", "E9C9FBFFFF", "SSuperWindow::Play: незнайомий ключ командного рядка — пропустити замість Panic (+autostart N)"),
 };
 Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центрування 9 стовпців");
 
@@ -157,6 +158,7 @@ Imm(0x473f53, 4, 20, "ConnectionManager::ConnectionManager (вбудований
 
 // SMulti: масиви «на 8 гравців» (слоти 70h, з'єднання, завантаження карти) → хвіст об'єкта на 16.
 // Список правок генерує tools/re/gen-smulti16.js (smulti16.json поруч із цим файлом).
+if (Environment.GetEnvironmentVariable("ARC_NO_SMULTI16") != "1")   // для порівняльних прогонів без переносу
 {
     var sm = Path.Combine(AppContext.BaseDirectory, "smulti16.json");
     if (!File.Exists(sm)) sm = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, "..", "patchgen", "smulti16.json");

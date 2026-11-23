@@ -37,6 +37,9 @@ static class Caves
     public const int SpawnScratch = TableEntries * EntrySize;   // після таблиці: дані розстановки стартів (0xA0 Б)
     public const int ZoneTable = SpawnScratch + 0x200;          // калюжі: Zones × {x, z, тік кінця, гравець}
     public const int ZoneIdx = ZoneTable + Zones * 16, FxId = ZoneIdx + 4;
+    public const int AutoState = FxId + 0x100;                  // +autostart: 4 dword (мережа, не світ — детермінізм не зачіпає)
+    const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
+               GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
         Func<string, uint> str, Func<string, uint> cst)
     {
@@ -465,6 +468,64 @@ static class Caves
             a.mov(eax, __dword_ptr[ebx + 0x28AC]); a.jmp(0x4f5221UL);
         }
 
+        // ── 11. SMulti::Update: «+autostart N» у командному рядку — хост сам починає матч ──
+        // Для перевірки мережевої гри кількома копіями на одному ПК (tools/mp-test.ps1) без кліків:
+        // коли в хоста зайнято ≥ N слотів і так триває ~300 викликів Update (кілька секунд, щоб дані слотів
+        // розійшлись), викликаємо SMulti::StartGame один раз. Без ключа нічого не змінюється.
+        // Було (0x47df40): push ebp / mov ebp,esp / sub esp,2Ch
+        var autoStart = a.CreateLabel("autostart");
+        {
+            uint ST = tableVa + AutoState;          // +0 розібрано, +4 N, +8 лічильник, +12 вже стартували
+            var parsed = a.CreateLabel(); var loop = a.CreateLabel(); var next = a.CreateLabel();
+            var done = a.CreateLabel(); var reset = a.CreateLabel();
+            a.Label(ref autoStart);
+            a.pushad();
+            a.cmp(__dword_ptr[ST], 0); a.jne(parsed);
+            a.mov(__dword_ptr[ST], 1);
+            a.call(__dword_ptr[ImpArgc]); a.mov(ebx, __dword_ptr[eax]);
+            a.call(__dword_ptr[ImpArgv]); a.mov(esi, __dword_ptr[eax]);
+            a.mov(edi, 1);
+            a.Label(ref loop);
+            a.cmp(edi, ebx); a.jge(parsed);
+            a.push(S("+autostart")); a.push(__dword_ptr[esi + edi * 4]); a.call(__dword_ptr[ImpStricmp]); a.add(esp, 8);
+            a.test(eax, eax); a.jne(next);
+            a.lea(eax, __dword_ptr[edi + 1]); a.cmp(eax, ebx); a.jge(parsed);
+            a.push(__dword_ptr[esi + eax * 4]); a.call(Atoi); a.add(esp, 4);
+            a.mov(__dword_ptr[ST + 4], eax);
+            Log("ARC: autostart %d (players %d)", Imm(0), () => a.push(__dword_ptr[ST + 4]));
+            a.jmp(parsed);
+            a.Label(ref next);
+            a.inc(edi); a.jmp(loop);
+            a.Label(ref parsed);
+            a.cmp(__dword_ptr[ST + 4], 0); a.jle(done);
+            var notStarted = a.CreateLabel();
+            a.cmp(__dword_ptr[ST + 12], 0); a.je(notStarted);
+            // після старту: кожні 600 викликів — номер кадру lockstep у журнал (видно, що матч іде)
+            a.inc(__dword_ptr[ST + 8]); a.cmp(__dword_ptr[ST + 8], 600); a.jl(done);
+            a.mov(__dword_ptr[ST + 8], 0);
+            a.mov(ecx, __dword_ptr[esp + 0x18]);
+            Log("ARC: autostart frame %d slot %d", () => a.push(__dword_ptr[ecx + 0x2530]), () => a.push(__dword_ptr[ecx + 0x2154]));
+            a.jmp(done);
+            a.Label(ref notStarted);
+            a.mov(ecx, __dword_ptr[esp + 0x18]);                       // this з pushad
+            var isHost = a.CreateLabel();
+            a.cmp(__dword_ptr[ecx + 0x220], 0); a.jne(isHost);          // хост — як у StartGame
+            a.mov(__dword_ptr[ST + 12], 1); a.jmp(done);                // клієнт: лише журнал кадрів
+            a.Label(ref isHost);
+            a.call(GetFullSlots);
+            a.cmp(eax, __dword_ptr[ST + 4]); a.jl(reset);
+            a.inc(__dword_ptr[ST + 8]); a.cmp(__dword_ptr[ST + 8], 300); a.jl(done);
+            a.mov(__dword_ptr[ST + 12], 1); a.mov(__dword_ptr[ST + 8], 0);
+            Log("ARC: autostart %d -> StartGame (%d)", Imm(0), () => a.push(__dword_ptr[ST + 4]));
+            a.mov(ecx, __dword_ptr[esp + 0x18]); a.call(StartGame);
+            a.jmp(done);
+            a.Label(ref reset);
+            a.mov(__dword_ptr[ST + 8], 0);
+            a.Label(ref done);
+            a.popad();
+            a.push(ebp); a.mov(ebp, esp); a.sub(esp, 0x2C); a.jmp(0x47df46UL);
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -479,6 +540,7 @@ static class Caves
         hooks.Add(new Hook(0x4f5217, Convert.FromHexString("3C2D74398B83AC280000"), "SQuickMarket::Create → без класу 12 у списку кнопок", (uint)L(qmSkip), 10));
         hooks.Add(new Hook(0x4ac410, Convert.FromHexString("558BEC6AFF"), "SGameWorld::ServerInit → скидання стану вставок", (uint)L(worldInit), 5));
         hooks.Add(new Hook(0x4e0191, Convert.FromHexString("8D55CC6A0152"), "SGameView::Create → атлас кнопок спецздібностей з типами 12–14", (uint)L(glyphs), 6));
+        hooks.Add(new Hook(0x47df40, Convert.FromHexString("558BEC83EC2C"), "SMulti::Update → +autostart N (перевірка мережі)", (uint)L(autoStart), 6));
 
         var dec = Iced.Intel.Decoder.Create(32, new ByteArrayCodeReader(w.ToArray())); dec.IP = codeVa;
         var fmt = new MasmFormatter(); var so = new StringOutput(); var sb = new System.Text.StringBuilder();
