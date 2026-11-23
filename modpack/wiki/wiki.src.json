@@ -159,6 +159,35 @@
       "blocks": [
         {
           "type": "heading",
+          "key": "nexus-4.2.4",
+          "text": {
+            "ru": "Мод 4.2.4 · Исправлен кик «противоречие данных» посреди матча · 23.11.2026",
+            "uk": "Мод 4.2.4 · Виправлено кік «суперечність даних» посеред матчу · 23.11.2026",
+            "en": "Mod 4.2.4 · Fixed the mid-match “data inconsistency” kick · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "В сетевой игре 23.11.2026 второго игрока выкинуло на кадре 12945 (в журнале: «Inconsistency in frame 12945 with player 1»), и матч закончился. Перед этим погиб юнит, которого замедлял Гряземёт, а его номер игра отдала новому миномёту с вертолёта.",
+              "uk": "У мережевій грі 23.11.2026 другого гравця викинуло на кадрі 12945 (у журналі: «Inconsistency in frame 12945 with player 1»), і матч скінчився. Перед цим загинув юніт, якого сповільнював Гряземет, а його номер гра віддала новому міномету з вертольота.",
+              "en": "In a network game on 2026-11-23 the second player was kicked at frame 12945 (log: “Inconsistency in frame 12945 with player 1”) and the match ended. Just before, a unit slowed by the Mud Thrower died and the game gave its number to a new mortar delivered by helicopter."
+            },
+            {
+              "ru": "Причина — в патче мода: состояние замедления, радара, мин на ходу и камикадзе хранилось по номеру юнита и узнавало «свой» юнит по адресу в памяти. Если новый юнит на одном ПК попадал на адрес погибшего, а на другом нет, он был замедлен только у одного игрока — игры расходились.",
+              "uk": "Причина — у патчі мода: стан сповільнення, радара, мін на ходу й камікадзе зберігався за номером юніта і впізнавав «свій» юніт за адресою в пам'яті. Якщо новий юніт на одному ПК потрапляв на адресу загиблого, а на іншому ні, він був сповільнений лише в одного гравця — ігри розходилися.",
+              "en": "The cause was in the mod's exe patch: slow, radar, mines-on-move and kamikaze state was stored by unit number and recognised its unit by memory address. If a new unit landed on the dead unit's address on one PC but not the other, it was slowed for only one player and the games diverged."
+            },
+            {
+              "ru": "Теперь при создании каждого юнита (SWorld::CreateUnit) его запись состояния обнуляется, так что новый юнит с повторным номером начинает с чистого листа у всех игроков. Обновляется только слой баланса и кода arcanum-nexus 4.2.4 (~170 КБ); ассеты остаются 4.2.3.",
+              "uk": "Тепер під час створення кожного юніта (SWorld::CreateUnit) його запис стану обнуляється, тож новий юніт із повторним номером починає з чистого аркуша в усіх гравців. Оновлюється лише шар балансу й коду arcanum-nexus 4.2.4 (~170 КБ); асети лишаються 4.2.3.",
+              "en": "Now each unit's state record is cleared when the unit is created (SWorld::CreateUnit), so a new unit that reuses a number starts clean for every player. Only the balance & code layer arcanum-nexus 4.2.4 (~170 KB) changes; assets stay at 4.2.3."
+            }
+          ]
+        },
+        {
+          "type": "heading",
           "key": "nexus-4.2.3",
           "text": {
             "ru": "Мод 4.2.3 · Дельта-слои баланса (~170 КБ вместо 498 МБ) и админ-инструменты · 23.11.2026",

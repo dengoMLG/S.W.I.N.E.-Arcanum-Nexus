@@ -1500,6 +1500,23 @@ static class Caves
             a.jmp(0x4cb688UL);
         }
 
+        // ── 4.2.4: SWorld::CreateUnit (0x4d03c5) — новий юніт отримує чистий запис таблиці стану ──
+        // Номер (id) загиблого юніта SHeap::Add віддає наступному новому, а записи таблиці впізнають «свій» юніт за
+        // адресою об'єкта. Якщо new SUnit на одному ПК повернув ту саму адресу, а на іншому ні, то старий стан
+        // (уповільнення, радар, міни, камікадзе) у новому юніті є лише в одній копії гри → «Inconsistency», кік.
+        // Було: push 9F8h / mov edi,eax (edi = id нового юніта).
+        var newUnit = a.CreateLabel("newunit");
+        {
+            var skip = a.CreateLabel();
+            a.Label(ref newUnit);
+            a.mov(edi, eax);
+            a.cmp(edi, TableEntries); a.jae(skip);
+            a.mov(eax, edi); a.shl(eax, 5); a.add(eax, tableVa); a.xor(ecx, ecx);
+            for (int i = 0; i < EntrySize; i += 4) a.mov(__dword_ptr[eax + i], ecx);
+            a.Label(ref skip);
+            a.push(0x9F8); a.jmp(0x4d03ccUL);
+        }
+
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
         var w16Labels = new List<Label>();
         foreach (var st in World16)
@@ -1552,6 +1569,7 @@ static class Caves
         hooks.Add(new Hook(0x4bc8b1, Convert.FromHexString("83BE9402000000"), "SUnit::EC_SpecTargetUnit: ПКМ Піт-Стопом по причепу Ammo/Fuel/Service → під'їхати й зарядитись", (uint)L(pitstopClick), 7));
         hooks.Add(new Hook(0x4c8e01, Convert.FromHexString("8B81900200003B8194000000"), "SUnit::ServerRefresh: причіп Ammo заряджає Cargo Піт-Стопа", (uint)L(pitstopAmmoCheck), 12));
         hooks.Add(new Hook(0x4cb682, Convert.FromHexString("898290020000"), "SUnit::TakeResource: Load Ammo поповнює Cargo Піт-Стопа до 300", (uint)L(pitstopTakeAmmo), 6));
+        hooks.Add(new Hook(0x4d03c5, Convert.FromHexString("68F80900008BF8"), "SWorld::CreateUnit: чистий запис таблиці для нового юніта (рассинхрон при повторному id)", (uint)L(newUnit), 7));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));
