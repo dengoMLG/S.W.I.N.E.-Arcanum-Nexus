@@ -177,3 +177,20 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 Проверено с `+autostart`: 3 копии (кадры 183 → 675, 492 → 987) и 8 копий — у всех восьми кадры идут (до 1034 за минуту).
 
 Дальше (этап 3): сетевые функции на 16 слотов — `GetFreePlayerSlot`, `GetSlotFromRaknetGuid`, `ClearSlotArray`, `GetFullSlots`/`GetFullAndOpenSlots`, `SendBroadcastMessage`, `StartGame`, `StartSyncAfterDisconnect`, `CalculateConfirmedLastFrame`, `UpdateConnectivity`, `Disconnect`, `IsDisconnected`, проверки `cmp …,7/8` на индекс слота; мир — ожидание кадров и `ProcessPacket(slot & 7)`.
+
+#### Этап 3: разбор сетевых функций (23.11.2026)
+
+Ещё массивы «на 8» после +2530h (все — только внутри `SMulti`):
+- **+2798h** — матрица `dword[8][8]`: последний кадр игрока `col`, полученный игроком `row`; индекс `col + row·8` (`lea r,[col+row*8]`, шаг 8 зашит в масштаб — на 16 только вставками). Пишут `HandleLastReceivedFrameMessage`, `OnMessage` (`this+4`: +2794h); читают `IsDisconnected`, `CalculateConfirmedLastFrame`; `Initialize` заполняет −2 обходом по 32 байта.
+- **+2898h** `byte[8]` — «игрок отвалился» (`IsDisconnected`, `UpdateConnectivity`, `CalculateConfirmedLastFrame`).
+- **+28A4h** `dword[8]` (`OnMessage`: `[ebx+esi*4+28A0h]`, `ebx = this+4`), **+28C4h** `dword[8]` (`SendMeThePacketsOfThisPlayer`), оба обнуляет `Initialize`.
+
+**Сетевой протокол.** Заголовок сообщения: байт +1 = `0x70 | слот отправителя` (4 бита — до 15 помещается), байт +2 = **маска получателей, 8 бит**. `SendBroadcastMessage` строит маски по таблице маршрутов `ConnectivityGraph` (`[28E8h]`, индекс `мой·8 + адресат`) и ретранслирует через других игроков, если прямой связи нет. Маску на 16 бит не расширить без смены формата всех сообщений.
+
+План этапа 3 (совместное командование, без смены формата):
+1. **Ворота.** `GetFullAndOpenSlots` определяет `SetMaxPlayers` (лимит входящих RakNet). Пока остальное не готово, он считает только 0…7, и девятый не войдёт. Открываем его последним.
+2. **Слоты.** `GetSlotFromRaknetGuid` до 16 (`cmp edx,8`); `GetFreePlayerSlot`: сперва свободный из 0…7, иначе `8 + k`, где слот `k` занят человеком, а `8 + k` пуст; `ClearSlotArray` (развёрнут на 8) — дочистить 8…15; `GetFullSlots`/`GetFullAndOpenSlots` — циклы на 16; проверки индекса `cmp …,7` → 15 (`GetPlayerName` и др.).
+3. **Рассылка.** Слотам 8…15 — напрямую, без ретрансляции: в `SendBroadcastMessage` после основного цикла отправить каждому подключённому `conn[8…15]`. Приём с пустой маской принимать как «мне». От слота ≥ 8 — как от прямого соседа (маска = мой бит).
+4. **Связность** (матрица, `+2898h`, `+28A4h`, `+28C4h`): на первом шаге для слотов ≥ 8 не ведётся — индексы ≥ 8 отсекаются, чтобы не писать за массивы. Ограничение: обрыв связи у второго командира игра не заметит.
+5. **Мир.** `SGameWorld::ServerRefresh` ждёт кадры от слотов 8…15 с занятым `SMulti`-слотом и выполняет их `ProcessPacket(слот & 7, …)`; локальный игрок мира для слота ≥ 8 — `слот − 8` (`ServerInit`).
+6. **Лобби.** Слоты 8…15 в списке не показываются. Цвет, команда и раса — как у армии `слот − 8`; в чат — «X командует вместе с Y».
