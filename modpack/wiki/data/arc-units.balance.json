@@ -661,7 +661,7 @@
       "role": "Diszno dzsip",
       "stats": {
         "model": "units\\skinned\\v_dzsip",
-        "price": "280",
+        "price": "100000",
         "upgrademask": "101",
         "character": "R01-v_dzsip",
         "voice": "R01-v_dzsip",
@@ -708,7 +708,7 @@
       "role": "Diszno pancelauto",
       "stats": {
         "model": "units\\skinned\\v_pancelkocsi",
-        "price": "320",
+        "price": "100000",
         "upgrademask": "87",
         "character": "R02-v_pancelkocsi",
         "voice": "R02-v_pancelkocsi",
@@ -770,7 +770,7 @@
       "role": "Diszno normal tank",
       "stats": {
         "model": "units\\skinned\\v_tank",
-        "price": "420",
+        "price": "100000",
         "upgrademask": "119",
         "character": "R03-v_tank",
         "voice": "R03-v_tank",
@@ -838,7 +838,7 @@
       "role": "Diszno loveg",
       "stats": {
         "model": "units\\skinned\\v_loveg",
-        "price": "520",
+        "price": "100000",
         "upgrademask": "71",
         "character": "R04-v_loveg",
         "voice": "R04-v_loveg",
@@ -907,7 +907,7 @@
       "role": "Nyul raketas pancelkocsi",
       "stats": {
         "model": "units\\skinned\\v_vadasz",
-        "price": "620",
+        "price": "100000",
         "upgrademask": "71",
         "character": "R05-v_vadasz",
         "voice": "R05-v_vadasz",
@@ -974,7 +974,7 @@
       "role": "Diszno raketas",
       "stats": {
         "model": "units\\skinned\\v_raketas",
-        "price": "680",
+        "price": "100000",
         "upgrademask": "23",
         "character": "R06-v_raketas",
         "voice": "R06-v_raketas",
@@ -1048,7 +1048,7 @@
       "role": "Diszno mozsar",
       "stats": {
         "model": "units\\skinned\\v_mozsar",
-        "price": "650",
+        "price": "100000",
         "upgrademask": "55",
         "character": "R07-v_mozsar",
         "voice": "R07-v_mozsar",
@@ -1121,7 +1121,7 @@
       "role": "Diszno aknarako",
       "stats": {
         "model": "units\\skinned\\v_aknarako",
-        "price": "400",
+        "price": "100000",
         "upgrademask": "127",
         "character": "R08-v_aknarako",
         "voice": "R08-v_aknarako",
@@ -1182,7 +1182,7 @@
       "role": "Diszno vontato",
       "stats": {
         "model": "units\\skinned\\v_vontato",
-        "price": "220",
+        "price": "100000",
         "upgrademask": "85",
         "character": "R01-v_vontato",
         "voice": "R01-v_vontato",
@@ -1229,7 +1229,7 @@
       "role": "Diszno movingforce",
       "stats": {
         "model": "units\\skinned\\v_movingforce",
-        "price": "1450",
+        "price": "100000",
         "upgrademask": "37",
         "character": "R12-v_movingforce",
         "voice": "R12-v_movingforce",
@@ -1292,7 +1292,7 @@
       "role": "Nyul raketas pancelkocsi",
       "stats": {
         "model": "units\\skinned\\v_sokolzrk",
-        "price": "780",
+        "price": "100000",
         "upgrademask": "55",
         "character": "R02-v_sokolzrk",
         "voice": "R02-v_sokolzrk",
@@ -1363,7 +1363,7 @@
       "role": "Diszno pancelauto",
       "stats": {
         "model": "units\\skinned\\v_ekranoplan",
-        "price": "720",
+        "price": "100000",
         "upgrademask": "71",
         "character": "R03-v_ekranoplan",
         "voice": "R03-v_ekranoplan",
@@ -1424,7 +1424,7 @@
       "role": null,
       "stats": {
         "model": "units\\skinned\\v_sova",
-        "price": "540",
+        "price": "100000",
         "upgrademask": "101",
         "character": "R05-v_sova",
         "voice": "R05-v_sova",
@@ -1472,7 +1472,7 @@
       "role": null,
       "stats": {
         "model": "units\\skinned\\v_korshunkam",
-        "price": "420",
+        "price": "100000",
         "upgrademask": "69",
         "character": "R06-v_korshunkam",
         "voice": "R06-v_korshunkam",
@@ -1523,7 +1523,7 @@
       "role": "Diszno hard tank",
       "stats": {
         "model": "units\\skinned\\v_kondor",
-        "price": "1250",
+        "price": "100000",
         "upgrademask": "39",
         "character": "R07-v_kondor",
         "voice": "R07-v_kondor",

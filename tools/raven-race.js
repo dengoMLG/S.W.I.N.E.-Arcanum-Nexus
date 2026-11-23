@@ -237,7 +237,7 @@ const UNITS = [
     uk: ['Кондор', 'Командний штурмовий флагман', 'Важкий двогарматний флагман Воронів (170 HP, броня 4 / 1.5 / 4): б\'є на 16 шкоди кожні 6 секунд на 9.5 клітинок ТА прямо з передової викликає важкий бомбардувальник за 35 SP!'],
     en: ['Condor', 'Command assault flagship', 'Heavy twin-gun Raven flagship (170 HP, armor 4 / 1.5 / 4): fires 16-damage salvos every 6s at 9.5 range AND calls in heavy 35 SP airstrikes straight from the front line! Slow and thirsty.'],
   },
-].map(u => ({ ...u, race: 'raven' }));
+].map(u => ({ ...u, race: 'raven', realPrice: u.set.Price, set: { ...u.set, Price: 100000 } }));
 
 const S = prefix => {
   const hit = UNITS.find(u => u.s === prefix || u.s.startsWith(prefix + ' '));
@@ -247,7 +247,7 @@ const S = prefix => {
 
 // Повний рядок таблиці класів для раси 2 (13 базових слотів + 5 нових = 18):
 // 0 джип, 1 броньовик, 2 танк, 3 гаубиця, 4 ПТ, 5 РСЗВ, 6 мортира, 7 мінер,
-// 8 тягач (Varju vontato), 9–11 спільні причепи (Ammo/Fuel/Service), 12 Moving Force (Varju movingforce), 13–17 Arcanum.
+// 8 тягач (Varju vontato), 9–11 причепи Воронів з ціною 100 000 SP (режим огляду), 12 Moving Force (Varju movingforce), 13–17 Arcanum.
 const row = [
   S('Varju dzsip'),
   S('Varju pancelauto'),
@@ -258,9 +258,9 @@ const row = [
   S('Varju mozsar'),
   S('Varju aknarako'),
   S('Varju vontato'),
-  'Ammo',
-  'Fuel',
-  'Service',
+  'Varju ammo',
+  'Varju fuel',
+  'Varju service',
   S('Varju movingforce'),
   S('Varju sokolzrk'),
   S('Varju ekranoplan'),
@@ -326,6 +326,69 @@ SmokeFadeSpeed = 0.008
 SmokeScale = 0.05
 ExplodeSound = explode\\tuzi66.wav
 DamageRadius = 3.5
+
+[Varju ammo]
+ExplodeType = 2
+ExplodeSound = explode\\tuzi66.wav
+Model = units\\skinned\\utanfuto_ammo.4d
+Price = 100000
+UpgradeMask = 48
+Icon = ammo
+UnitSize = 0.6
+MaxHP = 40
+Sight = 3.5
+MaxRange = 4.5
+Resource = 1
+SpecialType = 9
+SpecialTime = 0.25
+Projectile = Load Ammo
+ShotHeight = .5
+ShotSpeed = 2.1
+ShotAngle = 60
+SpecialSound1 = special/tarcsere02.wav
+MoveSpeed = 1.35
+Cargo = 900
+
+[Varju fuel]
+ExplodeType = 1
+Model = units\\skinned\\utanfuto_fuel.4d
+Price = 100000
+UpgradeMask = 48
+Icon = fuel
+UnitSize = 0.6
+MaxHP = 40
+Sight = 3.5
+MaxRange = 4.5
+Resource = 1
+SpecialType = 1
+SpecialTime = 0.25
+Projectile = Load Fuel
+ShotHeight = .5
+ShotSpeed = 2.1
+ShotAngle = 60
+SpecialSound1 = special/tankolas03.wav
+MoveSpeed = 1.35
+Cargo = 900
+
+[Varju service]
+Model = units\\skinned\\utanfuto_service.4d
+Price = 100000
+UpgradeMask = 48
+Icon = service
+UnitSize = 0.6
+MaxHP = 40
+Sight = 3.5
+MaxRange = 4.5
+Resource = 1
+SpecialType = 8
+SpecialTime = 0.25
+Projectile = Load Service
+ShotHeight = .5
+ShotSpeed = 2.1
+ShotAngle = 60
+SpecialSound1 = special/szereles.wav
+Cargo = 900
+MoveSpeed = 1.35
 `.replace(/\n/g, '\r\n');
 
 function copyDirRecursive(src, dst) {
@@ -364,7 +427,19 @@ function extra(OUT, GAME, readPakEntry) {
     if (fs.existsSync(p)) fs.rmSync(p, { force: true });
   }
 
-  // 3. Додаємо SWINE_RAVEN у messages.ini для кожної мови гри
+  // 3. Додаємо SWINE_RAVEN у messages.ini та секції [Varju ammo/fuel/service] у units_text.ini для кожної мови гри
+  const TRAILER_TEXT = {
+    RU: [
+      ['Varju ammo', 'Боеприпасы Воронов', 'Прицеп с боеприпасами', 'Режим просмотра Корпуса Воронов (цена 100 000 SP): аэродромный прицеп с авиационными ракетами и снарядами.'],
+      ['Varju fuel', 'Керосин Воронов', 'Топливный прицеп', 'Режим просмотра Корпуса Воронов (цена 100 000 SP): аэродромная цистерна авиационного керосина для турбин.'],
+      ['Varju service', 'Техслужба Воронов', 'Ремонтный прицеп', 'Режим просмотра Корпуса Воронов (цена 100 000 SP): мобильная аэродромная мастерская.'],
+    ],
+    EN: [
+      ['Varju ammo', 'Raven Ammo', 'Ammo trailer', 'Raven Air Corps preview mode (100,000 SP): airfield trailer stocked with aircraft rockets and shells.'],
+      ['Varju fuel', 'Raven Fuel', 'Fuel trailer', 'Raven Air Corps preview mode (100,000 SP): airfield aviation fuel tanker for turbines.'],
+      ['Varju service', 'Raven Service', 'Service trailer', 'Raven Air Corps preview mode (100,000 SP): mobile airfield repair workshop.'],
+    ],
+  };
   for (const lang of fs.readdirSync(path.join(GAME, 'gamedata'))) {
     const pak = path.join(GAME, 'gamedata', lang, lang.toLowerCase() + '.pak');
     if (!fs.existsSync(pak)) continue;
@@ -375,6 +450,16 @@ function extra(OUT, GAME, readPakEntry) {
     const body = o.slice(0, o.length - o.toString('latin1').match(/\s*$/)[0].length);
     fs.mkdirSync(path.join(OUT, 'gamedata', lang), { recursive: true });
     fs.writeFileSync(path.join(OUT, 'gamedata', lang, 'messages.ini'), Buffer.concat([body, Buffer.from(line, isUtf8 ? 'utf8' : 'latin1'), Buffer.from('\r\n')]));
+
+    const utPath = path.join(OUT, 'gamedata', lang, 'units_text.ini');
+    if (fs.existsSync(utPath)) {
+      const ut = fs.readFileSync(utPath);
+      const utUtf8 = ut[0] === 0xEF && ut[1] === 0xBB;
+      const tList = lang === 'RU' ? TRAILER_TEXT.RU : TRAILER_TEXT.EN;
+      const tAdd = tList.map(([sec, nick, nm, desc]) => `\r\n[${sec}]\r\n Nick = ${nick}\r\n Name = ${nm}\r\n Desc = ${desc}`).join('') + '\r\n';
+      const tBuf = utUtf8 ? Buffer.from(tAdd, 'utf8') : Buffer.from(tAdd.replace(/[^\x00-\x7f]/g, '?'), 'latin1');
+      fs.writeFileSync(utPath, Buffer.concat([ut, tBuf]));
+    }
   }
 }
 

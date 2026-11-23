@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.2.0",
+              "value": "4.2.2",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -157,6 +157,25 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.2.2",
+          "text": {
+            "ru": "Мод 4.2.2 · Корпус Воронов: режим просмотра в магазине (цена 100 000 SP) · 23.11.2026",
+            "uk": "Мод 4.2.2 · Корпус Воронів: режим огляду в магазині (ціна 100 000 SP) · 23.11.2026",
+            "en": "Mod 4.2.2 · Raven Air Corps: shop preview-only mode (100,000 SP price) · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Корпус Воронов переведён в режим витрины (предпросмотра): всем 15 машинам и 3 прицепам Воронов в магазине выставлена цена 100 000 SP. В лобби можно выбрать расу «Ворон», зайти в магазин, рассмотреть 3D-ролики, характеристики и описания каждой машины, но купить их в бой пока нельзя.",
+              "uk": "Корпус Воронів переведено в режим вітрини (попереднього перегляду): усім 15 машинам і 3 причепам Воронів у магазині виставлено ціну 100 000 SP. У лобі можна обрати расу «Ворон», зайти в магазин, роздивитися 3D-ролики, характеристики й описи кожної машини, але купити їх у бій поки не можна.",
+              "en": "The Raven Air Corps is now in showcase preview-only mode: all 15 vehicles and 3 trailers in the Raven shop are priced at 100,000 SP. Players can select Raven in the lobby, open the shop, and inspect all 3D turntable videos, stats and descriptions, but cannot buy them for matches yet."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.2.1",
@@ -2669,7 +2688,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "280",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2746,7 +2765,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "320",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2847,7 +2866,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "420",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2948,7 +2967,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "520",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3049,7 +3068,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "620",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3150,7 +3169,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "680",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3251,7 +3270,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "650",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3352,7 +3371,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "400",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3437,7 +3456,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "220",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3514,7 +3533,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "1450",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3599,7 +3618,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "780",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3700,7 +3719,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "720",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3801,7 +3820,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "540",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3870,7 +3889,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "420",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -3955,7 +3974,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "1250",
+              "value": "100000",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
