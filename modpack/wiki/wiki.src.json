@@ -27,12 +27,12 @@
     },
     {
       "id": "arc-units",
+      "mod": "arcanum-units",
       "title": {
         "ru": "Arcanum Units",
         "uk": "Arcanum Units",
         "en": "Arcanum Units"
-      },
-      "mod": "arcanum-units"
+      }
     },
     {
       "id": "arc-voices",
@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.0.1",
+              "value": "4.0.2",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -116,14 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Nexus Mod 4.0.1 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
-              "uk": "Arcanum Nexus Mod 4.0.1 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
-              "en": "Arcanum Nexus Mod 4.0.1 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.0.2 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.0.2 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.0.2 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.1»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
-              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.1»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
-              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.1”), and in the launcher mod list. If your friends have a different one, update before playing."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.2»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.2»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.2”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -157,6 +157,40 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.0.2",
+          "text": {
+            "ru": "Мод 4.0.2 · баланс · 23.11.2026",
+            "uk": "Мод 4.0.2 · баланс · 23.11.2026",
+            "en": "Mod 4.0.2 · balance · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Все обычные танки, машины и улучшения вернулись к характеристикам и ценам из игры: убраны прошлые правки и общая наценка ×1.6. Обычный танк снова стоит 400.",
+              "uk": "Усі звичайні танки, машини й покращення повернулися до характеристик і цін з гри: прибрано минулі правки й загальну націнку ×1.6. Звичайний танк знову коштує 400.",
+              "en": "All stock tanks, vehicles and upgrades are back to their in-game stats and prices: the old tweaks and the ×1.6 markup are gone. A regular tank costs 400 again."
+            },
+            {
+              "ru": "Новые юниты оценены рядом с обычными: Хряк-Гриль 550, Свин-Царь 1800, Бомбохряк 450, Осадный Кабан 750, Гряземёт 550; Заяц-Призрак 1200, Морковный Смерч 800, Кротобой 450, Пит-Стоп 350, Кролик-Ушастик 500.",
+              "uk": "Нові юніти оцінено поруч зі звичайними: Кабан-Гриль 550, Свин-Цар 1800, Бомбокабан 450, Облоговий Вепр 750, Гряземіт 550; Заєць-Привид 1200, Морквяний Смерч 800, Кротобій 450, Піт-Стоп 350, Кролик-Вухань 500.",
+              "en": "New units are priced next to the stock ones: Hog Grill 550, Swine Tsar 1800, Boom Hog 450, Siege Boar 750, Mud Slinger 550; Ghost Hare 1200, Carrot Twister 800, Mole Smasher 450, Pit Stop 350, Big Ears 500."
+            },
+            {
+              "ru": "Авиация кроликов: бомбардировщик втрое быстрее (4.8 → 14.4) — прилетает и улетает, а значит, снова доступен втрое быстрее. Авиаудар у кроликов стоит 100 очков вместо 50. У свиней авиация без изменений.",
+              "uk": "Авіація кроликів: бомбардувальник утричі швидший (4.8 → 14.4) — прилітає й відлітає, а отже, знову доступний утричі швидше. Авіаудар у кроликів коштує 100 очок замість 50. У свиней авіація без змін.",
+              "en": "Rabbit aviation: the bomber is three times faster (4.8 → 14.4) — it arrives and leaves, so is available again, three times sooner. A rabbit airstrike costs 100 points instead of 50. Pig aviation is unchanged."
+            },
+            {
+              "ru": "Кролик-Ушастик: пока работает «Радар», обзор не закрывают деревья и холмы.",
+              "uk": "Кролик-Вухань: поки працює «Радар», огляд не закривають дерева й пагорби.",
+              "en": "Big Ears: while Radar is on, trees and hills no longer block its sight."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.0.1",
@@ -1101,9 +1135,9 @@
         "en": "Overview"
       },
       "summary": {
-        "ru": "Новые юниты для обеих рас и правки баланса. Тестовая сборка, в мод-пак пока не входит.",
-        "uk": "Нові юніти для обох рас і правки балансу. Тестова збірка, у мод-пак поки не входить.",
-        "en": "New units for both sides and balance fixes. Test build, not in the mod pack yet."
+        "ru": "Новые юниты для обеих рас. Обычные юниты — с обычными характеристиками и ценами.",
+        "uk": "Нові юніти для обох рас. Звичайні юніти — зі звичайними характеристиками й цінами.",
+        "en": "New units for both sides. Stock units keep their stock stats and prices."
       },
       "blocks": [
         {
@@ -1140,7 +1174,7 @@
               }
             },
             {
-              "value": "9",
+              "value": "1",
               "label": {
                 "ru": "правок баланса",
                 "uk": "правок балансу",
@@ -1246,7 +1280,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "775",
+              "value": "550",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -1456,7 +1490,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "650",
+              "value": "450",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -1541,7 +1575,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "1075",
+              "value": "750",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -1642,7 +1676,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "825",
+              "value": "550",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -1860,7 +1894,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "1275",
+              "value": "800",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -1969,7 +2003,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "550",
+              "value": "450",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2054,7 +2088,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "500",
+              "value": "350",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2122,16 +2156,16 @@
         {
           "type": "paragraph",
           "text": {
-            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше, потом 45 секунд перезарядки. Оружия нет, дорогой, и светится как ёлка: врагу виден всегда.",
-            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший, потім 45 секунд перезаряджання. Зброї немає, дорогий і світиться як ялинка: ворогові видно завжди.",
-            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight for 15 seconds, then a 45-second cooldown. No gun, expensive, and lit up like a Christmas tree: always visible to the enemy."
+            "ru": "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда.",
+            "uk": "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди.",
+            "en": "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "900",
+              "value": "500",
               "label": {
                 "ru": "цена",
                 "uk": "ціна",
@@ -2191,332 +2225,44 @@
         "en": "Changes to old units"
       },
       "summary": {
-        "ru": "Что поменялось у обычных юнитов и улучшений, и почему.",
-        "uk": "Що змінилося у звичайних юнітів і покращень, і чому.",
-        "en": "What changed for the stock units and upgrades, and why."
+        "ru": "Обычные юниты и улучшения — как в игре; изменена только авиация кроликов.",
+        "uk": "Звичайні юніти й покращення — як у грі; змінено лише авіацію кроликів.",
+        "en": "Stock units and upgrades are as in the game; only rabbit aviation changed."
       },
       "blocks": [
         {
+          "type": "paragraph",
+          "text": {
+            "ru": "С версии 4.0.2 все обычные танки, машины и улучшения вернулись к своим характеристикам и ценам из игры (раньше были правки и общая наценка ×1.6). Новые юниты оценены рядом с обычными: обычный танк стоит 400.",
+            "uk": "З версії 4.0.2 усі звичайні танки, машини й покращення повернулися до своїх характеристик і цін з гри (раніше були правки й загальна націнка ×1.6). Нові юніти оцінено поруч зі звичайними: звичайний танк коштує 400.",
+            "en": "Since 4.0.2 all stock tanks, vehicles and upgrades are back to their in-game stats and prices (before, there were tweaks and a ×1.6 price markup). New units are priced next to the stock ones: a regular tank costs 400."
+          }
+        },
+        {
           "type": "heading",
           "text": {
-            "ru": "Истребитель танков (кролики)",
-            "uk": "Винищувач танків (кролики)",
-            "en": "Tank killer (rabbits)"
+            "ru": "Бомбардировщик (кролики)",
+            "uk": "Бомбардувальник (кролики)",
+            "en": "Bomber (rabbits)"
           }
         },
         {
           "type": "paragraph",
           "text": {
-            "ru": "Главная жалоба в сетевой игре: быстрее свиных танков и бьёт дальше, поэтому расстреливает их без ответа.",
-            "uk": "Головна скарга в мережевій грі: швидший за свинячі танки й б'є далі, тож розстрілює їх без відповіді.",
-            "en": "The top multiplayer complaint: faster than pig tanks and outranges them, so it kites them freely."
+            "ru": "Авиация кроликов: бомбардировщик прилетает и улетает (а значит, снова доступен) втрое быстрее. Авиаудар у кроликов стоит 100 очков вместо 50; у свиней авиация не менялась.",
+            "uk": "Авіація кроликів: бомбардувальник прилітає й відлітає (а отже, знову доступний) утричі швидше. Авіаудар у кроликів коштує 100 очок замість 50; у свиней авіація не змінювалась.",
+            "en": "Rabbit aviation: the bomber arrives and leaves (so is available again) three times faster. A rabbit airstrike costs 100 points instead of 50; pig aviation is unchanged."
           }
         },
         {
           "type": "facts",
           "facts": [
             {
-              "value": "600 → 650",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "10 → 9",
-              "label": {
-                "ru": "дальность",
-                "uk": "дальність",
-                "en": "range"
-              }
-            },
-            {
-              "value": "5.5 → 6",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            },
-            {
-              "value": "60 → 50",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Тяжёлый танк (свиньи)",
-            "uk": "Важкий танк (свині)",
-            "en": "Heavy tank (pigs)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Не успевал за кроличьими ракетными машинами.",
-            "uk": "Не встигав за кролячими ракетними машинами.",
-            "en": "Could not keep up with the rabbit rocket cars."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "0.7 → 0.75",
+              "value": "4.8 → 14.4",
               "label": {
                 "ru": "скорость",
                 "uk": "швидкість",
                 "en": "speed"
-              }
-            },
-            {
-              "value": "30 → 36",
-              "label": {
-                "ru": "поворот корпуса",
-                "uk": "поворот корпусу",
-                "en": "hull turn"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Мортира (свиньи)",
-            "uk": "Мортира (свині)",
-            "en": "Mortar (pigs)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Мортиры почти не покупают: дорого за дальность 5.5.",
-            "uk": "Мортири майже не купують: дорого за дальність 5.5.",
-            "en": "Mortars are rarely bought: too pricey for range 5.5."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "650 → 575",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "6.5 → 6",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Мортира (кролики)",
-            "uk": "Мортира (кролики)",
-            "en": "Mortar (rabbits)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "То же, что у свиней.",
-            "uk": "Те саме, що у свиней.",
-            "en": "Same as the pig mortar."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "650 → 575",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "6.5 → 6",
-              "label": {
-                "ru": "перезарядка",
-                "uk": "перезаряджання",
-                "en": "reload"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Артиллерия (свиньи)",
-            "uk": "Артилерія (свині)",
-            "en": "Artillery (pigs)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Артиллерия с дальностью 25 — самый сильный юнит игры.",
-            "uk": "Артилерія з дальністю 25 — найсильніший юніт гри.",
-            "en": "Range-25 artillery is the strongest unit in the game."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "500 → 550",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "80 → 64",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Артиллерия (кролики)",
-            "uk": "Артилерія (кролики)",
-            "en": "Artillery (rabbits)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "То же, что у свиней.",
-            "uk": "Те саме, що у свиней.",
-            "en": "Same as the pig artillery."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "500 → 550",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            },
-            {
-              "value": "80 → 64",
-              "label": {
-                "ru": "боезапас",
-                "uk": "боєзапас",
-                "en": "ammo"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Улучшение «Броня»",
-            "uk": "Покращення «Броня»",
-            "en": "Armour upgrade"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "Броня вычитается из каждого попадания: +1 брони вдвое режет урон броневика (4 − 3 = 1).",
-            "uk": "Броня віднімається від кожного влучання: +1 броні вдвічі ріже шкоду броньовика (4 − 3 = 1).",
-            "en": "Armour is subtracted from every hit: +1 armour halves an armoured car's damage (4 − 3 = 1)."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "50 → 75",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Улучшение «Пиво» (свиньи)",
-            "uk": "Покращення «Пиво» (свині)",
-            "en": "Beer upgrade (pigs)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "−10 % перезарядки за 25 очков было самым выгодным улучшением.",
-            "uk": "−10 % перезаряджання за 25 очок було найвигіднішим покращенням.",
-            "en": "−10 % reload for 25 points was the best deal in the game."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "25 → 35",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
-              }
-            }
-          ]
-        },
-        {
-          "type": "heading",
-          "text": {
-            "ru": "Улучшение «Морковный напиток» (кролики)",
-            "uk": "Покращення «Морквяний напій» (кролики)",
-            "en": "Carrot drink upgrade (rabbits)"
-          }
-        },
-        {
-          "type": "paragraph",
-          "text": {
-            "ru": "То же, что пиво у свиней.",
-            "uk": "Те саме, що пиво у свиней.",
-            "en": "Same as the pig beer."
-          }
-        },
-        {
-          "type": "facts",
-          "facts": [
-            {
-              "value": "25 → 35",
-              "label": {
-                "ru": "цена",
-                "uk": "ціна",
-                "en": "price"
               }
             }
           ]

@@ -41,6 +41,8 @@ static class Caves
     public const int CoState = AutoState + 0x10;                // біт k — у армії k на старті матчу був другий командир (слот 8 + k)
     public const int CoNames = CoState + 0x20;                  // лобі: 8 × 128 Б — «ім'я армії + ім'я другого командира»
     public const int MenuVer = CoNames + 0x400;                 // головне меню: кадр рядка версії мода + 1, SMenu*
+    public const int RadarSee = MenuVer + 8;                    // DrawVisMap: 1 — поточний юніт з увімкненим радаром (огляд без перешкод)
+    public const int AirPricePig = 50, AirPriceRabbit = 100;    // авіаудар, SP (#10: кролики +50)
     const uint BoardVar = 0x58d060, SDXWidgetDtor = 0x4885f0;   // SIBoard* Board; SDXWidget::~SDXWidget
     public static string ModLine = "Arcanum Nexus Mod";         // Program.cs: «Arcanum Nexus Mod v<версія з modpack/pack.json>»
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
@@ -1016,6 +1018,71 @@ static class Caves
             a.mov(ecx, esi); a.call(SDXWidgetDtor); a.jmp(0x4f9724UL);
         }
 
+        // ── Авіаудар (#10): у кроликів 100 SP замість 50, у свиней як було. Раса: [світ + гравець·5Ch + FCh] ≠ 0 — свині
+        //    (так SGameWorld::AirStrike вибирає «Diszno bombazo»). Швидкість бомбардувальника — у units.ini (arc-units.js). ──
+        // SUnit::EC_SpecTargetGround (0x4bc609): push 32h / push [esi+258h] → TryToBuy(гравець, ціна); edi = світ, esi = юніт
+        var airBuy = a.CreateLabel("airbuy");
+        {
+            var pig = a.CreateLabel();
+            a.Label(ref airBuy);
+            a.mov(eax, __dword_ptr[esi + 0x258]); a.imul(eax, eax, 0x5C);
+            a.cmp(__dword_ptr[edi + eax + 0xFC], 0); a.mov(eax, AirPricePig); a.jne(pig); a.mov(eax, AirPriceRabbit);
+            a.Label(ref pig);
+            a.push(eax); a.push(__dword_ptr[esi + 0x258]); a.jmp(0x4bc611UL);
+        }
+        // SGameWorld::IsBomberAvailable, мережа (0x4a5f5d): cmp [eax+esi+138h],32h — гроші гравця eax/5Ch ≥ ціни
+        var airAvail = a.CreateLabel("airavail");
+        {
+            var pig = a.CreateLabel();
+            a.Label(ref airAvail);
+            a.push(edx); a.mov(edx, AirPricePig); a.cmp(__dword_ptr[eax + esi + 0xFC], 0); a.jne(pig); a.mov(edx, AirPriceRabbit);
+            a.Label(ref pig);
+            a.cmp(__dword_ptr[eax + esi + 0x138], edx); a.pop(edx); a.jmp(0x4a5f65UL);
+        }
+        // те саме в кампанії (0x4a5f72): cmp eax(SP кампанії),32h / setge al; гравець — [esi+434h]
+        var airAvailCamp = a.CreateLabel("airavailcamp");
+        {
+            var pig = a.CreateLabel();
+            a.Label(ref airAvailCamp);
+            a.push(edx); a.mov(edx, __dword_ptr[esi + 0x434]); a.imul(edx, edx, 0x5C);
+            a.cmp(__dword_ptr[edx + esi + 0xFC], 0); a.mov(edx, AirPricePig); a.jne(pig); a.mov(edx, AirPriceRabbit);
+            a.Label(ref pig);
+            a.cmp(eax, edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
+        }
+
+        // ── Радар Ушастика (#10): поки посилення діє, огляд не закривають дерева й пагорби. ──
+        // SGameWorld::DrawVisMap (0x4a0703, ecx = юніт, перед movss xmm0,[ecx+44h]): прапорець RadarSee = 1, якщо в юніта
+        // йде посилення радара (запис таблиці: +0 = цей юніт, +24 тіків посилення > 0). Стан — із таблиці (детермінований).
+        var visUnit = a.CreateLabel("visunit");
+        {
+            var off = a.CreateLabel(); var set = a.CreateLabel();
+            a.Label(ref visUnit);
+            a.push(eax); a.push(edx);
+            a.xor(edx, edx);
+            a.mov(eax, __dword_ptr[ecx + 4]); a.cmp(eax, TableEntries); a.jae(set);
+            a.shl(eax, 5); a.add(eax, tableVa);
+            a.cmp(__dword_ptr[eax], ecx); a.jne(set);
+            a.cmp(__dword_ptr[eax + 24], 0); a.jle(set);
+            a.inc(edx);
+            a.Label(ref set);
+            a.mov(__dword_ptr[tableVa + RadarSee], edx);
+            a.pop(edx); a.pop(eax);
+            a.movss(xmm0, __dword_ptr[ecx + 0x44]); a.jmp(0x4a0708UL);
+        }
+        // DrawVisMapAid / DrawVisMapDetAid: клітинка видима, якщо її висота + 0.5 ≥ «горизонту» променя. З RadarSee — завжди.
+        // Було: addsd xmm0,xmm4 / comisd xmm0,xmm1 / jb (не видно)
+        Label VisTest(string name, ulong visible, ulong hidden)
+        {
+            var l = a.CreateLabel(name);
+            a.Label(ref l);
+            a.addsd(xmm0, xmm4);
+            a.cmp(__dword_ptr[tableVa + RadarSee], 0); a.jne(visible);
+            a.comisd(xmm0, xmm1); a.jb(hidden); a.jmp(visible);
+            return l;
+        }
+        var visAid = VisTest("visaid", 0x4a0b2cUL, 0x4a0b3eUL);
+        var visDet = VisTest("visdet", 0x4a0dd8UL, 0x4a0df1UL);
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -1037,6 +1104,12 @@ static class Caves
         hooks.Add(new Hook(0x47a543, Convert.FromHexString("C7865421000000000000"), "SMulti::Initialize: слоти, conn, recv/req 8…15", (uint)L(initTail), 10));
         hooks.Add(new Hook(0x4f9ac7, Convert.FromHexString("8B0D60D05800"), "SMenu::Create: рядок «Arcanum Nexus Mod v…» під версією гри", (uint)L(menuVer), 6));
         hooks.Add(new Hook(0x4f971d, Convert.FromHexString("8BCEE8CCEEF8FF"), "~SMenu: прибрати рядок версії мода", (uint)L(menuVerDtor), 7));
+        hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар кроликів 100", (uint)L(airBuy), 8));
+        hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
+        hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));
+        hooks.Add(new Hook(0x4a0703, Convert.FromHexString("F30F104144"), "SGameWorld::DrawVisMap: радар Ушастика — без перешкод", (uint)L(visUnit), 5));
+        hooks.Add(new Hook(0x4a0b22, Convert.FromHexString("F20F58C4660F2FC17212"), "SGameWorld::DrawVisMapAid: радар бачить крізь перешкоди", (uint)L(visAid), 10));
+        hooks.Add(new Hook(0x4a0dce, Convert.FromHexString("F20F58C4660F2FC17219"), "SGameWorld::DrawVisMapDetAid: радар бачить крізь перешкоди", (uint)L(visDet), 10));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));

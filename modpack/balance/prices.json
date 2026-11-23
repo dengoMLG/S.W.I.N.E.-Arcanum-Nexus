@@ -1,23 +1,15 @@
 {
-  "_note": "Ціни бойових юнітів: tools/balance-sim.js --solve, поправка застосована наполовину (√ співвідношення), звичайний танк = 650 (ваніль ×1.6). Свин-Цар фіксовано за ТЗ: 45 % від стартових 4000 SP.",
+  "_note": "Ціни нових юнітів у ванільній шкалі (#10, 23.11.2026): звичайний танк 400, важкий 600, артилерія 500, ракетниця й мортира 650, «Важка техніка» 1400. Ванільні юніти — з ванільними цінами (тут їх нема). Заяць-Привид 1200 — за ТЗ; Свин-Цар 1800 — супер-юніт, 45 % від стартових 4000 SP. Решта — поруч із ванільними аналогами.",
   "prices": {
-    "Diszno normal tank": 650,
-    "Diszno hard tank": 950,
-    "Diszno pancelauto": 725,
-    "Diszno loveg": 1325,
-    "Diszno raketas": 1175,
-    "Diszno mozsar": 900,
-    "Nyul light tank": 650,
-    "Nyul pancelauto": 700,
-    "Nyul loveg": 1325,
-    "Nyul raketas pancelkocsi": 1575,
-    "Nyul raketas": 1250,
-    "Nyul mozsar": 900,
-    "Diszno grill kamikaze slow": 775,
+    "Diszno grill kamikaze slow": 550,
     "Diszno cartank": 1800,
-    "Diszno ostromkoca hullaim": 1075,
-    "Diszno sarszoro slow": 825,
+    "Diszno kamikaze": 450,
+    "Diszno ostromkoca hullaim": 750,
+    "Diszno sarszoro slow": 550,
     "Nyul szellem": 1200,
-    "Nyul repavihar kamikaze salvo": 1275
+    "Nyul repavihar kamikaze salvo": 800,
+    "Nyul vakond minelay": 450,
+    "Nyul boxkiallas": 350,
+    "Nyul fulesek": 500
   }
 }

@@ -1,141 +1,13 @@
 {
   "vanilla": [
     {
-      "section": "Nyul raketas pancelkocsi",
-      "why": "Кролячий винищувач танків з самонавідними ракетами — головна скарга гравців у мультиплеєрі: швидший за свинячі танки й б'є далі за них, тож «кайтить» без відповіді. Дальність 10 → 9, перезарядка 5.5 → 6, боєзапас 60 → 50, ціна 600 → 650.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "600",
-          "to": 650
-        },
-        {
-          "key": "MaxRange",
-          "from": "10",
-          "to": 9
-        },
-        {
-          "key": "ReloadTime",
-          "from": "5.5",
-          "to": 6
-        },
-        {
-          "key": "Ammo",
-          "from": "60",
-          "to": 50
-        }
-      ]
-    },
-    {
-      "section": "Diszno hard tank",
-      "why": "Важкий танк свиней не наздоганяв кролячі ракетні машини. Швидкість 0.7 → 0.75, поворот корпусу 30 → 36.",
+      "section": "Nyul bombazo",
+      "why": "Авіація кроликів: бомбардувальник прилітає й відлітає втричі швидше (4.8 → 14.4), щоб кролики встигали бомбити. Авіаудар коштує 100 замість 50 (exe).",
       "changes": [
         {
           "key": "MoveSpeed",
-          "from": "0.7",
-          "to": 0.75
-        },
-        {
-          "key": "SpinSpeed",
-          "from": "30",
-          "to": 36
-        }
-      ]
-    },
-    {
-      "section": "Diszno mozsar",
-      "why": "Мортири майже не купують: дорого за дальність 5.5. Ціна 650 → 575, перезарядка 6.5 → 6.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "650",
-          "to": 575
-        },
-        {
-          "key": "ReloadTime",
-          "from": "6.5",
-          "to": 6
-        }
-      ]
-    },
-    {
-      "section": "Nyul mozsar",
-      "why": "Те саме для кролячої мортири.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "650",
-          "to": 575
-        },
-        {
-          "key": "ReloadTime",
-          "from": "6.5",
-          "to": 6
-        }
-      ]
-    },
-    {
-      "section": "Diszno loveg",
-      "why": "Артилерія з дальністю 25 — найсильніший юніт гри. Ціна 500 → 550, боєзапас 80 → 64.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "500",
-          "to": 550
-        },
-        {
-          "key": "Ammo",
-          "from": "80",
-          "to": 64
-        }
-      ]
-    },
-    {
-      "section": "Nyul loveg",
-      "why": "Те саме для кролячої артилерії.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "500",
-          "to": 550
-        },
-        {
-          "key": "Ammo",
-          "from": "80",
-          "to": 64
-        }
-      ]
-    },
-    {
-      "section": "Upgrade armor",
-      "why": "Броня віднімається від кожного влучання, тож +1 броні вдвічі ріже урон броньовика (4 − 3 = 1). Ціна 50 → 75.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "50",
-          "to": 75
-        }
-      ]
-    },
-    {
-      "section": "Upgrade diszno sor",
-      "why": "Пиво: −10 % перезарядки за 25 очок — найвигідніше покращення гри. Ціна 25 → 35.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "25",
-          "to": 35
-        }
-      ]
-    },
-    {
-      "section": "Upgrade nyul repa",
-      "why": "Морквяний напій — те саме, 25 → 35.",
-      "changes": [
-        {
-          "key": "Price",
-          "from": "25",
-          "to": 35
+          "from": "4.8",
+          "to": 14.4
         }
       ]
     }
@@ -164,7 +36,7 @@
       "role": "Diszno normal tank",
       "stats": {
         "model": "units\\skinned\\d_hryakgrill",
-        "price": "775",
+        "price": "550",
         "upgrademask": "211",
         "character": "P07-normaltank",
         "voice": "P04-normaltank",
@@ -294,7 +166,7 @@
       "role": null,
       "stats": {
         "model": "units\\skinned\\d_bombohryak",
-        "price": "650",
+        "price": "450",
         "upgrademask": "85",
         "character": "P07-normaltank",
         "voice": "P04-normaltank",
@@ -348,7 +220,7 @@
       "role": "Diszno mozsar",
       "stats": {
         "model": "units\\skinned\\d_osadnykaban",
-        "price": "1075",
+        "price": "750",
         "upgrademask": "151",
         "character": "P06-hardtank",
         "voice": "P05-hardtank",
@@ -416,7 +288,7 @@
       "role": "Diszno mozsar",
       "stats": {
         "model": "units\\skinned\\d_gryazemet",
-        "price": "825",
+        "price": "550",
         "upgrademask": "215",
         "character": "P07-normaltank",
         "voice": "P04-normaltank",
@@ -547,7 +419,7 @@
       "role": "Nyul raketas",
       "stats": {
         "model": "units\\skinned\\ny_morkovsmerch",
-        "price": "1275",
+        "price": "800",
         "upgrademask": "325",
         "character": "R07-Tank",
         "voice": "R05-Tank",
@@ -621,7 +493,7 @@
       "role": "Nyul aknarako",
       "stats": {
         "model": "units\\skinned\\ny_krotoboy",
-        "price": "550",
+        "price": "450",
         "upgrademask": "127",
         "character": "R07-Tank",
         "voice": "R05-Tank",
@@ -682,7 +554,7 @@
       "role": "Service",
       "stats": {
         "model": "units\\skinned\\ny_pitstop",
-        "price": "500",
+        "price": "350",
         "upgrademask": "69",
         "character": "R07-Tank",
         "voice": "R05-Tank",
@@ -722,23 +594,23 @@
       "ru": [
         "Кролик-Ушастик",
         "Машина разведки",
-        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше, потом 45 секунд перезарядки. Оружия нет, дорогой, и светится как ёлка: врагу виден всегда."
+        "Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда."
       ],
       "uk": [
         "Кролик-Вухань",
         "Машина розвідки",
-        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший, потім 45 секунд перезаряджання. Зброї немає, дорогий і світиться як ялинка: ворогові видно завжди."
+        "Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди."
       ],
       "en": [
         "Big Ears",
         "Recon vehicle",
-        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight for 15 seconds, then a 45-second cooldown. No gun, expensive, and lit up like a Christmas tree: always visible to the enemy."
+        "A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."
       ],
       "chassis": "Nyul light tank",
       "role": null,
       "stats": {
         "model": "units\\skinned\\ny_ushastik",
-        "price": "900",
+        "price": "500",
         "upgrademask": "101",
         "character": "R07-Tank",
         "voice": "R05-Tank",
@@ -769,168 +641,7 @@
     }
   ],
   "priceScale": {
-    "factor": 1.6,
-    "sections": [
-      {
-        "section": "Diszno dzsip",
-        "from": 250,
-        "to": 400
-      },
-      {
-        "section": "Diszno normal tank",
-        "from": 400,
-        "to": 650
-      },
-      {
-        "section": "Diszno hard tank",
-        "from": 600,
-        "to": 950
-      },
-      {
-        "section": "Diszno pancelauto",
-        "from": 300,
-        "to": 725
-      },
-      {
-        "section": "Diszno loveg",
-        "from": 550,
-        "to": 1325
-      },
-      {
-        "section": "Diszno raketas",
-        "from": 650,
-        "to": 1175
-      },
-      {
-        "section": "Diszno mozsar",
-        "from": 575,
-        "to": 900
-      },
-      {
-        "section": "Diszno aknarako",
-        "from": 400,
-        "to": 650
-      },
-      {
-        "section": "Diszno vontato",
-        "from": 200,
-        "to": 325
-      },
-      {
-        "section": "Diszno movingforce",
-        "from": 1400,
-        "to": 2250
-      },
-      {
-        "section": "Nyul dzsip",
-        "from": 250,
-        "to": 400
-      },
-      {
-        "section": "Nyul light tank",
-        "from": 400,
-        "to": 650
-      },
-      {
-        "section": "Nyul pancelauto",
-        "from": 300,
-        "to": 700
-      },
-      {
-        "section": "Nyul loveg",
-        "from": 550,
-        "to": 1325
-      },
-      {
-        "section": "Nyul raketas pancelkocsi",
-        "from": 650,
-        "to": 1575
-      },
-      {
-        "section": "Nyul raketas",
-        "from": 650,
-        "to": 1250
-      },
-      {
-        "section": "Nyul mozsar",
-        "from": 575,
-        "to": 900
-      },
-      {
-        "section": "Nyul aknarako",
-        "from": 400,
-        "to": 650
-      },
-      {
-        "section": "Nyul vontato",
-        "from": 200,
-        "to": 325
-      },
-      {
-        "section": "Nyul movingforce",
-        "from": 1400,
-        "to": 2250
-      },
-      {
-        "section": "Ammo",
-        "from": 150,
-        "to": 250
-      },
-      {
-        "section": "Fuel",
-        "from": 150,
-        "to": 250
-      },
-      {
-        "section": "Service",
-        "from": 150,
-        "to": 250
-      },
-      {
-        "section": "Upgrade fuel",
-        "from": 25,
-        "to": 40
-      },
-      {
-        "section": "Upgrade ammo",
-        "from": 25,
-        "to": 40
-      },
-      {
-        "section": "Upgrade sight",
-        "from": 25,
-        "to": 40
-      },
-      {
-        "section": "Upgrade mine seeker",
-        "from": 50,
-        "to": 80
-      },
-      {
-        "section": "Upgrade armor",
-        "from": 75,
-        "to": 120
-      },
-      {
-        "section": "Upgrade repair kit",
-        "from": 50,
-        "to": 80
-      },
-      {
-        "section": "Upgrade turbo",
-        "from": 50,
-        "to": 80
-      },
-      {
-        "section": "Upgrade diszno sor",
-        "from": 35,
-        "to": 55
-      },
-      {
-        "section": "Upgrade nyul repa",
-        "from": 35,
-        "to": 55
-      }
-    ]
+    "factor": 1,
+    "sections": []
   }
 }

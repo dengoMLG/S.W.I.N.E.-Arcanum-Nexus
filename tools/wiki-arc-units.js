@@ -46,6 +46,7 @@ const KEY_RU = { price: 'цена', maxrange: 'дальность', reloadtime: 
 const KEY_UK = { price: 'ціна', maxrange: 'дальність', reloadtime: 'перезаряджання', ammo: 'боєзапас', movespeed: 'швидкість', spinspeed: 'поворот корпусу' };
 const KEY_EN = { price: 'price', maxrange: 'range', reloadtime: 'reload', ammo: 'ammo', movespeed: 'speed', spinspeed: 'hull turn' };
 const NAMES = {
+  'Nyul bombazo': T('Бомбардировщик (кролики)', 'Бомбардувальник (кролики)', 'Bomber (rabbits)'),
   'Nyul raketas pancelkocsi': T('Истребитель танков (кролики)', 'Винищувач танків (кролики)', 'Tank killer (rabbits)'),
   'Diszno hard tank': T('Тяжёлый танк (свиньи)', 'Важкий танк (свині)', 'Heavy tank (pigs)'),
   'Diszno mozsar': T('Мортира (свиньи)', 'Мортира (свині)', 'Mortar (pigs)'), 'Nyul mozsar': T('Мортира (кролики)', 'Мортира (кролики)', 'Mortar (rabbits)'),
@@ -56,6 +57,7 @@ const NAMES = {
 };
 // Пояснення правок пишемо в arc-units.js українською (мова коду проєкту); тут — короткі тексти для вікі трьома мовами.
 const WHY = {
+  'Nyul bombazo': T('Авиация кроликов: бомбардировщик прилетает и улетает (а значит, снова доступен) втрое быстрее. Авиаудар у кроликов стоит 100 очков вместо 50; у свиней авиация не менялась.', 'Авіація кроликів: бомбардувальник прилітає й відлітає (а отже, знову доступний) утричі швидше. Авіаудар у кроликів коштує 100 очок замість 50; у свиней авіація не змінювалась.', 'Rabbit aviation: the bomber arrives and leaves (so is available again) three times faster. A rabbit airstrike costs 100 points instead of 50; pig aviation is unchanged.'),
   'Nyul raketas pancelkocsi': T('Главная жалоба в сетевой игре: быстрее свиных танков и бьёт дальше, поэтому расстреливает их без ответа.', 'Головна скарга в мережевій грі: швидший за свинячі танки й б\'є далі, тож розстрілює їх без відповіді.', 'The top multiplayer complaint: faster than pig tanks and outranges them, so it kites them freely.'),
   'Diszno hard tank': T('Не успевал за кроличьими ракетными машинами.', 'Не встигав за кролячими ракетними машинами.', 'Could not keep up with the rabbit rocket cars.'),
   'Diszno mozsar': T('Мортиры почти не покупают: дорого за дальность 5.5.', 'Мортири майже не купують: дорого за дальність 5.5.', 'Mortars are rarely bought: too pricey for range 5.5.'),
@@ -69,7 +71,7 @@ const WHY = {
 
 const pages = [
   { id: 'au-overview', group: 'arc-units', title: T('Обзор', 'Огляд', 'Overview'),
-    summary: T('Новые юниты для обеих рас и правки баланса. Тестовая сборка, в мод-пак пока не входит.', 'Нові юніти для обох рас і правки балансу. Тестова збірка, у мод-пак поки не входить.', 'New units for both sides and balance fixes. Test build, not in the mod pack yet.'),
+    summary: T('Новые юниты для обеих рас. Обычные юниты — с обычными характеристиками и ценами.', 'Нові юніти для обох рас. Звичайні юніти — зі звичайними характеристиками й цінами.', 'New units for both sides. Stock units keep their stock stats and prices.'),
     blocks: [
       { type: 'callout', tone: 'warn', title: T('Тестовая сборка', 'Тестова збірка', 'Test build'),
         text: T('Нужен пропатченный swineHD.exe: в обычной игре только 13 типов юнитов на расу. Играть по сети можно, только если патч и файлы стоят у всех. «Проверить целостность файлов» в Steam вернёт оригинальный exe.',
@@ -98,12 +100,14 @@ const pages = [
     summary: T('Скорость, засады и хитрые гаджеты.', 'Швидкість, засідки й хитрі гаджети.', 'Speed, ambushes and clever gadgets.'),
     blocks: bal.units.filter(u => u.race === 'rabbit').flatMap(unitBlocks) },
   { id: 'au-balance', group: 'arc-units', title: T('Правки старых юнитов', 'Правки старих юнітів', 'Changes to old units'),
-    summary: T('Что поменялось у обычных юнитов и улучшений, и почему.', 'Що змінилося у звичайних юнітів і покращень, і чому.', 'What changed for the stock units and upgrades, and why.'),
-    blocks: bal.vanilla.flatMap(v => [
+    summary: T('Обычные юниты и улучшения — как в игре; изменена только авиация кроликов.', 'Звичайні юніти й покращення — як у грі; змінено лише авіацію кроликів.', 'Stock units and upgrades are as in the game; only rabbit aviation changed.'),
+    blocks: [
+      { type: 'paragraph', text: T('С версии 4.0.2 все обычные танки, машины и улучшения вернулись к своим характеристикам и ценам из игры (раньше были правки и общая наценка ×1.6). Новые юниты оценены рядом с обычными: обычный танк стоит 400.', 'З версії 4.0.2 усі звичайні танки, машини й покращення повернулися до своїх характеристик і цін з гри (раніше були правки й загальна націнка ×1.6). Нові юніти оцінено поруч зі звичайними: звичайний танк коштує 400.', 'Since 4.0.2 all stock tanks, vehicles and upgrades are back to their in-game stats and prices (before, there were tweaks and a ×1.6 price markup). New units are priced next to the stock ones: a regular tank costs 400.') },
+    ...bal.vanilla.flatMap(v => [
       { type: 'heading', text: NAMES[v.section] || T(v.section, v.section, v.section) },
       { type: 'paragraph', text: WHY[v.section] },
       { type: 'facts', facts: v.changes.map(c => ({ value: `${+c.from} → ${c.to}`, label: T(KEY_RU[c.key.toLowerCase()] || c.key, KEY_UK[c.key.toLowerCase()] || c.key, KEY_EN[c.key.toLowerCase()] || c.key) })) },
-    ]) },
+    ])] },
 ];
 
 w.groups = w.groups.filter(g => g.id !== 'arc-units');

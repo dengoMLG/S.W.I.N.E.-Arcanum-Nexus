@@ -24,19 +24,13 @@ const GAME = process.env.SWINE_DIR || 'A:/SteamLibrary/steamapps/common/SWINE HD
 const BS = String.fromCharCode(92);
 
 // ───────────── правки ванільних юнітів ─────────────
-// Мета: прибрати перекоси, на які скаржаться в мультиплеєрі, не міняючи характер юнітів.
+// #10 (23.11.2026): усі ванільні танки й покращення — з ванільними значеннями й цінами (колишні правки й
+// загальну шкалу цін ×1.6 прибрано). Лишається тільки авіація кроликів: бомбардувальник утричі швидший —
+// прилітає й відлітає (а значить, знову доступний) утричі швидше. Ціна авіаудару в exe: кролики 100, свині 50
+// (tools/re/patchgen/Caves.cs, airprice).
 const VANILLA = [
-  { s: 'Nyul raketas pancelkocsi', set: { Price: 650, MaxRange: 9, ReloadTime: 6.0, Ammo: 50 },
-    why: 'Кролячий винищувач танків з самонавідними ракетами — головна скарга гравців у мультиплеєрі: швидший за свинячі танки й б\'є далі за них, тож «кайтить» без відповіді. Дальність 10 → 9, перезарядка 5.5 → 6, боєзапас 60 → 50, ціна 600 → 650.' },
-  { s: 'Diszno hard tank', set: { MoveSpeed: 0.75, SpinSpeed: 36 },
-    why: 'Важкий танк свиней не наздоганяв кролячі ракетні машини. Швидкість 0.7 → 0.75, поворот корпусу 30 → 36.' },
-  { s: 'Diszno mozsar', set: { Price: 575, ReloadTime: 6.0 }, why: 'Мортири майже не купують: дорого за дальність 5.5. Ціна 650 → 575, перезарядка 6.5 → 6.' },
-  { s: 'Nyul mozsar', set: { Price: 575, ReloadTime: 6.0 }, why: 'Те саме для кролячої мортири.' },
-  { s: 'Diszno loveg', set: { Price: 550, Ammo: 64 }, why: 'Артилерія з дальністю 25 — найсильніший юніт гри. Ціна 500 → 550, боєзапас 80 → 64.' },
-  { s: 'Nyul loveg', set: { Price: 550, Ammo: 64 }, why: 'Те саме для кролячої артилерії.' },
-  { s: 'Upgrade armor', set: { Price: 75 }, why: 'Броня віднімається від кожного влучання, тож +1 броні вдвічі ріже урон броньовика (4 − 3 = 1). Ціна 50 → 75.' },
-  { s: 'Upgrade diszno sor', set: { Price: 35 }, why: 'Пиво: −10 % перезарядки за 25 очок — найвигідніше покращення гри. Ціна 25 → 35.' },
-  { s: 'Upgrade nyul repa', set: { Price: 35 }, why: 'Морквяний напій — те саме, 25 → 35.' },
+  { s: 'Nyul bombazo', set: { MoveSpeed: 14.4 },
+    why: 'Авіація кроликів: бомбардувальник прилітає й відлітає втричі швидше (4.8 → 14.4), щоб кролики встигали бомбити. Авіаудар коштує 100 замість 50 (exe).' },
 ];
 
 // Ключі «ролі» (зброя, спецздібність, дальність, досвід). Решта — «шасі»: модель, корпус, рух, звуки.
@@ -127,9 +121,9 @@ const UNITS = [
     set: { Price: 900, UpgradeMask: mask('fuel', 'sight', 'repair', 'turbo'), MaxHP: 45, FrontArmor: 0.5, BackArmor: 0, TopArmor: 0.5, Sight: 22,
            MinRange: 0, MaxRange: 0, Detector: 1, 'Always Visible': 1, MoveType: 2, ChainSpeed: null, MoveSpeed: 1.2, SpinSpeed: 100,
            SpecialType: 14, SpecialTime: null, SpecialSound1: null, SpecialSound2: null },   // 14 — своя кнопка «Радар»: обзор ×3 на 15 с
-    ru: ["Кролик-Ушастик","Машина разведки","Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше, потом 45 секунд перезарядки. Оружия нет, дорогой, и светится как ёлка: врагу виден всегда."],
-    en: ["Big Ears","Recon vehicle","A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight for 15 seconds, then a 45-second cooldown. No gun, expensive, and lit up like a Christmas tree: always visible to the enemy."],
-    uk: ["Кролик-Вухань","Машина розвідки","Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший, потім 45 секунд перезаряджання. Зброї немає, дорогий і світиться як ялинка: ворогові видно завжди."] },
+    ru: ["Кролик-Ушастик","Машина разведки","Фургон с огромными антеннами-ушами: обзор 22 и видит мины. Своя кнопка «Радар»: на 15 секунд обзор втрое больше и сквозь деревья и холмы, потом 45 секунд перезарядки. Оружия нет, и светится как ёлка: врагу виден всегда."],
+    en: ["Big Ears","Recon vehicle","A van with huge ear-shaped antennas: sight 22 and it spots mines. Its own Radar button: triple sight through trees and hills for 15 seconds, then a 45-second cooldown. No gun, and lit up like a Christmas tree: always visible to the enemy."],
+    uk: ["Кролик-Вухань","Машина розвідки","Фургон з величезними антенами-вухами: огляд 22 і бачить міни. Своя кнопка «Радар»: на 15 секунд огляд утричі більший і крізь дерева й пагорби, потім 45 секунд перезаряджання. Зброї немає, і світиться як ялинка: ворогові видно завжди."] },
 ];
 
 // Нові снаряди (секції, на які посилається Projectile=).
@@ -225,29 +219,15 @@ for (const v of VANILLA) {
   lines.splice(a + 1, b - a - 1, ...applySet(body, v.set));
   balance.vanilla.push({ section: v.s, why: v.why, changes: Object.entries(v.set).map(([k, val]) => ({ key: k, from: before[k.toLowerCase()] ?? null, to: val })) });
 }
-// Загальна шкала цін: при стартових 4000 SP у ванілі виходило 10 танків — армії роздуті. Усе, що
-// продається (юніти, причепи, покращення), дорожчає в PRICE_SCALE разів, округлення до 25 (покращення — до 5).
-const PRICE_SCALE = 1.6;
-{
-  const scaled = [];
-  for (let i = 0; i < lines.length; i++) {
-    const m = lines[i].match(/^\s*\[(.+)\]/); if (!m) continue;
-    const name = m[1]; if (!/^(Diszno |Nyul |Upgrade |Ammo$|Fuel$|Service$)/.test(name)) continue;
-    const [a0, b0] = sectionRange(lines, name), body = lines.slice(a0 + 1, b0), p = props(body);
-    if (!p.price || !(+p.price > 0)) continue;
-    const step = name.startsWith('Upgrade') ? 5 : 25, nv = Math.round(+p.price * PRICE_SCALE / step) * step;
-    lines.splice(a0 + 1, b0 - a0 - 1, ...applySet(body, { Price: nv }));
-    scaled.push({ section: name, from: +p.price, to: nv });
-  }
-  balance.priceScale = { factor: PRICE_SCALE, sections: scaled };
-}
-// Ціни бойових юнітів із симуляції (tools/balance-sim.js → modpack/balance/prices.json).
+// Загальної шкали цін більше нема (#10): ванільні ціни — як у грі.
+const PRICE_SCALE = 1;
+balance.priceScale = { factor: PRICE_SCALE, sections: [] };
+// Ціни нових юнітів — modpack/balance/prices.json (у ванільній шкалі: звичайний танк 400).
 const PRICES = JSON.parse(fs.readFileSync(path.join(__dirname, '../modpack/balance/prices.json'), 'utf8')).prices;
 for (const [name, price] of Object.entries(PRICES)) {
   if (!lines.some(l => l.trim().toLowerCase() === `[${name}]`.toLowerCase())) continue;
   const [a0, b0] = sectionRange(lines, name), body = lines.slice(a0 + 1, b0), p = props(body);
   lines.splice(a0 + 1, b0 - a0 - 1, ...applySet(body, { Price: price }));
-  const sc = balance.priceScale.sections.find(x => x.section === name); if (sc) sc.to = price;
 }
 const orig = base.split('\r\n');                        // донори — з оригіналу, без наших правок
 let added = '';
