@@ -156,6 +156,13 @@ var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     (0x47d111, "B001D2E08BCE0FB6C0", "B801000000D3E08BCE", "SMulti16 SendChatMessage (приват): 1 << слот — 32 біти"),
     (0x47d36d, "B001D2E08BCB0FB6C0", "B801000000D3E08BCB", "SMulti16 SendGameSettingsMessage: 1 << слот — 32 біти"),
     (0x47b4d7, "888D40FEFFFF", "898D40FEFFFF", "SMulti16 OnMessage: маска ретрансляції — dword (старші біти 0, а не сміття стеку)"),
+    (0x47d937, "B001D2E08BCB0FB6C0", "B801000000D3E08BCB", "SMulti16 SendSlotDataMessage: 1 << слот — 32 біти"),
+    (0x47d9a1, "B001D2E08BCF0FB6C0", "B801000000D3E08BCF", "SMulti16 SendSlotNumberMessage: 1 << слот — 32 біти"),
+    // SMulti::Update раз на 500 мс шле свій рядок графа (граф + слот·20h): для слота ≥ 8 це за межами об'єкта графа
+    // (падіння на 12+). «слот < 0 → пропустити» стає беззнаковим «слот ≥ 8 → пропустити».
+    (0x47df84, "83BF30250000007C", "83BF302500000873", "SMulti16 Update: зв'язність лише для слотів 0…7"),
+    // Гравець світу для слота 8 + k — армія k (другий командир). Єдиний виклик — SGameWorld::ServerInit → [world+434h].
+    (0x479f00, "8B8130250000C3CCCCCCCCCCCCCCCCCC", "8B813025000083F8087C0383E808C3CC", "SMulti16 GetLocalPlayerSlotNumber: слот ≥ 8 → слот − 8"),
 };
 Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центрування 9 стовпців");
 
@@ -163,6 +170,10 @@ Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центр�
 // тож на одному ПК більше 4 копій не запускалось (локальна перевірка, tools/mp-test.ps1).
 Imm(0x474404, 4, 20, "ConnectionManager::CreatePeer: спроб порту 4 → 20");
 Imm(0x473f53, 4, 20, "ConnectionManager::ConnectionManager (вбудований CreatePeer): спроб порту 4 → 20");
+// RakNet: Startup(maxConnections = 8) і SetMaximumIncomingConnections(7). У повній сітці на 16 гравців кожному треба
+// 15 з'єднань (+1 — сервер NAT), тож 8 → 20 і 7 → 15 (обидві копії: CreatePeer і вбудована в конструктор).
+foreach (var va in new uint[] { 0x473f3a, 0x4743eb }) Imm(va, 8, 20, "RakPeer::Startup: maxConnections 8 → 20 (16 гравців)");
+foreach (var va in new uint[] { 0x473f7a, 0x47443a }) Imm(va, 7, 15, "RakPeer::SetMaximumIncomingConnections 7 → 15 (16 гравців)");
 
 // SMulti: масиви «на 8 гравців» (слоти 70h, з'єднання, завантаження карти) → хвіст об'єкта на 16.
 // Список правок генерує tools/re/gen-smulti16.js (smulti16.json поруч із цим файлом).

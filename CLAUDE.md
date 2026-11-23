@@ -31,6 +31,7 @@
   - `modpack/voices/` — исходники 70 экранчиков `.anif` и 300 русских реплик `.mp3` (`voice_scripts.json`);
   - `tools/build-voices-mod.js` — собирает `modpack/mods/arcanum-voices` (`units.ini.arcpatch`, `reportanim/`, `sounds/speech/`);
   - `tools/install-voices.js` — ставит портреты и озвучку в игру поверх `Arcanum Units` (`--uninstall` откатывает).
+- Проверка сети на одном ПК: `tools/mp-run.ps1 -Count N -Wait S` (N копий, автостарт матча), затем `tools/mp-check.ps1 -Count N` (места, кадры, совпадение сумм мира); интерактивно — `tools/mp-test.ps1`.
 - `tools/swine-pak.js` — распаковщик .pak; `tools/build-modpack.js` — сборка пака; `tools/build-wiki.js` — сборка вики.
 - `modpack/` — исходники пака (`pack.json`, `mods/`, `wiki/`); `modpack/out/` — то, что выкладывается на CDN.
 - `_extracted/` — распакованные файлы игры, только локально, не распространять.

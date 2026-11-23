@@ -38,6 +38,7 @@ static class Caves
     public const int ZoneTable = SpawnScratch + 0x200;          // калюжі: Zones × {x, z, тік кінця, гравець}
     public const int ZoneIdx = ZoneTable + Zones * 16, FxId = ZoneIdx + 4;
     public const int AutoState = FxId + 0x100;                  // +autostart: 4 dword (мережа, не світ — детермінізм не зачіпає)
+    public const int CoState = AutoState + 0x10;                // біт k — у армії k на старті матчу був другий командир (слот 8 + k)
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
@@ -45,6 +46,8 @@ static class Caves
     const int RecvBase = 0x6EB8, ReqBase = 0x6EF8;                      // = smulti16.json layout.recv / req
     const int MySlot = 0x2530, ConnMgr = 0x28E4;                        // поля SMulti, що не переносились
     const uint CmSend = 0x474ad0;                                       // ConnectionManager::Send(conn, data, size, type), callee-clean
+    const uint HasFrameData = 0x47a430, GetFrameData = 0x479d50, GetSlots = 0x47a1c0, SendMePackets = 0x47d480,
+               ProcessPacket = 0x4a7940, StreamBufCtor = 0x500e00, StreamBufDtor = 0x501050;
     public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
         Func<string, uint> str, Func<string, uint> cst)
     {
@@ -450,6 +453,22 @@ static class Caves
             a.pushad(); a.cld();
             a.mov(edi, tableVa); a.xor(eax, eax); a.mov(ecx, (TableEntries * EntrySize) / 4); a.rep.stosd();
             a.mov(edi, ZONES); a.mov(ecx, Zones * 4 + 1); a.rep.stosd();                    // калюжі + індекс
+            // спільне командування: біт k = зайняті і слот k, і слот 8 + k (однаково в усіх — дані слотів з лобі)
+            {
+                var none = a.CreateLabel(); var lp = a.CreateLabel(); var nx = a.CreateLabel();
+                a.mov(__dword_ptr[tableVa + CoState], 0); a.mov(__dword_ptr[tableVa + CoState + 4], 0);
+                a.mov(ecx, __dword_ptr[esp + 0x24]); a.test(ecx, ecx); a.jz(none);       // SMulti* (у грі на одного — 0)
+                a.xor(esi, esi);
+                a.Label(ref lp);
+                a.imul(edx, esi, SlotSize);
+                a.mov(eax, __dword_ptr[ecx + edx + SlotBase + 0x60]); a.or(eax, __dword_ptr[ecx + edx + SlotBase + 0x64]); a.jz(nx);
+                a.mov(eax, __dword_ptr[ecx + edx + SlotBase + 8 * SlotSize + 0x60]); a.or(eax, __dword_ptr[ecx + edx + SlotBase + 8 * SlotSize + 0x64]); a.jz(nx);
+                a.bts(__dword_ptr[tableVa + CoState], esi);
+                a.Label(ref nx);
+                a.inc(esi); a.cmp(esi, 8); a.jl(lp);
+                Log("ARC: co-command armies mask %x", Imm(0), () => a.push(__dword_ptr[tableVa + CoState]));
+                a.Label(ref none);
+            }
             a.popad(); a.push(ebp); a.mov(ebp, esp); a.push(-1); a.jmp(0x4ac415UL);
         }
 
@@ -517,7 +536,14 @@ static class Caves
             a.cmp(__dword_ptr[ecx + 0x220], 0); a.jne(isHost);          // хост — як у StartGame
             a.mov(__dword_ptr[ST + 12], 1); a.jmp(done);                // клієнт: лише журнал кадрів
             a.Label(ref isHost);
-            a.call(GetFullSlots);
+            {   // зайняті людьми слоти з усіх 16 (GetFullSlots рахує лише 0…7 — армії)
+                var cl16 = a.CreateLabel(); var cn = a.CreateLabel();
+                a.xor(eax, eax); a.xor(esi, esi);
+                a.Label(ref cl16);
+                a.imul(edx, esi, SlotSize); a.mov(edx, __dword_ptr[ecx + edx + SlotBase]); a.and(edx, 0xF); a.cmp(edx, 2); a.jne(cn); a.inc(eax);
+                a.Label(ref cn);
+                a.inc(esi); a.cmp(esi, 16); a.jl(cl16);
+            }
             a.cmp(eax, __dword_ptr[ST + 4]); a.jl(reset);
             a.inc(__dword_ptr[ST + 8]); a.cmp(__dword_ptr[ST + 8], 300); a.jl(done);
             a.mov(__dword_ptr[ST + 12], 1); a.mov(__dword_ptr[ST + 8], 0);
@@ -598,6 +624,23 @@ static class Caves
             a.lea(edi, __dword_ptr[esi + ReqBase + 8 * 4]); a.mov(ecx, 8); a.rep.stosd();
             a.pop(eax); a.pop(ecx); a.pop(edi);
             a.jmp(0x478c61UL);
+        }
+
+        // Initialize (CreateInternetGame / CreateLanGame / JoinGame — і хост, і клієнт): те саме для 8…15. Конструктор
+        // ставить −1 лише conn[0…7], а ClearSlotArray у клієнта не викликається: conn[8] = 0 (сміття нового об'єкта) —
+        // і на дані порожнього слота 8 клієнт робив Disconnect(0), тобто відключався від хоста.
+        // Було (0x47a543): mov dword ptr [esi+2154h],0
+        var initTail = a.CreateLabel("inittail16");
+        {
+            a.Label(ref initTail);
+            a.mov(__dword_ptr[esi + 0x2154], 0);
+            a.push(edi); a.push(ecx); a.push(eax); a.cld();
+            a.lea(edi, __dword_ptr[esi + SlotBase + 8 * SlotSize]); a.xor(eax, eax); a.mov(ecx, 8 * SlotSize / 4); a.rep.stosd();
+            a.lea(edi, __dword_ptr[esi + RecvBase + 8 * 4]); a.mov(ecx, 8); a.rep.stosd();
+            a.lea(edi, __dword_ptr[esi + ReqBase + 8 * 4]); a.mov(ecx, 8); a.rep.stosd();
+            a.lea(edi, __dword_ptr[esi + ConnBase + 8 * 4]); a.or(eax, -1); a.mov(ecx, 8); a.rep.stosd();
+            a.pop(eax); a.pop(ecx); a.pop(edi);
+            a.jmp(0x47a54dUL);
         }
 
         // ── 14. SMulti, етап 3: розсилка слотам 8…15 і прийом від них ──
@@ -709,6 +752,127 @@ static class Caves
             a.push(ebp); a.mov(ebp, esp); a.sub(esp, 0x58); a.jmp(0x47e006UL);
         }
 
+        // SetPingToolTips (лобі): пінги з рядка графа «мій слот» — для слота ≥ 8 його немає, підказки не ставимо.
+        // Було (0x47da11): call UpdateConnectivity
+        var pingTips = a.CreateLabel("pingtips16");
+        {
+            a.Label(ref pingTips);
+            a.call(0x47e000UL);
+            a.cmp(__dword_ptr[ebx + MySlot], 8); a.jae(0x47db02UL);
+            a.jmp(0x47da16UL);
+        }
+
+        // ── 15. Етап 3: ворота, вихід гравця, бій ──
+        // Ворота: GetFullAndOpenSlots (→ SetMaxPlayers, ліміт вхідних) — відкриті й зайняті з 0…7 плюс місце другого
+        // командира 8 + k (відкрите чи зайняте) у кожної зайнятої людиною армії k. Було (0x479de0): mov edx,[ecx+2190h]
+        var gate16 = a.CreateLabel("gate16");
+        {
+            var lp = a.CreateLabel(); var one = a.CreateLabel(); var two = a.CreateLabel(); var nx = a.CreateLabel();
+            a.Label(ref gate16);
+            a.push(esi); a.push(edi); a.push(edx);
+            a.xor(eax, eax); a.xor(esi, esi);
+            a.Label(ref lp);
+            a.imul(edi, esi, SlotSize);
+            a.mov(edx, __dword_ptr[ecx + edi + SlotBase]); a.and(edx, 0xF); a.jz(one);
+            a.cmp(edx, 2); a.jne(nx);
+            a.mov(edx, __dword_ptr[ecx + edi + SlotBase + 8 * SlotSize]); a.and(edx, 0xF); a.jz(two);
+            a.cmp(edx, 2); a.jne(one);
+            a.Label(ref two); a.inc(eax);
+            a.Label(ref one); a.inc(eax);
+            a.Label(ref nx);
+            a.inc(esi); a.cmp(esi, 8); a.jl(lp);
+            a.pop(edx); a.pop(edi); a.pop(esi); a.ret();
+        }
+        // IsDisconnected(слот ≥ 8): «вийшов» = GUID слота порожній (RemovePlayerFromStage чистить його при відключенні);
+        // матриця кадрів і +2898h — лише 8. Було (0x47a880): push ebp / mov ebp,esp / push ebx / mov ebx,[ebp+8]
+        var isDisc16 = a.CreateLabel("isdisc16");
+        {
+            var orig = a.CreateLabel();
+            a.Label(ref isDisc16);
+            a.mov(eax, __dword_ptr[esp + 4]); a.cmp(eax, 8); a.jl(orig);
+            a.imul(eax, eax, SlotSize); a.mov(edx, __dword_ptr[ecx + eax + SlotBase + 0x60]); a.or(edx, __dword_ptr[ecx + eax + SlotBase + 0x64]);
+            a.sete(al); a.ret(8);
+            a.Label(ref orig);
+            a.push(ebp); a.mov(ebp, esp); a.push(ebx); a.mov(ebx, __dword_ptr[ebp + 8]); a.jmp(0x47a887UL);
+        }
+        // ConnectivityGraph::ClearPeerInfo(слот ≥ 8) писав би за таблицю 8×8 (OnDisconnected, OnMessage, OnSlotDataMessage).
+        // Було (0x475360): push ebp / mov ebp,esp / mov eax,[ebp+8]
+        var clearPeer16 = a.CreateLabel("clearpeer16");
+        {
+            var orig = a.CreateLabel();
+            a.Label(ref clearPeer16);
+            a.cmp(__dword_ptr[esp + 4], 8); a.jl(orig);
+            a.ret(4);
+            a.Label(ref orig);
+            a.push(ebp); a.mov(ebp, esp); a.mov(eax, __dword_ptr[ebp + 8]); a.jmp(0x475366UL);
+        }
+        // Бій (SGameWorld::ServerRefresh, lockstep). Кадри слота 8 + k виконуються від імені армії k, одразу після кадрів k.
+        // Правило однакове в усіх копіях: армія k у масці CoState (другий командир був на старті) і кадр слота 8 + k є.
+        // Чекаємо його, поки слот 8 + k зайнятий (вихід гравця — GUID порожній — не чекаємо).
+        // Очікування: обгортка HasFrameData(k, кадр). ebx = світ, esi = k, [ebp-20h] = тік. Було (0x4ae92a): call HasFrameData
+        var waitCo = a.CreateLabel("waitco");
+        {
+            var back = a.CreateLabel(); var gone = a.CreateLabel(); var wait = a.CreateLabel();
+            a.Label(ref waitCo);
+            a.call(HasFrameData);
+            a.test(al, al); a.jz(back);
+            a.bt(__dword_ptr[tableVa + CoState], esi); a.jae(back);
+            a.lea(eax, __dword_ptr[esi + 8]); a.push(__dword_ptr[ebx + 0x1B14]); a.push(eax); a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(HasFrameData);
+            a.test(al, al); a.jnz(back);
+            a.lea(eax, __dword_ptr[esi + 8]); a.push(eax); a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(GetSlots);
+            a.test(al, al); a.jz(gone);
+            // кадру ще немає: запит «надішліть пакети слота 8 + k» не частіше ніж раз на 200 мс (як для звичайних)
+            a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.mov(eax, __dword_ptr[ecx + esi * 4 + ReqBase + 8 * 4]); a.add(eax, 200);
+            a.cmp(eax, __dword_ptr[ebp - 0x20]); a.ja(wait);
+            a.mov(eax, __dword_ptr[ebx + 0x1B14]); a.dec(eax); a.push(eax); a.lea(eax, __dword_ptr[esi + 8]); a.push(eax); a.call(SendMePackets);
+            a.Label(ref wait);
+            a.xor(al, al); a.jmp(back);
+            a.Label(ref gone);
+            a.mov(al, 1);
+            a.Label(ref back);
+            a.jmp(0x4ae92fUL);
+        }
+        // Виконання: після ProcessPacket(k, буфер) — той самий буфер наново, GetFrameData(8 + k) і ProcessPacket(k).
+        // Було (0x4aeade): lea ecx,[ebp-54h] / mov dword ptr [ebp-4],-1 (далі виклик деструктора буфера)
+        var procCo = a.CreateLabel("procco");
+        {
+            var done = a.CreateLabel();
+            a.Label(ref procCo);
+            {   // перевірка синхронності для тестів: раз на 256 кадрів (у гравця 0) — сума стану юнітів у журнал.
+                // У всіх копій у тому самому кадрі вона має збігатися; «co» — скільки пакетів других командирів виконано.
+                var skipH = a.CreateLabel(); var lp = a.CreateLabel(); var nx = a.CreateLabel(); var end = a.CreateLabel();
+                a.test(esi, esi); a.jnz(skipH);
+                a.test(__dword_ptr[ebx + 0x1B14], 0xFF); a.jnz(skipH);
+                a.pushad();
+                a.xor(edx, edx); a.xor(ecx, ecx); a.mov(esi, __dword_ptr[ebx + 0x43C]);
+                a.Label(ref lp);
+                a.cmp(ecx, __dword_ptr[ebx + 0x440]); a.jge(end);
+                a.cmp(__dword_ptr[esi + ecx * 8], 0x7FFFFFFF); a.jne(nx);
+                a.mov(edi, __dword_ptr[esi + ecx * 8 + 4]); a.test(edi, edi); a.jz(nx);
+                a.rol(edx, 5); a.xor(edx, __dword_ptr[edi + 0x264]); a.rol(edx, 5); a.xor(edx, __dword_ptr[edi + 0x26C]);
+                a.rol(edx, 5); a.xor(edx, __dword_ptr[edi + 0x290]); a.add(edx, ecx);
+                a.Label(ref nx);
+                a.inc(ecx); a.jmp(lp);
+                a.Label(ref end);
+                Log("ARC: sync frame %d hash %x", Reg(edx), Mem(ebx, 0x1B14));
+                Log("ARC: sync co packets %d (mask %x)", () => a.push(__dword_ptr[tableVa + CoState]), () => a.push(__dword_ptr[tableVa + CoState + 4]));
+                a.popad();
+                a.Label(ref skipH);
+            }
+            a.bt(__dword_ptr[tableVa + CoState], esi); a.jae(done);
+            a.lea(eax, __dword_ptr[esi + 8]); a.push(__dword_ptr[ebx + 0x1B14]); a.push(eax); a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(HasFrameData);
+            a.test(al, al); a.jz(done);
+            a.lea(ecx, __dword_ptr[ebp - 0x54]); a.call(StreamBufDtor);
+            a.lea(ecx, __dword_ptr[ebp - 0x54]); a.call(StreamBufCtor);
+            a.lea(eax, __dword_ptr[ebp - 0x54]); a.push(eax); a.push(__dword_ptr[ebx + 0x1B14]); a.lea(eax, __dword_ptr[esi + 8]); a.push(eax);
+            a.mov(ecx, __dword_ptr[ebx + 0x1B10]); a.call(GetFrameData);
+            a.test(al, al); a.jz(done);
+            a.lea(eax, __dword_ptr[ebp - 0x54]); a.push(eax); a.push(esi); a.mov(ecx, ebx); a.call(ProcessPacket);
+            a.inc(__dword_ptr[tableVa + CoState + 4]);
+            a.Label(ref done);
+            a.lea(ecx, __dword_ptr[ebp - 0x54]); a.mov(__dword_ptr[ebp - 4], -1); a.jmp(0x4aeae8UL);
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -727,7 +891,8 @@ static class Caves
         hooks.Add(new Hook(0x479dc0, Convert.FromHexString("33C081C190210000"), "SMulti::GetFreePlayerSlot → 16 слотів (другий командир)", (uint)L(freeSlot16), 8));
         hooks.Add(new Hook(0x47b1ce, Convert.FromHexString("33DB8D8790210000"), "SMulti::OnIntroductionMessage: вільний слот → 16", (uint)L(introSlot), 8));
         hooks.Add(new Hook(0x478c57, Convert.FromHexString("C7860425000000000000"), "SMulti::ClearSlotArray: очистити слоти 8…15", (uint)L(clearSlots), 10));
-        hooks.Add(new Hook(0x47cd51, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
+        hooks.Add(new Hook(0x47a543, Convert.FromHexString("C7865421000000000000"), "SMulti::Initialize: слоти, conn, recv/req 8…15", (uint)L(initTail), 10));
+        hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));
         hooks.Add(new Hook(0x47b4bd, Convert.FromHexString("8B832C250000"), "SMulti::OnMessage: слот ≥ 8 приймає без маски", (uint)L(recv16), 6));
@@ -735,6 +900,12 @@ static class Caves
         hooks.Add(new Hook(0x47a406, Convert.FromHexString("8D04F789948198270000"), "SMulti::HandleLastReceivedFrameMessage: лише 8×8", (uint)L(lrfFn), 10));
         hooks.Add(new Hook(0x47c1f9, Convert.FromHexString("0F1047040FB6F1"), "SMulti::OnMessage 0x99: граф лише від слотів 0…7", (uint)L(graph16), 7));
         hooks.Add(new Hook(0x47e000, Convert.FromHexString("558BEC83EC58"), "SMulti::UpdateConnectivity: не для слота ≥ 8", (uint)L(conn16), 6));
+        hooks.Add(new Hook(0x47da11, Convert.FromHexString("E8EA050000"), "SMulti::SetPingToolTips: не для слота ≥ 8", (uint)L(pingTips), 5));
+        hooks.Add(new Hook(0x479de0,Convert.FromHexString("8B9190210000"), "SMulti::GetFullAndOpenSlots: + місця других командирів (ворота)", (uint)L(gate16), 6));
+        hooks.Add(new Hook(0x47a880, Convert.FromHexString("558BEC538B5D08"), "SMulti::IsDisconnected: слот ≥ 8 — за GUID", (uint)L(isDisc16), 7));
+        hooks.Add(new Hook(0x475360, Convert.FromHexString("558BEC8B4508"), "ConnectivityGraph::ClearPeerInfo: лише 0…7", (uint)L(clearPeer16), 6));
+        hooks.Add(new Hook(0x4ae92a, Convert.FromHexString("E801BBFCFF"), "SGameWorld::ServerRefresh: чекати кадр другого командира", (uint)L(waitCo), 5));
+        hooks.Add(new Hook(0x4aeade, Convert.FromHexString("8D4DACC745FCFFFFFFFF"), "SGameWorld::ServerRefresh: кадр слота 8 + k → армія k", (uint)L(procCo), 10));
         var frameOld = new Dictionary<uint, string> {
             [0x477f02] = "83C02F8975F0", [0x477f32] = "83C02F03C2", [0x477f5e] = "83C02F03C2", [0x479d74] = "83C02F03C7",
             [0x47a451] = "83C02F03C7", [0x47d235] = "83C02F03C1", [0x47dee3] = "83C02F03C6" };

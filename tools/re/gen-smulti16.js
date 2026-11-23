@@ -94,6 +94,19 @@ for (const [va, kind, old, nw, why] of [
   // етап 3: пошук слота за GUID — до 16 (другий командир)
   [0x47a19f, 'imm', 8, 16, 'GetSlotFromRaknetGuid: slots16 цикл до 16'],
   [0x47b1bd, 'imm', 8, 16, 'OnIntroductionMessage: slots16 GUID-цикл до 16'],
+  // етап 3: перевірки номера слота і цикли за GUID/слотами — до 16
+  [0x479fe8, 'imm', 7, 15, 'GetPlayerColor: slots16 слот ≤ 15'],
+  [0x47a05d, 'imm', 7, 15, 'GetPlayerName: slots16 слот ≤ 15'],
+  [0x47a0c8, 'imm', 7, 15, 'GetPlayerRace: slots16 слот ≤ 15'],
+  [0x47a1f8, 'imm', 7, 15, 'GetTeam: slots16 слот ≤ 15'],
+  [0x47ad50, 'imm', 8, 16, 'OnConnectionSuccessful: slots16 GUID-цикл до 16 (conn[слот])'],
+  [0x47adfd, 'imm', 8, 16, 'OnDisconnected: slots16 GUID-цикл до 16'],
+  [0x47c2b0, 'imm', 8, 16, 'OnPeerConnected: slots16 GUID-цикл до 16 (conn[слот])'],
+  [0x47c94d, 'imm', 8, 16, 'RemovePlayerFromStage: slots16 GUID-цикл до 16'],
+  [0x47b3aa, 'imm', 8, 16, 'OnIntroductionMessage: slots16 SendSlotData новачку — усі 16'],
+  [0x478a6d, 'imm', 8, 16, 'ClearReadyForAllPlayers: slots16 дані слотів — усі 16'],
+  [0x47d028, 'imm', 8, 16, 'SendChatMessage: slots16 пошук адресата за іменем — 16'],
+  [0x47d130, 'imm', 8, 16, 'SendChatMessage: slots16 розсилка по слотах — 16'],
   // з'єднання як [this+edi+206Ch], edi = 100h + 4·i (поза діапазоном сканера 2100…2600 — знайдено вручну)
   [0x47cc8b, 'disp', 0x206C, L.conn - 0x100, 'SendBroadcastMessage: slots16 conn[i] через +100h'],
   [0x47d5c3, 'disp', 0x206C, L.conn - 0x100, 'SendMessageInternal: slots16 conn[i] через +100h'],
@@ -111,6 +124,31 @@ for (const [va, kind, old, nw, why] of [
   [0x4aea2c, 'disp', 0xE0, 0xC0, 'SGameWorld::ServerRefresh: slots16 recv = p − 40h'],
   [0x4aea7e, 'imm', 0x28E4, L.req + 0x20, 'SGameWorld::ServerRefresh: slots16 кінець циклу (8 гравців світу)'],
 ]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why: why.split(': ')[0] + (why.includes('slots16') ? ': ' : ': frames ') + why.split(': ')[1] });
+
+// ConnectionManager: таблиця ConnectionInfo[8] (+310h, по 28h) — ідентифікатор з'єднання = індекс у ній. Хост із
+// 9+ гравцями тримає більше 8 з'єднань, тож таблицю — у хвіст об'єкта на CM.entries записів (розмір 460h → CM.size).
+const CM = { old: 0x310, end: 0x450, base: 0x460, entries: 20, oldSize: 0x460 };
+CM.size = CM.base + CM.entries * 0x28;
+const CM_RX = '@ConnectionManager@@|^\\?\\?0ConnectionManager@@';
+for (const line of run('fields', '310', '44f', CM_RX).split('\n')) {
+  if (!line.trim()) continue;
+  const [vaS, fn, ins] = line.split('\t');
+  const m = /\+([0-9A-F]+)h\]/.exec(ins); if (!m) continue;
+  const d = parseInt(m[1], 16); if (d < CM.old || d >= CM.end) continue;
+  edits.push({ va: '0x' + parseInt(vaS, 16).toString(16), kind: 'disp', old: '0x' + d.toString(16), new: '0x' + (d - CM.old + CM.base).toString(16),
+    why: `${fn.replace(/@@.*/, '')}: cm20 ConnectionInfo` });
+}
+for (const [va, kind, old, nw, why] of [
+  [0x4741b9, 'imm', 8, CM.entries, 'AddConnection: cm20 цикл'],
+  [0x474707, 'imm', 8, CM.entries, 'GetConnectionIndexFromGuid: cm20 цикл'],
+  [0x47472a, 'imm', 0x320, 0x320 - CM.old + CM.base, 'GetConnectionIndexFromSystemAddress: cm20 початок'],
+  [0x47474b, 'imm', 0x460, CM.base + 0x10 + CM.entries * 0x28, 'GetConnectionIndexFromSystemAddress: cm20 кінець'],
+  [0x473e95, 'imm', 8, CM.entries, '??0ConnectionManager: cm20 записів'],
+  ...[0x478d2f, 0x478e9b, 0x478f5f, 0x47a9b7, 0x47abeb].map(v => [v, 'imm', CM.oldSize, CM.size, 'SMulti: cm20 sizeof(ConnectionManager)']),
+  // ConnectivityGraph (150h): SendBroadcastMessage/SendMessageInternal читають graph[(мій·8 + d)·4] — для слота 15
+  // це до +1FCh. Значення там ні на що не впливає (порівняння з TTL не спрацьовує), але читати треба в межах блоку.
+  ...[0x478d67, 0x478e25, 0x478ecd, 0x478f88, 0x47a9f3, 0x47ac27].map(v => [v, 'imm', 0x150, 0x200, 'SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h']),
+]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why });
 
 edits.sort((a, b) => parseInt(a.va) - parseInt(b.va));
 const seen = new Set();

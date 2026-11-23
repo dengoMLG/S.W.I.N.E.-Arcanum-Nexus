@@ -18,6 +18,300 @@
  },
  "edits": [
   {
+   "va": "0x473e8f",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "??0ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x473e95",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x14",
+   "why": "??0ConnectionManager: cm20 записів"
+  },
+  {
+   "va": "0x4741a6",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4741b9",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x14",
+   "why": "AddConnection: cm20 цикл"
+  },
+  {
+   "va": "0x4741d6",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4741dc",
+   "kind": "disp",
+   "old": "0x314",
+   "new": "0x464",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4741e2",
+   "kind": "disp",
+   "old": "0x320",
+   "new": "0x470",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4741ec",
+   "kind": "disp",
+   "old": "0x318",
+   "new": "0x468",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474200",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?AddConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4744d2",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Disconnect@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4744df",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?Disconnect@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x47453a",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Disconnect@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4746e7",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?GetConnectionIndexFromGuid@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474707",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x14",
+   "why": "GetConnectionIndexFromGuid: cm20 цикл"
+  },
+  {
+   "va": "0x47472a",
+   "kind": "imm",
+   "old": "0x320",
+   "new": "0x470",
+   "why": "GetConnectionIndexFromSystemAddress: cm20 початок"
+  },
+  {
+   "va": "0x47474b",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x790",
+   "why": "GetConnectionIndexFromSystemAddress: cm20 кінець"
+  },
+  {
+   "va": "0x474820",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?GetPing@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x47484d",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?GetPing@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474856",
+   "kind": "disp",
+   "old": "0x314",
+   "new": "0x464",
+   "why": "?GetPing@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474861",
+   "kind": "disp",
+   "old": "0x318",
+   "new": "0x468",
+   "why": "?GetPing@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474899",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?GetRaknetGuidForConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4748ae",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?GetRaknetGuidForConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x4748b4",
+   "kind": "disp",
+   "old": "0x314",
+   "new": "0x464",
+   "why": "?GetRaknetGuidForConnection@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474a7c",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?ReceiveFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474a96",
+   "kind": "disp",
+   "old": "0x320",
+   "new": "0x470",
+   "why": "?ReceiveFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474a9e",
+   "kind": "disp",
+   "old": "0x330",
+   "new": "0x480",
+   "why": "?ReceiveFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474ae1",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Send@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474aeb",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?Send@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474b9f",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?SendFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474bed",
+   "kind": "disp",
+   "old": "0x320",
+   "new": "0x470",
+   "why": "?SendFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474bf4",
+   "kind": "disp",
+   "old": "0x330",
+   "new": "0x480",
+   "why": "?SendFile@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474d15",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474d28",
+   "kind": "disp",
+   "old": "0x310",
+   "new": "0x460",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474d2e",
+   "kind": "disp",
+   "old": "0x314",
+   "new": "0x464",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474d38",
+   "kind": "disp",
+   "old": "0x318",
+   "new": "0x468",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474d3f",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474df4",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474dfe",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474e8b",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474fc3",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x474fd1",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
+   "va": "0x47502e",
+   "kind": "disp",
+   "old": "0x334",
+   "new": "0x484",
+   "why": "?Update@ConnectionManager: cm20 ConnectionInfo"
+  },
+  {
    "va": "0x477664",
    "kind": "imm",
    "old": "0x8",
@@ -599,6 +893,13 @@
    "why": "?ClearReadyForAllPlayers@SMulti: slot"
   },
   {
+   "va": "0x478a6d",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "ClearReadyForAllPlayers: slots16 дані слотів — усі 16"
+  },
+  {
    "va": "0x478a97",
    "kind": "disp",
    "old": "0x2194",
@@ -879,6 +1180,55 @@
    "why": "?ClearSlotArray@SMulti: slot"
   },
   {
+   "va": "0x478d2f",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x780",
+   "why": "SMulti: cm20 sizeof(ConnectionManager)"
+  },
+  {
+   "va": "0x478d67",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
+  },
+  {
+   "va": "0x478e25",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
+  },
+  {
+   "va": "0x478e9b",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x780",
+   "why": "SMulti: cm20 sizeof(ConnectionManager)"
+  },
+  {
+   "va": "0x478ecd",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
+  },
+  {
+   "va": "0x478f5f",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x780",
+   "why": "SMulti: cm20 sizeof(ConnectionManager)"
+  },
+  {
+   "va": "0x478f88",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
+  },
+  {
    "va": "0x478fa0",
    "kind": "disp",
    "old": "0x23c",
@@ -1117,6 +1467,13 @@
    "why": "?GetPing@SMulti: conn"
   },
   {
+   "va": "0x479fe8",
+   "kind": "imm",
+   "old": "0x7",
+   "new": "0xf",
+   "why": "GetPlayerColor: slots16 слот ≤ 15"
+  },
+  {
    "va": "0x479ff0",
    "kind": "disp",
    "old": "0x21f9",
@@ -1124,11 +1481,25 @@
    "why": "?GetPlayerColor@SMulti: slot"
   },
   {
+   "va": "0x47a05d",
+   "kind": "imm",
+   "old": "0x7",
+   "new": "0xf",
+   "why": "GetPlayerName: slots16 слот ≤ 15"
+  },
+  {
    "va": "0x0047a065",
    "kind": "imm",
    "old": "0x2194",
    "new": "0x28f4",
    "why": "?GetPlayerName@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47a0c8",
+   "kind": "imm",
+   "old": "0x7",
+   "new": "0xf",
+   "why": "GetPlayerRace: slots16 слот ≤ 15"
   },
   {
    "va": "0x47a0d0",
@@ -1178,6 +1549,13 @@
    "old": "0x21f4",
    "new": "0x2954",
    "why": "?GetSlots@SMulti: slot"
+  },
+  {
+   "va": "0x47a1f8",
+   "kind": "imm",
+   "old": "0x7",
+   "new": "0xf",
+   "why": "GetTeam: slots16 слот ≤ 15"
   },
   {
    "va": "0x47a200",
@@ -1257,11 +1635,39 @@
    "why": "?IsHostPlayerConnection@SMulti: slot"
   },
   {
+   "va": "0x47a9b7",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x780",
+   "why": "SMulti: cm20 sizeof(ConnectionManager)"
+  },
+  {
+   "va": "0x47a9f3",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
+  },
+  {
    "va": "0x47ab9d",
    "kind": "disp",
    "old": "0x216c",
    "new": "0x2ff0",
    "why": "?JoinGame@SMulti: conn"
+  },
+  {
+   "va": "0x47abeb",
+   "kind": "imm",
+   "old": "0x460",
+   "new": "0x780",
+   "why": "SMulti: cm20 sizeof(ConnectionManager)"
+  },
+  {
+   "va": "0x47ac27",
+   "kind": "imm",
+   "old": "0x150",
+   "new": "0x200",
+   "why": "SMulti: slots16 sizeof(ConnectivityGraph) 150h → 200h"
   },
   {
    "va": "0x47acb0",
@@ -1278,6 +1684,13 @@
    "why": "?OnConnectionSuccessful@SMulti: slot"
   },
   {
+   "va": "0x47ad50",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "OnConnectionSuccessful: slots16 GUID-цикл до 16 (conn[слот])"
+  },
+  {
    "va": "0x47ad5e",
    "kind": "disp",
    "old": "0x2168",
@@ -1290,6 +1703,13 @@
    "old": "0x21ec",
    "new": "0x294c",
    "why": "?OnDisconnected@SMulti: slot"
+  },
+  {
+   "va": "0x47adfd",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "OnDisconnected: slots16 GUID-цикл до 16"
   },
   {
    "va": "0x47ae10",
@@ -1381,6 +1801,13 @@
    "old": "0x2190",
    "new": "0x28f0",
    "why": "?OnIntroductionMessage@SMulti: slot (imm)"
+  },
+  {
+   "va": "0x47b3aa",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "OnIntroductionMessage: slots16 SendSlotData новачку — усі 16"
   },
   {
    "va": "0x0047b588",
@@ -1579,6 +2006,13 @@
    "why": "?OnPeerConnected@SMulti: slot"
   },
   {
+   "va": "0x47c2b0",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "OnPeerConnected: slots16 GUID-цикл до 16 (conn[слот])"
+  },
+  {
    "va": "0x47c2c2",
    "kind": "disp",
    "old": "0x2168",
@@ -1724,6 +2158,13 @@
    "old": "0x21f0",
    "new": "0x2950",
    "why": "?RemovePlayerFromStage@SMulti: slot"
+  },
+  {
+   "va": "0x47c94d",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "RemovePlayerFromStage: slots16 GUID-цикл до 16"
   },
   {
    "va": "0x47c980",
@@ -1936,6 +2377,13 @@
    "why": "?SendChatMessage@SMulti: slot"
   },
   {
+   "va": "0x47d028",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "SendChatMessage: slots16 пошук адресата за іменем — 16"
+  },
+  {
    "va": "0x47d0b0",
    "kind": "disp",
    "old": "0x21fa",
@@ -1955,6 +2403,13 @@
    "old": "0x21fa",
    "new": "0x295a",
    "why": "?SendChatMessage@SMulti: slot"
+  },
+  {
+   "va": "0x47d130",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "SendChatMessage: slots16 розсилка по слотах — 16"
   },
   {
    "va": "0x47d443",

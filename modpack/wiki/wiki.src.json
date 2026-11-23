@@ -239,9 +239,9 @@
               "en": "19 new 8-player multiplayer maps built from both campaigns: “Arc …” in the map list. Starts are split by side (teams start on their own side), with a CTF flag in the middle and 4 domination points."
             },
             {
-              "ru": "Ограничение: больше 8 игроков игра не держит — массивы игроков, туман войны, слоты лобби и сетевые пакеты рассчитаны ровно на 8.",
-              "uk": "Обмеження: понад 8 гравців гра не тримає — масиви гравців, туман війни, слоти лобі й мережеві пакети розраховані рівно на 8.",
-              "en": "Limit: the game cannot take more than 8 players — player arrays, fog of war, lobby slots and network packets are sized for exactly 8."
+              "ru": "Ограничение: больше 8 игроков игра не держит — массивы игроков, туман войны, слоты лобби и сетевые пакеты рассчитаны ровно на 8. (Снято совместным командованием — см. ниже.)",
+              "uk": "Обмеження: понад 8 гравців гра не тримає — масиви гравців, туман війни, слоти лобі й мережеві пакети розраховані рівно на 8. (Знято спільним командуванням — див. нижче.)",
+              "en": "Limit: the game cannot take more than 8 players — player arrays, fog of war, lobby slots and network packets are sized for exactly 8. (Lifted by co-command — see below.)"
             },
             {
               "ru": "Вики пака в лаунчере теперь общая для всего мод-пака: страницы по группам слева, свежая версия подтягивается с сайта, без сети — встроенная копия. Страницы Full ReBalance убраны: этого мода в паке v2 нет.",
@@ -254,9 +254,9 @@
               "en": "One PC can now run up to 20 copies of the game (was 4): each takes the next free port from 60500. This lets us test multiplayer without friends: tools/mp-test.ps1 starts a host and clients (game switches +host, +connect 127.0.0.1, +name). The 8-player match limit stays for now — the next step is co-command (up to 16 people, two per army). Stage one is done: the game’s network code now stores data for 16 slots; matches are still 8 players. For testing the game has a +autostart N switch: the host starts the match once N players join (tools/mp-test.ps1 -AutoStart). Unknown command-line switches no longer crash the game."
             },
             {
-              "ru": "Совместное командование (до 16 человек, по двое на армию), продолжение. Девятый игрок пока не зайдёт: предел подключений намеренно оставлен на 8. Сетевая часть уже отправляет сообщения местам 9–16 напрямую, а эти места принимают их. Счётчики «последний пакет» на 16 мест. Исправлена ошибка первого этапа: рассылка и проверка связи читали таблицу подключений по старому адресу. Проверено на 8 и 3 копиях игры: матч идёт как раньше.",
-              "uk": "Спільне командування (до 16 людей, по двоє на армію), продовження. Дев’ятий гравець поки не зайде: межу підключень навмисно лишено на 8. Мережева частина вже надсилає повідомлення місцям 9–16 напряму, а ці місця їх приймають. Лічильники «останній пакет» на 16 місць. Виправлено помилку першого етапу: розсилка й перевірка зв’язку читали таблицю підключень за старою адресою. Перевірено на 8 і 3 копіях гри: матч іде як раніше.",
-              "en": "Co-command (up to 16 people, two per army), continued. A 9th player still cannot join: the connection limit is deliberately kept at 8. The network code now sends messages straight to seats 9–16, and those seats accept them. “Last packet” counters cover 16 seats. Fixed a stage-one bug: broadcasting and the connectivity check read the connection table at its old address. Tested with 8 and 3 game copies: matches run as before."
+              "ru": "Совместное командование: до 16 человек в одном матче, по двое на армию. Когда все 8 мест заняты, девятый и следующие игроки становятся вторыми командирами армий 1–8 по порядку и управляют той же армией, что и её хозяин. Проверено на 16 копиях игры на одном ПК: матч идёт, состояние мира у всех копий совпадает. Пока ограничения: в списке лобби вторые командиры не видны (в чате — «X вступил в игру»); если хозяин армии уйдёт, армия выбывает, даже если второй командир остался; приказы второго командира ещё нужно проверить в живой игре. Попутно: сетевая часть держит до 20 соединений вместо 8, исправлена ошибка, из-за которой рассылка читала таблицу подключений по старому адресу.",
+              "uk": "Спільне командування: до 16 людей в одному матчі, по двоє на армію. Коли всі 8 місць зайняті, дев’ятий і наступні гравці стають другими командирами армій 1–8 по черзі й керують тією самою армією, що й її господар. Перевірено на 16 копіях гри на одному ПК: матч іде, стан світу в усіх копій збігається. Поки обмеження: у списку лобі другі командири не видні (у чаті — «X вступив у гру»); якщо господар армії піде, армія вибуває, навіть якщо другий командир лишився; накази другого командира ще треба перевірити в живій грі. Принагідно: мережева частина тримає до 20 з’єднань замість 8, виправлено помилку, через яку розсилка читала таблицю підключень за старою адресою.",
+              "en": "Co-command: up to 16 people in one match, two per army. Once all 8 seats are taken, the 9th and later players become second commanders of armies 1–8 in order and control the same army as its owner. Tested with 16 game copies on one PC: the match runs and the world state matches across all copies. Current limits: second commanders are not shown in the lobby list (chat says “X joined the game”); if the army’s owner leaves, the army is out even if the second commander stays; the second commander’s orders still need a live test. Also: the network layer now holds up to 20 connections instead of 8, and a bug where broadcasting read the connection table at its old address is fixed."
             }
           ]
         },
@@ -515,6 +515,33 @@
               "en": "The game uses UDP port 60500 for the match and 60600 for LAN discovery. If direct IP fails, the host should forward 60500 on the router."
             }
           ]
+        },
+        {
+          "type": "heading",
+          "key": "co-command",
+          "text": {
+            "ru": "Больше 8 игроков: совместное командование",
+            "uk": "Понад 8 гравців: спільне командування",
+            "en": "More than 8 players: co-command"
+          }
+        },
+        {
+          "type": "paragraph",
+          "key": "co-command-text",
+          "text": {
+            "ru": "С паком Arcanum Units в одном матче может быть до 16 человек. Первые восемь занимают армии как обычно. Девятый и следующие становятся вторыми командирами: девятый — у армии первого игрока, десятый — у второго и так далее, только у армий, где уже есть человек. Второй командир видит и ведёт ту же армию, что и хозяин: приказы обоих выполняются от имени одной армии. В списке лобби вторые командиры пока не показываются, о входе сообщает чат. Если хозяин армии выйдет, армия выбывает, даже если второй командир остался.",
+            "uk": "З паком Arcanum Units в одному матчі може бути до 16 людей. Перші вісім займають армії як звичайно. Дев’ятий і наступні стають другими командирами: дев’ятий — в армії першого гравця, десятий — другого і так далі, лише в арміях, де вже є людина. Другий командир бачить і веде ту саму армію, що й господар: накази обох виконуються від імені однієї армії. У списку лобі другі командири поки не показуються, про вхід повідомляє чат. Якщо господар армії вийде, армія вибуває, навіть якщо другий командир лишився.",
+            "en": "With the Arcanum Units pack a match can hold up to 16 people. The first eight take armies as usual. The 9th and later become second commanders: the 9th joins player 1’s army, the 10th player 2’s, and so on, only for armies that already have a human. A second commander sees and leads the same army as its owner: both players’ orders run for that one army. Second commanders are not shown in the lobby list yet; chat announces them. If the army’s owner leaves, the army is out even if the second commander stays."
+          }
+        },
+        {
+          "type": "paragraph",
+          "key": "lag-text",
+          "text": {
+            "ru": "Почему всех подлагивает, если у одного плохой интернет: бой идёт шагами, и каждый компьютер выполняет следующий шаг только когда получил приказы всех игроков. Опоздавшие пакеты игра перезапрашивает у других игроков. Сервер-посредник это не лечит: пакеты медленного игрока пришли бы так же поздно, а остальным добавился бы лишний путь до сервера. Помогает проводное подключение и закрытые загрузки у игрока с задержками.",
+            "uk": "Чому всіх підлагує, якщо в одного поганий інтернет: бій іде кроками, і кожен комп’ютер виконує наступний крок лише тоді, коли отримав накази всіх гравців. Запізнілі пакети гра перезапитує в інших гравців. Сервер-посередник цього не лікує: пакети повільного гравця прийшли б так само пізно, а решті додався б зайвий шлях до сервера. Допомагає дротове підключення й закриті завантаження в гравця із затримками.",
+            "en": "Why everyone stutters when one player has bad internet: the battle advances in steps, and each PC runs the next step only after it has every player’s orders. The game re-requests late packets from the other players. A relay server would not fix this: the slow player’s packets would arrive just as late, and everyone else would get an extra hop to the server. A wired connection and paused downloads on the lagging player’s side help."
+          }
         }
       ]
     },
