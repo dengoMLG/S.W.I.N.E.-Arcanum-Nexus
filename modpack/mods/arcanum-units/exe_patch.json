@@ -3,7 +3,7 @@
   "game": "S.W.I.N.E. HD Remaster v1.7.1846",
   "file": "swineHD.exe",
   "originalSha256": "ea0154eca35597bf7d1c10cb2cae2f1cfe07e3f468c3a4b757094ed06fe10097",
-  "patchedSha256": "32f6ebe487c3ae4c78057ab45b15e6ace7b9cc2648440ce761f661118cdf72fa",
+  "patchedSha256": "f919e07bc904c1ac13361aad929898e6bf960d17b39656d8f0b4fbd187da5c20",
   "patchedSize": 2070528,
   "unitClasses": {
     "rabbit": [
@@ -668,6 +668,22 @@
       "new": "D6FEFFFF",
       "why": "SQuickMarket grid: \u0446\u0435\u043D\u0442\u0440\u0443\u0432\u0430\u043D\u043D\u044F 9 \u0441\u0442\u043E\u0432\u043F\u0446\u0456\u0432",
       "ins": "add eax,0FFFFFF36h"
+    },
+    {
+      "va": "0x474404",
+      "offset": 473094,
+      "old": "04",
+      "new": "14",
+      "why": "ConnectionManager::CreatePeer: \u0441\u043F\u0440\u043E\u0431 \u043F\u043E\u0440\u0442\u0443 4 \u2192 20",
+      "ins": "cmp edi,4"
+    },
+    {
+      "va": "0x473f53",
+      "offset": 471893,
+      "old": "04",
+      "new": "14",
+      "why": "ConnectionManager::ConnectionManager (\u0432\u0431\u0443\u0434\u043E\u0432\u0430\u043D\u0438\u0439 CreatePeer): \u0441\u043F\u0440\u043E\u0431 \u043F\u043E\u0440\u0442\u0443 4 \u2192 20",
+      "ins": "cmp edi,4"
     },
     {
       "va": "0x4f4efe",

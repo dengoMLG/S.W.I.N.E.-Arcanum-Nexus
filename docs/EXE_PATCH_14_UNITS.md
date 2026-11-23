@@ -116,3 +116,27 @@ tools/re/bin-patchgen/patchgen.exe <swineHD.exe оригинал> <out> --classe
 1. В `SMulti` расширить слоты до 16: перенести массивы слотов и кадров в хвост объекта.
 2. В мире кадры брать от 16 слотов, а исполнять от игрока «слот mod 8» (`ProcessPacket`).
 3. Лобби: второй человек занимает пару к слоту.
+
+### Карта `SMulti` для 16 слотов (23.11.2026)
+
+Размер объекта `0x28F0`: `operator new(28F0h)` в пяти местах (`SSuperWindow::Play` ×2, `LoadMultiPreMenu`, `CreateHostFromCommandLine`, `ConnectToHostFromCommandLine`). Шаблон переноса массивов в хвост объекта — как у `SQuickMarket` в `Program.cs`.
+
+Что рассчитано на 8:
+
+| Смещение | Что | Размер |
+|---|---|---|
+| +234h | `SFrameHistory[8]` по 3E4h (= 83 × 12): кольцо кадров lockstep; индекс `(слот·83 + 47 + кадр % 83)·12`, 47·12 = 234h | 1F20h |
+| +216Ch | dword[8], в конструкторе −1 (соединение RakNet слота) | 20h |
+| +2190h | слоты по 70h: +0 статус, +3, +4, +38h, +48h, +58h, +5Ch, +60h/+64h GUID RakNet, +68h…+6Ah | 380h |
+| +2510h | dword[8], загрузка карты по игрокам (`ClearMapLoading`, `OnFile*`) | 20h |
+| +2754h | dword[8] чата (`ChatRoom_Start/End`, `DisplaySlotData`) | 24h |
+
+Многие циклы по слотам развёрнуты компилятором (по 8 копий тела: +2190, +2200, +2270 … +24A0), поэтому их придётся переписывать вставками, а не правкой одного числа.
+
+Функции, которые трогают эти массивы или сравнивают с 8: 62 метода `SMulti` (главные — `OnMessage`, `DisplaySlotData`, `ClearSlotArray`, `ChatRoom_Start`, `StartGame`, `StartSyncAfterDisconnect`, `SendBroadcastMessage`, `RemovePlayerFromStage`), а также `SGameWorld::ServerInit`, `SChatRoomMenu::Create`, `STitleRoom::Create`, `SGameView::LoadMap`.
+
+RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb) и в конструкторе `ConnectionManager` (0x473f3a) — до 8 соединений; для 16 игроков нужно 15+.
+
+#### Проверка на одном ПК
+
+У игры есть ключи командной строки (`SSuperWindow::Play`): `+host`, `+connect <ip>`, `+name <имя>`, `-loglevel`. Каждая копия занимает первый свободный UDP-порт с 60500. В оригинале было 4 попытки (`cmp edi,4` в 0x474404 и 0x473f53), патч ставит 20. Проверено: 6 копий на одном ПК, клиенты получают слоты 1–5 (журналы `SwineNet … STAGE_MSGID_SETSLOTID`). Скрипт — `tools/mp-test.ps1`: окно 800×600 на время проверки, потом `options.ini` возвращается.

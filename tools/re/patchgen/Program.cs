@@ -150,6 +150,11 @@ var raws = new List<(uint va, string oldHex, string newHex, string why)> {
 };
 Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центрування 9 стовпців");
 
+// Мережа: кожна копія гри бере перший вільний UDP-порт з 60500; оригінал пробує лише 4,
+// тож на одному ПК більше 4 копій не запускалось (локальна перевірка, tools/mp-test.ps1).
+Imm(0x474404, 4, 20, "ConnectionManager::CreatePeer: спроб порту 4 → 20");
+Imm(0x473f53, 4, 20, "ConnectionManager::ConnectionManager (вбудований CreatePeer): спроб порту 4 → 20");
+
 var outExe = (byte[])exe.Clone();
 var edits = new List<object>();
 foreach (var (va, why, pick) in patches)
