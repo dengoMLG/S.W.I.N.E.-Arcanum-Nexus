@@ -183,6 +183,11 @@
               "ru": "Добавлена полная русская озвучка всех 10 новых персонажей (300 уникальных реплик, 22050 Hz mono 48 kbps с радио-обработкой), разложенная по всем 2620 игровым ID событий (включая раненые варианты *w.mp3), и патч units.ini.arcpatch поверх Arcanum Units.",
               "uk": "Додано повну російську озвучку всіх 10 нових персонажів (300 унікальних реплік, 22050 Hz mono 48 kbps із радіо-обробкою), розкладену по всіх 2620 ігрових ID подій (включно з пораненими варіантами *w.mp3), та патч units.ini.arcpatch поверх Arcanum Units.",
               "en": "Added full Russian voice acting for all 10 new characters (300 unique lines, 22050 Hz mono 48 kbps with radio EQ) mapped across all 2,620 in-game event IDs (including wounded *w.mp3 variants), wired cleanly via units.ini.arcpatch on top of Arcanum Units."
+            },
+            {
+              "ru": "Обновлён фон главного меню: свинский город Штадт (на базе d_01_stahlstadt.scene) с новой техникой на бульваре (исправлен баг чёрных танков — текстуры витрины переведены в ver=0 DXT1) и новые портреты наших свинов и кроликов в правом нижнем углу меню (menu/faces/pig_face_01..12.png и rabbit_face_01..14.png).",
+              "uk": "Оновлено фон головного меню: свиняче місто Штадт (на базі d_01_stahlstadt.scene) з новою технікою на бульварі (виправлено баг чорних танків — текстури вітрини переведено у ver=0 DXT1) і нові портрети наших свиней та кроликів у правому нижньому кутку меню (menu/faces/pig_face_01..12.png та rabbit_face_01..14.png).",
+              "en": "Updated the main menu background to Pig City Stahlstadt (based on d_01_stahlstadt.scene) showcasing our new vehicles along the avenue (fixed the black-tank bug by encoding display textures as ver=0 DXT1), plus custom transparent portraits of our new pigs and rabbits peeking out in the bottom-right corner (menu/faces/pig_face_01..12.png and rabbit_face_01..14.png)."
             }
           ]
         },
@@ -2611,6 +2616,11 @@
               "ru": "Реплики разложены в gamedata/base/sounds/speech/<CharId>/ по всем 2620 числовым ID событий (включая раненые варианты *w.mp3), поэтому озвучка работает во всех локализациях игры без пропусков.",
               "uk": "Репліки розкладені в gamedata/base/sounds/speech/<CharId>/ по всіх 2620 числових ID подій (включно з пораненими варіантами *w.mp3), тож озвучка працює в усіх локалізаціях гри без пропусків.",
               "en": "Voice lines are mapped inside gamedata/base/sounds/speech/<CharId>/ across all 2,620 numeric event IDs (including wounded *w.mp3 variants), so playback works seamlessly in every game language."
+            },
+            {
+              "ru": "Главное меню: свинский город Штадт (missions/menu_background.scene + cameras.ini.arcpatch) с нашей техникой в цвете (DXT1 ver=0) и 26 прозрачных портретов новых свинов и кроликов для правого нижнего угла (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
+              "uk": "Головне меню: свиняче місто Штадт (missions/menu_background.scene + cameras.ini.arcpatch) з нашою технікою в кольорі (DXT1 ver=0) та 26 прозорих портретів нових свиней і кроликів для правого нижнього кутка (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png).",
+              "en": "Main menu: Pig City Stahlstadt (missions/menu_background.scene + cameras.ini.arcpatch) with our new vehicles in full color (DXT1 ver=0) and 26 transparent corner portraits of our new pigs and rabbits (menu/faces/pig_face_01..12.png, rabbit_face_01..14.png)."
             }
           ]
         },

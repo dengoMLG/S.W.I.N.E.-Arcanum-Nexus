@@ -56,6 +56,27 @@ function applyArcpatch(iniText, patchText) {
 
 const old = fs.existsSync(LIST) ? fs.readFileSync(LIST, 'utf8').split(/\r?\n/).filter(Boolean) : [];
 const gameUnitsIni = path.join(GAME, 'gamedata/base/units.ini');
+const gameCamerasIni = path.join(GAME, 'gamedata/base/cameras.ini');
+const BAK_CAM = path.join(ROOT, 'mods-test/arcvoices.cameras.ini.bak');
+
+function readPakEntry(pakPath, want) {
+  const wantLow = want.toLowerCase();
+  const fd = fs.openSync(pakPath, 'r'), h = Buffer.alloc(16); fs.readSync(fd, h, 0, 16, 0);
+  const isz = h.readUInt32LE(12), ib = Buffer.alloc(isz); fs.readSync(fd, ib, 0, isz, 16);
+  let p = 0, prev = ''; const par = {};
+  while (p < isz) {
+    const pre = ib[p], nl = ib[p + 1], src = (p in par) ? par[p] : prev;
+    const name = src.slice(0, pre) + ib.toString('latin1', p + 2, p + 2 + nl), q = p + 2 + nl;
+    const C = ib.readUInt32LE(q + 9); if (C) par[C] = name;
+    if (name.toLowerCase() === wantLow) {
+      const r = Buffer.alloc(ib.readUInt32LE(q + 4));
+      fs.readSync(fd, r, 0, r.length, 16 + isz + ib.readUInt32LE(q));
+      fs.closeSync(fd); return r;
+    }
+    prev = name; p = q + 13;
+  }
+  fs.closeSync(fd); return null;
+}
 
 if (process.argv.includes('--uninstall')) {
   for (const rel of old) {
@@ -66,8 +87,14 @@ if (process.argv.includes('--uninstall')) {
     fs.copyFileSync(BAK, gameUnitsIni);
     fs.rmSync(BAK, { force: true });
   }
+  if (fs.existsSync(BAK_CAM)) {
+    fs.copyFileSync(BAK_CAM, gameCamerasIni);
+    fs.rmSync(BAK_CAM, { force: true });
+  } else if (fs.existsSync(gameCamerasIni)) {
+    fs.rmSync(gameCamerasIni, { force: true });
+  }
   fs.rmSync(LIST, { force: true });
-  console.log(`removed ${old.length} voice/screen files and restored units.ini`);
+  console.log(`removed ${old.length} voice/screen/menu files and restored units.ini / cameras.ini`);
   process.exit(0);
 }
 
@@ -105,5 +132,16 @@ if (!fs.existsSync(BAK)) fs.copyFileSync(gameUnitsIni, BAK);
 const baseIni = fs.readFileSync(BAK, 'latin1');
 const patch = fs.readFileSync(path.join(SRC, 'gamedata/base/units.ini.arcpatch'), 'latin1');
 fs.writeFileSync(gameUnitsIni, applyArcpatch(baseIni, patch), 'latin1');
+
+const camPatchPath = path.join(SRC, 'gamedata/base/cameras.ini.arcpatch');
+if (fs.existsSync(camPatchPath)) {
+  if (fs.existsSync(gameCamerasIni) && !fs.existsSync(BAK_CAM)) fs.copyFileSync(gameCamerasIni, BAK_CAM);
+  const baseCam = fs.existsSync(BAK_CAM)
+    ? fs.readFileSync(BAK_CAM, 'latin1')
+    : readPakEntry(path.join(GAME, 'gamedata/base/base.pak'), 'cameras.ini').toString('latin1');
+  const camPatch = fs.readFileSync(camPatchPath, 'latin1');
+  fs.writeFileSync(gameCamerasIni, applyArcpatch(baseCam, camPatch), 'latin1');
+}
+
 fs.writeFileSync(LIST, files.join('\n') + '\n');
-console.log(`installed ${files.length} voice/screen files + patched units.ini into ${GAME}`);
+console.log(`installed ${files.length} voice/screen/menu files + patched units.ini & cameras.ini into ${GAME}`);

@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// Собирает живую 3D-сцену фона главного меню (missions/menu_background.scene) для мод-пака Arcanum Nexus:
+// Собирает живую 3D-сцену фона главного меню (missions/menu_background.scene) на базе свинского города Штадт / Stahlstadt
+// (missions/d_01_stahlstadt.scene) с нашей новой техникой Arcanum Nexus + cameras.ini:
 // 1. Делает статические пред-окрашенные копии всех 10 новых танков в objects/arcanum_menu/
-//    (запекает шейдер COLORIZE в RGB и ставит alpha=255, чтобы DOO2-объекты рендерились в ярких цветах фракций).
-// 2. Добавляет в DOO2-чанк menu_background.scene оба укреплённых лагеря (Свиньи слева, Кролики справа):
-//    все 10 новых танков, бункеры, палатки, гигантские флаги фракций, статую моркови, вертолёты, ежи и бочки.
-// 3. Обновляет освещение (LITE) для более атмосферной контрастной картинки.
+//    в формате ver=0 DXT1 (как у всех статических DOO2-объектов игры — без чёрного бага COLORIZE!).
+// 2. Берёт свинский город из missions/d_01_stahlstadt.scene (убирает юниты/триггеры кампании),
+//    наводит камеру на центральный бульвар и площадь с флагами свинов (X=92.0, Z=78.2),
+//    расчищает только деревья на самой площади и расставляет всю нашу новую технику по обе стороны меню.
+// 3. Обновляет [missions/menu_background.scene] в gamedata/base/cameras.ini.
 //
 // Запуск:
 //   node tools/build-menu-scene.js [out-root]
@@ -29,6 +31,14 @@ const to565 = c =>
   ((Math.round(clamp(c[1], 0, 1) * 63) & 63) << 5) |
   (Math.round(clamp(c[2], 0, 1) * 31) & 31);
 const from565 = v => [((v >> 11) & 31) / 31, ((v >> 5) & 63) / 63, (v & 31) / 31];
+
+const MENU_CAM = {
+  X: 92.0,
+  Z: 78.2,
+  Direction: -3.141593,
+  Elevation: -0.66,
+  Zoom: 23.0,
+};
 
 function readPakEntry(pakPath, want) {
   const wantLow = want.toLowerCase();
@@ -59,13 +69,13 @@ function readPakEntry(pakPath, want) {
   return null;
 }
 
-// Кодирование 512x512 RGBA Float32Array в S.W.I.N.E. DXT5 с полным набором mip-уровней
-function encodeDxt5(W, px) {
+// Кодирование WxW RGBA Float32Array в S.W.I.N.E. ver=0 DXT1 (непрозрачный формат статических DOO2-объектов)
+function encodeDxt1(W, px) {
   const parts = [];
   let curW = W, curPx = px;
   while (true) {
     const bw = Math.max(1, curW / 4);
-    const out = Buffer.alloc(bw * bw * 16);
+    const out = Buffer.alloc(bw * bw * 8);
     for (let by = 0; by < bw; by++) {
       for (let bx = 0; bx < bw; bx++) {
         const block = [];
@@ -85,15 +95,15 @@ function encodeDxt5(W, px) {
         }
         let c0 = to565(hi), c1 = to565(lo);
         if (c0 < c1) [c0, c1] = [c1, c0];
-        const p0 = from565(c0), p1 = from565(c1);
-        const pal = [
-          p0,
-          p1,
-          p0.map((v, k) => (2 * v + p1[k]) / 3),
-          p0.map((v, k) => (v + 2 * p1[k]) / 3),
-        ];
         let idx = 0;
-        if (c0 !== c1) {
+        if (c0 > c1) {
+          const p0 = from565(c0), p1 = from565(c1);
+          const pal = [
+            p0,
+            p1,
+            p0.map((v, k) => (2 * v + p1[k]) / 3),
+            p0.map((v, k) => (v + 2 * p1[k]) / 3),
+          ];
           block.forEach((c, n) => {
             let best = 0, bd = 1e9;
             for (let k = 0; k < 4; k++) {
@@ -102,14 +112,14 @@ function encodeDxt5(W, px) {
             }
             idx |= best << (2 * n);
           });
+        } else {
+          // c0 === c1: индекс 0 (непрозрачный), никогда не 3 (в DXT1 3 = прозрачный чёрный при c0 <= c1)
+          idx = 0;
         }
-        const o = (by * bw + bx) * 16;
-        // Полностью непрозрачная альфа (255) для статических DOO2-объектов
-        out[o] = 255;
-        out[o + 1] = 255;
-        out.writeUInt16LE(c0, o + 8);
-        out.writeUInt16LE(c1, o + 10);
-        out.writeUInt32LE(idx >>> 0, o + 12);
+        const o = (by * bw + bx) * 8;
+        out.writeUInt16LE(c0, o);
+        out.writeUInt16LE(c1, o + 2);
+        out.writeUInt32LE(idx >>> 0, o + 4);
       }
     }
     parts.push(out);
@@ -133,10 +143,10 @@ function encodeDxt5(W, px) {
   }
   const data = Buffer.concat(parts);
   const h = Buffer.alloc(16);
-  h.writeUInt32LE(3, 0);
+  h.writeUInt32LE(0, 0); // ver = 0 (как у sator.dxt / hordok_dobozok.dxt — без COLORIZE!)
   h.writeUInt32LE(W, 4);
   h.writeUInt32LE(W, 8);
-  h.write('DXT5', 12, 'latin1');
+  h.write('DXT1', 12, 'latin1');
   const body = Buffer.concat([h, data]);
   const th = Buffer.alloc(8);
   th.write('TEXT', 0, 'latin1');
@@ -183,27 +193,26 @@ function bakeTeamColorDxt(srcDxtPath, dstDxtPath, race, teamName) {
     px[i * 4 + 2] = clamp(b, 0, 1);
     px[i * 4 + 3] = 1.0;
   }
-  fs.writeFileSync(dstDxtPath, encodeDxt5(L0.w, px));
+  fs.writeFileSync(dstDxtPath, encodeDxt1(L0.w, px));
 }
 
-// 1. Статические модели всех 10 новых юнитов в objects/arcanum_menu/
+// 1. Статические модели всех 10 новых юнитов в objects/arcanum_menu/ (ver=0 DXT1)
 const objDir = path.join(OUT_BASE, 'objects/arcanum_menu');
 fs.mkdirSync(objDir, { recursive: true });
 
-// Текстуры гусениц рядом со статическими .4d
 for (const trk of ['lanctalp.dxt', 'ny_lanctalp.dxt']) {
   const data = readPakEntry(PAK_PATH, 'units/skinned/' + trk);
   if (data) fs.writeFileSync(path.join(objDir, trk), data);
 }
 
 const DISPLAY_TANKS = [
-  // Свиньи (левый фланг экрана, X = 36..42)
+  // Свиньи (левый бульвар свинского города)
   { id: 'd_svinczar',      lvl: 'elite',  race: 'pig',    team: 'red'    },
-  { id: 'd_hryakgrill',    lvl: 'normal', race: 'pig',    team: 'blue'   },
+  { id: 'd_hryakgrill',    lvl: 'normal', race: 'pig',    team: 'red'    },
   { id: 'd_osadnykaban',   lvl: 'normal', race: 'pig',    team: 'blue'   },
   { id: 'd_bombohryak',    lvl: 'normal', race: 'pig',    team: 'red'    },
   { id: 'd_gryazemet',     lvl: 'normal', race: 'pig',    team: 'blue'   },
-  // Кролики (правый фланг экрана, X = 23..29)
+  // Кролики (правый фланг — штурмовой рейд в свинский город)
   { id: 'ny_morkovsmerch', lvl: 'normal', race: 'rabbit', team: 'yellow' },
   { id: 'ny_zayacprizrak', lvl: 'elite',  race: 'rabbit', team: 'green'  },
   { id: 'ny_krotoboy',     lvl: 'normal', race: 'rabbit', team: 'yellow' },
@@ -217,20 +226,57 @@ for (const u of DISPLAY_TANKS) {
   fs.copyFileSync(path.join(srcDir, `${stem}.4d`), path.join(objDir, `${stem}.4d`));
   bakeTeamColorDxt(path.join(srcDir, `${stem}.dxt`), path.join(objDir, `${stem}.dxt`), u.race, u.team);
 }
-console.log(`Built ${DISPLAY_TANKS.length} pre-colorized display tanks in ${objDir}`);
+console.log(`Built ${DISPLAY_TANKS.length} DXT1 display tanks in ${objDir}`);
 
-// 2. Пересборка missions/menu_background.scene
-const origScene = readPakEntry(PAK_PATH, 'missions/menu_background.scene');
-if (!origScene) throw new Error('missions/menu_background.scene not found in base.pak');
-const dec = zlib.zstdDecompressSync(origScene.subarray(32));
+// 2. Пересборка missions/menu_background.scene на основе свинского города (missions/d_01_stahlstadt.scene)
+const origScene = readPakEntry(PAK_PATH, 'missions/d_01_stahlstadt.scene');
+if (!origScene) throw new Error('missions/d_01_stahlstadt.scene not found in base.pak');
+const cmprIdx = origScene.indexOf(Buffer.from('CMPR', 'latin1'));
+if (cmprIdx < 0) throw new Error('CMPR chunk not found in d_01_stahlstadt.scene');
+const cmprSz = origScene.readUInt32LE(cmprIdx + 4);
+const dec = zlib.zstdDecompressSync(origScene.subarray(cmprIdx + 12, cmprIdx + 8 + cmprSz));
 
-// Разбираем субчанки внутри INNR
+// Разбираем субчанки внутри INNR, отбрасываем кампанийные TRIG и приводим служебные чанки к формату menu_background.scene
+const VANILLA_PLAY = Buffer.from(
+  '0000000000000000000000000100000001000000010000000100000002000000' +
+  '0200000000000000020000000000000003000000000000000200000000000000' +
+  '0400000000000000020000000000000005000000000000000200000000000000' +
+  '0600000000000000020000000000000007000000000000000200000000000000',
+  'hex'
+);
 const chunks = [];
 let p = 8;
 while (p + 8 <= dec.length) {
   const tag = dec.toString('latin1', p, p + 4);
   const sz = dec.readUInt32LE(p + 4);
-  chunks.push({ tag, data: Buffer.from(dec.subarray(p + 8, p + 8 + sz)) });
+  const data = Buffer.from(dec.subarray(p + 8, p + 8 + sz));
+  if (tag === 'TRIG') {
+    // Без триггеров кампании в главном меню
+  } else if (tag === 'PLAY') {
+    chunks.push({ tag, data: Buffer.from(VANILLA_PLAY) });
+  } else if (tag === 'UNIT') {
+    chunks.push({ tag, data: Buffer.alloc(4) }); // 0 юнитов
+  } else if (tag === 'SP.3') {
+    // SGepard::ReadSign обязательно проверяет сигнатуру 123456 (0x0001e240) в начале SP.3!
+    const sp3 = Buffer.alloc(8);
+    sp3.writeUInt32LE(123456, 0);
+    sp3.writeUInt32LE(0, 4);
+    chunks.push({ tag, data: sp3 });
+  } else if (tag === 'AMBI' || tag === 'LAK3') {
+    chunks.push({ tag, data: Buffer.alloc(4) }); // без фоновых звуков/луж кампании
+  } else if (tag === 'LOC2') {
+    chunks.push({ tag, data: Buffer.from('00000000ffffffff00000000', 'hex') });
+  } else if (tag === 'CAM ') {
+    const camBuf = Buffer.alloc(20);
+    camBuf.writeFloatLE(MENU_CAM.X, 0);
+    camBuf.writeFloatLE(MENU_CAM.Z, 4);
+    camBuf.writeFloatLE(MENU_CAM.Direction, 8);
+    camBuf.writeFloatLE(MENU_CAM.Elevation, 12);
+    camBuf.writeFloatLE(MENU_CAM.Zoom, 16);
+    chunks.push({ tag, data: camBuf });
+  } else {
+    chunks.push({ tag, data });
+  }
   p += 8 + sz;
 }
 
@@ -253,69 +299,49 @@ for (let i = 0; i < origCount; i++) {
   origObjs.push({ name, x, y, z, ry, rx, rz, fl });
 }
 
-// Убираем пару камней из центра арены (X=32..35, Z=36..38), оставляя всё природное окружение
+// Оставляем все здания, фонари, урны и флаги свинского города; расчищаем только деревья/кусты/проволоку на самой
+// площадке расстановки техники (X = 78.5..105.5, Z = 72.5..85.0), чтобы танки стояли чисто на брусчатке/асфальте.
 const keptObjs = origObjs.filter(o => {
-  if (/kovek/i.test(o.name) && o.x >= 25 && o.x <= 40 && o.z >= 35 && o.z <= 48) return false;
+  if (o.x >= 78.5 && o.x <= 105.5 && o.z >= 72.5 && o.z <= 85.0) {
+    if (/(fa\d|nagyfa|normalfa|koparnagyfa|bokor|gaz\d|drotkerites|kicsi\d|fahordo|pad\.4d)/i.test(o.name)) {
+      return false;
+    }
+  }
   return true;
 });
 
 const addObj = (name, x, z, ry = 0, y = 0) => ({ name, x, y, z, ry, rx: 0, rz: 0, fl: 0 });
 
-// Ориентация камеры: X=32.5, Z=44.5, Direction=-3.1345 (смотрит в -Z):
-//   Экран СЛЕВА = большее X (36..43)
-//   Экран СПРАВА = меньшее X (21..29)
-//   Экран ВВЕРХУ (дальше) = меньшее Z (34..40)
-//   Экран ВНИЗУ (ближе) = большее Z (45..50)
-// У наших .4d танков нос смотрит в -Z.
-// Поворот ry: +1.95 направляет нос к -X и слегка на камеру (+Z) -> Свиньи слева смотрят вправо-на-зрителя!
-//             -1.95 направляет нос к +X и слегка на камеру (+Z) -> Кролики справа смотрят влево-на-зрителя!
+// Камера (X=92.0, Z=78.2, Direction=-π, смотрит в -Z на стену зданий Disznovaros на Z=68.5 и Z=75.0):
+//   Экран СЛЕВА от меню = X 96.5..105.0, Z 77.0..84.5  (наши 5 новых Свинов + флаги и вывеска Штадта)
+//   Экран СПРАВА от меню = X 79.0..87.5, Z 77.0..84.5  (наши 5 новых Кроликов — контрастный рейд на площади)
+//   Поворот ry: +2.05 = нос вправо-на-камеру (Свины слева), -2.05 = нос влево-на-камеру (Кролики справа).
 const ADDED_OBJS = [
-  // ── ЛЕВЫЙ ФЛАНГ (Свиньи — все 5 новых танков + укреплённый лагерь) ──
-  addObj('objects\\arcanum_menu\\d_svinczar_elite.4d',      38.4, 44.2,  1.95),
-  addObj('objects\\arcanum_menu\\d_hryakgrill_normal.4d',   37.6, 47.4,  2.15),
-  addObj('objects\\arcanum_menu\\d_osadnykaban_normal.4d',  39.2, 40.4,  1.75),
-  addObj('objects\\arcanum_menu\\d_bombohryak_normal.4d',   41.8, 45.8,  2.05),
-  addObj('objects\\arcanum_menu\\d_gryazemet_normal.4d',    41.6, 42.0,  1.85),
+  // ── ЛЕВЫЙ БУЛЬВАР ШТАДТА (наши 5 новых танков Свинов на переднем плане) ──
+  addObj('objects\\arcanum_menu\\d_svinczar_elite.4d',      97.8, 79.6,  2.15),
+  addObj('objects\\arcanum_menu\\d_hryakgrill_normal.4d',   97.4, 83.0,  2.35),
+  addObj('objects\\arcanum_menu\\d_osadnykaban_normal.4d', 101.2, 78.4,  1.95),
+  addObj('objects\\arcanum_menu\\d_bombohryak_normal.4d',  101.6, 82.2,  2.20),
+  addObj('objects\\arcanum_menu\\d_gryazemet_normal.4d',   104.2, 80.2,  2.00),
 
-  // Укрепления и атрибутика Свиней (слева и по гребню слева)
-  addObj('objects\\045 zaszlok\\nagy_zaszlo_pig_1.4d',      43.0, 38.6,  0.40),
-  addObj('objects\\05 epuletek\\bunker_1.4d',               43.2, 35.8,  1.25),
-  addObj('objects\\05 epuletek\\sator diszno.4d',           44.0, 46.8,  1.50),
-  addObj('objects\\06 tereptargyak\\d_helikopter_1k.4d',    40.8, 34.4,  2.20),
-  addObj('objects\\06 tereptargyak\\tanktuske.4d',          35.4, 42.5,  0.30),
-  addObj('objects\\06 tereptargyak\\tanktuske.4d',          35.2, 45.8,  0.80),
-  addObj('objects\\06 tereptargyak\\tanktuske2.4d',         35.8, 39.2,  0.50),
-  addObj('objects\\06 tereptargyak\\femhordo1.4d',          42.6, 43.4,  0.20),
-  addObj('objects\\06 tereptargyak\\femhordo2.4d',          42.9, 43.9,  1.10),
-  addObj('objects\\06 tereptargyak\\falada01.4d',           42.4, 47.4,  0.40),
-  addObj('objects\\06 tereptargyak\\falada02.4d',           41.6, 38.2, -0.30),
+  // Символика свинского города Штадт на бульваре
+  addObj('objects\\045 zaszlok\\nagy_zaszlo_pig_1.4d',      97.0, 74.8,  0.30),
+  addObj('objects\\045 zaszlok\\nagy_zaszlo_pig_1.4d',     104.6, 76.2, -0.25),
+  addObj('objects\\06 tereptargyak\\tabla - welcome to stahlstadt.4d', 98.4, 72.4, 3.14),
+  addObj('objects\\06 tereptargyak\\tanktuske.4d',          95.2, 81.2,  0.40),
+  addObj('objects\\06 tereptargyak\\femhordo1.4d',         104.5, 83.2,  0.30),
+  addObj('objects\\06 tereptargyak\\femhordo2.4d',         104.9, 82.6,  1.20),
 
-  // ── ПРАВЫЙ ФЛАНГ (Кролики — все 5 новых танков + укреплённый лагерь) ──
-  addObj('objects\\arcanum_menu\\ny_morkovsmerch_normal.4d', 26.8, 43.8, -1.95),
-  addObj('objects\\arcanum_menu\\ny_zayacprizrak_elite.4d',  27.4, 47.0, -2.15),
-  addObj('objects\\arcanum_menu\\ny_krotoboy_normal.4d',     25.8, 40.2, -1.75),
-  addObj('objects\\arcanum_menu\\ny_pitstop_normal.4d',      23.6, 45.2, -2.05),
-  addObj('objects\\arcanum_menu\\ny_ushastik_normal.4d',     23.8, 41.6, -1.85),
+  // ── ПРАВЫЙ БУЛЬВАР ШТАДТА (наши 5 новых машин Кроликов) ──
+  addObj('objects\\arcanum_menu\\ny_morkovsmerch_normal.4d', 86.2, 79.4, -2.15),
+  addObj('objects\\arcanum_menu\\ny_zayacprizrak_elite.4d',  86.8, 82.6, -2.35),
+  addObj('objects\\arcanum_menu\\ny_krotoboy_normal.4d',     83.2, 79.6, -1.95),
+  addObj('objects\\arcanum_menu\\ny_pitstop_normal.4d',      82.2, 82.8, -2.20),
+  addObj('objects\\arcanum_menu\\ny_ushastik_normal.4d',     79.4, 80.8, -2.05),
 
-  // Укрепления и атрибутика Кроликов (справа и по гребню справа)
-  addObj('objects\\045 zaszlok\\nagy_zaszlo_rabbit_1.4d',    22.0, 38.6, -0.40),
-  addObj('objects\\05 epuletek\\bunker_2.4d',                21.8, 35.8, -1.25),
-  addObj('objects\\05 epuletek\\sator01 nyul.4d',            21.2, 46.8, -1.50),
-  addObj('objects\\06 tereptargyak\\repaszobor.4d',          23.8, 37.6, -0.35),
-  addObj('objects\\06 tereptargyak\\ny_helikopter_1k.4d',    24.4, 34.4, -2.20),
-  addObj('objects\\06 tereptargyak\\tabla - mine.4d',        28.8, 40.6,  0.00),
-  addObj('objects\\06 tereptargyak\\tanktuske.4d',           29.6, 42.4,  0.40),
-  addObj('objects\\06 tereptargyak\\tanktuske.4d',           29.8, 45.8,  0.90),
-  addObj('objects\\06 tereptargyak\\sarkanyfog.4d',          29.2, 39.0,  0.00),
-  addObj('objects\\06 tereptargyak\\falada01.4d',            22.8, 43.2,  0.60),
-  addObj('objects\\06 tereptargyak\\falada02.4d',            22.6, 47.0, -0.50),
-  addObj('objects\\06 tereptargyak\\femhordo1.4d',           23.4, 39.2,  0.20),
-
-  // ── ДАЛЬНИЙ ГРЕБЕНЬ (верхний центр — виден над плашкой главного меню) ──
-  addObj('objects\\06 tereptargyak\\szogesdrot.4d',          32.5, 38.5,  0.00),
-  addObj('objects\\06 tereptargyak\\sarkanyfog.4d',          31.2, 37.2,  0.15),
-  addObj('objects\\06 tereptargyak\\sarkanyfog.4d',          33.8, 37.2, -0.15),
-  addObj('objects\\06 tereptargyak\\tanktuske2.4d',          32.5, 42.2,  0.70),
+  // Ещё один свинский флаг справа у зданий, чтобы город ощущался единым Штадтом
+  addObj('objects\\045 zaszlok\\nagy_zaszlo_pig_1.4d',      85.5, 74.6, -0.35),
+  addObj('objects\\06 tereptargyak\\tanktuske.4d',          88.6, 80.8, -0.30),
 ];
 
 const finalObjs = [...keptObjs, ...ADDED_OBJS];
@@ -337,13 +363,6 @@ for (const o of finalObjs) {
   dooParts.push(rec);
 }
 dooChunk.data = Buffer.concat(dooParts);
-
-// Чуть более выразительное атмосферное освещение (взято из ny_12_irontusk_castle — богаче тени и глубина дымки)
-const liteChunk = chunks.find(c => c.tag === 'LITE');
-if (liteChunk && liteChunk.data.length === 84) {
-  const vals = [20, 40, 15, 70, 0, 0, 75, 135, 50, 20, 50, 70, 10, 130, 0, 0, 0, 0, 0, 0, 20];
-  vals.forEach((v, i) => liteChunk.data.writeUInt32LE(v, i * 4));
-}
 
 // Сборка INNR и MAPF v100CMPR (zstd)
 const innerBody = Buffer.concat(
@@ -371,4 +390,22 @@ mapfHdr.writeUInt32LE(rawScene.length, 28);
 const outScene = path.join(OUT_BASE, 'missions/menu_background.scene');
 fs.mkdirSync(path.dirname(outScene), { recursive: true });
 fs.writeFileSync(outScene, Buffer.concat([mapfHdr, zstdData]));
+
+// 3. Обновляем cameras.ini (секция [missions/menu_background.scene])
+const origCamIni = readPakEntry(PAK_PATH, 'cameras.ini').toString('latin1');
+const newMenuCamBlock = [
+  '[missions/menu_background.scene]',
+  `X = ${MENU_CAM.X.toFixed(6)}`,
+  `Z = ${MENU_CAM.Z.toFixed(6)}`,
+  `Direction = ${MENU_CAM.Direction.toFixed(6)}`,
+  `Elevation = ${MENU_CAM.Elevation.toFixed(6)}`,
+  `Zoom = ${MENU_CAM.Zoom.toFixed(6)}`,
+].join('\r\n');
+const patchedCamIni = origCamIni.replace(
+  /\[missions\/menu_background\.scene\][\s\S]*?(?=\r?\n\[|\s*$)/i,
+  newMenuCamBlock
+);
+fs.writeFileSync(path.join(OUT_BASE, 'cameras.ini'), patchedCamIni, 'latin1');
+
 console.log(`Wrote ${outScene}: ${finalObjs.length} objects (${keptObjs.length} kept + ${ADDED_OBJS.length} added), ${(mapfHdr.length + zstdData.length)} bytes (raw ${rawScene.length})`);
+console.log(`Updated ${path.join(OUT_BASE, 'cameras.ini')} -> Stahlstadt (${MENU_CAM.X}, ${MENU_CAM.Z})`);
