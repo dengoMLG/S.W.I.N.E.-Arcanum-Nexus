@@ -36,6 +36,13 @@ if (ci > 0)
     using var cj = JsonDocument.Parse(File.ReadAllText(args[ci + 1]));
     classes = new[] { "rabbit", "pig" }.Select(r => cj.RootElement.GetProperty(r).EnumerateArray().Select(e => e.GetString()!).ToArray()).ToArray();
 }
+// Версія мода (рядок у головному меню): --modver X, інакше "version" з modpack/pack.json у поточній теці.
+var mvi = Array.IndexOf(args, "--modver");
+string? modVer = mvi > 0 ? args[mvi + 1] : null;
+if (modVer == null && File.Exists("modpack/pack.json"))
+    using (var pj = JsonDocument.Parse(File.ReadAllText("modpack/pack.json"))) modVer = pj.RootElement.GetProperty("version").GetString();
+if (modVer == null) { Console.Error.WriteLine("mod version unknown: pass --modver X or run from the repo root (modpack/pack.json)"); return 2; }
+Caves.ModLine = $"Arcanum Nexus Mod v{modVer}";
 int K = classes[0].Length, N = 13 + K;
 if (K < 1 || classes[1].Length != K) throw new Exception("rabbit and pig need the same number of new classes");
 if (N > 32) throw new Exception("too many classes");
@@ -56,7 +63,7 @@ var last = secs[^1];
 uint newRva = Align(last.va - imageBase + Math.Max(last.vs, last.rs), secAlign);
 uint newVa = imageBase + newRva;
 uint newRaw = Align((uint)exe.Length, fileAlign);
-var sec = new byte[0x2000];
+var sec = new byte[0x3000];                 // = SecRaw
 uint tableVa = newVa;                       // [2][N][64]
 for (int race = 0; race < 2; race++)
 {
@@ -83,7 +90,7 @@ var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
 uint caveVa = Align(dataPtr, 16);
-const uint SecRaw = 0x2000, LateStr = 0x1D00;                       // код і дані — у файлі; код до 0x1D00, далі — рядки журналу з вставок (~0x1F0 Б)
+const uint SecRaw = 0x3000, LateStr = 0x2C00;                       // код і дані — у файлі; код до 0x2C00, далі — рядки журналу з вставок (~0x210 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
 uint secVirtual = SecRaw + (uint)(Caves.TableEntries * Caves.EntrySize) + 0x1000;   // + дані розстановки стартів
 uint oldMaskVa = FindString("JSTAHRMLtafsM\0");
@@ -300,7 +307,7 @@ File.WriteAllBytes(Path.Combine(outDir, "swineHD.patched.exe"), withSec);
 var patchedSha = Convert.ToHexString(SHA256.HashData(withSec)).ToLowerInvariant();
 var json = new
 {
-    schema = 1, game = "S.W.I.N.E. HD Remaster v1.7.1846", file = "swineHD.exe",
+    schema = 1, game = "S.W.I.N.E. HD Remaster v1.7.1846", modVersion = modVer, file = "swineHD.exe",
     originalSha256 = OriginalSha, patchedSha256 = patchedSha, patchedSize = withSec.Length,
     unitClasses = new { rabbit = classes[0], pig = classes[1] }, classesPerRace = N,
     header = new[] {

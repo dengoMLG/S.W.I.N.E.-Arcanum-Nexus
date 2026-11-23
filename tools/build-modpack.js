@@ -10,8 +10,15 @@
 //       { "id": "full-rebalance", "name": "...", "version": "1.0", "author": "...",
 //         "url": "https://...zip", "sha256": "...", "size": 123 },        // готовий zip на CDN
 //       { "id": "my-mod", "name": "...", "version": "1", "author": "...",
-//         "source": "mods/my-mod" }                                      // тека з gamedata/...
+//         "source": "mods/my-mod" },                                     // тека з gamedata/...
+//       { "id": "arcanum-nexus", "name": "...", "author": "...",          // версія = версія паку
+//         "sources": ["mods/a", "mods/b"] }                              // кілька тек → один zip (файли не перетинаються)
 //     ] }
+//
+// Версія (правило: БУДЬ-ЯКА зміна вмісту → нова версія в pack.json, див. CLAUDE.md):
+//   modpack/version-lock.json пам'ятає {version, sha256} кожного мода. Якщо zip змінився, а версія та сама —
+//   збірка зупиняється. Нова версія → lock оновлюється. Версія з exe_patch.json (рядок у меню гри) має
+//   збігатися з версією мода, інакше теж зупинка: спершу перезібрати exe (patchgen бере її з pack.json).
 //
 // Для модів із "source" пакує теку в детермінований zip (фіксовані дати й порядок —
 // однаковий вміст дає однаковий sha256), рахує sha256/розмір і пише
@@ -27,6 +34,8 @@ const packFile = path.resolve(posArgs[0] || path.join(__dirname, '..', 'modpack'
 const outDir = path.resolve(posArgs[1] || path.join(path.dirname(packFile), 'out'));
 const pack = JSON.parse(fs.readFileSync(packFile, 'utf8'));
 const ID = /^[a-z0-9][a-z0-9._-]{0,63}$/;
+const LOCK = path.join(path.dirname(packFile), 'version-lock.json');
+const lock = fs.existsSync(LOCK) ? JSON.parse(fs.readFileSync(LOCK, 'utf8')) : {};
 
 function fail(msg) { console.error('ERROR: ' + msg); process.exit(1); }
 
@@ -84,23 +93,37 @@ if (!ID.test(pack.id || '') || !pack.version || !Array.isArray(pack.mods) || !pa
 fs.mkdirSync(path.join(outDir, 'mods'), { recursive: true });
 const seen = new Set(), mods = [];
 for (const m of pack.mods) {
+  if (m.version == null && (m.sources || m.source)) m.version = pack.version;
   if (!ID.test(m.id || '') || !ID.test(String(m.version || '')) || !m.name) fail(`mod ${m.id}: id/name/version required`);
   if (seen.has(m.id)) fail('duplicate mod id ' + m.id); seen.add(m.id);
   const entry = { id: m.id, name: m.name, version: String(m.version), author: m.author || '' };
-  if (m.source) {
-    const src = path.resolve(path.dirname(packFile), m.source);
-    const names = walk(src).filter(n => !n.endsWith('.md')).sort();
-    if (!names.length) fail(`${m.id}: ${src} is empty`);
-    for (const n of names) {
-      if (n === 'exe_patch.json') { checkExePatch(m.id, JSON.parse(fs.readFileSync(path.join(src, n), 'utf8'))); continue; }
-      if (!n.startsWith('gamedata/') || n.includes('..')) fail(`${m.id}: ${n} must be under gamedata/`);
-      if (n.endsWith('.arcpatch')) checkPatch(`${m.id}/${n}`, fs.readFileSync(path.join(src, n), 'latin1'));
+  if (m.source || m.sources) {
+    const from = new Map();   // ім'я в zip → файл на диску
+    for (const rel of m.sources || [m.source]) {
+      const src = path.resolve(path.dirname(packFile), rel);
+      const own = walk(src).filter(n => !n.endsWith('.md'));
+      if (!own.length) fail(`${m.id}: ${src} is empty`);
+      for (const n of own) { if (from.has(n)) fail(`${m.id}: ${n} is in two sources`); from.set(n, path.join(src, n)); }
     }
-    const data = zip(names.map(n => ({ name: n, data: fs.readFileSync(path.join(src, n)) })));
+    const names = [...from.keys()].sort();
+    for (const n of names) {
+      if (n === 'exe_patch.json') {
+        const p = JSON.parse(fs.readFileSync(from.get(n), 'utf8')); checkExePatch(m.id, p);
+        if (m.sources && p.modVersion !== entry.version) fail(`${m.id}: exe_patch.json is for v${p.modVersion}, mod is v${entry.version} — rebuild the exe (tools/re/bin-patchgen/patchgen.exe …)`);
+        continue;
+      }
+      if (!n.startsWith('gamedata/') || n.includes('..')) fail(`${m.id}: ${n} must be under gamedata/`);
+      if (n.endsWith('.arcpatch')) checkPatch(`${m.id}/${n}`, fs.readFileSync(from.get(n), 'latin1'));
+    }
+    const data = zip(names.map(n => ({ name: n, data: fs.readFileSync(from.get(n)) })));
+    const sha = crypto.createHash('sha256').update(data).digest('hex'), was = lock[m.id];
+    if (was && was.sha256 !== sha && was.version === entry.version)
+      fail(`${m.id}: content changed but version is still ${entry.version} — bump "version" in modpack/pack.json (and rebuild the exe)`);
+    lock[m.id] = { version: entry.version, sha256: sha };
     const file = `${m.id}-${entry.version}.zip`;
     fs.writeFileSync(path.join(outDir, 'mods', file), data);
     Object.assign(entry, { url: pack.baseUrl.replace(/\/?$/, '/') + file,
-      sha256: crypto.createHash('sha256').update(data).digest('hex'), size: data.length });
+      sha256: sha, size: data.length });
     console.log(`  ${m.id} ${entry.version}: ${names.length} files → mods/${file} (${data.length} B)`);
   } else {
     if (!/^https:\/\//.test(m.url || '') || !/^[0-9a-f]{64}$/.test(m.sha256 || '') || !(m.size > 0)) fail(`${m.id}: url/sha256/size required`);
@@ -111,7 +134,9 @@ for (const m of pack.mods) {
 }
 const manifest = { schema: 1, id: pack.id, name: pack.name || pack.id, version: String(pack.version), mods };
 fs.writeFileSync(path.join(outDir, 'modpack.json'), JSON.stringify(manifest, null, 2) + '\n');
-console.log(`pack ${pack.id} v${pack.version}: ${mods.length} mods → ${path.join(outDir, 'modpack.json')}`);
+for (const id of Object.keys(lock)) if (!seen.has(id)) delete lock[id];
+fs.writeFileSync(LOCK, JSON.stringify(lock, null, 2) + '\n');
+console.log(`pack ${pack.id} v${pack.version}:${mods.length} mods → ${path.join(outDir, 'modpack.json')}`);
 
 if (syncLauncher) {
   if (!fs.existsSync(LAUNCHER_MODPACK_CS)) {

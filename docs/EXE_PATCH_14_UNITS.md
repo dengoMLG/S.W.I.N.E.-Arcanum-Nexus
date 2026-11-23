@@ -232,3 +232,15 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 - Проверка: `tools/mp-run.ps1 -Count 10 -Kill 1 -KillAfter 40` (закрывает копию хозяина армии 1 посреди матча), затем `tools/mp-check.ps1 -Count 10`.
 - Склад `mods-test/arcunits` общий с другими инструментами: 23.11.2026 туда попала незаконченная сцена меню (`build-menu-scene.js`, «SGepard::ReadSign: … no sign here» при загрузке `menu_background.scene`), и `install-arcunits.js` поставил её в игру. Рабочая сцена возвращена в игру из версии скрипта в git.
 - Связность (матрица кадров, ретрансляция) для мест 8–15 не ведётся: им шлют только напрямую.
+
+## Версия мода в главном меню (23.11.2026, мод 4.0.0)
+
+`SMenu::Create(name, true)` (0x4f97f0) рисует версию игры: `SVersion::GetLongString` → «S.W.I.N.E. %s v%d.%d.%d», текстовый кадр `[SMenu+194h]` = `Board->CreateFrame(2, родитель, 5, 3, 0, 1)`, `SetText(кадр, 0, 0, текст)`, `SetTextColor(кадр, 0xF0F0F0)`. Текст GDI рисует с `DT_SINGLELINE` (0xC20 в `SBoard::RerenderText`), поэтому «
+» не годится — нужен второй кадр.
+
+- Хук `menuver` (0x4f9ac7, `mov ecx,[Board]`): `GetFrameSize` первого кадра → высота h; второй кадр `CreateFrame(2, родитель, 5, 3 + h, 0, 1)` с текстом `Caves.ModLine` = «Arcanum Nexus Mod v<версия из modpack/pack.json>» и тем же цветом. Кадр + 1 и `SMenu*` хранятся в `MenuVer` (= CoNames + 0x400 в таблице состояния); кадр прошлого меню убирается.
+- Хук `menuverdtor` (0x4f971d в `~SMenu`, `mov ecx,esi / call ~SDXWidget`): если кадр этого меню — `DestroyFrame`.
+- Вызовы `SIBoard` через vtable: +0 CreateFrame, +4 DestroyFrame, +1C GetFrameSize, +28 SetTextColor, +2C SetText; `Board` = [0x58d060]. `[SMenu+14h]->vt+70h` = `SDXWidget::GetFrame` (родитель).
+- Секция `.arcmod` выросла: 0x2000 → 0x3000 Б в файле (код до 0x2C00, строки журнала после), таблица состояния начинается с +0x3000.
+- `exe_patch.json` получил поле `modVersion`; `build-modpack.js` сверяет его с версией пака.
+- Проверено `tools/menu-shot.ps1` и переходом «Настройки» → назад: строка одна, игра не падает.

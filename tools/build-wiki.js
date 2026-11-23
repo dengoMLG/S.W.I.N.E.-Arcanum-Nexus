@@ -50,7 +50,7 @@ function parseIni(text) {
 
 // unitDiff → таблиця: розділи сторони (Diszno/Nyul), що змінені або нові в моді.
 function unitDiffTable(block, where) {
-  const modIni = path.join(ROOT, 'modpack/mods', block.mod, 'gamedata/base/units.ini');
+  const modIni = path.join(partDir.get(block.mod) || path.join(ROOT, 'modpack/mods', block.mod), 'gamedata/base/units.ini');
   if (!fs.existsSync(modIni)) { err(where, `unitDiff: нема ${path.relative(ROOT, modIni)}`); return null; }
   const mod = parseIni(fs.readFileSync(modIni, 'latin1'));
   const van = fs.existsSync(VANILLA_INI) ? parseIni(fs.readFileSync(VANILLA_INI, 'latin1')) : {};
@@ -81,7 +81,14 @@ function unitDiffTable(block, where) {
 const src = JSON.parse(fs.readFileSync(SRC, 'utf8'));
 const pack = JSON.parse(fs.readFileSync(PACK, 'utf8'));
 const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : null;
-const modIds = new Set(pack.mods.map(m => m.id));
+// Один мод може складатися з кількох тек ("sources", напр. arcanum-nexus = arcanum-units + arcanum-voices).
+// Групи й unitDiff можуть посилатися і на мод, і на теку-частину (ім'я теки).
+const partDir = new Map();
+for (const m of pack.mods) for (const rel of m.sources || (m.source ? [m.source] : [])) {
+  const dir = path.resolve(path.dirname(PACK), rel);
+  partDir.set(path.basename(dir), dir); if (!partDir.has(m.id)) partDir.set(m.id, dir);
+}
+const modIds = new Set([...pack.mods.map(m => m.id), ...partDir.keys()]);
 
 checkText('title', src.title);
 const groupIds = new Set();
@@ -140,7 +147,7 @@ const out = {
   pack: {
     id: pack.id,
     version: pack.version,
-    mods: pack.mods.map(m => ({ id: m.id, name: m.name, version: m.version })),
+    mods: pack.mods.map(m => ({ id: m.id, name: m.name, version: String(m.version ?? pack.version) })),
     size: manifest ? manifest.mods.reduce((a, m) => a + (m.size || 0), 0) : null,
   },
   groups: src.groups.filter(g => !dropped.has(g.id)).map(({ mod, ...g }) => g),

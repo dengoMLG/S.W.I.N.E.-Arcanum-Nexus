@@ -13,6 +13,15 @@
 
 В вики пишем только то, что подтверждено файлами мода или игры. Если в описании мода заявлено что-то, чего в файлах нет, так и пишем.
 
+## Обязательное правило: версия мода
+
+Весь пак — **один мод Arcanum Nexus Mod** (`arcanum-nexus`): юниты и патч exe (`modpack/mods/arcanum-units`) + экранчики, озвучка и меню (`modpack/mods/arcanum-voices`), склеиваются в один zip (`"sources"` в `modpack/pack.json`).
+
+- Версия одна — `"version"` в `modpack/pack.json` (пак = мод), сейчас вида `4.0.N`. **Любое изменение мода → новая версия** (мелкое — последнее число, крупное — среднее).
+- Версия видна в главном меню игры («Arcanum Nexus Mod vX» под версией игры — `menuver` в `tools/re/patchgen/Caves.cs`; `patchgen` берёт её из `pack.json`) и в лаунчере в списке модов. Поэтому после смены версии exe пересобирается всегда.
+- `tools/build-modpack.js` не даст ошибиться: zip изменился, а версия та же (`modpack/version-lock.json`) — стоп; версия в `exe_patch.json` не равна версии пака — стоп.
+- Новая версия записывается в «Что нового» вики.
+
 ## Карта проекта
 
 - `docs/MODDING_RECON.md` — что можно моддить, формат .pak, сеть.
@@ -33,6 +42,7 @@
   - `tools/build-voices-mod.js` — собирает `modpack/mods/arcanum-voices` (`units.ini.arcpatch`, `cameras.ini.arcpatch`, `reportanim/`, `sounds/speech/`, `menu/faces/`, `missions/menu_background.scene`, `objects/arcanum_menu/`);
   - `tools/install-voices.js` — ставит портреты, озвучку и меню в игру поверх `Arcanum Units` (`--uninstall` откатывает).
 - Проверка сети на одном ПК: `tools/mp-run.ps1 -Count N -Wait S` (N копий, автостарт матча), затем `tools/mp-check.ps1 -Count N` (места, кадры, совпадение сумм мира); интерактивно — `tools/mp-test.ps1`.
+- Полная сборка после изменения: поднять версию в `modpack/pack.json` → шаги 1–5 Arcanum Units (`patchgen` из корня репо, результат `swineHD.patched.exe` скопировать в `mods-test/arcunits/swineHD.exe`) → `tools/build-voices-mod.js` → `tools/build-modpack.js --sync-launcher` → `tools/build-wiki.js`. `tools/menu-shot.ps1` — снимок главного меню (проверить строку версии).
 - `tools/swine-pak.js` — распаковщик .pak; `tools/build-modpack.js [--sync-launcher]` — сборка пака (и синхронизация `SwineModpack.BuiltIn()` в лаунчере); `tools/build-wiki.js` — сборка вики.
 - `modpack/` — исходники пака (`pack.json`, `mods/`, `wiki/`); `modpack/out/` — то, что выкладывается на CDN.
 - `_extracted/` — распакованные файлы игры, только локально, не распространять.

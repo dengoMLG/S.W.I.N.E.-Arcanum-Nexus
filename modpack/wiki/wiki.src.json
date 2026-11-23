@@ -71,23 +71,23 @@
           "type": "facts",
           "facts": [
             {
-              "value": "v3",
+              "value": "4.0.0",
               "label": {
-                "ru": "версия пака",
-                "uk": "версія паку",
-                "en": "pack version"
+                "ru": "версия пака и мода",
+                "uk": "версія паку й мода",
+                "en": "pack & mod version"
               }
             },
             {
-              "value": "2",
+              "value": "1",
               "label": {
-                "ru": "мода в паке",
-                "uk": "моди у паку",
-                "en": "mods in the pack"
+                "ru": "мод в паке",
+                "uk": "мод у паку",
+                "en": "mod in the pack"
               }
             },
             {
-              "value": "≈206 MB",
+              "value": "≈213 MB",
               "label": {
                 "ru": "скачивается",
                 "uk": "завантажується",
@@ -116,19 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Units 2 — 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками: подрыв, мины на ходу, радар, грязевые лужи, залп; новые юниты в магазине кампании и в «Штабе»; 19 сетевых карт из кампании; патч swineHD.exe.",
-              "uk": "Arcanum Units 2 — 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками: підрив, міни на ходу, радар, грязьові калюжі, залп; нові юніти в магазині кампанії й у «Штабі»; 19 мережевих мап з кампанії; патч swineHD.exe.",
-              "en": "Arcanum Units 2 — 10 new units (5 per side) with their own mechanics: detonation, mines on the move, radar, mud puddles, salvo; new units in the campaign shop and Headquarters; 19 multiplayer maps from the campaign; a swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.0.0 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.0.0 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.0.0 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Arcanum Voices & Screens 1 — 70 анимированных экранчиков (reportanim .anif, 7 эмоций на каждый из 10 новых танков) и 300 уникальных русских реплик в духе оригинала (разложены по всем 2620 игровым ID событий, включая раненые варианты).",
-              "uk": "Arcanum Voices & Screens 1 — 70 анімованих екранчиків (reportanim .anif, 7 емоцій на кожен із 10 нових танків) і 300 унікальних російських реплік у дусі оригіналу (розкладені по всіх 2620 ігрових ID подій, включно з пораненими варіантами).",
-              "en": "Arcanum Voices & Screens 1 — 70 animated HUD portraits (reportanim .anif, all 7 emotions for each of the 10 new tanks) and 300 unique Russian voice lines in the spirit of the original (mapped across all 2,620 in-game event IDs, including wounded variants)."
-            },
-            {
-              "ru": "Full ReBalance в паке v2 больше нет: его страницы убраны из вики, исходники описания сохранены.",
-              "uk": "Full ReBalance у паку v2 більше немає: його сторінки прибрано з вікі, вихідні тексти опису збережено.",
-              "en": "Full ReBalance is no longer in pack v2: its pages are dropped from the wiki, the source texts are kept."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.0»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.0»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.0”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -162,6 +157,40 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.0.0",
+          "text": {
+            "ru": "Мод-пак 4.0.0 · Arcanum Nexus Mod · 23.11.2026",
+            "uk": "Мод-пак 4.0.0 · Arcanum Nexus Mod · 23.11.2026",
+            "en": "Mod pack 4.0.0 · Arcanum Nexus Mod · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Arcanum Units и Arcanum Voices & Screens объединены в один мод — Arcanum Nexus Mod. В паке теперь один мод; лаунчер при обновлении сам убирает старые два.",
+              "uk": "Arcanum Units і Arcanum Voices & Screens об'єднано в один мод — Arcanum Nexus Mod. У паку тепер один мод; лаунчер під час оновлення сам прибирає старі два.",
+              "en": "Arcanum Units and Arcanum Voices & Screens are merged into one mod, Arcanum Nexus Mod. The pack now has a single mod; the launcher removes the old two when it updates."
+            },
+            {
+              "ru": "Версия: одна на пак и мод, сейчас 4.0.0. Любое изменение мода — новая версия (сборка пака не пропустит изменённые файлы со старой версией).",
+              "uk": "Версія: одна на пак і мод, зараз 4.0.0. Будь-яка зміна мода — нова версія (збірка паку не пропустить змінені файли зі старою версією).",
+              "en": "Version: one for the pack and the mod, now 4.0.0. Every change to the mod gets a new version (the pack build refuses changed files under an old version)."
+            },
+            {
+              "ru": "В главном меню под «S.W.I.N.E. HD Remaster v1.7.1846» теперь строка «Arcanum Nexus Mod v4.0.0» (патч swineHD.exe). В лаунчере версия видна в списке модов.",
+              "uk": "У головному меню під «S.W.I.N.E. HD Remaster v1.7.1846» тепер рядок «Arcanum Nexus Mod v4.0.0» (патч swineHD.exe). У лаунчері версію видно у списку модів.",
+              "en": "The main menu now shows “Arcanum Nexus Mod v4.0.0” under “S.W.I.N.E. HD Remaster v1.7.1846” (swineHD.exe patch). The launcher shows the version in the mod list."
+            },
+            {
+              "ru": "Фон меню (сцена, модели, камера) больше не попадает в пак дважды.",
+              "uk": "Фон меню (сцена, моделі, камера) більше не потрапляє в пак двічі.",
+              "en": "The menu background (scene, models, camera) is no longer packed twice."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "arc-voices-1",

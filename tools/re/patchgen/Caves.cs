@@ -40,6 +40,9 @@ static class Caves
     public const int AutoState = FxId + 0x100;                  // +autostart: 4 dword (мережа, не світ — детермінізм не зачіпає)
     public const int CoState = AutoState + 0x10;                // біт k — у армії k на старті матчу був другий командир (слот 8 + k)
     public const int CoNames = CoState + 0x20;                  // лобі: 8 × 128 Б — «ім'я армії + ім'я другого командира»
+    public const int MenuVer = CoNames + 0x400;                 // головне меню: кадр рядка версії мода + 1, SMenu*
+    const uint BoardVar = 0x58d060, SDXWidgetDtor = 0x4885f0;   // SIBoard* Board; SDXWidget::~SDXWidget
+    public static string ModLine = "Arcanum Nexus Mod";         // Program.cs: «Arcanum Nexus Mod v<версія з modpack/pack.json>»
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
@@ -963,6 +966,50 @@ static class Caves
             a.lea(ecx, __dword_ptr[ebp - 0x54]); a.mov(__dword_ptr[ebp - 4], -1); a.jmp(0x4aeae8UL);
         }
 
+        // ── Головне меню: під рядком «S.W.I.N.E. HD Remaster v1.7.1846» — «Arcanum Nexus Mod v…» (ModLine). ──
+        // SMenu::Create(name, true) робить текстовий кадр [edi+194h] у (5, 3) і фарбує його 0xF0F0F0. Ми додаємо
+        // такий самий кадр на висоту першого рядка нижче. Текст гра малює з DT_SINGLELINE, тож «\n» не підходить.
+        // Кадр і його власник — у MenuVer (+0 кадр + 1, 0 = нема; +4 SMenu*); ~SMenu прибирає свій кадр.
+        // Було (0x4f9ac7): mov ecx,[Board] / далі push 0F0F0F0h; edi = SMenu*
+        var menuVer = a.CreateLabel("menuver");
+        {
+            var fresh = a.CreateLabel();
+            uint MV = tableVa + MenuVer;
+            a.Label(ref menuVer);
+            a.pushad();
+            a.mov(eax, __dword_ptr[MV]); a.test(eax, eax); a.je(fresh);          // кадр попереднього меню — прибрати
+            a.dec(eax); a.push(eax); a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx + 4]);
+            a.mov(__dword_ptr[MV], 0);
+            a.Label(ref fresh);
+            a.sub(esp, 8);                                                        // [esp] w, [esp+4] h першого рядка
+            a.lea(eax, __dword_ptr[esp + 4]); a.push(eax); a.lea(eax, __dword_ptr[esp + 4]); a.push(eax);
+            a.push(__dword_ptr[edi + 0x194]); a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx + 0x1C]);   // GetFrameSize
+            a.mov(ebx, __dword_ptr[esp + 4]); a.add(esp, 8); a.add(ebx, 3);
+            a.mov(ecx, __dword_ptr[edi + 0x14]); a.mov(eax, __dword_ptr[ecx]); a.call(__dword_ptr[eax + 0x70]);   // батьківський кадр (SDXWidget::GetFrame)
+            a.push(1); a.push(0); a.push(ebx); a.push(5); a.push(eax); a.push(2);
+            a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx]);            // CreateFrame(текст, батько, 5, 3 + h, 0, 1)
+            a.mov(esi, eax); a.lea(eax, __dword_ptr[esi + 1]); a.mov(__dword_ptr[MV], eax); a.mov(__dword_ptr[MV + 4], edi);
+            a.push(S(ModLine)); a.push(0); a.push(0); a.push(esi);
+            a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx + 0x2C]);     // SetText
+            a.push(0xF0F0F0); a.push(esi);
+            a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx + 0x28]);     // SetTextColor
+            a.popad();
+            a.mov(ecx, __dword_ptr[BoardVar]); a.jmp(0x4f9acdUL);
+        }
+        // ~SMenu: прибрати наш кадр, якщо він цього меню. Було (0x4f971d): mov ecx,esi / call ~SDXWidget; esi = SMenu*
+        var menuVerDtor = a.CreateLabel("menuverdtor");
+        {
+            var keep = a.CreateLabel();
+            uint MV = tableVa + MenuVer;
+            a.Label(ref menuVerDtor);
+            a.cmp(__dword_ptr[MV + 4], esi); a.jne(keep);
+            a.mov(eax, __dword_ptr[MV]); a.test(eax, eax); a.je(keep);
+            a.dec(eax); a.push(eax); a.mov(ecx, __dword_ptr[BoardVar]); a.mov(edx, __dword_ptr[ecx]); a.call(__dword_ptr[edx + 4]);   // DestroyFrame
+            a.mov(__dword_ptr[MV], 0); a.mov(__dword_ptr[MV + 4], 0);
+            a.Label(ref keep);
+            a.mov(ecx, esi); a.call(SDXWidgetDtor); a.jmp(0x4f9724UL);
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -982,6 +1029,8 @@ static class Caves
         hooks.Add(new Hook(0x47b1ce, Convert.FromHexString("33DB8D8790210000"), "SMulti::OnIntroductionMessage: вільний слот → 16", (uint)L(introSlot), 8));
         hooks.Add(new Hook(0x478c57, Convert.FromHexString("C7860425000000000000"), "SMulti::ClearSlotArray: очистити слоти 8…15", (uint)L(clearSlots), 10));
         hooks.Add(new Hook(0x47a543, Convert.FromHexString("C7865421000000000000"), "SMulti::Initialize: слоти, conn, recv/req 8…15", (uint)L(initTail), 10));
+        hooks.Add(new Hook(0x4f9ac7, Convert.FromHexString("8B0D60D05800"), "SMenu::Create: рядок «Arcanum Nexus Mod v…» під версією гри", (uint)L(menuVer), 6));
+        hooks.Add(new Hook(0x4f971d, Convert.FromHexString("8BCEE8CCEEF8FF"), "~SMenu: прибрати рядок версії мода", (uint)L(menuVerDtor), 7));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
         hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
         hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));

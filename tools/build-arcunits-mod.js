@@ -12,7 +12,9 @@
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), SRC = path.join(ROOT, 'mods-test/arcunits'), DST = path.join(ROOT, 'modpack/mods/arcanum-units');
-const SKIP = /(^|\/)(d|ny)_arctank[^/]*$/i;
+// Фон меню (сцена, моделі, камера) — частина tools/build-voices-mod.js (там камера як cameras.ini.arcpatch);
+// build-menu-scene.js без аргументу пише його в mods-test/arcunits, тож тут пропускаємо, щоб не було двох копій.
+const SKIP = /(^|\/)(d|ny)_arctank[^/]*$|^gamedata\/base\/(cameras\.ini|missions\/menu_background\.scene|objects\/arcanum_menu\/.*)$/i;
 // Спершу — чи є в моді/грі всі файли, на які посилаються наші ini (інакше — «Fatal error» уже в бою, як 23.11.2026).
 require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'check-arc-refs.js'), SRC], { stdio: 'inherit' });
 

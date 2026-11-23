@@ -1,22 +1,14 @@
 {
   "id": "arcanum-swine",
   "name": "Arcanum S.W.I.N.E.",
-  "version": "3",
+  "version": "4.0.0",
   "baseUrl": "https://arcanum-nexus.com/launcher/games/swine/mods/",
   "mods": [
     {
-      "id": "arcanum-units",
-      "name": "Arcanum Units",
-      "version": "2",
+      "id": "arcanum-nexus",
+      "name": "Arcanum Nexus Mod",
       "author": "Arcanum",
-      "source": "mods/arcanum-units"
-    },
-    {
-      "id": "arcanum-voices",
-      "name": "Arcanum Voices & Screens",
-      "version": "1",
-      "author": "Arcanum",
-      "source": "mods/arcanum-voices"
+      "sources": ["mods/arcanum-units", "mods/arcanum-voices"]
     }
   ]
 }
