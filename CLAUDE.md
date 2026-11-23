@@ -27,6 +27,10 @@
   4. `tools/re/bin-patchgen/patchgen.exe` — патч exe;
   5. `tools/build-arcunits-mod.js` — `modpack/mods/arcanum-units`.
   `tools/install-arcunits.js` ставит мод в игру для проверки, `--uninstall` возвращает оригинал.
+- Сборка Arcanum Voices & Screens:
+  - `modpack/voices/` — исходники 70 экранчиков `.anif` и 300 русских реплик `.mp3` (`voice_scripts.json`);
+  - `tools/build-voices-mod.js` — собирает `modpack/mods/arcanum-voices` (`units.ini.arcpatch`, `reportanim/`, `sounds/speech/`);
+  - `tools/install-voices.js` — ставит портреты и озвучку в игру поверх `Arcanum Units` (`--uninstall` откатывает).
 - `tools/swine-pak.js` — распаковщик .pak; `tools/build-modpack.js` — сборка пака; `tools/build-wiki.js` — сборка вики.
 - `modpack/` — исходники пака (`pack.json`, `mods/`, `wiki/`); `modpack/out/` — то, что выкладывается на CDN.
 - `_extracted/` — распакованные файлы игры, только локально, не распространять.
