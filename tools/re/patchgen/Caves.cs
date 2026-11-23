@@ -40,6 +40,7 @@ static class Caves
     public const int AutoState = FxId + 0x100;                  // +autostart: 4 dword (мережа, не світ — детермінізм не зачіпає)
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
+    const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
     public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
         Func<string, uint> str, Func<string, uint> cst)
     {
@@ -526,6 +527,27 @@ static class Caves
             a.push(ebp); a.mov(ebp, esp); a.sub(esp, 0x2C); a.jmp(0x47df46UL);
         }
 
+        // ── 12. SMulti: кільце кадрів lockstep на 16 слотів (SFrameHistory[16] з +FrameBase) ──
+        // Індекс запису = слот·83 + 47 + кадр % 83 (47·12 = 234h — стара база). «add eax,2Fh» — imm8, нову базу
+        // (FrameBase/12) на місці не записати, тож ці дві інструкції переносимо сюди. Інші місця — smulti16.json.
+        var frameSites = new (uint va, int len, Action tail, uint back)[] {
+            (0x477f02, 6, () => a.mov(__dword_ptr[ebp - 0x10], esi), 0x477f08),   // AssembleDataPacket: + mov [ebp-10h],esi
+            (0x477f32, 5, () => a.add(eax, edx), 0x477f37),                          // AssembleDataPacket (кадр-1)
+            (0x477f5e, 5, () => a.add(eax, edx), 0x477f63),                          // AssembleDataPacket (кадр-2)
+            (0x479d74, 5, () => a.add(eax, edi), 0x479d79),                          // GetFrameData
+            (0x47a451, 5, () => a.add(eax, edi), 0x47a456),                          // HasFrameData
+            (0x47d235, 5, () => a.add(eax, ecx), 0x47d23a),                          // SendFrameData
+            (0x47dee3, 5, () => a.add(eax, esi), 0x47dee8),                          // StoreFrameData
+        };
+        var frameLabels = new List<Label>();
+        foreach (var fs in frameSites)
+        {
+            var l = a.CreateLabel($"frame{fs.va:x}");
+            a.Label(ref l);
+            a.add(eax, FrameBase / 12); fs.tail(); a.jmp((ulong)fs.back);
+            frameLabels.Add(l);
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -541,6 +563,11 @@ static class Caves
         hooks.Add(new Hook(0x4ac410, Convert.FromHexString("558BEC6AFF"), "SGameWorld::ServerInit → скидання стану вставок", (uint)L(worldInit), 5));
         hooks.Add(new Hook(0x4e0191, Convert.FromHexString("8D55CC6A0152"), "SGameView::Create → атлас кнопок спецздібностей з типами 12–14", (uint)L(glyphs), 6));
         hooks.Add(new Hook(0x47df40, Convert.FromHexString("558BEC83EC2C"), "SMulti::Update → +autostart N (перевірка мережі)", (uint)L(autoStart), 6));
+        var frameOld = new Dictionary<uint, string> {
+            [0x477f02] = "83C02F8975F0", [0x477f32] = "83C02F03C2", [0x477f5e] = "83C02F03C2", [0x479d74] = "83C02F03C7",
+            [0x47a451] = "83C02F03C7", [0x47d235] = "83C02F03C1", [0x47dee3] = "83C02F03C6" };
+        for (int i = 0; i < frameSites.Length; i++)
+            hooks.Add(new Hook(frameSites[i].va, Convert.FromHexString(frameOld[frameSites[i].va]), "SMulti: індекс кадру → SFrameHistory[16]", (uint)L(frameLabels[i]), frameSites[i].len));
 
         var dec = Iced.Intel.Decoder.Create(32, new ByteArrayCodeReader(w.ToArray())); dec.IP = codeVa;
         var fmt = new MasmFormatter(); var so = new StringOutput(); var sb = new System.Text.StringBuilder();

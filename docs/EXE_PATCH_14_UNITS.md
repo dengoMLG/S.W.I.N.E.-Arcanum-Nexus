@@ -167,3 +167,13 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 - `tools/mp-test.ps1 -Count N -AutoStart`.
 
 Сравнение на 3 копиях, 60 с: без переноса массивов кадры 176 → 649 → 947; с переносом 189 → 665, 480 → 970 — матч идёт так же. Отдельные «Frame N Packet not arrived on time» бывают в обоих вариантах.
+
+#### Этап 2: кольцо кадров на 16 (23.11.2026)
+
+`SFrameHistory[8]` с +234h → `SFrameHistory[16]` с +3078h (база кратна 12: индекс 1034). Объект 0x6EB8.
+- длинные смещения — в `smulti16.json`: конструктор/деструктор/`??_G` (×8 → ×16, база), `Disconnect` (+23Ch → +3080h), `OnMessage` (`this+4`: +230h/+238h → +3074h/+307Ch), `StartSyncAfterDisconnect` (`add eax,234h`), `UpdateConnectivity` (`lea edx,[esi+234h]`);
+- семь мест с `add eax,2Fh` (imm8: `AssembleDataPacket` ×3, `GetFrameData`, `HasFrameData`, `SendFrameData`, `StoreFrameData`) — вставки `Caves.cs` §12: `add eax,1034` + вытесненная инструкция.
+
+Проверено с `+autostart`: 3 копии (кадры 183 → 675, 492 → 987) и 8 копий — у всех восьми кадры идут (до 1034 за минуту).
+
+Дальше (этап 3): сетевые функции на 16 слотов — `GetFreePlayerSlot`, `GetSlotFromRaknetGuid`, `ClearSlotArray`, `GetFullSlots`/`GetFullAndOpenSlots`, `SendBroadcastMessage`, `StartGame`, `StartSyncAfterDisconnect`, `CalculateConfirmedLastFrame`, `UpdateConnectivity`, `Disconnect`, `IsDisconnected`, проверки `cmp …,7/8` на индекс слота; мир — ожидание кадров и `ProcessPacket(slot & 7)`.

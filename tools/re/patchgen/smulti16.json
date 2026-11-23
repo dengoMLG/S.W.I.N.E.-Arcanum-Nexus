@@ -8,11 +8,25 @@
   "connOld": "0x216c",
   "mapl": "0x3030",
   "maplOld": "0x2510",
-  "frames": "0x3070",
+  "frames": "0x3078",
   "frameSize": "0x3e4",
-  "newSize": "0x6eb0"
+  "newSize": "0x6eb8"
  },
  "edits": [
+  {
+   "va": "0x477664",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "??0SMulti: frames SFrameHistory ×8 → ×16"
+  },
+  {
+   "va": "0x47766b",
+   "kind": "disp",
+   "old": "0x234",
+   "new": "0x3078",
+   "why": "??0SMulti: frames SFrameHistory база"
+  },
   {
    "va": "0x4777c2",
    "kind": "disp",
@@ -70,10 +84,38 @@
    "why": "??0SMulti: conn"
   },
   {
+   "va": "0x477945",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "??1SMulti: frames SFrameHistory ×8 → ×16"
+  },
+  {
+   "va": "0x47794c",
+   "kind": "disp",
+   "old": "0x234",
+   "new": "0x3078",
+   "why": "??1SMulti: frames SFrameHistory база"
+  },
+  {
+   "va": "0x477a5c",
+   "kind": "imm",
+   "old": "0x8",
+   "new": "0x10",
+   "why": "??_GSMulti: frames SFrameHistory ×8 → ×16"
+  },
+  {
+   "va": "0x477a63",
+   "kind": "disp",
+   "old": "0x234",
+   "new": "0x3078",
+   "why": "??_GSMulti: frames SFrameHistory база"
+  },
+  {
    "va": "0x00477a75",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "??_GSMulti@@UAEPAXI@Z+0xa5: sizeof(SMulti)"
   },
   {
@@ -833,6 +875,13 @@
    "why": "?ClearSlotArray@SMulti: slot"
   },
   {
+   "va": "0x478fa0",
+   "kind": "disp",
+   "old": "0x23c",
+   "new": "0x3080",
+   "why": "Disconnect: frames обхід кадрів (+8 ptr)"
+  },
+  {
    "va": "0x00478fad",
    "kind": "imm",
    "old": "0x216c",
@@ -1470,6 +1519,20 @@
    "why": "?OnMessage@SMulti: slot"
   },
   {
+   "va": "0x47c023",
+   "kind": "disp",
+   "old": "0x230",
+   "new": "0x3074",
+   "why": "OnMessage (this+4): frames кадр"
+  },
+  {
+   "va": "0x47c02c",
+   "kind": "disp",
+   "old": "0x238",
+   "new": "0x307c",
+   "why": "OnMessage (this+4): frames кадр +8"
+  },
+  {
    "va": "0x47c297",
    "kind": "disp",
    "old": "0x21ec",
@@ -2009,6 +2072,13 @@
    "why": "?StartGame@SMulti: slot"
   },
   {
+   "va": "0x47dd94",
+   "kind": "imm",
+   "old": "0x234",
+   "new": "0x3078",
+   "why": "StartSyncAfterDisconnect: frames база кадрів"
+  },
+  {
    "va": "0x47dde2",
    "kind": "disp",
    "old": "0x21f0",
@@ -2119,6 +2189,13 @@
    "old": "0x2504",
    "new": "0x2c64",
    "why": "?StartSyncAfterDisconnect@SMulti: slot"
+  },
+  {
+   "va": "0x47e02a",
+   "kind": "disp",
+   "old": "0x234",
+   "new": "0x3078",
+   "why": "UpdateConnectivity: frames база кадрів"
   },
   {
    "va": "0x47e048",
@@ -2250,70 +2327,70 @@
    "va": "0x004fb52e",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "?ConnectToHostFromCommandLine@SSuperWindow@@AAEXPBD0@Z+0x5e: sizeof(SMulti)"
   },
   {
    "va": "0x004fb7a7",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "?CreateHostFromCommandLine@SSuperWindow@@AAEXPBD@Z+0x57: sizeof(SMulti)"
   },
   {
    "va": "0x004fc967",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "?LoadMultiPreMenu@SSuperWindow@@AAEXXZ+0x57: sizeof(SMulti)"
   },
   {
    "va": "0x004ff737",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "?Play@SSuperWindow@@QAEXXZ+0x447: sizeof(SMulti)"
   },
   {
    "va": "0x004ff8a9",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "?Play@SSuperWindow@@QAEXXZ+0x5b9: sizeof(SMulti)"
   },
   {
    "va": "0x00542b30",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x00542b90",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x00542ed0",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x005432c2",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x005432ec",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb0",
+   "new": "0x6eb8",
    "why": "unwind: sizeof(SMulti)"
   }
  ]

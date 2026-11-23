@@ -22,7 +22,7 @@ const L = {
   slot: 0x28F0, slotOld: 0x2190, slotSize: 0x70,        // 16 × 70h = 700h
   conn: 0x2FF0, connOld: 0x216C,                          // dword[16]
   mapl: 0x3030, maplOld: 0x2510,                          // dword[16] (індекс слота, база 250Ch + slot·4)
-  frames: 0x3070, frameSize: 0x3E4,                       // SFrameHistory[16] — наступний етап
+  frames: 0x3078, frameSize: 0x3E4,                       // SFrameHistory[16]; база кратна 12 (індекс кадру ·12)
 };
 L.newSize = L.frames + 16 * L.frameSize;                  // 0x6EB0
 
@@ -73,6 +73,23 @@ for (const line of run('imm', '28f0').split('\n')) {
   const m = /^([0-9a-f]+)\s+\[([^\]]*)\]\s+push\s+28F0h/.exec(line.trim());
   if (m) edits.push({ va: '0x' + m[1], kind: 'imm', old: '0x28f0', new: '0x' + L.newSize.toString(16), why: `${m[2] || 'unwind'}: sizeof(SMulti)` });
 }
+
+// Кільце кадрів lockstep: SFrameHistory[8] по 3E4h з +234h → [16] з L.frames.
+// Тут — місця з довгими зміщеннями; 7 місць з коротким «add eax,2Fh» (індекс +47) — вставки в Caves.cs (FrameIdx).
+const FR = L.frames;
+for (const [va, kind, old, nw, why] of [
+  [0x477664, 'imm', 8, 16, '??0SMulti: SFrameHistory ×8 → ×16'],
+  [0x47766b, 'disp', 0x234, FR, '??0SMulti: SFrameHistory база'],
+  [0x477945, 'imm', 8, 16, '??1SMulti: SFrameHistory ×8 → ×16'],
+  [0x47794c, 'disp', 0x234, FR, '??1SMulti: SFrameHistory база'],
+  [0x477a5c, 'imm', 8, 16, '??_GSMulti: SFrameHistory ×8 → ×16'],
+  [0x477a63, 'disp', 0x234, FR, '??_GSMulti: SFrameHistory база'],
+  [0x478fa0, 'disp', 0x23C, FR + 8, 'Disconnect: обхід кадрів (+8 ptr)'],
+  [0x47c023, 'disp', 0x230, FR - 4, 'OnMessage (this+4): кадр'],
+  [0x47c02c, 'disp', 0x238, FR + 4, 'OnMessage (this+4): кадр +8'],
+  [0x47dd94, 'imm', 0x234, FR, 'StartSyncAfterDisconnect: база кадрів'],
+  [0x47e02a, 'disp', 0x234, FR, 'UpdateConnectivity: база кадрів'],
+]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why: why.split(': ')[0] + ': frames ' + why.split(': ')[1] });
 
 edits.sort((a, b) => parseInt(a.va) - parseInt(b.va));
 const seen = new Set();
