@@ -42,6 +42,9 @@ static class Caves
                GetFullSlots = 0x479e70, StartGame = 0x47dba0;
     const int FrameBase = 0x3078;                               // = smulti16.json layout.frames (кратне 12)
     const int SlotBase = 0x28F0, SlotSize = 0x70, ConnBase = 0x2FF0;   // = smulti16.json layout.slot / conn
+    const int RecvBase = 0x6EB8, ReqBase = 0x6EF8;                      // = smulti16.json layout.recv / req
+    const int MySlot = 0x2530, ConnMgr = 0x28E4;                        // поля SMulti, що не переносились
+    const uint CmSend = 0x474ad0;                                       // ConnectionManager::Send(conn, data, size, type), callee-clean
     public static (byte[] code, List<Hook> hooks, string listing) Build(uint dataVa, uint codeVa, uint tableVa,
         Func<string, uint> str, Func<string, uint> cst)
     {
@@ -591,8 +594,119 @@ static class Caves
             a.push(edi); a.push(ecx); a.push(eax);
             a.lea(edi, __dword_ptr[esi + SlotBase + 8 * SlotSize]); a.xor(eax, eax); a.mov(ecx, 8 * SlotSize / 4); a.cld(); a.rep.stosd();
             a.lea(edi, __dword_ptr[esi + ConnBase + 8 * 4]); a.or(eax, -1); a.mov(ecx, 8); a.rep.stosd();
+            a.lea(edi, __dword_ptr[esi + RecvBase + 8 * 4]); a.xor(eax, eax); a.mov(ecx, 8); a.rep.stosd();   // recv/req 8…15
+            a.lea(edi, __dword_ptr[esi + ReqBase + 8 * 4]); a.mov(ecx, 8); a.rep.stosd();
             a.pop(eax); a.pop(ecx); a.pop(edi);
             a.jmp(0x478c61UL);
+        }
+
+        // ── 14. SMulti, етап 3: розсилка слотам 8…15 і прийом від них ──
+        // Байт +2 заголовка — 8-бітна маска «кому доставити / кому ретранслювати», граф зв'язності — 8×8.
+        // Слотам 8…15 шлемо напряму (без ретрансляції) з маскою 0; слот ≥ 8 приймає все, що прийшло, і нічого не
+        // ретранслює. Втрата зв'язку другого командира поки не відстежується (docs/EXE_PATCH_14_UNITS.md, етап 3).
+        // Розсилка (SendBroadcastMessage, хвіст перед епілогом; esi = this, [ebp-14h] повідомлення, [ebp+10h] розмір,
+        // [ebp-18h] тип, [ebp+8] «і собі»). Було (0x47cd51): mov ecx,[ebp-4] / pop edi / pop esi
+        var sbmTail = a.CreateLabel("sbm16");
+        {
+            var direct = a.CreateLabel(); var lp = a.CreateLabel(); var nx = a.CreateLabel();
+            a.Label(ref sbmTail);
+            a.cmp(__dword_ptr[esi + MySlot], 8); a.jl(direct);
+            a.cmp(__byte_ptr[ebp + 8], 0); a.je(direct);
+            a.mov(ecx, __dword_ptr[ebp - 0x14]); a.mov(__byte_ptr[ecx + 2], 0);           // собі: оригінал ставить біт 1 << слот = 0
+            a.push(__dword_ptr[ebp + 0x10]); a.push(ecx); a.push(-1);
+            a.lea(ecx, __dword_ptr[esi + 4]); a.mov(eax, __dword_ptr[ecx]); a.call(__dword_ptr[eax + 0x10]);   // OnMessage(-1, msg, size)
+            a.Label(ref direct);
+            a.mov(edi, 8);
+            a.Label(ref lp);
+            a.cmp(edi, __dword_ptr[esi + MySlot]); a.je(nx);
+            a.imul(eax, edi, SlotSize); a.mov(edx, __dword_ptr[esi + eax + SlotBase + 0x60]); a.or(edx, __dword_ptr[esi + eax + SlotBase + 0x64]); a.jz(nx);
+            a.mov(eax, __dword_ptr[esi + edi * 4 + ConnBase]); a.cmp(eax, -1); a.je(nx);
+            a.mov(ecx, __dword_ptr[ebp - 0x14]); a.mov(__byte_ptr[ecx + 2], 0);
+            a.push(__dword_ptr[ebp - 0x18]); a.push(__dword_ptr[ebp + 0x10]); a.push(ecx); a.push(eax);
+            a.mov(ecx, __dword_ptr[esi + ConnMgr]); a.call(CmSend);
+            a.Label(ref nx);
+            a.inc(edi); a.cmp(edi, 16); a.jl(lp);
+            a.mov(ecx, __dword_ptr[ebp - 4]); a.pop(edi); a.pop(esi); a.jmp(0x47cd56UL);
+        }
+        // Адресна розсилка (SendMessageInternal, маска тепер 16 біт — Program.cs raws; ebx повідомлення, [ebp-1Ch] маска,
+        // [ebp-18h] тип, [ebp+0Ch] розмір, [ebp-10h] this). Біти 8…15 — напряму. Було (0x47d675): mov ecx,[ebp-4] / pop edi / pop esi
+        var smiTail = a.CreateLabel("smi16");
+        {
+            var lp = a.CreateLabel(); var nx = a.CreateLabel();
+            a.Label(ref smiTail);
+            a.mov(ecx, __dword_ptr[ebp - 0x10]); a.mov(esi, 8);
+            a.Label(ref lp);
+            a.cmp(esi, __dword_ptr[ecx + MySlot]); a.je(nx);
+            a.bt(__dword_ptr[ebp - 0x1C], esi); a.jae(nx);
+            a.mov(eax, __dword_ptr[ecx + esi * 4 + ConnBase]); a.cmp(eax, -1); a.je(nx);
+            a.mov(__byte_ptr[ebx + 2], 0);
+            a.push(__dword_ptr[ebp - 0x18]); a.push(__dword_ptr[ebp + 0x0C]); a.push(ebx); a.push(eax);
+            a.mov(ecx, __dword_ptr[ecx + ConnMgr]); a.call(CmSend);
+            a.mov(ecx, __dword_ptr[ebp - 0x10]);
+            a.Label(ref nx);
+            a.inc(esi); a.cmp(esi, 16); a.jl(lp);
+            a.mov(ecx, __dword_ptr[ebp - 4]); a.pop(edi); a.pop(esi); a.jmp(0x47d67aUL);
+        }
+        // OnIntroductionMessage: відповідь новачку — маска 1 << слот у 32 бітах (для слота ≥ 8 «mov al,1 / shl al,cl» = 0).
+        // Було (0x47b2b4): mov al,1 / shl al,cl / mov ecx,edi / push eax; далі mov [ebp-2CCh],eax (друга відповідь)
+        var introMask = a.CreateLabel("intromask16");
+        {
+            a.Label(ref introMask);
+            a.mov(eax, 1); a.shl(eax, cl); a.mov(ecx, edi); a.push(eax); a.jmp(0x47b2bbUL);
+        }
+        // OnMessage: я — слот ≥ 8 → без ретрансляції й перевірки маски, одразу до обробки за типом (0x47b551).
+        // Було (0x47b4bd): mov eax,[ebx+252Ch] (ebx = this+4 → поле 2530h «мій слот»)
+        var recv16 = a.CreateLabel("recv16");
+        {
+            var back = a.CreateLabel();
+            a.Label(ref recv16);
+            a.mov(eax, __dword_ptr[ebx + MySlot - 4]); a.cmp(eax, 8); a.jl(back);
+            a.jmp(0x47b551UL);
+            a.Label(ref back);
+            a.jmp(0x47b4c3UL);
+        }
+        // Матриця «останній отриманий кадр» [8][8] (+2798h): записи з індексом ≥ 8 відкидаємо (інакше — поверх
+        // сусідніх полів). OnMessage 0x98: esi = відправник, edx = про кого. Було (0x47c1cc): lea eax,[esi+edx*8] / mov [ebx+eax*4+2794h],ecx
+        var lrfMsg = a.CreateLabel("lrf16msg");
+        {
+            var skip = a.CreateLabel();
+            a.Label(ref lrfMsg);
+            a.cmp(esi, 8); a.jae(skip); a.cmp(edx, 8); a.jae(skip);
+            a.lea(eax, __dword_ptr[esi + edx * 8]); a.mov(__dword_ptr[ebx + eax * 4 + 0x2794], ecx);
+            a.Label(ref skip);
+            a.jmp(0x47c1d6UL);
+        }
+        // HandleLastReceivedFrameMessage(edi, esi, edx). Було (0x47a406): lea eax,[edi+esi*8] / mov [ecx+eax*4+2798h],edx
+        var lrfFn = a.CreateLabel("lrf16fn");
+        {
+            var skip = a.CreateLabel();
+            a.Label(ref lrfFn);
+            a.cmp(edi, 8); a.jae(skip); a.cmp(esi, 8); a.jae(skip);
+            a.lea(eax, __dword_ptr[edi + esi * 8]); a.mov(__dword_ptr[ecx + eax * 4 + 0x2798], edx);
+            a.Label(ref skip);
+            a.jmp(0x47a410UL);
+        }
+        // OnMessage 0x99 (рядок графа зв'язності від відправника cl): від слота ≥ 8 — ігноруємо (рядки графа лише 0…7).
+        // Було (0x47c1f9): movups xmm0,[edi+4] / movzx esi,cl
+        var graph16 = a.CreateLabel("graph16");
+        {
+            var ign = a.CreateLabel();
+            a.Label(ref graph16);
+            a.cmp(cl, 8); a.jae(ign);
+            a.movups(xmm0, __xmmword_ptr[edi + 4]); a.movzx(esi, cl); a.jmp(0x47c200UL);
+            a.Label(ref ign);
+            a.jmp(0x47c230UL);
+        }
+        // UpdateConnectivity: у слота ≥ 8 рядок графа (this→граф + слот·20h) вийшов би за таблицю 8×8 — пропускаємо.
+        // Було (0x47e000): push ebp / mov ebp,esp / sub esp,58h
+        var conn16 = a.CreateLabel("conn16");
+        {
+            var orig = a.CreateLabel();
+            a.Label(ref conn16);
+            a.cmp(__dword_ptr[ecx + MySlot], 8); a.jl(orig);
+            a.ret();
+            a.Label(ref orig);
+            a.push(ebp); a.mov(ebp, esp); a.sub(esp, 0x58); a.jmp(0x47e006UL);
         }
 
         var w = new ByteWriter();
@@ -613,6 +727,14 @@ static class Caves
         hooks.Add(new Hook(0x479dc0, Convert.FromHexString("33C081C190210000"), "SMulti::GetFreePlayerSlot → 16 слотів (другий командир)", (uint)L(freeSlot16), 8));
         hooks.Add(new Hook(0x47b1ce, Convert.FromHexString("33DB8D8790210000"), "SMulti::OnIntroductionMessage: вільний слот → 16", (uint)L(introSlot), 8));
         hooks.Add(new Hook(0x478c57, Convert.FromHexString("C7860425000000000000"), "SMulti::ClearSlotArray: очистити слоти 8…15", (uint)L(clearSlots), 10));
+        hooks.Add(new Hook(0x47cd51, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));
+        hooks.Add(new Hook(0x47d675, Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendMessageInternal: біти 8…15 напряму", (uint)L(smiTail), 5));
+        hooks.Add(new Hook(0x47b2b4, Convert.FromHexString("B001D2E08BCF50"), "SMulti::OnIntroductionMessage: маска відповіді 16 біт", (uint)L(introMask), 7));
+        hooks.Add(new Hook(0x47b4bd, Convert.FromHexString("8B832C250000"), "SMulti::OnMessage: слот ≥ 8 приймає без маски", (uint)L(recv16), 6));
+        hooks.Add(new Hook(0x47c1cc, Convert.FromHexString("8D04D6898C8394270000"), "SMulti::OnMessage 0x98: матриця кадрів лише 8×8", (uint)L(lrfMsg), 10));
+        hooks.Add(new Hook(0x47a406, Convert.FromHexString("8D04F789948198270000"), "SMulti::HandleLastReceivedFrameMessage: лише 8×8", (uint)L(lrfFn), 10));
+        hooks.Add(new Hook(0x47c1f9, Convert.FromHexString("0F1047040FB6F1"), "SMulti::OnMessage 0x99: граф лише від слотів 0…7", (uint)L(graph16), 7));
+        hooks.Add(new Hook(0x47e000, Convert.FromHexString("558BEC83EC58"), "SMulti::UpdateConnectivity: не для слота ≥ 8", (uint)L(conn16), 6));
         var frameOld = new Dictionary<uint, string> {
             [0x477f02] = "83C02F8975F0", [0x477f32] = "83C02F03C2", [0x477f5e] = "83C02F03C2", [0x479d74] = "83C02F03C7",
             [0x47a451] = "83C02F03C7", [0x47d235] = "83C02F03C1", [0x47dee3] = "83C02F03C6" };

@@ -23,8 +23,10 @@ const L = {
   conn: 0x2FF0, connOld: 0x216C,                          // dword[16]
   mapl: 0x3030, maplOld: 0x2510,                          // dword[16] (індекс слота, база 250Ch + slot·4)
   frames: 0x3078, frameSize: 0x3E4,                       // SFrameHistory[16]; база кратна 12 (індекс кадру ·12)
+  recv: 0x6EB8, recvOld: 0x28A4,                          // dword[16]: тік останніх кадрів від слота (HasMissingDataFromPlayer)
+  req: 0x6EF8, reqOld: 0x28C4,                            // dword[16]: тік запиту «надішли пакети слота» (SendMeThePackets…)
 };
-L.newSize = L.frames + 16 * L.frameSize;                  // 0x6EB0
+L.newSize = L.req + 16 * 4;                               // 0x6F38
 
 const run = (...a) => execFileSync(DIS, [EXE, SYMS, ...a], { maxBuffer: 1 << 26 }).toString().replace(/\r/g, '');
 // Методи IConnectionManagerEventHandler викликаються з vtable без перехідника: ecx = SMulti+4,
@@ -92,6 +94,22 @@ for (const [va, kind, old, nw, why] of [
   // етап 3: пошук слота за GUID — до 16 (другий командир)
   [0x47a19f, 'imm', 8, 16, 'GetSlotFromRaknetGuid: slots16 цикл до 16'],
   [0x47b1bd, 'imm', 8, 16, 'OnIntroductionMessage: slots16 GUID-цикл до 16'],
+  // з'єднання як [this+edi+206Ch], edi = 100h + 4·i (поза діапазоном сканера 2100…2600 — знайдено вручну)
+  [0x47cc8b, 'disp', 0x206C, L.conn - 0x100, 'SendBroadcastMessage: slots16 conn[i] через +100h'],
+  [0x47d5c3, 'disp', 0x206C, L.conn - 0x100, 'SendMessageInternal: slots16 conn[i] через +100h'],
+  [0x47e0b0, 'disp', 0x206C, L.conn - 0x100, 'UpdateConnectivity: slots16 conn[i] через +100h'],
+  // recv/req на 16: обидва масиви обходять одним вказівником p = req + 4·i, recv = p − 20h → тепер p − 40h
+  [0x47c19d, 'disp', L.recvOld - 4, L.recv - 4, 'OnMessage (this+4): slots16 recv[слот кадру]'],
+  [0x4a40e2, 'disp', L.recvOld, L.recv, 'SGameWorld::HasMissingDataFromPlayer: slots16 recv[слот]'],
+  [0x47d4ba, 'disp', L.reqOld, L.req, 'SendMeThePacketsOfThisPlayer: slots16 req[слот]'],
+  [0x47a579, 'disp', L.reqOld, L.req, 'Initialize: slots16 req (вказівник циклу)'],
+  [0x47a5a6, 'disp', 0xDC, 0xBC, 'Initialize: slots16 recv = p − 44h'],
+  [0x4ac7b3, 'imm', L.reqOld, L.req, 'SGameWorld::ServerInit: slots16 p = req'],
+  [0x4ac939, 'disp', 0xE0, 0xC0, 'SGameWorld::ServerInit: slots16 recv = p − 40h'],
+  [0x4ac96f, 'imm', 0x28E4, L.req + 0x20, 'SGameWorld::ServerInit: slots16 кінець циклу (8 гравців світу)'],
+  [0x4ae8a5, 'imm', L.reqOld, L.req, 'SGameWorld::ServerRefresh: slots16 p = req'],
+  [0x4aea2c, 'disp', 0xE0, 0xC0, 'SGameWorld::ServerRefresh: slots16 recv = p − 40h'],
+  [0x4aea7e, 'imm', 0x28E4, L.req + 0x20, 'SGameWorld::ServerRefresh: slots16 кінець циклу (8 гравців світу)'],
 ]) edits.push({ va: '0x' + va.toString(16), kind, old: '0x' + old.toString(16), new: '0x' + nw.toString(16), why: why.split(': ')[0] + (why.includes('slots16') ? ': ' : ': frames ') + why.split(': ')[1] });
 
 edits.sort((a, b) => parseInt(a.va) - parseInt(b.va));

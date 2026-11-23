@@ -148,6 +148,14 @@ var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     (0x4f4efe, "8D0452", "8D04D2", "SQuickMarket grid: row·6 → row·9 (lea [edx+edx*8])"),
     (0x4f4f07, "03C0", "6690", "SQuickMarket grid: row·9 без подвоєння"),
     (0x4ffae0, "FFD68B00FF", "E9C9FBFFFF", "SSuperWindow::Play: незнайомий ключ командного рядка — пропустити замість Panic (+autostart N)"),
+    // Етап 3 (16 слотів): маска адресатів SendMessageInternal — 16 біт. «mov al,1 / shl al,cl» для слота ≥ 8 дає 0
+    // (8-бітний зсув) — особисте повідомлення другому командиру не йшло б нікуди. Біти 8…15 шле вставка (Caves §14).
+    (0x47d56e, "0FB67510", "0FB77510", "SMulti16 SendMessageInternal: маска movzx byte → word"),
+    (0x47d509, "B001D2E08BCE0FB6C0", "B801000000D3E08BCE", "SMulti16 SendMessageA: 1 << слот — 32 біти"),
+    (0x47d080, "B001D2E08BCE0FB6C0", "B801000000D3E08BCE", "SMulti16 SendChatMessage: 1 << слот — 32 біти"),
+    (0x47d111, "B001D2E08BCE0FB6C0", "B801000000D3E08BCE", "SMulti16 SendChatMessage (приват): 1 << слот — 32 біти"),
+    (0x47d36d, "B001D2E08BCB0FB6C0", "B801000000D3E08BCB", "SMulti16 SendGameSettingsMessage: 1 << слот — 32 біти"),
+    (0x47b4d7, "888D40FEFFFF", "898D40FEFFFF", "SMulti16 OnMessage: маска ретрансляції — dword (старші біти 0, а не сміття стеку)"),
 };
 Imm(0x4f4f23, 0xFFFFFF36, unchecked((uint)-298), "SQuickMarket grid: центрування 9 стовпців");
 
@@ -196,7 +204,7 @@ foreach (var (va, why, pick) in patches)
         fieldOff = co.DisplacementOffset; size = co.DisplacementSize;
         uint cur = size == 1 ? exe[off + fieldOff] : BitConverter.ToUInt32(exe, off + fieldOff);
         if (cur != oldV) throw new Exception($"{va:x}: displacement is {cur:x}, expected {oldV:x} ({ins})");
-        if (size == 1) throw new Exception($"{va:x}: disp8 cannot be widened");
+        if (size == 1 && newV > 0xFF) throw new Exception($"{va:x}: disp8 cannot be widened");   // disp8 → disp8 (байт зі знаком) можна
     }
     var bytes = size == 1 ? new[] { (byte)newV } : BitConverter.GetBytes(newV).Take(size).ToArray();
     var oldBytes = exe.Skip(off + fieldOff).Take(size).ToArray();

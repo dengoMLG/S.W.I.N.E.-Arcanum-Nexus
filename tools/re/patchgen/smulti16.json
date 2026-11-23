@@ -10,7 +10,11 @@
   "maplOld": "0x2510",
   "frames": "0x3078",
   "frameSize": "0x3e4",
-  "newSize": "0x6eb8"
+  "recv": "0x6eb8",
+  "recvOld": "0x28a4",
+  "req": "0x6ef8",
+  "reqOld": "0x28c4",
+  "newSize": "0x6f38"
  },
  "edits": [
   {
@@ -115,7 +119,7 @@
    "va": "0x00477a75",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "??_GSMulti@@UAEPAXI@Z+0xa5: sizeof(SMulti)"
   },
   {
@@ -1183,6 +1187,20 @@
    "why": "?GetTeam@SMulti: slot"
   },
   {
+   "va": "0x47a579",
+   "kind": "disp",
+   "old": "0x28c4",
+   "new": "0x6ef8",
+   "why": "Initialize: slots16 req (вказівник циклу)"
+  },
+  {
+   "va": "0x47a5a6",
+   "kind": "disp",
+   "old": "0xdc",
+   "new": "0xbc",
+   "why": "Initialize: slots16 recv = p − 44h"
+  },
+  {
    "va": "0x47a892",
    "kind": "disp",
    "old": "0x21f0",
@@ -1547,6 +1565,13 @@
    "why": "OnMessage (this+4): frames кадр +8"
   },
   {
+   "va": "0x47c19d",
+   "kind": "disp",
+   "old": "0x28a0",
+   "new": "0x6eb4",
+   "why": "OnMessage (this+4): slots16 recv[слот кадру]"
+  },
+  {
    "va": "0x47c297",
    "kind": "disp",
    "old": "0x21ec",
@@ -1890,6 +1915,13 @@
    "why": "?SendBroadcastMessage@SMulti: slot"
   },
   {
+   "va": "0x47cc8b",
+   "kind": "disp",
+   "old": "0x206c",
+   "new": "0x2ef0",
+   "why": "SendBroadcastMessage: slots16 conn[i] через +100h"
+  },
+  {
    "va": "0x47cd1b",
    "kind": "disp",
    "old": "0x216c",
@@ -1930,6 +1962,20 @@
    "old": "0x2510",
    "new": "0x3030",
    "why": "?SendMapLoadingDataToPlayers@SMulti: mapload"
+  },
+  {
+   "va": "0x47d4ba",
+   "kind": "disp",
+   "old": "0x28c4",
+   "new": "0x6ef8",
+   "why": "SendMeThePacketsOfThisPlayer: slots16 req[слот]"
+  },
+  {
+   "va": "0x47d5c3",
+   "kind": "disp",
+   "old": "0x206c",
+   "new": "0x2ef0",
+   "why": "SendMessageInternal: slots16 conn[i] через +100h"
   },
   {
    "va": "0x47d63f",
@@ -2219,6 +2265,13 @@
    "why": "?UpdateConnectivity@SMulti: slot"
   },
   {
+   "va": "0x47e0b0",
+   "kind": "disp",
+   "old": "0x206c",
+   "new": "0x2ef0",
+   "why": "UpdateConnectivity: slots16 conn[i] через +100h"
+  },
+  {
    "va": "0x47e105",
    "kind": "disp",
    "old": "0x216c",
@@ -2338,73 +2391,122 @@
    "why": "?ZeroMapLoadingData@SMulti: mapload"
   },
   {
+   "va": "0x4a40e2",
+   "kind": "disp",
+   "old": "0x28a4",
+   "new": "0x6eb8",
+   "why": "SGameWorld::HasMissingDataFromPlayer: slots16 recv[слот]"
+  },
+  {
+   "va": "0x4ac7b3",
+   "kind": "imm",
+   "old": "0x28c4",
+   "new": "0x6ef8",
+   "why": "SGameWorld::ServerInit: slots16 p = req"
+  },
+  {
+   "va": "0x4ac939",
+   "kind": "disp",
+   "old": "0xe0",
+   "new": "0xc0",
+   "why": "SGameWorld::ServerInit: slots16 recv = p − 40h"
+  },
+  {
+   "va": "0x4ac96f",
+   "kind": "imm",
+   "old": "0x28e4",
+   "new": "0x6f18",
+   "why": "SGameWorld::ServerInit: slots16 кінець циклу (8 гравців світу)"
+  },
+  {
+   "va": "0x4ae8a5",
+   "kind": "imm",
+   "old": "0x28c4",
+   "new": "0x6ef8",
+   "why": "SGameWorld::ServerRefresh: slots16 p = req"
+  },
+  {
+   "va": "0x4aea2c",
+   "kind": "disp",
+   "old": "0xe0",
+   "new": "0xc0",
+   "why": "SGameWorld::ServerRefresh: slots16 recv = p − 40h"
+  },
+  {
+   "va": "0x4aea7e",
+   "kind": "imm",
+   "old": "0x28e4",
+   "new": "0x6f18",
+   "why": "SGameWorld::ServerRefresh: slots16 кінець циклу (8 гравців світу)"
+  },
+  {
    "va": "0x004fb52e",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "?ConnectToHostFromCommandLine@SSuperWindow@@AAEXPBD0@Z+0x5e: sizeof(SMulti)"
   },
   {
    "va": "0x004fb7a7",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "?CreateHostFromCommandLine@SSuperWindow@@AAEXPBD@Z+0x57: sizeof(SMulti)"
   },
   {
    "va": "0x004fc967",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "?LoadMultiPreMenu@SSuperWindow@@AAEXXZ+0x57: sizeof(SMulti)"
   },
   {
    "va": "0x004ff737",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "?Play@SSuperWindow@@QAEXXZ+0x447: sizeof(SMulti)"
   },
   {
    "va": "0x004ff8a9",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "?Play@SSuperWindow@@QAEXXZ+0x5b9: sizeof(SMulti)"
   },
   {
    "va": "0x00542b30",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x00542b90",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x00542ed0",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x005432c2",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "unwind: sizeof(SMulti)"
   },
   {
    "va": "0x005432ec",
    "kind": "imm",
    "old": "0x28f0",
-   "new": "0x6eb8",
+   "new": "0x6f38",
    "why": "unwind: sizeof(SMulti)"
   }
  ]

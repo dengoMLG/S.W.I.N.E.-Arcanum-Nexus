@@ -196,3 +196,15 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 6. **Лобби.** Слоты 8…15 в списке не показываются. Цвет, команда и раса — как у армии `слот − 8`; в чат — «X командует вместе с Y».
 
 Этап 3, шаг «слоты» (сделано): подпрограмма `freeslot16` (`Caves.cs` §13) — `GetFreePlayerSlot` и встроенный поиск в `OnIntroductionMessage` (0x47b1ce); `ClearSlotArray` дочищает слоты 8…15 и ставит `conn[8…15] = −1`; GUID-циклы `GetSlotFromRaknetGuid` и `OnIntroductionMessage` — до 16. `GetFullSlots` не трогаем: его читает `SGameWorld::ServerInit` (число армий). Ворота (`GetFullAndOpenSlots`) пока закрыты. patchgen убирает из `exe_patch.json` точечные правки, которые перекрывает хук. Проверено: 8 копий, слоты 0–7, матч идёт.
+
+Этап 3, шаг «рассылка и связность» (сделано, `Caves.cs` §14, `gen-smulti16.js`, raws в `Program.cs`):
+- **Ошибка этапа 1 исправлена.** `SendBroadcastMessage` (0x47cc8b), `SendMessageInternal` (0x47d5c3) и `UpdateConnectivity` (0x47e0b0) читали `conn[i]` как `[this + 100h + 4·i + 206Ch]`, а сканер полей смотрел только смещения 2100…2600. Эти три места читали старое место массива. Теперь `206Ch → conn − 100h`.
+- **Байт +1 заголовка** — это не константа 7, а TTL ретрансляции (старший полубайт, уменьшается при пересылке), младший полубайт — отправитель.
+- **Адресная маска 16 бит.** `SendMessageInternal` читает маску как `word` (0x47d56e). Места `mov al,1 / shl al,cl` (для слота ≥ 8 дают 0) стали 32-битными: `SendMessageA`, `SendChatMessage` ×2, `SendGameSettingsMessage`, ответ новичку в `OnIntroductionMessage` (хук 0x47b2b4). Маска ретрансляции в `OnMessage` хранится как dword (0x47b4d7), иначе в старшие биты попадал бы мусор стека.
+- **Слотам 8…15 — напрямую.** Хвосты `SendBroadcastMessage` (0x47cd51) и `SendMessageInternal` (0x47d675) шлют `ConnectionManager::Send` каждому занятому подключённому слоту 8…15 (в широковещательной — всем, в адресной — по битам 8…15) с маской 0. Слот ≥ 8 сам себе доставляет через `OnMessage(−1, …)`.
+- **Приём.** У слота ≥ 8 `OnMessage` (хук 0x47b4bd) сразу идёт к обработке по типу: без ретрансляции и без проверки маски.
+- **Связность.** Запись в матрицу кадров `[8][8]` с индексом ≥ 8 отбрасывается: `OnMessage` 0x98 (0x47c1cc) и `HandleLastReceivedFrameMessage` (0x47a406). Строка графа (0x99) от слота ≥ 8 игнорируется (0x47c1f9). `UpdateConnectivity` у слота ≥ 8 не выполняется (0x47e000): его строка вышла бы за таблицу 8×8.
+- **+28A4h/+28C4h → хвост на 16** (`recv` 0x6EB8, `req` 0x6EF8, размер `SMulti` 0x6F38). Их читает и мир: `HasMissingDataFromPlayer`, `ServerInit`/`ServerRefresh`. Последние две обходят оба массива одним указателем `p = req + 4·i`, `recv = p − 20h`; стало `p − 40h` (правка disp8 — patchgen теперь меняет disp8 в пределах байта). `ClearSlotArray` обнуляет элементы 8…15.
+- Проверено: 8 копий (места 0–7, кадры идут, задержки пакетов — от нагрузки одного ПК, как раньше) и 3 копии (одна поздняя посылка за матч).
+
+Осталось: проверки индекса `cmp …,7` (`GetPlayerName` и др.), `SendSlotData` в `OnIntroductionMessage` до 16, `IsDisconnected` для слота ≥ 8, приватный чат на 16, мир (`ProcessPacket(слот & 7)`), лобби, ворота.
