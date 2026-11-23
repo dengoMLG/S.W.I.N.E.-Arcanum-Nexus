@@ -1,0 +1,1145 @@
+{
+ "note": "tools/re/gen-world16.js: imul …,5Ch гравців SGameWorld (k — зсув індексу)",
+ "sites": [
+  {
+   "va": "0049e1ae",
+   "k": 0,
+   "how": "mov",
+   "fn": "?AirStrike@SGameWorld@@QAEXMMHH@Z"
+  },
+  {
+   "va": "0049e1b9",
+   "k": 3,
+   "how": "lea",
+   "fn": "?AirStrike@SGameWorld@@QAEXMMHH@Z"
+  },
+  {
+   "va": "0049e36b",
+   "k": 0,
+   "how": "mem",
+   "fn": "?BackupCampaignUnits@SGameWorld@@QAEXXZ"
+  },
+  {
+   "va": "0049e405",
+   "k": 0,
+   "how": "mov",
+   "fn": "?BackupCampaignUnits@SGameWorld@@QAEXXZ"
+  },
+  {
+   "va": "0049e6d3",
+   "k": 0,
+   "how": "mem",
+   "fn": "?CanSendHeliForControllingPlayer@SGameWorld@@QAE_NXZ"
+  },
+  {
+   "va": "0049e711",
+   "k": 0,
+   "how": "mem",
+   "fn": "?CanSendHeliForControllingPlayer@SGameWorld@@QAE_NXZ"
+  },
+  {
+   "va": "0049f3b4",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f3c5",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f42c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f485",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f499",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f4ad",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SGameWorld@@QAEXM@Z"
+  },
+  {
+   "va": "0049f808",
+   "k": 0,
+   "how": "mem",
+   "fn": "?CollectUnitGroupForTrigger@SGameWorld@@AAE?AUSUnitGroup@@PA"
+  },
+  {
+   "va": "0049f845",
+   "k": 0,
+   "how": "mem",
+   "fn": "?CollectUnitGroupForTrigger@SGameWorld@@AAE?AUSUnitGroup@@PA"
+  },
+  {
+   "va": "0049fa00",
+   "k": 0,
+   "how": "mem",
+   "fn": "?CollectUnits@SGameWorld@@QAEXPAVSUnit@@@Z"
+  },
+  {
+   "va": "0049fb06",
+   "k": 0,
+   "how": "mov",
+   "fn": "?CollectUnits@SGameWorld@@QAEXPAVSUnit@@@Z"
+  },
+  {
+   "va": "0049fb14",
+   "k": 0,
+   "how": "mov",
+   "fn": "?CollectUnits@SGameWorld@@QAEXPAVSUnit@@@Z"
+  },
+  {
+   "va": "0049fc8c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ControllingPlayerHasMoneyFor@SGameWorld@@QAE_NH@Z"
+  },
+  {
+   "va": "004a067c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?DrawVisMap@SGameWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004a068a",
+   "k": 0,
+   "how": "mov",
+   "fn": "?DrawVisMap@SGameWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004a2eac",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GainMoney@SGameWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004a3429",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetCurrentSPForGameViewPanel@SGameWorld@@QAEHXZ"
+  },
+  {
+   "va": "004a38ea",
+   "k": 0,
+   "how": "mov",
+   "fn": "?GetPanelStatus@SGameWorld@@QAEXAAUSPanelStatus@@@Z"
+  },
+  {
+   "va": "004a38f8",
+   "k": 0,
+   "how": "mov",
+   "fn": "?GetPanelStatus@SGameWorld@@QAEXAAUSPanelStatus@@@Z"
+  },
+  {
+   "va": "004a3d49",
+   "k": 0,
+   "how": "mov",
+   "fn": "?GetUnitAlignment@SGameWorld@@QAEHH@Z"
+  },
+  {
+   "va": "004a3d4c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?GetUnitAlignment@SGameWorld@@QAEHH@Z"
+  },
+  {
+   "va": "004a40b4",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HasMissingDataFromPlayer@SGameWorld@@QAE_NH@Z"
+  },
+  {
+   "va": "004a4130",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HeliTransport@SGameWorld@@QAEXMMHAAUSUnitDescription@@_N@Z"
+  },
+  {
+   "va": "004a43e4",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HeliTransport@SGameWorld@@QAEXMMHAAUSUnitDescription@@_N@Z"
+  },
+  {
+   "va": "004a4400",
+   "k": 3,
+   "how": "lea",
+   "fn": "?HeliTransport@SGameWorld@@QAEXMMHAAUSUnitDescription@@_N@Z"
+  },
+  {
+   "va": "004a46b2",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HeliTransport@SGameWorld@@QAEXMMHAAUSUnitDescription@@_N@Z"
+  },
+  {
+   "va": "004a471d",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreasePlayerScore@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a472a",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreasePlayerScore@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4780",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreasePlayerScore@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a47bd",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreasePlayerScore@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a480f",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreasePlayerScore@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a488c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4896",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4925",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4932",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4996",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a49d0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4a21",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreaseUnitXP@SGameWorld@@QAEXHHM@Z"
+  },
+  {
+   "va": "004a4ae1",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncrementUnitKills@SGameWorld@@QAEXHHH@Z"
+  },
+  {
+   "va": "004a4af5",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncrementUnitKills@SGameWorld@@QAEXHHH@Z"
+  },
+  {
+   "va": "004a4b44",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncrementUnitKills@SGameWorld@@QAEXHHH@Z"
+  },
+  {
+   "va": "004a4b6d",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncrementUnitKills@SGameWorld@@QAEXHHH@Z"
+  },
+  {
+   "va": "004a4b73",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncrementUnitKills@SGameWorld@@QAEXHHH@Z"
+  },
+  {
+   "va": "004a5e86",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IsAlly@SWorld@@QAE_NHH@Z"
+  },
+  {
+   "va": "004a5e97",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IsAlly@SWorld@@QAE_NHH@Z"
+  },
+  {
+   "va": "004a5f43",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IsBomberAvailable@SGameWorld@@QAE_NXZ"
+  },
+  {
+   "va": "004a5f7c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IsBomberAvailable@SGameWorld@@QAE_NXZ"
+  },
+  {
+   "va": "004a7300",
+   "k": 0,
+   "how": "mov",
+   "fn": "?PlaceUnits@SGameWorld@@AAEXHAAV?$SDArray@USUnitDescription@"
+  },
+  {
+   "va": "004a85d8",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ProcessPacket@SGameWorld@@AAEXHPAVSStreamBuffer@@@Z"
+  },
+  {
+   "va": "004a8ce3",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ProcessPacket@SGameWorld@@AAEXHPAVSStreamBuffer@@@Z"
+  },
+  {
+   "va": "004a962f",
+   "k": 0,
+   "how": "mem",
+   "fn": "?QSpecTargetGround@SGameWorld@@QAEXMM_N@Z"
+  },
+  {
+   "va": "004a9659",
+   "k": 0,
+   "how": "mem",
+   "fn": "?QSpecTargetGround@SGameWorld@@QAEXMM_N@Z"
+  },
+  {
+   "va": "004aae0d",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SearchPlayerForAcquireRescuable@SGameWorld@@QAEHPAVSUnit@@@"
+  },
+  {
+   "va": "004aaeb3",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SearchPlayerForAcquireResource@SGameWorld@@QAEHPAVSUnit@@@Z"
+  },
+  {
+   "va": "004aaf64",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SearchPlayerForAcquireResource@SGameWorld@@QAEHPAVSUnit@@@Z"
+  },
+  {
+   "va": "004aafd9",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab0d4",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab1b7",
+   "k": 0,
+   "how": "?",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab225",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab334",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab3a9",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab538",
+   "k": 0,
+   "how": "?",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ab5b5",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SearchTarget@SGameWorld@@QAEHPAVSUnit@@_N@Z"
+  },
+  {
+   "va": "004ac995",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ServerInit@SGameWorld@@QAEXPAVSMulti@@_N@Z"
+  },
+  {
+   "va": "004ae068",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerInit@SGameWorld@@QAEXPAVSMulti@@_N@Z"
+  },
+  {
+   "va": "004afce0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ShowEvent@SGameWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004b077d",
+   "k": 0,
+   "how": "mov",
+   "fn": "?StartZeppelin@SGameWorld@@QAEXMMH@Z"
+  },
+  {
+   "va": "004b0784",
+   "k": 3,
+   "how": "lea",
+   "fn": "?StartZeppelin@SGameWorld@@QAEXMMH@Z"
+  },
+  {
+   "va": "004b0ead",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestPlayer@SGameWorld@@AAE_NHHH@Z"
+  },
+  {
+   "va": "004b0eee",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestPlayer@SGameWorld@@AAE_NHHH@Z"
+  },
+  {
+   "va": "004b0ff1",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b20c0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b20fd",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b2280",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b22bd",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b2fcc",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b301b",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b309f",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3164",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b318b",
+   "k": 3,
+   "how": "lea",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3306",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3323",
+   "k": 3,
+   "how": "lea",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b38d4",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3911",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3aa0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3add",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3ee0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b3f1d",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b40b0",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b40ed",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4278",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b42b5",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4728",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4736",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4823",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4873",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b489d",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b48c7",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b48f1",
+   "k": 0,
+   "how": "mov",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b491b",
+   "k": 0,
+   "how": "?",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4945",
+   "k": 0,
+   "how": "?",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4972",
+   "k": 0,
+   "how": "?",
+   "fn": "?TestTriggers@SGameWorld@@AAEXXZ"
+  },
+  {
+   "va": "004b4cac",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TryToBuy@SGameWorld@@QAE_NHH@Z"
+  },
+  {
+   "va": "004b4e1e",
+   "k": 0,
+   "how": "mov",
+   "fn": "?WhiteFlag@SGameWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004b4e2f",
+   "k": 0,
+   "how": "mov",
+   "fn": "?WhiteFlag@SGameWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004b6eab",
+   "k": 0,
+   "how": "mem",
+   "fn": "?AimTarget@SUnit@@AAE_NM@Z"
+  },
+  {
+   "va": "004b707a",
+   "k": 0,
+   "how": "mem",
+   "fn": "?AirPlaneCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004b7467",
+   "k": 0,
+   "how": "mov",
+   "fn": "?AirPlaneCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004b7484",
+   "k": 3,
+   "how": "lea",
+   "fn": "?AirPlaneCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004b7536",
+   "k": 0,
+   "how": "mem",
+   "fn": "?AirPlaneCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004b87d0",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004b87de",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004b88ad",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004b88be",
+   "k": 0,
+   "how": "mov",
+   "fn": "?ClientRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004b910c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?Create@SUnit@@QAEXHPBDPAHHM_NH@Z"
+  },
+  {
+   "va": "004ba2d9",
+   "k": 0,
+   "how": "mem",
+   "fn": "?DoGunner@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004bb59e",
+   "k": 0,
+   "how": "mem",
+   "fn": "?DoGunner@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004bb607",
+   "k": 0,
+   "how": "mem",
+   "fn": "?DoGunner@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004bb644",
+   "k": 0,
+   "how": "mem",
+   "fn": "?DoGunner@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004bc593",
+   "k": 0,
+   "how": "mem",
+   "fn": "?EC_SpecTargetGround@SUnit@@QAEXMM@Z"
+  },
+  {
+   "va": "004bc737",
+   "k": 0,
+   "how": "mem",
+   "fn": "?EC_SpecTargetGround@SUnit@@QAEXMM@Z"
+  },
+  {
+   "va": "004bd354",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Explode@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004bd5d5",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Explode@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004bd6e4",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Explode@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004bd898",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Explode@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004be8ab",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GAS_AutoWheelControl@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004bed48",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GAS_CheckCollision@SUnit@@AAEHMMH@Z"
+  },
+  {
+   "va": "004bf0be",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GAS_CheckCollision@SUnit@@AAEHMMH@Z"
+  },
+  {
+   "va": "004bf958",
+   "k": 0,
+   "how": "mov",
+   "fn": "?GAS_RotateUnit@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c0db8",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetMaxMoveSpeed@SUnit@@AAEMXZ"
+  },
+  {
+   "va": "004c0e04",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetMaxMoveSpeed@SUnit@@AAEMXZ"
+  },
+  {
+   "va": "004c0e54",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetMaxSpinSpeed@SUnit@@AAEMXZ"
+  },
+  {
+   "va": "004c0fe7",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetSpeedToZeroDist@SUnit@@AAEMM@Z"
+  },
+  {
+   "va": "004c101c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetSpeedToZeroDist@SUnit@@AAEMM@Z"
+  },
+  {
+   "va": "004c1187",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetWheelToZeroDist2@SUnit@@AAEMMMMM@Z"
+  },
+  {
+   "va": "004c13b3",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetWheelToZeroDist@SUnit@@AAEMM@Z"
+  },
+  {
+   "va": "004c181e",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Heartbeat@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c1854",
+   "k": 0,
+   "how": "mov",
+   "fn": "?Heartbeat@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c1862",
+   "k": 0,
+   "how": "mov",
+   "fn": "?Heartbeat@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c188b",
+   "k": 0,
+   "how": "mov",
+   "fn": "?Heartbeat@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c1aab",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Heartbeat@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c1c4a",
+   "k": 0,
+   "how": "mem",
+   "fn": "?HelicopterCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c2175",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HelicopterCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c21a2",
+   "k": 3,
+   "how": "lea",
+   "fn": "?HelicopterCallBack@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c255a",
+   "k": 0,
+   "how": "mov",
+   "fn": "?HelicopterDirectionControl@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c275c",
+   "k": 0,
+   "how": "?",
+   "fn": "?HelicopterDirectionControl@SUnit@@AAEXXZ"
+  },
+  {
+   "va": "004c27df",
+   "k": 0,
+   "how": "mov",
+   "fn": "?IncreaseXP@SUnit@@QAEXM_N@Z"
+  },
+  {
+   "va": "004c2952",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreaseXP@SUnit@@QAEXM_N@Z"
+  },
+  {
+   "va": "004c2a55",
+   "k": 0,
+   "how": "mem",
+   "fn": "?IncreaseXP@SUnit@@QAEXM_N@Z"
+  },
+  {
+   "va": "004c3c3a",
+   "k": 0,
+   "how": "mem",
+   "fn": "?InitVariables@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c472d",
+   "k": 0,
+   "how": "xor",
+   "fn": "?Load@SUnit@@QAEXPAVSStream@@@Z"
+  },
+  {
+   "va": "004c495d",
+   "k": 0,
+   "how": "cvttsd2si",
+   "fn": "?Load@SUnit@@QAEXPAVSStream@@@Z"
+  },
+  {
+   "va": "004c4d8c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?Load@SUnit@@QAEXPAVSStream@@@Z"
+  },
+  {
+   "va": "004c52d2",
+   "k": 0,
+   "how": "mov",
+   "fn": "?Load@SUnit@@QAEXPAVSStream@@@Z"
+  },
+  {
+   "va": "004c561c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?LoadNewSkinObject@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c5682",
+   "k": 0,
+   "how": "mem",
+   "fn": "?LoadNewSkinObject@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c881a",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c8952",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c8d3b",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerRefresh@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c92dc",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerShutdown@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c92f2",
+   "k": 0,
+   "how": "mem",
+   "fn": "?ServerShutdown@SUnit@@QAEXXZ"
+  },
+  {
+   "va": "004c9c76",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SetPlayer@SUnit@@QAEXH@Z"
+  },
+  {
+   "va": "004caa14",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TakeDamage@SUnit@@QAEXMHAAVSVector@@HH_N@Z"
+  },
+  {
+   "va": "004cad7f",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TakeDamage@SUnit@@QAEXMHAAVSVector@@HH_N@Z"
+  },
+  {
+   "va": "004caf1c",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TakeDamage@SUnit@@QAEXMHAAVSVector@@HH_N@Z"
+  },
+  {
+   "va": "004cb12d",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TakeDamage@SUnit@@QAEXMHAAVSVector@@HH_N@Z"
+  },
+  {
+   "va": "004cb5c5",
+   "k": 0,
+   "how": "mem",
+   "fn": "?TakeDamage@SUnit@@QAEXMHAAVSVector@@HH_N@Z"
+  },
+  {
+   "va": "004d0873",
+   "k": 0,
+   "how": "mem",
+   "fn": "?GetPlayer@SWorld@@QAEPAUSPlayer@@H@Z"
+  },
+  {
+   "va": "004d68a9",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEHMMH@Z"
+  },
+  {
+   "va": "004d68bb",
+   "k": 0,
+   "how": "mem",
+   "fn": "?SelectUnit@SWorld@@QAEHMMH@Z"
+  },
+  {
+   "va": "004d694a",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEHMMH@Z"
+  },
+  {
+   "va": "004d6a2b",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004d6a39",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004d6a9c",
+   "k": 0,
+   "how": "sar",
+   "fn": "?SelectUnit@SWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004d6b5c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d6b69",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d6ba1",
+   "k": 0,
+   "how": "and",
+   "fn": "?SelectUnit@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d6cdd",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXMMMMH@Z"
+  },
+  {
+   "va": "004d6ceb",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnit@SWorld@@QAEXMMMMH@Z"
+  },
+  {
+   "va": "004d6d01",
+   "k": 0,
+   "how": "imul",
+   "fn": "?SelectUnit@SWorld@@QAEXMMMMH@Z"
+  },
+  {
+   "va": "004d6e8b",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnitByType@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d6e99",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnitByType@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d6eb4",
+   "k": 0,
+   "how": "imul",
+   "fn": "?SelectUnitByType@SWorld@@QAEXHH@Z"
+  },
+  {
+   "va": "004d705c",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnitGroup@SWorld@@QAEXH@Z"
+  },
+  {
+   "va": "004d706e",
+   "k": 0,
+   "how": "mov",
+   "fn": "?SelectUnitGroup@SWorld@@QAEXH@Z"
+  }
+ ]
+}

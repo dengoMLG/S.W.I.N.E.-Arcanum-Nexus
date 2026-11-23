@@ -43,6 +43,13 @@ static class Caves
     public const int MenuVer = CoNames + 0x400;                 // головне меню: кадр рядка версії мода + 1, SMenu*
     public const int RadarSee = MenuVer + 8;                    // DrawVisMap: 1 — поточний юніт з увімкненим радаром (огляд без перешкод)
     public const int AirPricePig = 50, AirPriceRabbit = 100;    // авіаудар, SP (#10: кролики +50)
+    // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
+    public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
+    // місця imul …,5Ch з tools/re/world16.json; вікно (≥ 5 Б) — Program.cs: інструкції до imul, сам imul, після
+    // K[i] ≥ 0 — після Ins[i] (imul) PlayerOff(k); PreReg — PlayerOff перед вікном (вікно починається одразу після imul,
+    // бо на наступну інструкцію є перехід з іншого місця — там регістр уже з переміщеного imul, PlayerOff ідемпотентний)
+    public record W16Site(uint Va, Instruction[] Ins, int[] K, byte[] Old, int Len, Register PreReg = Register.None, int PreK = 0);
+    public static List<W16Site> World16 = new();
     const uint BoardVar = 0x58d060, SDXWidgetDtor = 0x4885f0;   // SIBoard* Board; SDXWidget::~SDXWidget
     public static string ModLine = "Arcanum Nexus Mod";         // Program.cs: «Arcanum Nexus Mod v<версія з modpack/pack.json>»
     const uint ImpArgc = 0x54439c, ImpArgv = 0x5443a0, ImpStricmp = 0x544460, Atoi = 0x53c5eb,
@@ -73,6 +80,12 @@ static class Caves
         Action Mem(AssemblerRegister32 r, int off) => () => a.push(__dword_ptr[r + off]);
         Action Reg(AssemblerRegister32 r) => () => a.push(r);
         Action Imm(int v) => () => a.push(v);
+        // r = i·5Ch (i — гравець) → зсув у SGameWorld з урахуванням хвоста для i ≥ 8 (#2). Прапорці портяться.
+        void PlayerOff(AssemblerRegister32 r, int k = 0)
+        {
+            // лише «сирий» зсув (< 1000h; i·5Ch для i < 24): уже переміщений (≥ 26A8h) не чіпаємо — можна викликати двічі
+            var lo = a.CreateLabel(); a.cmp(r, (8 + k) * 0x5C); a.jl(lo); a.cmp(r, 0x1000); a.jge(lo); a.add(r, World16Delta); a.Label(ref lo);
+        }
 
         // ── підпрограма: уповільнити юніт esi на ecx тіків (не менше вже наявного). Портить eax, edx, xmm0. ──
         var applySlow = a.CreateLabel("applyslow");
@@ -102,8 +115,8 @@ static class Caves
             a.Label(ref sameSide);
             a.cmp(eax, edx); a.je(yes);
             a.cmp(eax, 16); a.jae(no); a.cmp(edx, 16); a.jae(no);
-            a.imul(eax, eax, 0x5C); a.mov(eax, __dword_ptr[ecx + eax + 0x104]);
-            a.imul(edx, edx, 0x5C); a.mov(edx, __dword_ptr[ecx + edx + 0x104]);
+            a.imul(eax, eax, 0x5C); PlayerOff(eax); a.mov(eax, __dword_ptr[ecx + eax + 0x104]);
+            a.imul(edx, edx, 0x5C); PlayerOff(edx); a.mov(edx, __dword_ptr[ecx + edx + 0x104]);
             a.test(eax, eax); a.je(no); a.cmp(eax, edx); a.jne(no);
             a.Label(ref yes); a.mov(eax, 1); a.ret();
             a.Label(ref no); a.xor(eax, eax); a.ret();
@@ -432,7 +445,7 @@ static class Caves
             a.Label(ref pass);
             a.xor(esi, esi);                                                                // esi = гравець
             a.Label(ref ploop);
-            a.imul(edi, esi, 0x5C); a.add(edi, ebp);                                       // edi = &гравець - 0xF8
+            a.imul(edi, esi, 0x5C); PlayerOff(edi); a.add(edi, ebp);                                       // edi = &гравець - 0xF8
             a.xor(eax, eax); a.cmp(__dword_ptr[edi + 0x100], 1); a.setbe(al);               // eax = активний
             a.xor(eax, 1); a.cmp(eax, edx); a.jne(pnext);                                    // прохід 0 — активні, 1 — решта
             a.mov(ecx, __dword_ptr[edi + 0x104]); a.and(ecx, 15);                            // ecx = команда
@@ -1025,7 +1038,7 @@ static class Caves
         {
             var pig = a.CreateLabel();
             a.Label(ref airBuy);
-            a.mov(eax, __dword_ptr[esi + 0x258]); a.imul(eax, eax, 0x5C);
+            a.mov(eax, __dword_ptr[esi + 0x258]); a.imul(eax, eax, 0x5C); PlayerOff(eax);
             a.cmp(__dword_ptr[edi + eax + 0xFC], 0); a.mov(eax, AirPricePig); a.jne(pig); a.mov(eax, AirPriceRabbit);
             a.Label(ref pig);
             a.push(eax); a.push(__dword_ptr[esi + 0x258]); a.jmp(0x4bc611UL);
@@ -1044,7 +1057,7 @@ static class Caves
         {
             var pig = a.CreateLabel();
             a.Label(ref airAvailCamp);
-            a.push(edx); a.mov(edx, __dword_ptr[esi + 0x434]); a.imul(edx, edx, 0x5C);
+            a.push(edx); a.mov(edx, __dword_ptr[esi + 0x434]); a.imul(edx, edx, 0x5C); PlayerOff(edx);
             a.cmp(__dword_ptr[edx + esi + 0xFC], 0); a.mov(edx, AirPricePig); a.jne(pig); a.mov(edx, AirPriceRabbit);
             a.Label(ref pig);
             a.cmp(eax, edx); a.pop(edx); a.setge(al); a.jmp(0x4a5f78UL);
@@ -1083,6 +1096,20 @@ static class Caves
         var visAid = VisTest("visaid", 0x4a0b2cUL, 0x4a0b3eUL);
         var visDet = VisTest("visdet", 0x4a0dd8UL, 0x4a0df1UL);
 
+        // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
+        var w16Labels = new List<Label>();
+        foreach (var st in World16)
+        {
+            var l = a.CreateLabel($"w16_{st.Va:x}"); a.Label(ref l); w16Labels.Add(l);
+            if (st.PreReg != Register.None) PlayerOff(new AssemblerRegister32(st.PreReg), st.PreK);
+            for (int i = 0; i < st.Ins.Length; i++)
+            {
+                a.AddInstruction(st.Ins[i]);
+                if (st.K[i] >= 0) PlayerOff(new AssemblerRegister32(st.Ins[i].Op0Register), st.K[i]);
+            }
+            a.jmp((ulong)(st.Va + st.Len));
+        }
+
         var w = new ByteWriter();
         var res = a.Assemble(w, codeVa, BlockEncoderOptions.ReturnNewInstructionOffsets);
         ulong L(Label l) => res.GetLabelRIP(l);
@@ -1104,6 +1131,8 @@ static class Caves
         hooks.Add(new Hook(0x47a543, Convert.FromHexString("C7865421000000000000"), "SMulti::Initialize: слоти, conn, recv/req 8…15", (uint)L(initTail), 10));
         hooks.Add(new Hook(0x4f9ac7, Convert.FromHexString("8B0D60D05800"), "SMenu::Create: рядок «Arcanum Nexus Mod v…» під версією гри", (uint)L(menuVer), 6));
         hooks.Add(new Hook(0x4f971d, Convert.FromHexString("8BCEE8CCEEF8FF"), "~SMenu: прибрати рядок версії мода", (uint)L(menuVerDtor), 7));
+        for (int i = 0; i < World16.Count; i++)
+            hooks.Add(new Hook(World16[i].Va, World16[i].Old, "#2: зсув гравця i·5Ch → хвіст SGameWorld для i ≥ 8", (uint)L(w16Labels[i]), World16[i].Len));
         hooks.Add(new Hook(0x4bc609, Convert.FromHexString("6A32FFB658020000"), "SUnit::EC_SpecTargetGround: авіаудар кроликів 100", (uint)L(airBuy), 8));
         hooks.Add(new Hook(0x4a5f5d, Convert.FromHexString("83BC303801000032"), "SGameWorld::IsBomberAvailable: ціна за расою (мережа)", (uint)L(airAvail), 8));
         hooks.Add(new Hook(0x4a5f72, Convert.FromHexString("83F8320F9DC0"), "SGameWorld::IsBomberAvailable: ціна за расою (кампанія)", (uint)L(airAvailCamp), 6));

@@ -29,7 +29,7 @@ for (let i = 0; i < lines.length; i++) {
     const parts = mem[1].split('+'); let disp = 0; const regs = [];
     for (const p of parts) { if (/^[0-9A-F]+h$/i.test(p) || /^\d+$/.test(p)) disp += hex(p); else regs.push(p); }
     if (disp >= 0xF8 && disp < 0x3D8 && regs.some(r => imulRegs.has(r))) {
-      A.push({ va, fn, ins: `${op} ${args}`, field: ((disp - 0xF8) % 0x5C).toString(16), disp: disp.toString(16) });
+      A.push({ va, fn, ins: `${op} ${args}`, field: ((disp - 0xF8) % 0x5C).toString(16), disp: disp.toString(16), imul: regs.map(r => imulRegs.get(r)).find(Boolean) });
       fnHits.set(fn, (fnHits.get(fn) || 0) + 1);
     }
     if (regs.some(r => /\*4$/.test(r)) && PLAYER_ARRAYS.includes(disp)) {
@@ -48,6 +48,14 @@ console.log(`A) поля гравця через imul 5Ch: ${A.length} у ${new 
 console.log(`B) масиви [r·4+X]: ${B.length}:`, byArr);
 console.log(`C) cmp …,8 у цих функціях: ${C.length}`);
 console.log(`функцій із доступом до гравців: ${fnHits.size}`);
+// --json <файл>: адреси imul, що дають зсув гравця (для Caves.cs, world16) і ті, що не дають
+const ji = process.argv.indexOf('--json');
+if (ji > 0) {
+  const used = [...new Set(A.map(a => a.imul))].sort();
+  const all = []; for (const l of lines) { const m = l.match(/^([0-9a-f]{8})\s+imul\s+(e[a-z]{2}),(?:[^,]+,)?5Ch$/); if (m) all.push(m[1]); }
+  fs.writeFileSync(process.argv[ji + 1], JSON.stringify({ note: 'tools/re/scan-world16.js: imul …,5Ch, результат яких іде в поля гравця SGameWorld (+F8…+3D7)', player: used, other: all.filter(v => !used.includes(v)) }, null, 1));
+  console.log(`json: ${used.length} imul гравців, ${all.length - used.length} інших`);
+}
 if (list) {
   for (const a of A) console.log(`A ${a.va} +${a.disp} (поле ${a.field}) ${a.ins}  ; ${a.fn}`);
   for (const b of B) console.log(`B ${b.va} [${b.arr}] ${b.ins}  ; ${b.fn}`);

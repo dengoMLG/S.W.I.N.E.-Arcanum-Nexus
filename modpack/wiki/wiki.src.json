@@ -71,7 +71,7 @@
           "type": "facts",
           "facts": [
             {
-              "value": "4.0.2",
+              "value": "4.0.3",
               "label": {
                 "ru": "версия пака и мода",
                 "uk": "версія паку й мода",
@@ -116,14 +116,14 @@
           "type": "bullets",
           "items": [
             {
-              "ru": "Arcanum Nexus Mod 4.0.2 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
-              "uk": "Arcanum Nexus Mod 4.0.2 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
-              "en": "Arcanum Nexus Mod 4.0.2 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
+              "ru": "Arcanum Nexus Mod 4.0.3 — один мод со всем сразу: 10 новых юнитов (по 5 у свиней и кроликов) со своими механиками, новые юниты в магазине кампании и в «Штабе», 19 сетевых карт из кампании, игра до 16 человек (по двое на армию), экранчики и русская озвучка новых танков, главное меню в свинском городе Штадт; патч swineHD.exe.",
+              "uk": "Arcanum Nexus Mod 4.0.3 — один мод з усім одразу: 10 нових юнітів (по 5 у свиней і кроликів) зі своїми механіками, нові юніти в магазині кампанії та в «Штабі», 19 мережевих мап із кампанії, гра до 16 людей (по двоє на армію), екранчики й російська озвучка нових танків, головне меню у свинському місті Штадт; патч swineHD.exe.",
+              "en": "Arcanum Nexus Mod 4.0.3 — one mod with everything: 10 new units (5 per side) with their own mechanics, the new units in the campaign shop and in HQ, 19 network maps from the campaign, up to 16 players (two per army), portraits and Russian voices for the new tanks, the main menu in the pig city of Stahlstadt; swineHD.exe patch."
             },
             {
-              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.2»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
-              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.2»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
-              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.2”), and in the launcher mod list. If your friends have a different one, update before playing."
+              "ru": "Версия мода видна в главном меню игры, второй строкой под версией игры («Arcanum Nexus Mod v4.0.3»), и в лаунчере в списке модов. Если у друзей она другая — обновитесь перед игрой.",
+              "uk": "Версію мода видно в головному меню гри, другим рядком під версією гри («Arcanum Nexus Mod v4.0.3»), і в лаунчері у списку модів. Якщо в друзів вона інша — оновіться перед грою.",
+              "en": "The mod version is shown in the game main menu, on a second line under the game version (“Arcanum Nexus Mod v4.0.3”), and in the launcher mod list. If your friends have a different one, update before playing."
             }
           ]
         },
@@ -157,6 +157,25 @@
         "en": "Every change to the mod pack and the S.W.I.N.E. launcher page, newest first."
       },
       "blocks": [
+        {
+          "type": "heading",
+          "key": "nexus-4.0.3",
+          "text": {
+            "ru": "Мод 4.0.3 · подготовка к 16 армиям · 23.11.2026",
+            "uk": "Мод 4.0.3 · підготовка до 16 армій · 23.11.2026",
+            "en": "Mod 4.0.3 · groundwork for 16 armies · 2026-11-23"
+          }
+        },
+        {
+          "type": "bullets",
+          "items": [
+            {
+              "ru": "Внутренняя правка exe для будущих 16 отдельных армий: в мире игры появилось место ещё для 8 игроков, все 190 обращений к данным игрока умеют туда ходить. Для игры до 8 армий ничего не меняется (проверено по сети: суммы мира совпадают).",
+              "uk": "Внутрішня правка exe для майбутніх 16 окремих армій: у світі гри з'явилося місце ще для 8 гравців, усі 190 звернень до даних гравця вміють туди ходити. Для гри до 8 армій нічого не змінюється (перевірено по мережі: суми світу збігаються).",
+              "en": "Internal exe change for the coming 16 separate armies: the game world now has room for 8 more players, and all 190 player-data accesses can reach it. Nothing changes for games up to 8 armies (network-tested: world checksums match)."
+            }
+          ]
+        },
         {
           "type": "heading",
           "key": "nexus-4.0.2",

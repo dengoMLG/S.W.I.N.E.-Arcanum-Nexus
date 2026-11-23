@@ -63,7 +63,7 @@ var last = secs[^1];
 uint newRva = Align(last.va - imageBase + Math.Max(last.vs, last.rs), secAlign);
 uint newVa = imageBase + newRva;
 uint newRaw = Align((uint)exe.Length, fileAlign);
-var sec = new byte[0x3000];                 // = SecRaw
+var sec = new byte[0x6000];                 // = SecRaw
 uint tableVa = newVa;                       // [2][N][64]
 for (int race = 0; race < 2; race++)
 {
@@ -90,7 +90,7 @@ var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
 uint caveVa = Align(dataPtr, 16);
-const uint SecRaw = 0x3000, LateStr = 0x2C00;                       // код і дані — у файлі; код до 0x2C00, далі — рядки журналу з вставок (~0x210 Б)
+const uint SecRaw = 0x6000, LateStr = 0x5C00;                       // код і дані — у файлі; код до 0x5C00, далі — рядки журналу з вставок (~0x230 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
 uint secVirtual = SecRaw + (uint)(Caves.TableEntries * Caves.EntrySize) + 0x1000;   // + дані розстановки стартів
 uint oldMaskVa = FindString("JSTAHRMLtafsM\0");
@@ -151,6 +151,8 @@ Imm(0x4e2276, QmOld, QmSize, "new SQuickMarket size");
 foreach (var va in new uint[] { 0x4f38c3, 0x541630 }) Imm(va, QmOld, QmSize, "delete SQuickMarket size");
 Imm(0x4f4edf, 0xAAAAAAAB, 0x38E38E39, "SQuickMarket grid: i / 6 → i / 9 (magic)");
 Imm(0x4f4ee8, 2, 1, "SQuickMarket grid: i / 9 (shift)");
+// #2 (16 армій), крок 1: SGameWorld більший — гравці 8…15 у хвості (Caves.World16Delta).
+foreach (var va in new uint[] { 0x4e1511, 0x4e1d77 }) Imm(va, Caves.WorldOldSize, Caves.WorldNewSize, "#2: new SGameWorld 27A0h → 2A80h (гравці 8…15 у хвості)");
 var raws = new List<(uint va, string oldHex, string newHex, string why)> {
     (0x4f4efe, "8D0452", "8D04D2", "SQuickMarket grid: row·6 → row·9 (lea [edx+edx*8])"),
     (0x4f4f07, "03C0", "6690", "SQuickMarket grid: row·9 без подвоєння"),
@@ -243,6 +245,69 @@ foreach (var (va, oldHex, newHex, why) in raws)
     Console.WriteLine($"{va:x8}  {oldHex} → {newHex}  {why}");
 }
 
+// ── #2: вікна для imul гравців (tools/re/world16.json → Caves.World16) ──
+// Вікно ≥ 5 Б навколо imul: без цілей переходів усередині (крім початку), без чужих правок; кілька imul в одному
+// вікні — кожен із PlayerOff. Цілі: near-переходи/виклики .text і вирівняні dword-и, що вказують у .text (таблиці, vtable).
+if (File.Exists("tools/re/world16.json") && Environment.GetEnvironmentVariable("ARC_NO_WORLD16") != "1")
+{
+    var text = secs[0];
+    var all = new List<Instruction>(); var targets = new HashSet<uint>();
+    var dt = Iced.Intel.Decoder.Create(32, new ByteArrayCodeReader(exe, (int)text.raw, (int)text.vs)); dt.IP = text.va;
+    while (dt.IP < text.va + text.vs) { var ins = dt.Decode(); all.Add(ins); if (ins.IsJmpShortOrNear || ins.IsJccShortOrNear || ins.IsCallNear) targets.Add((uint)ins.NearBranchTarget); }
+    for (int i = 0; i + 4 <= exe.Length; i += 4) { uint v = BitConverter.ToUInt32(exe, i); if (v >= text.va && v < text.va + text.vs) targets.Add(v); }
+    var at = new Dictionary<uint, int>(); for (int i = 0; i < all.Count; i++) at[(uint)all[i].IP] = i;
+    var touched = new HashSet<int>();
+    foreach (dynamic e in edits) { int o = e.offset; string n = e.@new; for (int i = 0; i < n.Length / 2; i++) touched.Add(o + i); }
+    // правки, що пишуться вже після хуків (вибір техніки союзника — je → nop нижче), теж не чіпати
+    foreach (var (va, len) in new (uint, int)[] { (0x4d68a3, 6), (0x4d6a29, 2), (0x4d6b5a, 2), (0x4d6cdb, 2), (0x4d6e89, 2), (0x4d705a, 2) })
+        for (int i = 0; i < len; i++) touched.Add(Off(va) + i);
+    using var wj = JsonDocument.Parse(File.ReadAllText("tools/re/world16.json"));
+    var sites = wj.RootElement.GetProperty("sites").EnumerateArray().ToDictionary(e => Convert.ToUInt32(e.GetProperty("va").GetString()!, 16), e => e.GetProperty("k").GetInt32());
+    var done = new HashSet<uint>(); var failed = new List<string>();
+    foreach (var (sva, _) in sites.OrderBy(p => p.Key))
+    {
+        if (done.Contains(sva)) continue;
+        if (!at.TryGetValue(sva, out int idx) || all[idx].Mnemonic != Mnemonic.Imul) { failed.Add($"{sva:x}: not an imul"); continue; }
+        bool ok = false;
+        for (int back = 0; back <= 3 && !ok; back++)
+        {
+            int s = idx - back, e = s; int len = 0;
+            while (e < all.Count && (len < 5 || e <= idx)) { len += all[e].Length; e++; }
+            uint start = (uint)all[s].IP, end = start + (uint)len;
+            bool bad = false;
+            for (uint v = start + 1; v < end && !bad; v++) if (targets.Contains(v)) { bad = true; if (Environment.GetEnvironmentVariable("ARC_W16_DEBUG") == "1") Console.WriteLine($"w16 {sva:x} back {back}: target {v:x}"); }
+            for (uint v = start; v < end && !bad; v++) if (touched.Contains(Off(v))) { bad = true; if (Environment.GetEnvironmentVariable("ARC_W16_DEBUG") == "1") Console.WriteLine($"w16 {sva:x} back {back}: touched {v:x}"); }
+            if (bad) continue;
+            var win = all.GetRange(s, e - s).ToArray();
+            var kk = win.Select(ins => sites.TryGetValue((uint)ins.IP, out var k) && ins.Mnemonic == Mnemonic.Imul ? k : -1).ToArray();
+            foreach (var ins in win) if (sites.ContainsKey((uint)ins.IP)) done.Add((uint)ins.IP);
+            for (uint v = start; v < end; v++) touched.Add(Off(v));
+            Caves.World16.Add(new Caves.W16Site(start, win, kk, exe.Skip(Off(start)).Take(len).ToArray(), len));
+            ok = true;
+        }
+        if (!ok)
+        {   // на інструкцію після imul є перехід ззовні: вікно з неї, PlayerOff перед вікном
+            int s = idx + 1, e = s, len = 0;
+            while (e < all.Count && len < 5) { len += all[e].Length; e++; }
+            uint start = (uint)all[s].IP, end = start + (uint)len;
+            bool bad = false;
+            for (uint v = start + 1; v < end; v++) if (targets.Contains(v)) bad = true;
+            for (uint v = start; v < end; v++) if (touched.Contains(Off(v))) bad = true;
+            if (!bad && !all.GetRange(s, e - s).Any(i => sites.ContainsKey((uint)i.IP)))
+            {
+                var win = all.GetRange(s, e - s).ToArray();
+                for (uint v = start; v < end; v++) touched.Add(Off(v));
+                done.Add(sva);
+                Caves.World16.Add(new Caves.W16Site(start, win, win.Select(_ => -1).ToArray(), exe.Skip(Off(start)).Take(len).ToArray(), len, all[idx].Op0Register, sites[sva]));
+                ok = true;
+            }
+        }
+        if (!ok) failed.Add($"{sva:x}: no safe window");
+    }
+    Console.WriteLine($"world16: {Caves.World16.Count} вікон на {done.Count} imul гравців");
+    if (failed.Count > 0) throw new Exception("world16: " + string.Join("; ", failed));
+}
+
 // ── вставки коду (Caves.cs): вибух і підрив камікадзе, залп, наведення корпусом, уповільнення, міни на ходу ──
 uint latePtr = newVa + LateStr;
 uint CaveStr(string v)
@@ -253,6 +318,10 @@ uint CaveStr(string v)
 }
 var (caveCode, hooks, caveListing) = Caves.Build(newVa, caveVa, stateVa, CaveStr, n => consts[n]);
 if (caveVa + caveCode.Length > newVa + LateStr) throw new Exception("caves do not fit into .arcmod");
+{   // хуки не повинні перекриватися (вікна world16 і сталі хуки Caves.cs)
+    var hs = hooks.OrderBy(h => h.Va).ToList();
+    for (int i = 1; i < hs.Count; i++) if (hs[i - 1].Va + hs[i - 1].Len > hs[i].Va) throw new Exception($"hooks overlap: {hs[i - 1].Va:x} ({hs[i - 1].Why}) and {hs[i].Va:x} ({hs[i].Why})");
+}
 caveCode.CopyTo(sec, (int)(caveVa - newVa));
 foreach (var hk in hooks)
 {
