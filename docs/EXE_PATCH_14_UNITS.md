@@ -420,6 +420,24 @@ RakNet: `RakPeer::Startup(8, …)` в `ConnectionManager::CreatePeer` (0x4743eb)
 Magenta 310/60/65, Navy 225/70/40): в тесте файл клался в копию игры вручную, в мод — когда `--p16` станет основной сборкой.
 Проверено: 10 копий, 0 рассинхронов, в табло P9 фиолетовый, P10 розовый (разные).
 
+### Лобби на 16 строк: разбор (24.11.2026)
+
+Строки игроков — встроенные в `SChatRoomMenu` (объект 9328h, `operator new` в 0x4fc035 и 0x4feb71) массивы виджетов
+по 8, адресуются `menu + X + слот·размер`; заполняет их `SMulti::DisplaySlotData` (`[SMulti+2160h]` = меню):
+
+| Массив | Тип | Размер | Кто трогает |
+|---|---|---|---|
+| +5D74h | `STextButton` (имя игрока) | 1B0h | ctor, dtor, `Create`, `SetVisibleEverything`, `OnAction`, `DisplaySlotData` ×6 |
+| +2364h | `SDropList` | 2E4h | ctor, dtor, `Create`, `OnAction`, `DisplaySlotData` ×5 (+ `SGameWorld::InitEventInterface` — другой класс) |
+| +3A84h | `SDropList` | 2E4h | ctor, dtor, `SetVisibleEverything`, `OnAction`, `ChangePlayerSlotStatus`, `DisplaySlotData` ×20 |
+| +6AF4h | `SColorButton` | 19Ch | ctor, dtor, `Create`, `SetVisibleEverything`, `OnAction` ×2, `DisplaySlotData` ×6 |
+
+План (как перенос `SMarket`/`SQuickMarket`): четыре массива — в хвост объекта по 16 (+8·914h = 48A0h, объект
+9328h → DBC8h), правки смещений во всех местах выше, циклы конструктора, деструктора, `Create` и
+`SetVisibleEverything` 8 → 16; `DisplaySlotData` — 16 строк без строки «P1 + P9» (`coname16` выключить при `--p16`);
+`OnAction` — номер строки по виджету из 16. Затем раскладка: 16 строк в той же области окна (меньший шаг по высоте
+или две колонки) — подбирать по снимкам `mp-run -AutoStart 99 -Shot`.
+
 ## Третья раса — Вороны (#3, мод 4.1.0, заглушка)
 
 Раса в игре — число: 0 кролики, 1 свиньи. Хранится байтом в слоте лобби (`SMulti` слот +68h, было +21F8h), в игроке мира (`SGameWorld` + F8h + i·5Ch + 4 = +FCh), в `SCampaign+4` (своя раса в сети — `SChatRoomMenu+916Ch` → `SCampaign::SetRace`) и в копиях: `SMarket+26A8h`, `SQuickMarket+2840h`, флаг меню `[0ED29E0h]` (он же «Race = N» в `menu.ini`). По сети раса идёт целым байтом (`OnPlayerChangeRace`, данные слота копируются записью 70h), так что 2 проходит без правок.
