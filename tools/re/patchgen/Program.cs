@@ -111,7 +111,7 @@ Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArra
 uint caveVa = Align(dataPtr, 16);
 const uint SecRaw = 0x6000, LateStr = 0x5C00;                       // код і дані — у файлі; код до 0x5C00, далі — рядки журналу з вставок (~0x230 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
-uint secVirtual = SecRaw + (uint)Caves.BssEnd;                       // + таблиці стану, розстановки й розширений DrawVisMap (64)
+uint secVirtual = SecRaw + (uint)Caves.BssEnd + (uint)(args.Contains("--p16") ? Caves.P16Bss : 0);                       // + таблиці стану, розстановки й розширений DrawVisMap (64)
 uint oldMaskVa = FindString("JSTAHRMLtafsM\0");
 
 // ── правки інструкцій ──
@@ -185,6 +185,13 @@ if (Caves.P16)
     Imm(0x4ad2f0, 8, 16, "#2 крок 4: ServerInit — «Lato kisszem» (обзор старту) для 16 гравців");
     Imm(0x4adbc2, 8, 16, "#2 крок 4: ServerInit — розстановка армій 16 гравців");
     Imm(0x4ae1d4, 8, 16, "#2 крок 4: ServerInit — старт авіації 16 гравців");
+    Imm(0x4e0785, 0x90, 0x120, "#2 крок 5: SGameView::Create — 16 рядків табло (крок 12h)");
+    Imm(0x4e667f, 8, 16, "#2 крок 5: табло — гравців 16");
+    Imm(0x4e669d, 8, 16, "#2 крок 5: табло, сортування — 16");
+    Imm(0x4e66f0, 8, 16, "#2 крок 5: табло, сортування — 16");
+    Imm(0x4e671e, 7, 15, "#2 крок 5: табло, сортування — 15");
+    Imm(0x4e6834, 8, 16, "#2 крок 5: табло, очищення решти рядків — 16");
+    Imm(0x4e683f, 8, 16, "#2 крок 5: табло, очищення решти рядків — 16");
     Imm(0x4ae549, 7, 16, "#2 крок 3: ServerInit — перша карта огляду для всіх 16 (ваніль малювала 0…6)");
 }
 if (Caves.Fog16)
@@ -314,6 +321,30 @@ foreach (var (va, why, pick) in patches)
 
 // #2 крок 3 (--p16): місце 8…15 — окремий гравець світу, тож свій номер = номер місця (без «− 8» другого командира)
 if (Caves.P16) raws.RemoveAll(r => r.va == 0x479f00);
+// #2 крок 5 (--p16): табло очок у SGameView::Update на 16 гравців.
+if (Caves.P16)
+{
+    uint SL = stateVa + Caves.ScoreList, SF = stateVa + Caves.ScoreFrames;
+    // [ebp + idx(·4) − 134h] → [idx(·4) + SL]: mod 10 → 00 при SIB base = ebp (101 → «без бази»), та сама довжина.
+    foreach (var va in new uint[] { 0x4e6660, 0x4e66b0, 0x4e66be, 0x4e66fb, 0x4e6702, 0x4e6709, 0x4e6710, 0x4e6760 })
+    {
+        int o = Off(va);
+        var dc = Iced.Intel.Decoder.Create(32, new ByteArrayCodeReader(exe, o, 16)); dc.IP = va;
+        var ins = dc.Decode(); var cof = dc.GetConstantOffsets(ins); int d = cof.DisplacementOffset;
+        var old = exe.Skip(o).Take(ins.Length).ToArray(); var nw = (byte[])old.Clone();
+        if (cof.DisplacementSize != 4 || (nw[d - 2] & 0xC7) != 0x84 || (nw[d - 1] & 7) != 5 || BitConverter.ToInt32(nw, d) != -0x134)
+            throw new Exception($"{va:x}: not [ebp+idx-134h] ({ins})");
+        nw[d - 2] = (byte)(nw[d - 2] & 0x3F);
+        BitConverter.GetBytes(SL).CopyTo(nw, d);
+        raws.Add((va, Convert.ToHexString(old), Convert.ToHexString(nw), "#2 крок 5: табло очок — список гравців на 16 (.arcmod)"));
+    }
+    // lea r,[base+33ACh] (6 Б) → mov r,SF / nop: рядки табло — у .arcmod на 16
+    foreach (var (va, oldHex, op) in new (uint, string, byte)[] {
+        (0x4e0717, "8D86AC330000", 0xB8),    // SGameView::Create: lea eax,[esi+33ACh]
+        (0x4e6741, "8D83AC330000", 0xB8),    // SGameView::Update: lea eax,[ebx+33ACh]
+        (0x4e6839, "8DB3AC330000", 0xBE) })  // SGameView::Update: lea esi,[ebx+33ACh]
+        raws.Add((va, oldHex, Convert.ToHexString(new[] { op }) + Convert.ToHexString(BitConverter.GetBytes(SF)) + "90", "#2 крок 5: рядки табло очок — 16 у .arcmod"));
+}
 foreach (var (va, oldHex, newHex, why) in raws)
 {
     int off = Off(va); var ob = Convert.FromHexString(oldHex); var nb = Convert.FromHexString(newHex);

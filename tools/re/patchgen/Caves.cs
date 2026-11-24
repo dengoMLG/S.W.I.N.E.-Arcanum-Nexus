@@ -54,6 +54,9 @@ static class Caves
     public const int VisAidH = VisTbl3 + 0x2100 + 0x10, VisAidM = VisAidH + 0x110;                // по 64 float (+16 Б запасу спереду для [-1])
     public const int VisDetH = VisAidM + 0x110, VisDetM = VisDetH + 0x110;
     public const int BssEnd = VisDetM + 0x120;
+    // #2 крок 5 (--p16): табло очок на 16 — список гравців (замість локального [ebp−134h] на 8) і 16 рядків-кадрів
+    // (замість SGameView+33ACh на 8). Лише з --p16 секція більша на P16Bss (Program.cs).
+    public const int ScoreList = BssEnd, ScoreFrames = ScoreList + 0x40, P16Bss = 0x80;
     public const int AirPricePig = 50, AirPriceRabbit = 100, AirPriceRaven = 35;    // авіаудар, SP (свині 50, кролики 100, ворони 35)
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
