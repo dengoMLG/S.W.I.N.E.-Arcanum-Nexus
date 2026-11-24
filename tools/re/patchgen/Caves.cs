@@ -58,7 +58,7 @@ static class Caves
     // #2: гравці 8…15 — у хвості SGameWorld (+27A0h, 8 × 5Ch; об'єкт 27A0h → 2A80h). Зсув i·5Ch для i ≥ 8 + World16Delta.
     public const int WorldOldSize = 0x27A0, WorldNewSize = WorldOldSize + 8 * 0x5C, World16Delta = WorldOldSize - (0xF8 + 8 * 0x5C);
     // #2 крок 2 (--fog16): карти туману ×16 у хвості після гравців 8…15 — обзор +2A80h, виявлення +2AC0h; об'єкт 2B00h.
-    public static bool Fog16;
+    public static bool Fog16, P16;
     public const uint FogVis = WorldNewSize, FogDet = WorldNewSize + 0x40;
     public static uint WorldSize => Fog16 ? (uint)WorldNewSize + 0x80 : WorldNewSize;
     static int VisOff => Fog16 ? (int)FogVis : 0x26EC;
@@ -1602,9 +1602,42 @@ static class Caves
         {
             a.Label(ref fogCtor);
             a.push(edi); a.push(ecx);
-            a.lea(edi, __dword_ptr[esi + (int)FogVis]); a.xor(eax, eax); a.mov(ecx, 0x20); a.cld(); a.rep.stosd();
+            // з --p16 обнуляємо й гравців 8…15 (+27A0h…+2A80h): їх ініціалізує лише продовжений цикл ServerInit
+            a.lea(edi, __dword_ptr[esi + (P16 ? WorldOldSize : (int)FogVis)]); a.xor(eax, eax); a.mov(ecx, P16 ? (0x2B00 - WorldOldSize) / 4 : 0x20); a.cld(); a.rep.stosd();
             a.pop(ecx); a.pop(edi);
             a.mov(eax, esi); a.mov(__dword_ptr[esi + 0x2784], 0); a.jmp(0x49d856UL);
+        }
+
+        // ── #2 крок 3 (--p16): цикли по гравцях указівником add r,5Ch — до 16, на переході 7 → 8 указівник += World16Delta ──
+        // (гравці 8…15 у хвості +27A0h, а не одразу за гравцем 7). Таблиця циклів — docs/EXE_PATCH_14_UNITS.md, «Шаг 3: циклы».
+        var p16Labels = new List<(uint va, byte[] old, string why, Label l, int len)>();
+        if (P16)
+        {
+            // Форма «inc ctr / add ptr,5Ch / cmp ctr,8 / jl»: хук на add + cmp (6 Б), назад на jl.
+            void SimpleLoop(uint va, AssemblerRegister32 ptr, AssemblerRegister32 ctr, string old, string why)
+            {
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(ptr, 0x5C); a.cmp(ctr, 8); a.jne(n); a.add(ptr, World16Delta);
+                a.Label(ref n); a.cmp(ctr, 16); a.jmp((ulong)(va + 6));
+                p16Labels.Add((va, Convert.FromHexString(old), why, l, 6));
+            }
+            SimpleLoop(0x4a5fb4, eax, edx, "83C05C83FA08", "#2 крок 3: IsMapRunningForAnyPlayer — 16 гравців");
+            SimpleLoop(0x4ae831, eax, ecx, "83C05C83F908", "#2 крок 3: ServerRefresh, кінець матчу — 16 гравців");
+            SimpleLoop(0x4aee42, esi, edi, "83C65C83FF08", "#2 крок 3: ServerRefresh, нарахування SP — 16 гравців");
+            {   // ServerInit 0x4ac962: add esi,5Ch / mov eax,[ebp-58h] (i до inc); межа — req 6F18h → 6F38h (Program.cs).
+                // [ebp-60h] = i·5Ch для [eax+edi+100h] — теж на хвіст.
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(esi, 0x5C); a.mov(eax, __dword_ptr[ebp - 0x58]); a.cmp(eax, 7); a.jne(n);
+                a.add(esi, World16Delta); a.add(__dword_ptr[ebp - 0x60], World16Delta);
+                a.Label(ref n); a.jmp(0x4ac968UL);
+                p16Labels.Add((0x4ac962, Convert.FromHexString("83C65C8B45A8"), "#2 крок 3: ServerInit, гравці зі слотів — 16", l, 6));
+            }
+            {   // ServerRefresh 0x4aea75: add edi,5Ch / mov [ebp-1Ch],esi (esi — уже i+1); межа req 6F18h → 6F38h.
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(edi, 0x5C); a.mov(__dword_ptr[ebp - 0x1C], esi); a.cmp(esi, 8); a.jne(n); a.add(edi, World16Delta);
+                a.Label(ref n); a.jmp(0x4aea7bUL);
+                p16Labels.Add((0x4aea75, Convert.FromHexString("83C75C8975E4"), "#2 крок 3: ServerRefresh, очікування кадрів — 16", l, 6));
+            }
         }
 
         // ── #2: кожен imul …,5Ch гравця — копія вікна інструкцій + PlayerOff після imul ──
@@ -1661,6 +1694,7 @@ static class Caves
         hooks.Add(new Hook(0x4c8e01, Convert.FromHexString("8B81900200003B8194000000"), "SUnit::ServerRefresh: причіп Ammo заряджає Cargo Піт-Стопа", (uint)L(pitstopAmmoCheck), 12));
         hooks.Add(new Hook(0x4cb682, Convert.FromHexString("898290020000"), "SUnit::TakeResource: Load Ammo поповнює Cargo Піт-Стопа до 300", (uint)L(pitstopTakeAmmo), 6));
         hooks.Add(new Hook(0x4d03c5, Convert.FromHexString("68F80900008BF8"), "SWorld::CreateUnit: чистий запис таблиці для нового юніта (рассинхрон при повторному id)", (uint)L(newUnit), 7));
+        foreach (var p in p16Labels) hooks.Add(new Hook(p.va, p.old, p.why, (uint)L(p.l), p.len));
         if (Fog16) hooks.Add(new Hook(0x49d84a, Convert.FromHexString("8BC6C7868427000000000000"), "#2 крок 2: SGameWorld::SGameWorld — обнулити карти туману ×16", (uint)L(fogCtor), 12));
         hooks.Add(new Hook(0x4a8cc9, Convert.FromHexString("8BB534FFFFFF"), "SGameWorld::ProcessPacket: рассинхрон → стан усіх юнітів у журнал", (uint)L(desyncDump), 6));
         hooks.Add(new Hook(0x47cd51,Convert.FromHexString("8B4DFC5F5E"), "SMulti::SendBroadcastMessage: слотам 8…15 напряму", (uint)L(sbmTail), 5));

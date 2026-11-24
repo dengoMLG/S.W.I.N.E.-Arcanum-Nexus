@@ -47,7 +47,9 @@ if (modVer == null && File.Exists("modpack/pack.json"))
 if (modVer == null) { Console.Error.WriteLine("mod version unknown: pass --modver X or run from the repo root (modpack/pack.json)"); return 2; }
 Caves.ModLine = $"Arcanum Nexus Mod v{modVer}";
 // #2 крок 2 (16 армій): карти туману на 16 гравців — лише з --fog16, поки не перевірено mp-run/mp-check.
-Caves.Fog16 = args.Contains("--fog16");
+Caves.Fog16 = args.Contains("--fog16") || args.Contains("--p16");
+// #2 крок 3 (16 армій): гравці 8…15 як окремі гравці світу — лише з --p16 (вмикає й --fog16), поки крок не готовий.
+Caves.P16 = args.Contains("--p16");
 int K = classes[0].Length, N = 13 + K;
 if (K < 1 || classes[1].Length != K) throw new Exception("rabbit and pig need the same number of new classes");
 if (N > 32) throw new Exception("too many classes");
@@ -257,8 +259,11 @@ if (Environment.GetEnvironmentVariable("ARC_NO_SMULTI16") != "1")   // для п
     {
         uint P(string k) => Convert.ToUInt32(e.GetProperty(k).GetString()!, 16);
         var why = "SMulti16 " + e.GetProperty("why").GetString();
-        if (e.GetProperty("kind").GetString() == "disp") Disp(P("va"), P("old"), P("new"), why);
-        else Imm(P("va"), P("old"), P("new"), why);
+        uint nv = P("new");
+        // #2 крок 3 (--p16): цикли по слотах req у ServerInit / ServerRefresh — до 16 гравців світу, не 8
+        if (Caves.P16 && (P("va") == 0x4ac96f || P("va") == 0x4aea7e) && nv == 0x6f18) { nv = 0x6f38; why += " → 16 (p16)"; }
+        if (e.GetProperty("kind").GetString() == "disp") Disp(P("va"), P("old"), nv, why);
+        else Imm(P("va"), P("old"), nv, why);
     }
 }
 
