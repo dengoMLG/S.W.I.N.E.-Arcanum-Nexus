@@ -1644,6 +1644,103 @@ static class Caves
                 a.Label(ref n); a.jmp(0x4ac968UL);
                 p16Labels.Add((0x4ac962, Convert.FromHexString("83C65C8B45A8"), "#2 крок 3: ServerInit, гравці зі слотів — 16", l, 6));
             }
+            {   // ServerInit 0x4adbb9 — розстановка армій: add ecx,5Ch / mov [ebp-58h],eax (eax — уже i+1); межа 0x4adbc2 → 16.
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(ecx, 0x5C); a.mov(__dword_ptr[ebp - 0x58], eax); a.cmp(eax, 8); a.jne(n); a.add(ecx, World16Delta);
+                a.Label(ref n); a.jmp(0x4adbbfUL);
+                p16Labels.Add((0x4adbb9, Convert.FromHexString("83C15C8945A8"), "#2 крок 4: ServerInit, розстановка армій — 16 гравців", l, 6));
+            }
+            {   // ServerInit 0x4ae1ce — стартова точка авіації: add esi,5Ch / add esp,20h; лічильник [ebp-5Ch] (уже i+1); межа 0x4ae1d4 → 16.
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(esi, 0x5C); a.add(esp, 0x20); a.cmp(__dword_ptr[ebp - 0x5C], 8); a.jne(n); a.add(esi, World16Delta);
+                a.Label(ref n); a.jmp(0x4ae1d4UL);
+                p16Labels.Add((0x4ae1ce, Convert.FromHexString("83C65C83C420"), "#2 крок 4: ServerInit, старт авіації — 16 гравців", l, 6));
+            }
+            {   // ServerInit 0x4acb2e (спільна точка після звичайної / випадкової роздачі стартів, туди ж стрибає spawn):
+                // гравцям 8…15 — старт. Активний (тип ≤ 1): вільний старт, найближчий до старту союзника (тієї ж команди),
+                // без союзника — перший вільний; вільних немає — старт союзника або гравця i − 8 (армії розставляє
+                // FindEmptySpace навколо). Було: mov eax,[edi+4F0h] (edi = SGameWorld*).
+                uint sc = tableVa + (uint)SpawnScratch, CX = sc, CZ = sc + 32, VALID = sc + 64, USED = sc + 96;
+                var l = a.CreateLabel(); a.Label(ref l);
+                a.pushad(); a.mov(ebp, edi);
+                {   // центри "start 1".."start 8" (як у spawn)
+                    var kloop = a.CreateLabel(); var aloop = a.CreateLabel(); var anext = a.CreateLabel(); var knext = a.CreateLabel();
+                    a.xor(ebx, ebx);
+                    a.Label(ref kloop);
+                    a.mov(__dword_ptr[ebx * 4 + VALID], 0); a.mov(__dword_ptr[ebx * 4 + USED], 0);
+                    a.xor(esi, esi);
+                    a.Label(ref aloop);
+                    a.cmp(esi, __dword_ptr[ebp + 0x500]); a.jge(knext);
+                    a.mov(eax, __dword_ptr[ebp + 0x4FC]); a.lea(ecx, __dword_ptr[esi + esi * 8]); a.lea(eax, __dword_ptr[eax + ecx * 4]);
+                    a.cmp(__dword_ptr[eax], 0x7FFFFFFF); a.jne(anext);
+                    a.push(eax); a.push(__dword_ptr[ebx * 4 + cst("startnames")]); a.push(__dword_ptr[eax + 0x14]);
+                    a.call(__dword_ptr[0x544460]); a.add(esp, 8); a.pop(ecx);
+                    a.test(eax, eax); a.jne(anext);
+                    a.mov(eax, __dword_ptr[ecx + 4]); a.add(eax, __dword_ptr[ecx + 0xC]); a.mov(__dword_ptr[ebx * 4 + CX], eax);
+                    a.mov(eax, __dword_ptr[ecx + 8]); a.add(eax, __dword_ptr[ecx + 0x10]); a.mov(__dword_ptr[ebx * 4 + CZ], eax);
+                    a.mov(__dword_ptr[ebx * 4 + VALID], 1); a.jmp(knext);
+                    a.Label(ref anext); a.inc(esi); a.jmp(aloop);
+                    a.Label(ref knext); a.inc(ebx); a.cmp(ebx, 8); a.jl(kloop);
+                }
+                {   // зайняті старти активних гравців 0…7
+                    var u = a.CreateLabel(); var un = a.CreateLabel(); a.xor(esi, esi);
+                    a.Label(ref u);
+                    a.imul(edi, esi, 0x5C); a.add(edi, ebp);
+                    a.cmp(__dword_ptr[edi + 0x100], 1); a.ja(un);
+                    a.mov(eax, __dword_ptr[edi + 0x10C]); a.cmp(eax, 8); a.jae(un); a.mov(__dword_ptr[eax * 4 + USED], 1);
+                    a.Label(ref un); a.inc(esi); a.cmp(esi, 8); a.jl(u);
+                }
+                {
+                    var pl = a.CreateLabel(); var pn = a.CreateLabel(); var tl = a.CreateLabel(); var tn = a.CreateLabel(); var tdone = a.CreateLabel();
+                    var kk = a.CreateLabel(); var kkn = a.CreateLabel(); var ff = a.CreateLabel(); var ffl = a.CreateLabel(); var ffn = a.CreateLabel();
+                    var pick = a.CreateLabel(); var store = a.CreateLabel();
+                    a.mov(esi, 8);
+                    a.Label(ref pl);
+                    a.imul(edi, esi, 0x5C); PlayerOff(edi); a.add(edi, ebp);                       // edi = &гравець − F8h
+                    a.cmp(__dword_ptr[edi + 0x100], 1); a.ja(pn);
+                    // якір: старт першого активного союзника (j ≠ i) тієї ж команди ≠ 0
+                    a.mov(ecx, __dword_ptr[edi + 0x104]); a.and(ecx, 15); a.mov(edx, -1);
+                    a.test(ecx, ecx); a.je(tdone);
+                    a.xor(ebx, ebx);
+                    a.Label(ref tl);
+                    a.cmp(ebx, esi); a.je(tn);
+                    a.imul(eax, ebx, 0x5C); PlayerOff(eax); a.add(eax, ebp);
+                    a.cmp(__dword_ptr[eax + 0x100], 1); a.ja(tn);
+                    a.push(ecx); a.mov(ecx, __dword_ptr[eax + 0x104]); a.and(ecx, 15); a.cmp(ecx, __dword_ptr[esp]); a.pop(ecx); a.jne(tn);
+                    a.mov(eax, __dword_ptr[eax + 0x10C]); a.cmp(eax, 8); a.jae(tn);
+                    a.mov(edx, eax); a.jmp(tdone);
+                    a.Label(ref tn); a.inc(ebx); a.cmp(ebx, 16); a.jl(tl);
+                    a.Label(ref tdone);                                                                 // edx = якір або −1
+                    a.mov(ebx, -1);
+                    a.test(edx, edx); a.js(ff);
+                    a.cvtsi2ss(xmm6, __dword_ptr[edx * 4 + CX]); a.cvtsi2ss(xmm7, __dword_ptr[edx * 4 + CZ]);
+                    a.movss(xmm5, __dword_ptr[cst("big")]); a.xor(eax, eax);
+                    a.Label(ref kk);
+                    a.cmp(__dword_ptr[eax * 4 + VALID], 0); a.je(kkn); a.cmp(__dword_ptr[eax * 4 + USED], 0); a.jne(kkn);
+                    a.cvtsi2ss(xmm0, __dword_ptr[eax * 4 + CX]); a.subss(xmm0, xmm6); a.mulss(xmm0, xmm0);
+                    a.cvtsi2ss(xmm1, __dword_ptr[eax * 4 + CZ]); a.subss(xmm1, xmm7); a.mulss(xmm1, xmm1); a.addss(xmm0, xmm1);
+                    a.comiss(xmm0, xmm5); a.jae(kkn); a.movss(xmm5, xmm0); a.mov(ebx, eax);
+                    a.Label(ref kkn); a.inc(eax); a.cmp(eax, 8); a.jl(kk);
+                    a.jmp(pick);
+                    a.Label(ref ff); a.xor(eax, eax);
+                    a.Label(ref ffl);
+                    a.cmp(__dword_ptr[eax * 4 + VALID], 0); a.je(ffn); a.cmp(__dword_ptr[eax * 4 + USED], 0); a.jne(ffn);
+                    a.mov(ebx, eax); a.jmp(pick);
+                    a.Label(ref ffn); a.inc(eax); a.cmp(eax, 8); a.jl(ffl);
+                    a.Label(ref pick);
+                    a.test(ebx, ebx); a.jns(store);
+                    a.mov(ebx, edx); a.test(ebx, ebx); a.jns(store);                                     // вільних немає — старт союзника
+                    a.imul(eax, esi, 0x5C); a.sub(eax, 8 * 0x5C); a.add(eax, ebp);                      // або гравця i − 8
+                    a.mov(ebx, __dword_ptr[eax + 0x10C]); a.cmp(ebx, 8); a.jb(store); a.xor(ebx, ebx);
+                    a.Label(ref store);
+                    a.mov(__dword_ptr[ebx * 4 + USED], 1); a.mov(__dword_ptr[edi + 0x10C], ebx);
+                    Log("ARC: player %d start %d", Reg(ebx), Reg(esi));
+                    a.Label(ref pn); a.inc(esi); a.cmp(esi, 16); a.jl(pl);
+                }
+                a.popad();
+                a.mov(eax, __dword_ptr[edi + 0x4F0]); a.jmp(0x4acb34UL);
+                p16Labels.Add((0x4acb2e, Convert.FromHexString("8B87F0040000"), "#2 крок 4: ServerInit — старти гравцям 8…15", l, 6));
+            }
             {   // ServerRefresh 0x4aea75: add edi,5Ch / mov [ebp-1Ch],esi (esi — уже i+1); межа req 6F18h → 6F38h.
                 var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
                 a.add(edi, 0x5C); a.mov(__dword_ptr[ebp - 0x1C], esi); a.cmp(esi, 8); a.jne(n); a.add(edi, World16Delta);

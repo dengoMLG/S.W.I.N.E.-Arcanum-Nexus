@@ -182,6 +182,9 @@ if (Caves.P16)
     Imm(0x49e659, 8, 16, "#2 крок 3: CanSeeGroundUnit — гравець < 16");
     Imm(0x49fa76, 8, 16, "#2 крок 3: CollectUnits — власник < 16");
     Imm(0x4ac98c, 7, 15, "#2 крок 3: ServerInit — свій гравець ≤ 15 (було «ControllingPlayer is invalid (8)»)");
+    Imm(0x4ad2f0, 8, 16, "#2 крок 4: ServerInit — «Lato kisszem» (обзор старту) для 16 гравців");
+    Imm(0x4adbc2, 8, 16, "#2 крок 4: ServerInit — розстановка армій 16 гравців");
+    Imm(0x4ae1d4, 8, 16, "#2 крок 4: ServerInit — старт авіації 16 гравців");
     Imm(0x4ae549, 7, 16, "#2 крок 3: ServerInit — перша карта огляду для всіх 16 (ваніль малювала 0…6)");
 }
 if (Caves.Fog16)
