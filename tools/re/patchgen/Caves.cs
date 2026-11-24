@@ -1624,6 +1624,17 @@ static class Caves
             SimpleLoop(0x4a5fb4, eax, edx, "83C05C83FA08", "#2 крок 3: IsMapRunningForAnyPlayer — 16 гравців");
             SimpleLoop(0x4ae831, eax, ecx, "83C05C83F908", "#2 крок 3: ServerRefresh, кінець матчу — 16 гравців");
             SimpleLoop(0x4aee42, esi, edi, "83C65C83FF08", "#2 крок 3: ServerRefresh, нарахування SP — 16 гравців");
+            SimpleLoop(0x4b1bcc, ecx, edx, "83C15C83FA08", "#2 крок 3: TestTriggers, найбільше очок — 16 гравців");   // + 0x4b1bd4 cmp edx,8 → 16 (Program.cs)
+            // Зворотний лічильник 8 → 16 (Program.cs): «add edx,5Ch / mov ecx,edi», перехід, коли лічильник ще 9 (гравець 7).
+            void DownLoop(uint va, AssemblerRegister32 ptr, Action cmp9, string old, string why)
+            {
+                var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);
+                a.add(ptr, 0x5C); a.mov(ecx, edi); cmp9(); a.jne(n); a.add(ptr, World16Delta);
+                a.Label(ref n); a.jmp((ulong)(va + 5));
+                p16Labels.Add((va, Convert.FromHexString(old), why, l, 5));
+            }
+            DownLoop(0x4a47aa, edx, () => a.cmp(ebx, 9), "83C25C8BCF", "#2 крок 3: IncreasePlayerScore, очки союзникам — 16 гравців");
+            DownLoop(0x4a49c0, edx, () => a.cmp(__dword_ptr[ebp + 0xC], 9), "83C25C8BCF", "#2 крок 3: IncreaseUnitXP, досвід союзникам — 16 гравців");
             {   // ServerInit 0x4ac962: add esi,5Ch / mov eax,[ebp-58h] (i до inc); межа — req 6F18h → 6F38h (Program.cs).
                 // [ebp-60h] = i·5Ch для [eax+edi+100h] — теж на хвіст.
                 var l = a.CreateLabel(); var n = a.CreateLabel(); a.Label(ref l);

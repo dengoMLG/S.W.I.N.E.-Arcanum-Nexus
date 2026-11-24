@@ -174,6 +174,12 @@ Imm(0x4f4ee8, 2, 1, "SQuickMarket grid: i / 9 (shift)");
 foreach (var va in new uint[] { 0x4e1511, 0x4e1d77 }) Imm(va, Caves.WorldOldSize, Caves.WorldSize, Caves.Fog16 ? "#2: new SGameWorld 27A0h → 2B00h (гравці 8…15 і карти туману ×16 у хвості)" : "#2: new SGameWorld 27A0h → 2A80h (гравці 8…15 у хвості)");
 // #2 крок 2: карти туману (вказівники обзору +26ECh і виявлення +270Ch, по 8) → хвіст SGameWorld, по 16 (+2A80h, +2AC0h).
 // 18 звернень [world + гравець·4 + X] (ще 2 — у вставці visunit) і цикли CreateVisMap / RemoveVisMap / ServerShutdown 8 → 16.
+if (Caves.P16)
+{
+    Imm(0x4a4772, 8, 16, "#2 крок 3: IncreasePlayerScore — лічильник 16 гравців");
+    Imm(0x4a497d, 8, 16, "#2 крок 3: IncreaseUnitXP — лічильник 16 гравців");
+    Imm(0x4b1bd4, 8, 16, "#2 крок 3: TestTriggers — «пройшли всіх» = 16");
+}
 if (Caves.Fog16)
 {
     foreach (var va in new uint[] { 0x49e6b7, 0x49fac9, 0x4a05cc, 0x4a0651, 0x4a072f, 0x4a0b33, 0x4a0ddb, 0x4a915d, 0x4af5b5, 0x4afa36 })
