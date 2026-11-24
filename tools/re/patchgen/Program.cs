@@ -179,6 +179,10 @@ if (Caves.P16)
     Imm(0x4a4772, 8, 16, "#2 крок 3: IncreasePlayerScore — лічильник 16 гравців");
     Imm(0x4a497d, 8, 16, "#2 крок 3: IncreaseUnitXP — лічильник 16 гравців");
     Imm(0x4b1bd4, 8, 16, "#2 крок 3: TestTriggers — «пройшли всіх» = 16");
+    Imm(0x49e659, 8, 16, "#2 крок 3: CanSeeGroundUnit — гравець < 16");
+    Imm(0x49fa76, 8, 16, "#2 крок 3: CollectUnits — власник < 16");
+    Imm(0x4ac98c, 7, 15, "#2 крок 3: ServerInit — свій гравець ≤ 15 (було «ControllingPlayer is invalid (8)»)");
+    Imm(0x4ae549, 7, 16, "#2 крок 3: ServerInit — перша карта огляду для всіх 16 (ваніль малювала 0…6)");
 }
 if (Caves.Fog16)
 {
@@ -305,6 +309,8 @@ foreach (var (va, why, pick) in patches)
     Console.WriteLine($"{va:x8}  {ins,-40} {Convert.ToHexString(oldBytes)} → {Convert.ToHexString(bytes)}  {why}");
 }
 
+// #2 крок 3 (--p16): місце 8…15 — окремий гравець світу, тож свій номер = номер місця (без «− 8» другого командира)
+if (Caves.P16) raws.RemoveAll(r => r.va == 0x479f00);
 foreach (var (va, oldHex, newHex, why) in raws)
 {
     int off = Off(va); var ob = Convert.FromHexString(oldHex); var nb = Convert.FromHexString(newHex);

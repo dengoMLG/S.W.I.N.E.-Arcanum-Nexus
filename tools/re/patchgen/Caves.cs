@@ -592,7 +592,7 @@ static class Caves
                 a.imul(edx, esi, SlotSize);
                 a.mov(eax, __dword_ptr[ecx + edx + SlotBase + 0x60]); a.or(eax, __dword_ptr[ecx + edx + SlotBase + 0x64]); a.jz(nx);
                 a.mov(eax, __dword_ptr[ecx + edx + SlotBase + 8 * SlotSize + 0x60]); a.or(eax, __dword_ptr[ecx + edx + SlotBase + 8 * SlotSize + 0x64]); a.jz(nx);
-                a.bts(__dword_ptr[tableVa + CoState], esi);
+                if (!P16) a.bts(__dword_ptr[tableVa + CoState], esi);   // --p16: місця 8…15 — окремі гравці, не другі командири
                 a.Label(ref nx);
                 a.inc(esi); a.cmp(esi, 8); a.jl(lp);
                 Log("ARC: co-command armies mask %x", Imm(0), () => a.push(__dword_ptr[tableVa + CoState]));
@@ -1624,6 +1624,7 @@ static class Caves
             SimpleLoop(0x4a5fb4, eax, edx, "83C05C83FA08", "#2 крок 3: IsMapRunningForAnyPlayer — 16 гравців");
             SimpleLoop(0x4ae831, eax, ecx, "83C05C83F908", "#2 крок 3: ServerRefresh, кінець матчу — 16 гравців");
             SimpleLoop(0x4aee42, esi, edi, "83C65C83FF08", "#2 крок 3: ServerRefresh, нарахування SP — 16 гравців");
+            SimpleLoop(0x4aeaee, edi, esi, "83C75C83FE08", "#2 крок 3: ServerRefresh, виконання кадрів — 16 гравців");
             SimpleLoop(0x4b1bcc, ecx, edx, "83C15C83FA08", "#2 крок 3: TestTriggers, найбільше очок — 16 гравців");   // + 0x4b1bd4 cmp edx,8 → 16 (Program.cs)
             // Зворотний лічильник 8 → 16 (Program.cs): «add edx,5Ch / mov ecx,edi», перехід, коли лічильник ще 9 (гравець 7).
             void DownLoop(uint va, AssemblerRegister32 ptr, Action cmp9, string old, string why)
