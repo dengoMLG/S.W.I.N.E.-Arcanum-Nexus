@@ -108,6 +108,10 @@ Const("zoner2", F(Caves.ZoneRadius * Caves.ZoneRadius));
 var gl = Caves.GlyphTable.Concat(new byte[(4 - Caves.GlyphTable.Length % 4) % 4]).ToArray();
 Const("glyphs", Enumerable.Range(0, gl.Length / 4).Select(i => BitConverter.ToUInt32(gl, i * 4)).ToArray()); Const("minedist2", F(Caves.MineDist * Caves.MineDist)); Const("big", F(3.0e38f));
 Const("startnames", Enumerable.Range(1, 8).Select(i => Str($"start {i}")).ToArray());
+// #2 (--p16): 16 кольорів гравців — ванільні 13 PlayerColors (0x58b410) + лайм, пурпур, темно-синій
+// (розфарбування моделей — «Unit color 14…16» у units_color.ini).
+if (Caves.P16) Const("playercolors16", 0xffd6a736, 0xff577182, 0xff4d4d4d, 0xff4e7240, 0xff99403a, 0xff93834d, 0xff86542b, 0xffbebaa9,
+                     0xff6a4688, 0xffb25990, 0xff725a4a, 0xff737475, 0xff43bcc0, 0xff8fd03a, 0xffc03ab4, 0xff2b3f8f);
 uint caveVa = Align(dataPtr, 16);
 const uint SecRaw = 0x6000, LateStr = 0x5C00;                       // код і дані — у файлі; код до 0x5C00, далі — рядки журналу з вставок (~0x230 Б)
 uint stateVa = newVa + SecRaw;                                       // таблиця стану юнітів — лише в пам'яті
@@ -185,6 +189,15 @@ if (Caves.P16)
     Imm(0x4ad2f0, 8, 16, "#2 крок 4: ServerInit — «Lato kisszem» (обзор старту) для 16 гравців");
     Imm(0x4adbc2, 8, 16, "#2 крок 4: ServerInit — розстановка армій 16 гравців");
     Imm(0x4ae1d4, 8, 16, "#2 крок 4: ServerInit — старт авіації 16 гравців");
+    // 16 кольорів: перевірка зайнятості колір — усі 16 місць; кількість кольорів 13 → 16 (mod 0Dh → 10h, «попередній» +0Ch → +0Fh);
+    // таблиця PlayerColors → playercolors16; SetModelColorizeProperties приймає «Unit color 14…16».
+    foreach (var va in new uint[] { 0x479f74, 0x47a114, 0x47bf94, 0x47c3e0 }) Imm(va, 8, 16, "#2: колір — перевірка всіх 16 місць");
+    foreach (var va in new uint[] { 0x479f98, 0x47a13a, 0x47bf39, 0x47bf7d, 0x47bfb9, 0x47c3a3, 0x47c3bf, 0x47c406, 0x484dc3, 0x484fac })
+        Imm(va, 0xD, 0x10, "#2: кольорів 13 → 16");
+    foreach (var va in new uint[] { 0x47a137, 0x47bf74, 0x47bfb6, 0x47c403 }) Imm(va, 0xC, 0xF, "#2: попередній колір (c + 15) mod 16");
+    Disp(0x47c3bc, 0xC, 0xF, "#2: попередній колір (c + 15) mod 16");
+    Imm(0x4c9adb, 0xD, 0x10, "#2: SetModelColorizeProperties — «Unit color 14…16»");
+    foreach (var va in new uint[] { 0x484ddd, 0x484fc6, 0x4e6804 }) Disp(va, 0x58b410, consts["playercolors16"], "#2: PlayerColors → 16 кольорів (.arcmod)");
     Imm(0x4e0785, 0x90, 0x120, "#2 крок 5: SGameView::Create — 16 рядків табло (крок 12h)");
     Imm(0x4e667f, 8, 16, "#2 крок 5: табло — гравців 16");
     Imm(0x4e669d, 8, 16, "#2 крок 5: табло, сортування — 16");
